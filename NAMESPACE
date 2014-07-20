@@ -1,0 +1,5 @@
+useDynLib(PP)
+
+importFrom(Rcpp, evalCpp)
+
+export(PPall)

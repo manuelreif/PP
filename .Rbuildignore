@@ -1,0 +1,17 @@
+.*~
+.git
+.git/
+/.git/
+./.git
+.gitignore
+^.*\.Rproj$
+^\.Rproj\.user$
+Testing_functions.R
+README.md
+Testing_functions*.R
+Testing_*
+wiki
+dontgit
+Testing_functions.R
+check_runtime_dup.R
+informelles_testen/
