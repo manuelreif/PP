@@ -17,7 +17,7 @@
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param ctrl more controls
-#'@param ... just some points.
+#'
 #'
 #'@export
 #'
@@ -43,11 +43,16 @@
 
 #'@example ./R/.examples.R
 #'@keywords Person Parameters
-
+#'@rdname PPall
+#'
 PPall <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
-                  mu = NULL, sigma2 = NULL, type="wle", maxsteps=40, exac=0.001,ctrl=list(),...)
+                  mu = NULL, sigma2 = NULL, type="wle", maxsteps=40, exac=0.001,ctrl=list())
 {
-
+### 
+call <- match.call()  
+attr(call, "date") <- date() 
+attr(call,"version") <- packageVersion("PP")
+###
 
 ## --------- user controls
 cont <- list(killdupli=TRUE)
@@ -253,8 +258,10 @@ if(type=="mle")
 colnames(resPP$resPP) <- c("estimate","SE")
 
 ## ---------------------------------------------
-cat("Estimation finished!\n")  
-return(resPP)
+cat("Estimation finished!\n")
+rescall <- list(resPP=resPP,call=call)
+class(rescall) <- "gpcm4pl"
+return(rescall)
 }
 
 

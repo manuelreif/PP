@@ -133,28 +133,3 @@ respcmwle1 <- PPall(respm = awmatrix1,thres = THRESx,
 # MAP estimation
 respcmmap1 <- PPall(respm = awmatrix1,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "map")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
