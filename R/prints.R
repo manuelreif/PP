@@ -1,6 +1,6 @@
 
-#' @export
-#' @rdname PPall
+#'@export
+#'@rdname PPall
 #'@param x an object of class gpcm4pl which is the result of using the \code{PPall()} function
 #'@param ... just some points.
 #'@method print gpcm4pl
@@ -12,8 +12,8 @@ print.gpcm4pl <-
 
     
 
-#' @export
-#' @rdname PPall
+#'@export
+#'@rdname PPall
 #'@param object an object of class gpcm4pl which is the result of using the \code{PPall()} function
 #'@method summary gpcm4pl
 summary.gpcm4pl <-

@@ -25,7 +25,9 @@ res1plwle <- PPall(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),
 # MAP estimation
 res1plmap <- PPall(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
 
-
+summary(res1plmle)
+summary(res1plwle)
+summary(res1plmap)
 
 ## 2PL model ##### 
 

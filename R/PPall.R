@@ -54,6 +54,7 @@ attr(call, "date") <- date()
 attr(call,"version") <- packageVersion("PP")
 ###
 
+
 ## --------- user controls
 cont <- list(killdupli=TRUE)
 
@@ -153,11 +154,21 @@ cat("type =",type,"\n")
 
 #### conditional controls
 
-
 if(modest == "4pl")
-{
-  if(!all(length(slopes) == c(length(lowerA),length(upperA)))) stop("Check length of sumitted vectors!\n")  
-}
+  {
+    if(!all(length(slopes) == c(length(lowerA),ncol(respm),length(upperA),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
+  } else if(modest == "3pl")
+    {
+      if(!all(length(slopes) == c(length(lowerA),ncol(respm),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
+    } else if(modest == "2pl")
+      {
+        if(!all(length(slopes) == c(ncol(respm),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
+    } else if(modest == "3pl_upperA")
+    {
+      if(!all(length(slopes) == c(ncol(respm),ncol(thres),length(upperA)))) stop("Check length of sumitted vectors!\n")  
+    }
+
+
 
 # ----- ----- -------------#
 
