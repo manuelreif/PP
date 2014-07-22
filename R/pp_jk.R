@@ -1,6 +1,6 @@
 pp_jk <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", 
-                  maxsteps=500, exac=0.001,ctrl=list(),
+                  maxsteps=100, exac=0.001,ctrl=list(),
                   modest,model2est,resPP)
 {
 # jackknife estimation  
@@ -43,7 +43,7 @@ for(jkrun in loa)
 resPP <- test3$resPP 
 
 rowMeans(resPP$resPP[,1] *ncol(awm) - jk_mat * (ncol(awm) - 1),na.rm=TRUE)
-
+jk_mat
 
 }
 

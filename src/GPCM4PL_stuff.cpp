@@ -307,7 +307,11 @@ if(wm == "wle")
     NumericMatrix reso = L4pl_wle(awm,DELTA,ALPHA,CS,DS,THETA);
     THETA = reso(_,5);
     
-    if( is_true(all(abs(reso(_,4)) < exac))| newr == (maxsteps-1))
+    NumericVector diffs = reso(_,4);
+    LogicalVector bxy = is_na(THETA);
+    NumericVector diffs1 = diffs[!bxy];
+    
+    if( is_true(all(abs(diffs1) < exac))| newr == (maxsteps-1))
       {
         resPP(_,0) = THETA;
         resPP(_,1) = pow(1/reso(_,1),0.5);
@@ -321,12 +325,17 @@ if(wm == "wle")
     {
    bool map = FALSE;
    
+
     for(int newr = 0; newr < maxsteps; newr++)
       {
       NumericMatrix reso = L4pl(awm,DELTA,ALPHA,CS,DS,THETA,map,mu,sigma2);
       THETA = reso(_,3);
       
-      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+      NumericVector diffs = reso(_,2);
+      LogicalVector bxy = is_na(THETA);
+      NumericVector diffs1 = diffs[!bxy];
+      
+      if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -344,7 +353,11 @@ if(wm == "wle")
             NumericMatrix reso = L4pl(awm,DELTA,ALPHA,CS,DS,THETA,map,mu,sigma2);
             THETA = reso(_,3);
             
-            if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+            NumericVector diffs = reso(_,2);
+            LogicalVector bxy = is_na(THETA);
+            NumericVector diffs1 = diffs[!bxy];
+            
+            if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
               {
                 resPP(_,0) = THETA;
                 resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
