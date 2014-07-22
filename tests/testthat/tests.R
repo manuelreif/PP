@@ -6,8 +6,7 @@
 # ------------------------- testing 1>>>
 
 
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1,2,-1,-0.2),nrow=2)
-THRESx <- rbind(0,THRES)
+THRESx  <- c(-2,-1,1,2)
 sl     <- c(0.5,1,1.5,1.1)
 
 awmatrix <- matrix(c(1,0,1,0,1,1,1,0),nrow=2,byrow=TRUE)
@@ -37,15 +36,15 @@ res234pl_dup2 <- vector(mode="list",length=length(estmod))
 
 for(a in 1:length(estmod))
   {
-    res234pl_dup1[[a]]  <- PPall(awmatrix,THRESx,slopes = sl,theta_start=rep(0,nrow(awmatrix)),type = estmod[[a]],ctrl = list(killdupli=TRUE),upperA = UA[[a]],lowerA = LA[[a]])
+    res234pl_dup1[[a]]  <- PPall(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=TRUE),upperA = UA[[a]],lowerA = LA[[a]])
   
-    res234pl_dup2[[a]] <- PPall(awmatrix,THRESx,slopes = sl,theta_start=rep(0,nrow(awmatrix)),type = estmod[[a]],ctrl = list(killdupli=FALSE),upperA = UA[[a]],lowerA = LA[[a]])
+    res234pl_dup2[[a]] <- PPall(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=FALSE),upperA = UA[[a]],lowerA = LA[[a]])
     
   }
 
 
 #t
-test_that("Output = the same - with or without removing duplicates"{
+test_that("Output = the same - with or without removing duplicates",{
 
 for(te in 1:length(estmod))
 {
@@ -81,9 +80,9 @@ b3 <- PPall(respm = awm,thres = diffpar, slopes = sl,type = "mle")
 b4 <- PPall(respm = awm,thres = diffparM, slopes = sl,type = "mle")
 
 #t
-test_that("Output = the same on 1,2,3,4pl - with vector or matrix input"{
-  expect_that(b1,equals(b2))
-  expect_that(b2,equals(b4))
+test_that("Output = the same on 1,2,3,4pl - with vector or matrix input",{
+  expect_that(b1[[1]],equals(b2[[1]]))
+  expect_that(b3[[1]],equals(b4[[1]]))
 })
 
 
@@ -93,7 +92,7 @@ test_that("Output = the same on 1,2,3,4pl - with vector or matrix input"{
 
 
 #t
-test_that("errors - warnings"{
+test_that("errors - warnings misspelling and length #1",{
   expect_that(PPall(respm = awm,thres = diffpar, slopes = sl,type = "aaa"), throws_error())
   expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl), throws_error())
   expect_that(PPall(respm = awm[,-1],thres = diffpar, slopes = sl), throws_error()) 
@@ -102,29 +101,6 @@ test_that("errors - warnings"{
   expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1]), throws_error()) 
   expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1],lowerA = la[-1]), throws_error())
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
