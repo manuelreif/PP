@@ -225,7 +225,6 @@ if(modest %in% c("2pl","3pl","4pl","3pl_upperA"))
         }  
   
   
-
 ### check whether the difference gets smaller and smaller in each interation step #### 
 
 if(type=="wle")
@@ -246,7 +245,8 @@ if(type=="wle")
   } else 
     {
       
-      # raw results  
+      # raw results
+      verb_erg <-  verb_erg[!sapply(verb_erg,is.null)]
       ergcov1 <- sapply(verb_erg, function(x)x[,3])
       # TRUE if step i is smaller than i - 1
       ergcov2 <- matrix(TRUE,nrow(ergcov1),ncol(ergcov1)-1)
