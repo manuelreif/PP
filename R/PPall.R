@@ -56,7 +56,7 @@ attr(call,"version") <- packageVersion("PP")
 
 
 ## --------- user controls
-cont <- list(killdupli=TRUE)
+cont <- list(killdupli=TRUE,cdiag=FALSE)
 
 user_ctrlI <- match(names(ctrl),names(cont))
 if(any(is.na(user_ctrlI)))
@@ -75,6 +75,14 @@ cont[user_ctrlI] <- ctrl
 if(is.null(theta_start))
   {
     theta_start <- rep(0,nrow(respm))
+  }
+
+#---
+
+if(cont$cdiag) 
+  {
+  cont$killdupli <- FALSE
+  warning("killdupli in 'ctrl' is forced to FALSE!\n")  
   }
 
 
@@ -206,7 +214,10 @@ if(cont$killdupli)
 
 
 
-
+if(!cont$cdiag)
+{
+  
+  
 if(modest %in% c("2pl","3pl","4pl","3pl_upperA"))
   {
   if(modest == "2pl")
@@ -242,29 +253,23 @@ if(modest %in% c("2pl","3pl","4pl","3pl_upperA"))
     resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2)
     
     }
-# ----- ----- -------------#
-
   
-## ---------------------------------------------
-
 
 ### result preperation --------------------------
 
 if(cont$killdupli)
-  {
+{
   # blowing up the matrix
   resPP$resPP <- resPP$resPP[dupvec$posvec,]
-  }
+}
 
 if(type=="mle")
-  {
+{
   resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
   resPP$resPP <- resPPx
-  }
+}
 
 ## ---------------------------------------------
-
-
 
 colnames(resPP$resPP) <- c("estimate","SE")
 
@@ -272,6 +277,28 @@ colnames(resPP$resPP) <- c("estimate","SE")
 cat("Estimation finished!\n")
 rescall <- list(resPP=resPP,call=call)
 class(rescall) <- "gpcm4pl"
+
+  
+  
+} else 
+    {
+    # verbose mode for convergence debugging  
+    resPP <- conv_diag(respm,thres,slopes,lowerA,upperA,theta_start, 
+                            type, maxsteps, exac, mu, sigma2,modest,maxsc)  
+      
+    if(type=="mle")
+      {
+      warning("Full and zero score were removed from the response matrix!\n") 
+      }
+    
+    
+    rescall <- list(resPP=resPP,call=call)
+    class(rescall) <- "gpcm4pl_debug"
+    }
+
+
+  
+
 return(rescall)
 }
 
