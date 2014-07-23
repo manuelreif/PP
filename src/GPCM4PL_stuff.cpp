@@ -310,7 +310,7 @@ if(wm == "wle")
     NumericVector diffs = reso(_,4);
     LogicalVector bxy = is_na(THETA);
     NumericVector diffs1 = diffs[!bxy];
-    
+
     if( is_true(all(abs(diffs1) < exac))| newr == (maxsteps-1))
       {
         resPP(_,0) = THETA;

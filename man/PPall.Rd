@@ -53,7 +53,6 @@ There are not Details up to now.
 \examples{
 
 
-
 ### data creation ##########
 
 set.seed(1522)

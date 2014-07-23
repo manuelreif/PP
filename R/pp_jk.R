@@ -1,6 +1,6 @@
 pp_jk <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", 
-                  maxsteps=100, exac=0.001,ctrl=list(),
+                  maxsteps=500, exac=0.001,ctrl=list(),
                   modest,model2est,resPP)
 {
 # jackknife estimation  
@@ -21,7 +21,7 @@ for(jkrun in loa)
       jk_mat[,jkrun] <- PP:::NR_4PL(respm[,-jkrun],DELTA = thres[,-jkrun],ALPHA = slopes[-jkrun],
                                CS = lowerA[-jkrun],
                                DS = upperA[-jkrun], THETA = theta_start, 
-                               wm=type,maxsteps,exac,mu,sigma2)$resPP[,1]
+                               wm=type,maxsteps,exac,mu,sigma2)$resPP[,1] 
     
     } else if(modest == "GPCM")
         {
