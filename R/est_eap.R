@@ -1,10 +1,8 @@
 est_eap <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL,
-                    mu = NULL, sigma2 = NULL)
+                    mu = NULL, sigma2 = NULL,npv=NULL,approx=TRUE)
 {
   
   
-#quads <- quadIT(nodes = 90,mu = mu[perp],sigma = sqrt(sigma2[perp]),absrange = 6)
-
 nodmat <- matrix(0,nrow(respm),90)  
 weimat <- matrix(0,nrow(respm),90) 
 # #persons x #nodes
@@ -41,7 +39,33 @@ FPL_eap <- sapply(1:nrow(respm),function(ep)
             })
 
 
-  
+### draw pvs?!
+
+
+if(!is.null(npv))
+  {
+  if(approx)  
+    {
+    
+    pvs <- sapply(1:nrow(respm), function(gretel)
+              {
+              rnorm(npv,FPL_eap[1,gretel],sqrt(FPL_eap[2,gretel])) 
+              })
+
+    } else 
+    {
+    # metropolitan-hastings-algorithm  
+      
+      
+      
+      
+      
+      
+      
+    }
+    
+    
+  }
   
   
   
@@ -49,3 +73,17 @@ FPL_eap <- sapply(1:nrow(respm),function(ep)
   
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
