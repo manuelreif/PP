@@ -54,12 +54,48 @@ if(!is.null(npv))
 
     } else 
     {
-    # metropolitan-hastings-algorithm  
       
+    # metropolitan-hastings-algorithm  ########
+    #################################################
+      jederdritte <- (1:(npv*3))[1:(npv*3) %% 3 == 0]
       
+      pvs <- sapply(1:nrow(respm), function(gr)
+          {
+            
+          theta <- FPL_eap[1,gr] # eap estimate
+          # 20 for burnin
+          # take each 3rd pv
+          PVvec <- vector(length=npv*3+20,mode="numeric")
+          
+           lauf <- 1
+    #       zaehl <- 1
+          while(lauf <= length(PVvec))
+            {
+    
+              P <- lowerA + (upperA - lowerA) * exp(xi*slopes*(theta - thres[-1,]))/(1+exp(slopes*(theta - thres[-1,])))
+    
+              Post <- prod(P) * dnorm(theta)
+              
+              proposed <- rnorm(1,theta,FPL_eap[2,gr])
+              
+              P1 <-lowerA + (upperA - lowerA) * exp(xi*slopes*(proposed - thres[-1,]))/(1+exp(slopes*(proposed - thres[-1,])))
       
-      
-      
+              Post1 <- prod(P1) * dnorm(proposed)
+              
+              Pmove <- Post1/Post
+              
+              if(runif(1) <= Pmove)
+                {
+                  theta <- proposed
+                  PVvec[lauf] <- theta
+                  lauf <- lauf + 1
+                  ##cat(lauf,"\r\r")
+                }
+              ##zaehl <- zaehl + 1  
+            }
+          
+          PVvec[-(1:20)][jederdritte] 
+          })
       
       
     }
@@ -67,10 +103,11 @@ if(!is.null(npv))
     
   }
   
+colnames(t(FPL_eap)) <- c("EAP","EAP_var")
   
+erglist <- list(FPL_eap=FPL_eap,pvs=pvs)
   
-  
-  
+ return(erglist) 
   
 }
 
