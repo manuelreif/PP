@@ -14,8 +14,10 @@ install_github("PP", "manuelreif", ref="master")
 
 TO-DOs for the next release version:
 
-* add print and summary routines
-* add robust person parameter estimation
+* add robust person parameter estimation [in progress: jk = almost done, jk_AMT = almost done, 3rd method = nothing]
+* EAP [done for 4PL - next:GPCM + toplevel functions]
+* Plausible values [done for 4PL - next:GPCM + toplevel functions]
 * (perhaps) add some person fit indices
+* add print and summary routines [done for PPall]
 
 
