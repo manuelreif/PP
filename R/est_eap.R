@@ -1,8 +1,8 @@
 est_eap <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL,
-                    mu = NULL, sigma2 = NULL,npv=NULL,approx=TRUE)
+                    mu = NULL, sigma2 = NULL,npv=NULL,approx=TRUE,thinning=6)
 {
   
-  
+
 nodmat <- matrix(0,nrow(respm),90)  
 weimat <- matrix(0,nrow(respm),90) 
 # #persons x #nodes
@@ -57,7 +57,7 @@ if(!is.null(npv))
       
     # metropolitan-hastings-algorithm  ########
     #################################################
-      jederdritte <- (1:(npv*3))[1:(npv*3) %% 3 == 0]
+      jederdritte <- (1:(npv*thinning))[1:(npv*thinning) %% thinning == 0]
       
       pvs <- sapply(1:nrow(respm), function(gr)
           {
@@ -65,22 +65,30 @@ if(!is.null(npv))
           theta <- FPL_eap[1,gr] # eap estimate
           # 20 for burnin
           # take each 3rd pv
-          PVvec <- vector(length=npv*3+20,mode="numeric")
+          PVvec <- vector(length=npv*thinning+20,mode="numeric")
           
            lauf <- 1
     #       zaehl <- 1
           while(lauf <= length(PVvec))
             {
-    
-              P <- lowerA + (upperA - lowerA) * exp(xi*slopes*(theta - thres[-1,]))/(1+exp(slopes*(theta - thres[-1,])))
-    
-              Post <- prod(P) * dnorm(theta)
               
-              proposed <- rnorm(1,theta,FPL_eap[2,gr])
+              P <- lowerA + (upperA - lowerA) * exp(slopes*(theta - thres[-1,]))/(1+exp(slopes*(theta - thres[-1,])))
+              Q <- 1-P
               
-              P1 <-lowerA + (upperA - lowerA) * exp(xi*slopes*(proposed - thres[-1,]))/(1+exp(slopes*(proposed - thres[-1,])))
+              Li <- P*awm[gr,] + Q*(1-awm[gr,])
+    
+              Post <- prod(Li) * dnorm(theta)
+              
+              # ---- prop >>>
+              
+              proposed <- rnorm(1,theta,2*FPL_eap[2,gr])
+              
+              P1 <-lowerA + (upperA - lowerA) * exp(slopes*(proposed - thres[-1,]))/(1+exp(slopes*(proposed - thres[-1,])))
       
-              Post1 <- prod(P1) * dnorm(proposed)
+              Q1 <- 1-P1
+              Li1 <- P1*awm[gr,] + Q1*(1-awm[gr,])
+              
+              Post1 <- prod(Li1) * dnorm(proposed)
               
               Pmove <- Post1/Post
               
@@ -102,10 +110,10 @@ if(!is.null(npv))
     
     
   }
+FPL_eap1 <- t(FPL_eap)  
+colnames(FPL_eap1) <- c("EAP","EAP_var")
   
-colnames(t(FPL_eap)) <- c("EAP","EAP_var")
-  
-erglist <- list(FPL_eap=FPL_eap,pvs=pvs)
+erglist <- list(FPL_eap=FPL_eap1,pvs=pvs)
   
  return(erglist) 
   
