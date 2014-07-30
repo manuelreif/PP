@@ -122,7 +122,7 @@ if(is.matrix(thres))
 
   
 ## --------- check user inputs
-match.call(type,c("mle","wle","map","eap","robust"))
+match.arg(type,c("mle","wle","map","eap","robust"))
 
 if(length(type) != 1) stop("Submit a single value as 'type'!\n")
 
