@@ -4,6 +4,7 @@ importFrom(Rcpp, evalCpp)
 
 export(PPall)
 export(PP_gpcm)
+export(PP_4pl)
 
 S3method(print, gpcm4pl)
 S3method(summary, gpcm4pl)

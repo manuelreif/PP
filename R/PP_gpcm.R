@@ -1,11 +1,11 @@
 #' Estimate Person Parameters for the GPCM
 #' 
-#' Compute Person Parameters for the GPCM and choose between four five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
+#' Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
 #'
 #' There are not Details up to now.
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
-#'@param thres An numeric matrix which contains the threshold parameter for each item. Currently, the first row must contain zeroes - this will change in anytime soon.
+#'@param thres An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
 #'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
 #'@param mu A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
@@ -68,7 +68,7 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   cont[user_ctrlI] <- ctrl
   
   
-  ## starting values
+  ## --------- starting values
   
   if(is.null(theta_start))
   {
@@ -77,18 +77,32 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   
   #---
   
-  if(cont$cdiag) 
-  {
-    cont$killdupli <- FALSE
-    warning("killdupli in 'ctrl' is forced to FALSE!\n")  
-  }
+#   if(cont$cdiag) 
+#   {
+#     cont$killdupli <- FALSE
+#     warning("killdupli in 'ctrl' is forced to FALSE!\n")  
+#   }
   
+
+
+## --------- threshold matrix
+
+# If the user did not add a row with zeroes only
+  if(any(thres[1,] != 0))
+    {
+      thres <- rbind(0,thres)
+    }
   
+  # compute the maximal score per item
+  maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
   
-  # check for errors and warnings etc  --------------
+
   
-# ----- ARGUMENT INPUTS
-if(!type %in% c("mle","wle","map")) stop("Submit a valid 'type'!\n")
+
+  
+## --------- check user inputs
+match.call(type,c("mle","wle","map","eap","robust"))
+
 if(length(type) != 1) stop("Submit a single value as 'type'!\n")
 
 # in case map is chosen and no mu and/or sigma2 is/are submitted.
@@ -129,6 +143,10 @@ if(cont$killdupli)
   dupvec <- make_dup(respm)
   respm <- respm[dupvec$ndpat,]
 }
+
+
+cat("Estimating: GPCM ... \n")
+cat("type =",type,"\n")
 
 
 

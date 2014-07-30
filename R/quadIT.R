@@ -36,7 +36,7 @@ function(nodes=14, mu=0, sigma=1,absrange=5, ngr=1, ergE=NULL)
     
     list(nodes=quadP_shift,weights=quadweight1)
   },gruu=1:ngr,mug=mu,si=sigma,SIMPLIFY=FALSE)
-  return(nwpgru)
+  
     
   } else { # nonparametric things
     
@@ -71,6 +71,6 @@ function(nodes=14, mu=0, sigma=1,absrange=5, ngr=1, ergE=NULL)
 
   
   
-  
+  return(nwpgru)  
   
 }
