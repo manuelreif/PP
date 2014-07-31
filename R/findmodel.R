@@ -11,6 +11,9 @@
 #'@export
 #'
 #'@author Manuel Reif
+#'
+#'@example ./R/.examples.R
+#'@keywords Person Parameters
 findmodel <- function(thres)
 {
 

@@ -10,4 +10,6 @@ export(JKpp)
 
 S3method(print, ppeo)
 S3method(summary, ppeo)
-S3method(JKpp, 4pl)
+S3method(JKpp, fourpl)
+S3method(JKpp, gpcm)
+S3method(JKpp, gpcm4pl)

@@ -253,7 +253,7 @@ ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,upperA=upperA,t
 ## ---------------------------------------------
 cat("Estimation finished!\n")
 rescall <- list(resPP=resPP,call=call,type=type,ipar=ipar)
-class(rescall) <- c("4pl","ppeo")
+class(rescall) <- c("fourpl","ppeo")
 
 
 

@@ -12,15 +12,14 @@ JKpp <- function(estobj,...) UseMethod("JKpp")
 # ---------------------------------------------------------------------
 
 
-#' @describeIn JKpp
+#' @rdname Jkpp
+#' @param cmeth Centering method, to summarize the jackknife results to one single ability estimate
+#' @param maxsteps The maximum number of steps the NR Algorithm will take.
+#' @param exac How accurate are the estimates supposed to be? Default is 0.001.
+#' @param ctrl more controls
+#' @method JKpp fourpl
 #' 
-#' @param cmeth centering method
-#' @param maxsteps maximum number of steps
-#' @param exac exakt?
-#' @param ctrl some controls
-#' @method JKpp 4pl
-#' 
-JKpp.4pl <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
+JKpp.fourpl <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
                      ctrl=list())
 {
   
@@ -75,13 +74,7 @@ output_jk
 
 # ---------------------------------------------------------------------
 
-
-#' @describeIn JKpp
-#' 
-#' @param cmeth centering method
-#' @param maxsteps maximum number of steps
-#' @param exac exakt?
-#' @param ctrl some controls
+#' @rdname Jkpp
 #' @method JKpp gpcm
 #' 
 JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
@@ -137,13 +130,7 @@ JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
 
 # ---------------------------------------------------------------------
 
-
-#' @describeIn JKpp
-#' 
-#' @param cmeth centering method
-#' @param maxsteps maximum number of steps
-#' @param exac exakt?
-#' @param ctrl some controls
+#' @rdname Jkpp
 #' @method JKpp gpcm4pl
 #' 
 JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
