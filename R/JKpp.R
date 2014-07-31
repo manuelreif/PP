@@ -44,26 +44,33 @@ jk_mat <- matrix(0,nrow=nrow(respm),ncol=length(loa))
   
 # run the 4pl jackknife  
 for(jkrun in loa)
-{
-  
-
-jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun],DELTA = thres[,-jkrun],ALPHA = slopes[-jkrun],
-                              CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
-                              wm=type,maxsteps,exac,mu,sigma2)$resPP[,1] 
+  {
     
-}
+  
+  jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun],DELTA = thres[,-jkrun],ALPHA = slopes[-jkrun],
+                                CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
+                                wm=type,maxsteps,exac,mu,sigma2)$resPP[,1] 
+      
+  }
 
   
   
 RES <- estobj$resPP$resPP[,1]
 
-
-
 psvalues  <- RES *ncol(respm) - jk_mat * (ncol(respm) - 1)
   
-output_jk <- cco(psvalues) 
+output_jk <- cco(psvalues,cmeth) 
 
-output_jk  
+### jk standard errors - see page 388
+L <- ncol(respm)
+Lm1 <- L - 1
+
+jk_se <- sqrt(rowSums((jk_mat - output_jk)^2)/(L*Lm1))
+
+
+cbind("estimate"=output_jk,"SE"=jk_se)  
+
+
 }
 
 
@@ -119,7 +126,7 @@ JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
   
   psvalues  <- RES *ncol(respm) - jk_mat * (ncol(respm) - 1)
   
-  output_jk <- cco(psvalues) 
+  output_jk <- cco(psvalues,cmeth) 
   
   output_jk  
 }
@@ -171,7 +178,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500, exac=0.001,
   
   psvalues  <- RES *ncol(respm) - jk_mat * (ncol(respm) - 1)
   
-  output_jk <- cco(psvalues) 
+  output_jk <- cco(psvalues,cmeth) 
   
   output_jk  
 }
@@ -212,7 +219,7 @@ AMTnew <- function(TT,xj)
 
 ###### compute composed PP
 
-cco <- function(psvalues)
+cco <- function(psvalues,cmeth)
 {
   if(cmeth=="mean")
   {
