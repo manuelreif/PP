@@ -1,19 +1,22 @@
 
 #' Estimate Person Parameters
 #' 
-#' Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE or MAP estimation. EAP estimation will follow in the future, and drawing plausible values will also be possible soon.
+#' Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation.
 #'
 #' There are not Details up to now.
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
-#'@param thres An numeric matrix which contains the threshold parameter for each item. Currently, the first row must contain zeroes - this will change in anytime soon.
+#'@param thres An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. 
-#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. This is only possible, in case of dichotomous responses (1,2,3,4PL model).
-#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. This is only possible, in case of dichotomous responses (1,2,3,4PL model).
+#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0.
+#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1.
 #'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
 #'@param mu A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
 #'@param sigma2 A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.
-#'@param type There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure. 
+#'@param type There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure.
+#'
+#'@param model2est A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter were estimated. There are 2 valid input up to now: "GPCM" and "4PL"
+#'
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param ctrl more controls
@@ -22,6 +25,7 @@
 #'@export
 #'
 #'@author Manuel Reif
+#'
 #'@references Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
 #'
 #'Magis, D. (2013). A note on the item information function of the four-parameter logistic model. Applied Psychological Measurement, 37(4), 304-315.
@@ -45,8 +49,9 @@
 #'@keywords Person Parameters
 #'@rdname PPall
 #'
-PPall <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
-                  mu = NULL, sigma2 = NULL, type="wle", maxsteps=40, exac=0.001,ctrl=list())
+PPall <- function(respm, thres, slopes, lowerA, upperA, theta_start=NULL,
+                  mu = NULL, sigma2 = NULL, type="wle", model2est,
+                  maxsteps=100, exac=0.001,ctrl=list())
 {
 ### 
 call <- match.call()  
@@ -70,6 +75,7 @@ if(any(is.na(user_ctrlI)))
 cont[user_ctrlI] <- ctrl
 
 
+
 ## starting values
 
 if(is.null(theta_start))
@@ -91,7 +97,7 @@ if(cont$cdiag)
 
 if(is.matrix(thres))
   {
-  iimm <- nrow(thres) == 1
+  #iimm <- nrow(thres) == 1
   
   if(any(thres[1,] != 0))
     {
@@ -101,18 +107,8 @@ if(is.matrix(thres))
   # compute the maximal score per item
    maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
   # are there any items with more than 2 categories?
-   allebigger <- any(maxsc > 1)
-  
-  } else if(is.vector(thres))
-    {
-    iimm <- TRUE 
-    thres <- rbind(0,thres)
-    allebigger <- FALSE
-    maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
-    }
-
-
-
+   #allebigger <- any(maxsc > 1)
+  }
 
 ## ----------------------
 
@@ -120,8 +116,16 @@ if(is.matrix(thres))
 # check for errors and warnings etc  --------------
 
 # ----- ARGUMENT INPUTS
-if(!type %in% c("mle","wle","map")) stop("Submit a valid 'type'!\n")
+type <- match.arg(type,c("mle","wle","map","eap","robust"))
 if(length(type) != 1) stop("Submit a single value as 'type'!\n")
+
+model2est <- match.arg(model2est,c("GPCM","4PL"),several.ok = TRUE)
+if(length(model2est) < ncol(respm)) stop("Check the properties for the submitted model2est vector!\n")
+
+
+if(!is.matrix(respm)) stop("respm must be a matrix!\n")
+if(!is.matrix(thres)) stop("thres must be a matrix!\n")
+
 
 # in case map is chosen and no mu and/or sigma2 is/are submitted.
 if( (any(is.null(mu)) | any(is.null(sigma2))))
@@ -139,60 +143,21 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
     }
   
   }
-#browser()
+
 ## ----------------------
 
 
 
-# ----- CHOOSE MODEL -------------#
-
-
-if((!allebigger | iimm) & is.null(lowerA) & is.null(upperA)) 
-  {modest <- "2pl"} else if((!allebigger |iimm) & is.null(upperA))
-    {modest <- "3pl"} else if((!allebigger | iimm) & is.null(lowerA))
-      {modest <- "3pl_upperA"} else if (!allebigger | iimm) 
-        {modest <- "4pl"} else if(!iimm & allebigger & is.null(lowerA) & is.null(upperA))
-          {modest <- "GPCM"} else {modest <- "mixed:GPCM,4PL"}
-
-
-cat("Estimating: ",modest,"model ... \n")
-cat("type =",type,"\n")
-
-
-
-#### conditional controls
-
-if(modest == "4pl")
-  {
-    if(!all(length(slopes) == c(length(lowerA),ncol(respm),length(upperA),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
-  } else if(modest == "3pl")
-    {
-      if(!all(length(slopes) == c(length(lowerA),ncol(respm),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
-    } else if(modest == "2pl")
-      {
-        if(!all(length(slopes) == c(ncol(respm),ncol(thres)))) stop("Check length of sumitted vectors!\n")  
-    } else if(modest == "3pl_upperA")
-    {
-      if(!all(length(slopes) == c(ncol(respm),ncol(thres),length(upperA)))) stop("Check length of sumitted vectors!\n")  
-    }
-
-
-
-# ----- ----- -------------#
-
-
-# add NA and Inf in case of mle estimation and full oder 0 score
+# ----- MLE: Inf and NA ---------------#
 if(type=="mle")
-{
-  resPPx <- ansol(respm,maxsc)  
-  respm <- respm[!is.na(resPPx[,2]),]
-}
+  {
+    resPPx <- ansol(respm,maxsc)  
+    respm <- respm[!is.na(resPPx[,2]),]
+  }
 
 
 
-## kill duplicated if wanted #################
-
-# collapse pattern to name
+# ----- remove duplicated -------------# 
 
 if(cont$killdupli)
   {
@@ -202,72 +167,36 @@ if(cont$killdupli)
   }
 
 
-##############################################
-
-
-
-
-
 # ----- estimation procedure -------------# 
 
-
-
-
-
-if(!cont$cdiag)
-{
-  
-  
-if(modest %in% c("2pl","3pl","4pl","3pl_upperA"))
-  {
-  if(modest == "2pl")
-    {
-    lowerA <- rep(0,length(slopes))  
-    upperA <- rep(1,length(slopes))  
-    } else if(modest == "3pl")
-      {
-      upperA <- rep(1,length(slopes))  
-      } else if(modest == "3pl_upperA")
-        {
-          lowerA <- rep(0,length(slopes))    
-        }
-    
-  
-  resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2)
-    
-    
-  
-  } else if(modest == "GPCM")
-    {
-      
-    resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2)  
-      
-    } else {
-    ## MIXED THING   
-    # determine the model per item
-    model2est <- ifelse(maxsc > 1,"GPCM","4PL")
     
      if(any(lowerA[model2est == "GPCM"] != 0)) warning("At least for one item with #categories > 1, there is an lower asymptote != 0 submitted. This will be ignored.\n")
+
      if(any(upperA[model2est == "GPCM"] != 1)) warning("At least for one item with #categories > 1, there is an upper asymptote != 1 submitted. This will be ignored.\n")
        
+modelcat <- paste(unique(model2est),collapse=", ")
+
+cat("Estimating: mixed ",modelcat, "... \n")
+cat("type =",type,"\n")
+
+
     resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2)
     
-    }
+
   
 
 ### result preperation --------------------------
 
 if(cont$killdupli)
-{
-  # blowing up the matrix
-  resPP$resPP <- resPP$resPP[dupvec$posvec,]
-}
+  {
+   resPP$resPP <- resPP$resPP[dupvec$posvec,]
+  }
 
 if(type=="mle")
-{
-  resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
-  resPP$resPP <- resPPx
-}
+  {
+   resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
+   resPP$resPP <- resPPx
+  }
 
 ## ---------------------------------------------
 
@@ -275,29 +204,11 @@ colnames(resPP$resPP) <- c("estimate","SE")
 
 ## ---------------------------------------------
 cat("Estimation finished!\n")
-rescall <- list(resPP=resPP,call=call)
-class(rescall) <- "gpcm4pl"
+rescall <- list(resPP=resPP,call=call,type=type)
+class(rescall) <- c("gpcm4pl","ppeo")
 
   
-  
-} else 
-    {
-    # verbose mode for convergence debugging  
-    resPP <- conv_diag(respm,thres,slopes,lowerA,upperA,theta_start, 
-                            type, maxsteps, exac, mu, sigma2,modest,maxsc)  
-      
-    if(type=="mle")
-      {
-      warning("Full and zero score were removed from the response matrix!\n") 
-      }
-    
-    
-    rescall <- list(resPP=resPP,call=call)
-    class(rescall) <- "gpcm4pl_debug"
-    }
 
-
-  
 
 return(rescall)
 }

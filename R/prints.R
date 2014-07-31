@@ -3,8 +3,8 @@
 #'@rdname PPall
 #'@param x an object of class gpcm4pl which is the result of using the \code{PPall()} function
 #'@param ... just some points.
-#'@method print gpcm4pl
-print.gpcm4pl <-
+#'@method print ppeo
+print.ppeo <-
   function(x, ...)
   {
   print(apply(x$resPP$resPP,2,function(qq) round(qq,4)))
@@ -15,12 +15,14 @@ print.gpcm4pl <-
 #'@export
 #'@rdname PPall
 #'@param object an object of class gpcm4pl which is the result of using the \code{PPall()} function
-#'@method summary gpcm4pl
-summary.gpcm4pl <-
+#'@method summary ppeo
+summary.ppeo <-
   function(object, ...)
   {
   cat("PP Version: ",as.character(attr(object$call,"version")),"\n")
-  cat("\n Call:",deparse(object$call),"\n- job started @",attr(object$call,"date"),"\n\n\n")  
+  cat("\n Call:",deparse(object$call),"\n- job started @",attr(object$call,"date"),"\n\n")  
+  
+  cat("Estimation type:",object$type,"\n\n")
   
   cat("Number of iterations:",  object$resPP$nsteps,"\n")
   

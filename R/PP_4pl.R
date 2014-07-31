@@ -248,10 +248,12 @@ if(type=="mle")
 
 colnames(resPP$resPP) <- c("estimate","SE")
 
+ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2)
+
 ## ---------------------------------------------
 cat("Estimation finished!\n")
-rescall <- list(resPP=resPP,call=call)
-class(rescall) <- "4pl"
+rescall <- list(resPP=resPP,call=call,type=type,ipar=ipar)
+class(rescall) <- c("4pl","ppeo")
 
 
 

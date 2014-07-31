@@ -1,7 +1,7 @@
 pp_jk <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
-                  mu = NULL, sigma2 = NULL, type="wle", 
+                  mu = NULL, sigma2 = NULL, 
                   maxsteps=500, exac=0.001,ctrl=list(),
-                  modest,model2est,resPP,cmeth="median")
+                  modest,model2est,estobj,cmeth="median")
 {
 # jackknife estimation  
   

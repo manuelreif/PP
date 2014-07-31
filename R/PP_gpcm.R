@@ -105,6 +105,10 @@ match.arg(type,c("mle","wle","map","eap","robust"))
 
 if(length(type) != 1) stop("Submit a single value as 'type'!\n")
 
+
+if(!is.matrix(respm)) stop("respm must be a matrix!\n")
+if(!is.matrix(thres)) stop("thres must be a matrix!\n")
+
 # in case map is chosen and no mu and/or sigma2 is/are submitted.
 if( (any(is.null(mu)) | any(is.null(sigma2))))
 {
@@ -176,8 +180,8 @@ cat("type =",type,"\n")
   
   ## ---------------------------------------------
   cat("Estimation finished!\n")
-  rescall <- list(resPP=resPP,call=call)
-  class(rescall) <- "gpcm"
+  rescall <- list(resPP=resPP,call=call,type=type)
+  class(rescall) <- c("gpcm","ppeo")
 
   
   
