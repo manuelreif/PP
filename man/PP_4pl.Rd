@@ -30,7 +30,11 @@ PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{ctrl}{more controls}
+\item{ctrl}{more controls:
+\itemize{
+\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+
+}}
 }
 \description{
 Compute Person Parameters for the 1/2/3/4pl model and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
@@ -39,55 +43,69 @@ Compute Person Parameters for the 1/2/3/4pl model and choose between five common
 blabla
 }
 \examples{
-################# GPCM ###########################################################################
+################# 4PL ###########################################################################
 
 
-# some threshold parameters
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
-# slopes
-sl     <- c(0.5,1,1.5,1.1,1,0.98)
-awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1
-                     ,2,0,0,0,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
+### data creation ##########
 
+set.seed(1522)
+# intercepts
+diffpar <- seq(-3,3,length=12)
+# slope parameters
+sl     <- round(runif(12,0.5,1.5),2)
+la     <- round(runif(12,0,0.25),2)
+ua     <- round(runif(12,0.8,1),2)
 
-## GPCM model ##### 
-
-# MLE estimation
-resgpcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "mle")
-# WLE estimation
-resgpcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "wle")
-# MAP estimation
-resgpcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "map")
+# response matrix
+awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 
 
 
-## PCM model ##### 
+## 1PL model ##### 
 
 # MLE estimation
-respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "mle")
+res1plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")
 # WLE estimation
-respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
+res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle")
 # MAP estimation
-respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
+res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
+# EAP estimation
+res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "eap")
 
-
-
-################# GPCM  ###########################################################################
-## with different number of categories
-
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
-THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))
-
-awmatrix1 <- matrix(c(1,0,2,0,1,3,1,0,0,1,3,1,0,0
-                      ,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
+## 2PL model ##### 
 
 # MLE estimation
-respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle")
+res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
 # WLE estimation
-respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
+res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
-respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")
+res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
+# EAP estimation
+res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
+
+## 3PL model ##### 
+
+# MLE estimation
+res3plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "mle")
+# WLE estimation
+res3plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "wle")
+# MAP estimation
+res3plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "map")
+# EAP estimation
+res3pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la, type = "eap")
+
+
+## 4PL model ##### 
+
+# MLE estimation
+res4plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "mle")
+# WLE estimation
+res4plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "wle")
+# MAP estimation
+res4plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "map")
+# EAP estimation
+res4pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "eap")
+
 }
 \author{
 Manuel Reif
@@ -106,6 +124,9 @@ Samejima, Fumiko (1993). An approximation of the bias function of the maximum li
 Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
 
 Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
+}
+\seealso{
+\link{PPall}, \link{PP_gpcm}, \link{JKpp}
 }
 \keyword{4pl}
 \keyword{Parameters,}

@@ -15,8 +15,16 @@
 #'@param type There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure. 
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
-#'@param ctrl more controls
+#'@param ctrl more controls:
+#'\itemize{
+#' \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
+#'}
+#'
+#' @seealso \link{PPall}, \link{PP_gpcm}, \link{JKpp}
+#'
+#' @useDynLib PP
+#' @importFrom Rcpp evalCpp
 #'
 #'@export
 #'
@@ -37,7 +45,7 @@
 #'Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 #'
 
-#'@example ./R/.examples_gpcm.R
+#'@example ./R/.examples_4pl.R
 #'@keywords Person Parameters, 4pl
 #'@rdname PP_4pl
 #'
@@ -56,7 +64,7 @@ PP_4pl <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=N
   
   
 ## --------- user controls
-cont <- list(killdupli=TRUE,cdiag=FALSE)
+cont <- list(killdupli=FALSE)
 
 user_ctrlI <- match(names(ctrl),names(cont))
 
@@ -132,13 +140,13 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
   if(any(is.null(mu))) 
     {
     mu <- rep(0,nrow(respm))
-    if(type == "map") warning("all mu's are set to 0! \n")
+    if(type %in% c("map","eap")) warning("all mu's are set to 0! \n")
     }
   
   if(any(is.null(sigma2))) 
     {
     sigma2 <- rep(1,nrow(respm))
-    if(type == "map") warning("all sigma2's are set to 1! \n")
+    if(type %in% c("map","eap")) warning("all sigma2's are set to 1! \n")
     }
   
   }
@@ -225,8 +233,18 @@ cat("type =",type,"\n")
               lowerA <- rep(0,length(slopes))    
             }
         
-      
-resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2)
+if(type!="eap")
+  {
+    
+  resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2)
+    
+  } else 
+    {
+      resPP <- list()
+      resPP$resPP <- eap_4pl(respm, thres, slopes, lowerA=lowerA, upperA=upperA,
+                     mu = mu, sigma2 = sigma2)
+      resPP$nsteps <- 0
+    }
       
       
 
@@ -248,7 +266,14 @@ if(type=="mle")
 
 colnames(resPP$resPP) <- c("estimate","SE")
 
-ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2)
+ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,
+             upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont)
+
+
+if(cont$killdupli)
+  {
+  ipar$dupvec <- dupvec 
+  }
 
 ## ---------------------------------------------
 cat("Estimation finished!\n")

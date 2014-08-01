@@ -1267,4 +1267,61 @@ return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
 
 
 
+// estimate likelihood for EAP estimation
+
+// [[Rcpp::export]]
+NumericVector Likgpcm(IntegerVector awv, NumericMatrix DELTA, NumericVector ALPHA, 
+                      NumericVector nodes) 
+{
+
+//int npers = awm.nrow();
+int nitem = awv.size();
+int maxca = DELTA.nrow();
+int nnodes = nodes.size();
+
+NumericVector Likpernode(nnodes);
+
+for(int no = 0; no < nnodes; no++)
+  {
+  double nod1 = nodes(no);  
+  
+  double singleLIK = 1;
+   
+  for(int it = 0; it < nitem; it++)  
+    {
+    NumericVector delta = DELTA(_,it); 
+    double alpha = ALPHA(it);
+    int resp = awv(it);
+    LogicalVector nas(maxca);
+    
+      // find NA and kill them
+  for (int fna = 0; fna < maxca; ++fna) 
+        {
+          nas[fna] = NumericVector::is_na(delta[fna]);
+        }
+  // parameters without missing values. missing values should only be possible at the end of the matrix
+    NumericVector delta1 = delta[!nas];
+    
+    if(IntegerVector::is_na(resp))
+      {
+      continue;
+      } else 
+        {
+        //singleLIK =* P_gpcm(delta=delta1,alpha=alpha,theta=nod1,resp=resp);
+        singleLIK *= P_gpcm(delta1,alpha,nod1,resp); 
+        }
+
+    }
+  
+    Likpernode(no) = singleLIK;
+    
+}
+
+
+return Likpernode;
+
+}
+
+
+
 

@@ -53,6 +53,10 @@ NR_mixed <- function(awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac
     .Call('PP_NR_mixed', PACKAGE = 'PP', awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2)
 }
 
+Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
+    .Call('PP_Likgpcm', PACKAGE = 'PP', awv, DELTA, ALPHA, nodes)
+}
+
 ansol <- function(awm, maxsc) {
     .Call('PP_ansol', PACKAGE = 'PP', awm, maxsc)
 }

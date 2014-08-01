@@ -1,7 +1,7 @@
 # tests #########################
 ########## 2/3/4PL Model ########
 ################################################################
-
+context("4PL model")
 
 # ------------------------- testing 1>>>
 
@@ -36,9 +36,9 @@ res234pl_dup2 <- vector(mode="list",length=length(estmod))
 
 for(a in 1:length(estmod))
   {
-    res234pl_dup1[[a]]  <- PPall(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=TRUE),upperA = UA[[a]],lowerA = LA[[a]])
+    res234pl_dup1[[a]]  <- PP_4pl(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=TRUE),upperA = UA[[a]],lowerA = LA[[a]])
   
-    res234pl_dup2[[a]] <- PPall(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=FALSE),upperA = UA[[a]],lowerA = LA[[a]])
+    res234pl_dup2[[a]] <- PP_4pl(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=FALSE),upperA = UA[[a]],lowerA = LA[[a]])
     
   }
 
@@ -73,11 +73,11 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 diffparM <- rbind(0,diffpar)
 
 
-b1 <- PPall(respm = awm,thres = diffpar, slopes = sl,type = "wle")
-b2 <- PPall(respm = awm,thres = diffparM, slopes = sl,type = "wle")
+b1 <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
+b2 <- PP_4pl(respm = awm,thres = diffparM, slopes = sl,type = "wle")
 
-b3 <- PPall(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-b4 <- PPall(respm = awm,thres = diffparM, slopes = sl,type = "mle")
+b3 <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
+b4 <- PP_4pl(respm = awm,thres = diffparM, slopes = sl,type = "mle")
 
 #t
 test_that("Output = the same on 1,2,3,4pl - with vector or matrix input",{
@@ -89,18 +89,32 @@ test_that("Output = the same on 1,2,3,4pl - with vector or matrix input",{
 
 # ------------------------- testing 3>>>
 
-
-
 #t
 test_that("errors - warnings misspelling and length #1",{
-  expect_that(PPall(respm = awm,thres = diffpar, slopes = sl,type = "aaa"), throws_error())
-  expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl), throws_error())
-  expect_that(PPall(respm = awm[,-1],thres = diffpar, slopes = sl), throws_error()) 
-  expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl[-1]), throws_error()) 
-  expect_that(PPall(respm = awm,thres = diffpar, slopes = sl,lowerA = la[-1]), throws_error()) 
-  expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1]), throws_error()) 
-  expect_that(PPall(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1],lowerA = la[-1]), throws_error())
+  expect_that(PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "aaa"), throws_error())
+  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl), throws_error())
+  expect_that(PP_4pl(respm = awm[,-1],thres = diffpar, slopes = sl), throws_error()) 
+  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1]), throws_error()) 
+  expect_that(PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la[-1]), throws_error()) 
+  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1]), throws_error()) 
+  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1],lowerA = la[-1]), throws_error())
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

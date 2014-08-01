@@ -18,7 +18,8 @@ resgpcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "mle")
 resgpcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "wle")
 # MAP estimation
 resgpcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "map")
-
+# EAP estimation
+resgpcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "eap")
 
 
 ## PCM model ##### 
@@ -29,8 +30,8 @@ respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation
 respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
-
-
+# EAP estimation
+respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
 
 ################# GPCM  ###########################################################################
 ## with different number of categories
@@ -47,3 +48,5 @@ respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle
 respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
 # MAP estimation
 respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")
+# EAP estimation
+respcmeap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "eap")

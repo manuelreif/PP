@@ -8,8 +8,7 @@
 PP-package has been developed to easily compute ML, WL (Warm 1989) and MAP estimates of Person-Parameters for a given response matrix and given item parameters of the 1,2,3,4-PL model (Birnbaum 1968, 4PL Citation) and the GPCM (Muraki 1992). It provides c++ routines which makes estimation of parameters very fast.
 }
 \examples{
-### data creation ##########
-set.seed(1523)
+set.seed(1522)
 # intercepts
 diffpar <- seq(-3,3,length=12)
 # slope parameters
@@ -17,11 +16,14 @@ sl     <- round(runif(12,0.5,1.5),2)
 la     <- round(runif(12,0,0.25),2)
 ua     <- round(runif(12,0.8,1),2)
 
-# antwortmatrix (für neue MLE routine)
+# response matrix
 awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
-
-# estimation
-res2plwle <- PPall(respm = awm,thres = diffpar, slopes = sl,type = "wle")
+# MLE estimation
+res3plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "mle")
+# WLE estimation
+res3plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "wle")
+# MAP estimation
+res3plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "map")
 }
 \author{
 Manuel Reif
@@ -38,6 +40,6 @@ Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Respon
 Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 }
 \seealso{
-\link{PPall}
+\link{PP_gpcm}, \link{PP_4pl}, \link{PPall}
 }
 

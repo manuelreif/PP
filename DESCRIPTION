@@ -1,14 +1,23 @@
 Package: PP
 Type: Package
 Title: Person Parameter estimation
-Version: 0.4-2
+Version: 0.4-3
 Date: 2014-07-20
 Author: Manuel Reif
 Maintainer: Manuel Reif <manuel.reif@gmail.com>
-Description: The PP package includes estimation of (MLE, WLE, MAP) person parameters for the 1,2,3,4-PL model  and the GPCM (generalized partial credit model). The parameters are estimated under the assumption that the other parameters are known and fixed. The package could be useful when items from an itempool/itembank with known item parameters are administered to a new population of testtakers and an ability estimation for every testtaker is needed.
+Description: The PP package includes estimation of (MLE, WLE, MAP) person
+    parameters for the 1,2,3,4-PL model and the GPCM (generalized partial
+    credit model). The parameters are estimated under the assumption that the
+    other parameters are known and fixed. The package could be useful when
+    items from an itempool/itembank with known item parameters are administered
+    to a new population of testtakers and an ability estimation for every
+    testtaker is needed.
 License: GPL-3
 LazyLoad: yes
-Depends: R (>= 3.0)
-Suggests: testthat
-Imports: Rcpp (>= 0.11.2)
+Depends:
+    R (>= 3.0)
+Suggests:
+    testthat
+Imports:
+    Rcpp (>= 0.11.2)
 LinkingTo: Rcpp

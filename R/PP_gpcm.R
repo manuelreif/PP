@@ -1,6 +1,6 @@
 #' Estimate Person Parameters for the GPCM
 #' 
-#' Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
+#' Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 #'
 #' There are not Details up to now.
 #' 
@@ -14,7 +14,13 @@
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param ctrl more controls
+#'\itemize{
+#' \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
+#'}
+#'
+#'
+#' @seealso \link{PPall}, \link{PP_4pl}, \link{JKpp}
 #'
 #'@export
 #'
@@ -54,7 +60,7 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   
   
   ## --------- user controls
-  cont <- list(killdupli=TRUE,cdiag=FALSE)
+  cont <- list(killdupli=FALSE)
   
   user_ctrlI <- match(names(ctrl),names(cont))
   if(any(is.na(user_ctrlI)))
@@ -115,13 +121,13 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
   if(any(is.null(mu))) 
   {
     mu <- rep(0,nrow(respm))
-    if(type == "map") warning("all mu's are set to 0! \n")
+    if(type %in% c("map","eap")) warning("all mu's are set to 0! \n")
   }
   
   if(any(is.null(sigma2))) 
   {
     sigma2 <- rep(1,nrow(respm))
-    if(type == "map") warning("all sigma2's are set to 1! \n")
+    if(type %in% c("map","eap")) warning("all sigma2's are set to 1! \n")
   }
   
 }
@@ -153,11 +159,18 @@ cat("Estimating: GPCM ... \n")
 cat("type =",type,"\n")
 
 
-
-  # ----- estimation procedure -------------# 
-  
-  resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2) 
-  
+if(type!="eap")
+  {
+    # ----- estimation procedure -------------# 
+    
+    resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2) 
+  } else 
+    {
+      resPP <- list()
+      resPP$resPP <- eap_gpcm(respm, thres, slopes,
+                             mu = mu, sigma2 = sigma2)
+      resPP$nsteps <- 0  
+    }
     
   ### result preperation --------------------------
   
@@ -177,10 +190,18 @@ cat("type =",type,"\n")
   
   colnames(resPP$resPP) <- c("estimate","SE")
   
+
+  ipar <- list(respm=respm,thres=thres,slopes=slopes,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont)
   
+  
+  if(cont$killdupli)
+    {
+      ipar$dupvec <- dupvec 
+    }
+
   ## ---------------------------------------------
   cat("Estimation finished!\n")
-  rescall <- list(resPP=resPP,call=call,type=type)
+  rescall <- list(resPP=resPP,call=call,type=type,ipar=ipar)
   class(rescall) <- c("gpcm","ppeo")
 
   

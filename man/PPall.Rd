@@ -38,7 +38,12 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{ctrl}{more controls}
+\item{ctrl}{more controls
+
+\itemize{
+\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+
+}}
 
 \item{x}{an object of class gpcm4pl which is the result of using the \code{PPall()} function}
 
@@ -113,6 +118,9 @@ Wang, S. and Wang, T. (2001). Precision of Warm's Weighted Likelihood Estimates 
 Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
 
 Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
+}
+\seealso{
+\link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}
 }
 \keyword{Parameters}
 \keyword{Person}

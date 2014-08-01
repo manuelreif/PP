@@ -21,6 +21,12 @@
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param ctrl more controls
 #'
+#'\itemize{
+#' \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+#'
+#'}
+#'
+#' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}
 #'
 #'@export
 #'
@@ -61,7 +67,7 @@ attr(call,"version") <- packageVersion("PP")
 
 
 ## --------- user controls
-cont <- list(killdupli=TRUE,cdiag=FALSE)
+cont <- list(killdupli=FALSE)
 
 user_ctrlI <- match(names(ctrl),names(cont))
 if(any(is.na(user_ctrlI)))
@@ -85,11 +91,11 @@ if(is.null(theta_start))
 
 #---
 
-if(cont$cdiag) 
-  {
-  cont$killdupli <- FALSE
-  warning("killdupli in 'ctrl' is forced to FALSE!\n")  
-  }
+# if(cont$cdiag) 
+#   {
+#   cont$killdupli <- FALSE
+#   warning("killdupli in 'ctrl' is forced to FALSE!\n")  
+#   }
 
 
 
@@ -202,9 +208,19 @@ if(type=="mle")
 
 colnames(resPP$resPP) <- c("estimate","SE")
 
+ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,
+             upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont)
+
+
+if(cont$killdupli)
+  {
+    ipar$dupvec <- dupvec 
+  }
+
+
 ## ---------------------------------------------
 cat("Estimation finished!\n")
-rescall <- list(resPP=resPP,call=call,type=type)
+rescall <- list(resPP=resPP,call=call,type=type,ipar=ipar)
 class(rescall) <- c("gpcm4pl","ppeo")
 
   

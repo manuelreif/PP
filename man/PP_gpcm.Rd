@@ -26,10 +26,14 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{ctrl}{more controls}
+\item{ctrl}{more controls
+\itemize{
+\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+
+}}
 }
 \description{
-Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
+Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 }
 \details{
 There are not Details up to now.
@@ -55,7 +59,8 @@ resgpcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "mle")
 resgpcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "wle")
 # MAP estimation
 resgpcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "map")
-
+# EAP estimation
+resgpcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "eap")
 
 
 ## PCM model ##### 
@@ -66,8 +71,8 @@ respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation
 respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
-
-
+# EAP estimation
+respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
 
 ################# GPCM  ###########################################################################
 ## with different number of categories
@@ -84,6 +89,8 @@ respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle
 respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
 # MAP estimation
 respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")
+# EAP estimation
+respcmeap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "eap")
 }
 \author{
 Manuel Reif
@@ -102,6 +109,9 @@ Samejima, Fumiko (1993). An approximation of the bias function of the maximum li
 Wang, S. and Wang, T. (2001). Precision of Warm's Weighted Likelihood Estimates for a Polytomous Model in Computerized Adaptive Testing. Applied Psychological Measurement, 25, 317-331.
 
 Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
+}
+\seealso{
+\link{PPall}, \link{PP_4pl}, \link{JKpp}
 }
 \keyword{GPCM}
 \keyword{Parameters,}

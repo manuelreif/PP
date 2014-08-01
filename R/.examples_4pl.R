@@ -11,7 +11,7 @@ sl     <- round(runif(12,0.5,1.5),2)
 la     <- round(runif(12,0,0.25),2)
 ua     <- round(runif(12,0.8,1),2)
 
-# antwortmatrix (für neue MLE routine)
+# response matrix
 awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 
 
@@ -24,7 +24,8 @@ res1plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar))
 res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle")
 # MAP estimation
 res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
-
+# EAP estimation
+res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "eap")
 
 ## 2PL model ##### 
 
@@ -34,8 +35,8 @@ res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
 res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
-
-
+# EAP estimation
+res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
 
 ## 3PL model ##### 
 
@@ -45,7 +46,8 @@ res3plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = 
 res3plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "wle")
 # MAP estimation
 res3plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "map")
-
+# EAP estimation
+res3pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la, type = "eap")
 
 
 ## 4PL model ##### 
@@ -56,3 +58,6 @@ res4plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=
 res4plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "wle")
 # MAP estimation
 res4plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "map")
+# EAP estimation
+res4pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "eap")
+

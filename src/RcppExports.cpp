@@ -279,6 +279,24 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// Likgpcm
+NumericVector Likgpcm(IntegerVector awv, NumericMatrix DELTA, NumericVector ALPHA, NumericVector nodes);
+RcppExport SEXP PP_Likgpcm(SEXP awvSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP nodesSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< IntegerVector >::type awv(awvSEXP );
+        Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type nodes(nodesSEXP );
+        NumericVector __result = Likgpcm(awv, DELTA, ALPHA, nodes);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // ansol
 NumericMatrix ansol(IntegerMatrix awm, IntegerVector maxsc);
 RcppExport SEXP PP_ansol(SEXP awmSEXP, SEXP maxscSEXP) {

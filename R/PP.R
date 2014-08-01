@@ -7,7 +7,7 @@
 #' @docType package
 #' @name PP
 #' @author Manuel Reif
-#' @seealso \link{PPall}
+#' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{PPall}
 #' @references 
 #' Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In Lord, F.M. & Novick, M.R. (Eds.), Statistical theories of mental test scores. Reading, MA: Addison-Wesley.
 #'  
@@ -20,21 +20,23 @@
 #'Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 #'
 #'@examples
+#' set.seed(1522)
+#' # intercepts
+#' diffpar <- seq(-3,3,length=12)
+#' # slope parameters
+#' sl     <- round(runif(12,0.5,1.5),2)
+#' la     <- round(runif(12,0,0.25),2)
+#' ua     <- round(runif(12,0.8,1),2)
 #'
-#'### data creation ##########
+#' # response matrix
+#' awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
+#' # MLE estimation
+#' res3plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "mle")
+#' # WLE estimation
+#' res3plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "wle")
+#' # MAP estimation
+#' res3plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "map")
 
-#'set.seed(1523)
-#'# intercepts
-#'diffpar <- seq(-3,3,length=12)
-#'# slope parameters
-#'sl     <- round(runif(12,0.5,1.5),2)
-#'la     <- round(runif(12,0,0.25),2)
-#'ua     <- round(runif(12,0.8,1),2)
-#'
-#'# antwortmatrix (für neue MLE routine)
-#'awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
-#'
-#'# estimation
-#'res2plwle <- PPall(respm = awm,thres = diffpar, slopes = sl,type = "wle")
+
 
 NULL
