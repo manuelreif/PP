@@ -108,6 +108,112 @@ t(pvs)
 }
 
 
+
+
+
+#' @rdname PV
+#' @method PV gpcm
+#' @export
+PV.gpcm <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
+{
+  
+  # grep objects 
+  respm <- estobj$ipar$respm
+  thres <- estobj$ipar$thres
+  slopes <- estobj$ipar$slopes
+  theta_start <- estobj$ipar$theta_start
+  mu <- estobj$ipar$mu
+  sigma2 <- estobj$ipar$sigma2
+  cont <- estobj$ipar$cont
+  
+  ppresults <- estobj$resPP$resPP
+  
+  if(approx)  
+  {
+    
+    pvs <- sapply(1:nrow(ppresults), function(gretel)
+    {
+      rnorm(npv,ppresults[gretel,1],ppresults[gretel,2])
+    })
+    
+  } else 
+  {
+    
+    # metropolitan-hastings-algorithm  ########
+    #################################################
+    jederdritte <- (1:(npv*thinning))[1:(npv*thinning) %% thinning == 0]
+    
+    pvs <- sapply(1:nrow(respm), function(gr)
+    {
+      
+      theta <- ppresults[gr,1] # eap estimate
+      # 20 for burnin
+      PVvec <- vector(length=npv*thinning+burnin,mode="numeric")
+      
+      lauf <- 1
+      #       zaehl <- 1
+      while(lauf <= length(PVvec))
+      {
+        
+        Li <- Likgpcm(respm[gr,], thres, slopes,theta) 
+        Post <- Li * dnorm(theta)
+        
+        # ---- prop >>>
+        
+        proposed <- rnorm(5,theta,2*ppresults[gr,2])
+        
+        for(PROP in proposed)
+        {
+          Li1 <- Likgpcm(respm[gr,], thres, slopes,PROP) 
+
+          
+          Post1 <- Li1 * dnorm(PROP)
+          
+          # ---- move? >>>
+          
+          Pmove <- Post1/Post
+          
+          if(runif(1) <= Pmove)
+          {
+            theta <- PROP
+            PVvec[lauf] <- theta
+            lauf <- lauf + 1
+            break
+          }
+          
+        }
+        
+        
+      }
+      
+      PVvec[-(1:burnin)][jederdritte] 
+    })
+    
+    
+  }  
+  
+  
+  t(pvs)  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ########## estimate likelihood of 4pl
 LIK4pl <- function(awv, thres, slopes, lowerA, upperA, theta)
 {
