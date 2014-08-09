@@ -19,6 +19,7 @@
 #'
 #'}
 #'
+#'@template resulttemplate
 #'
 #' @seealso \link{PPall}, \link{PP_4pl}, \link{JKpp}
 #'

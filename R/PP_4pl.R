@@ -21,6 +21,8 @@
 #'
 #'}
 #'
+#'@template resulttemplate
+#'
 #' @seealso \link{PPall}, \link{PP_gpcm}, \link{JKpp}
 #'
 #' @useDynLib PP

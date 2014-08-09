@@ -36,7 +36,8 @@ autocor <- function(acv)
 
 res_pvac  <- PV(res2pleap,approx = FALSE,npv = 200)
 
-# independent draws - so there cannot be any systematic autocorrelation when approx = TRUE. So this acts as a kind of benchmark for the MH-Alg.
+# independent draws - so there cannot be any systematic autocorrelation when
+# approx = TRUE. So this acts as a kind of benchmark for the MH-Alg.
 res_pvac2  <- PV(res2pleap,approx = TRUE,npv = 200)
 
 apply(res_pvac,1,autocor)

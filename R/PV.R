@@ -10,6 +10,8 @@
 #' @param mult multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error.
 #' @param ... points
 #'
+#' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}
+#'
 #' @rdname PV
 #' @example ./R/.example_pv.R
 #' @export
