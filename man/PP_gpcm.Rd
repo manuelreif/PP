@@ -32,6 +32,9 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 
 }}
 }
+\value{
+The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+}
 \description{
 Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 }

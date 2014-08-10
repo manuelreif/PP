@@ -43,6 +43,26 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// r_huber_4pl
+NumericVector r_huber_4pl(NumericVector delta, double alpha, double theta, double la, double ua, double H);
+RcppExport SEXP PP_r_huber_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericVector >::type delta(deltaSEXP );
+        Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP );
+        Rcpp::traits::input_parameter< double >::type theta(thetaSEXP );
+        Rcpp::traits::input_parameter< double >::type la(laSEXP );
+        Rcpp::traits::input_parameter< double >::type ua(uaSEXP );
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        NumericVector __result = r_huber_4pl(delta, alpha, theta, la, ua, H);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // L4pl
 NumericMatrix L4pl(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, bool map, NumericVector mu, NumericVector sigma2);
 RcppExport SEXP PP_L4pl(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP mapSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
@@ -86,9 +106,30 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// L4pl_robust
+NumericMatrix L4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, double H);
+RcppExport SEXP PP_L4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP );
+        Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type CS(CSSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type DS(DSSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP );
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        NumericMatrix __result = L4pl_robust(awm, DELTA, ALPHA, CS, DS, THETA, H);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // NR_4PL
-List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2);
-RcppExport SEXP PP_NR_4PL(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
+List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
+RcppExport SEXP PP_NR_4PL(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -104,7 +145,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type exac(exacSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP );
-        List __result = NR_4PL(awm, DELTA, ALPHA, CS, DS, THETA, wm, maxsteps, exac, mu, sigma2);
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        List __result = NR_4PL(awm, DELTA, ALPHA, CS, DS, THETA, wm, maxsteps, exac, mu, sigma2, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
@@ -123,6 +165,25 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type theta(thetaSEXP );
         Rcpp::traits::input_parameter< int >::type resp(respSEXP );
         double __result = P_gpcm(delta, alpha, theta, resp);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// r_huber_gpcm
+NumericVector r_huber_gpcm(NumericVector delta, double alpha, double theta, int resp, double H);
+RcppExport SEXP PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericVector >::type delta(deltaSEXP );
+        Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP );
+        Rcpp::traits::input_parameter< double >::type theta(thetaSEXP );
+        Rcpp::traits::input_parameter< int >::type resp(respSEXP );
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        NumericVector __result = r_huber_gpcm(delta, alpha, theta, resp, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

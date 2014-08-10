@@ -5,7 +5,7 @@
 \usage{
 PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
   theta_start = NULL, mu = NULL, sigma2 = NULL, type = "wle",
-  maxsteps = 40, exac = 0.001, ctrl = list())
+  maxsteps = 40, exac = 0.001, H = 1, ctrl = list())
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.}
@@ -29,6 +29,8 @@ PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
+
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
 
 \item{ctrl}{more controls:
 \itemize{
@@ -74,6 +76,9 @@ res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar))
 res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
 # EAP estimation
 res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "eap")
+# robust estimation
+res1plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust")
+
 
 ## 2PL model ##### 
 

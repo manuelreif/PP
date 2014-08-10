@@ -33,7 +33,6 @@ return PP1I;
 
 
 
-
 // P FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
@@ -88,6 +87,36 @@ PP1I(5) = J1 * PP1I(2) - J * INF2;
 //PP1I(6) = INF2; // i hope we wont need this anymore
 
 return PP1I;
+}
+
+
+
+
+// [[Rcpp::export]]
+NumericVector r_huber_4pl(NumericVector delta, double alpha,
+                          double theta, double la, double ua, double H) {
+
+double nenner = 0;
+double zae = 0;
+NumericVector Resv(2);
+
+double beta = delta(1); // weil der erste muss 0 sein, weil ja auch in der thres matrix GPCM items drinstehen koennen
+
+// compute residuum
+double resid = la + (ua - la) * exp(alpha*(theta - beta));
+// compute Huber weight
+
+if(abs(resid) <= H)
+  {
+  Resv(1) = 1;  
+  } else 
+    {
+    Resv(1) = H/abs(resid);
+    }
+
+Resv(0) = resid;
+
+return Resv;
 }
 
 
@@ -286,12 +315,94 @@ return l1l2M;
 
 
 
-// NR - Algorithm --->>>  MLE + WLE + MAP  <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++
+
+// [[Rcpp::export]]
+NumericMatrix L4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
+                          NumericVector CS, NumericVector DS,
+                          NumericVector THETA, double H) {
+
+int npers = awm.nrow();
+int nitem = awm.ncol();
+int maxca = DELTA.nrow();
+// ALPHA muss so lang sein wie nitem anzeigt
+// THETA muss so lang sein wie npers anzeigt
+// DELTA muss so viele Spalten haben wie nitem anzeigt
+// maxca gibt an wieviele maximale kategorien
+
+
+// 4 columns: 1st deriv of logL; 2nd deriv of logL; delta = 1st/2nd; theta - delta
+NumericMatrix l1l2M(npers,4);
+
+for(int it = 0; it < nitem; it++)
+  {
+    
+  // Response vector of one item  
+  IntegerVector respvec = awm(_,it);
+  double alpha = ALPHA(it);
+  NumericVector delta = DELTA(_,it);
+  LogicalVector nas(maxca);
+  double lowerA = CS(it);
+  double upperA = DS(it);
+  
+  // find NA and kill them
+  for (int fna = 0; fna < maxca; ++fna) {
+    nas[fna] = NumericVector::is_na(delta[fna]);
+  }
+  // parameters without missing values. missing values should only be possible at the end of the matrix
+  NumericVector delta1 = delta[!nas];
+  
+  int kmax = delta1.size();
+  
+  for(int pe = 0; pe < npers; pe++)
+    {
+     
+    int resp = respvec(pe);
+    double theta = THETA(pe);
+    NumericVector ergP(3);
+    
+    
+    // NA handling 
+
+    // if the i,j obs is NA, add nothing
+    if(IntegerVector::is_na(resp))
+    { // in case of missing value as response
+    continue;
+    } else 
+      {
+        
+     ergP = P_4pl(delta1, alpha, theta, lowerA, upperA);
+     // compute huber weight
+     NumericVector hub = r_huber_4pl(delta1,alpha, theta, lowerA, upperA, H);                     
+      // l1
+      double Qj = 1 - ergP(0);
+      // huber weighted first deriv and Inf
+      l1l2M(pe,0) += hub(1)*(resp - ergP(0))/(ergP(0)*Qj) * ergP(1);
+      l1l2M(pe,1) +=  ergP(2) * hub(1);
+
+      }
+
+    }
+    
+  }
+  
+l1l2M(_,1) = l1l2M(_,1) * (-1);
+l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+l1l2M(_,3) = THETA - l1l2M(_,2);
+
+
+return l1l2M;
+
+
+}
+
+
+
+// NR - Algorithm --->>>  MLE + WLE + MAP + robust <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
 List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
 NumericVector CS, NumericVector DS, NumericVector THETA, String wm, 
-int maxsteps, double exac, NumericVector mu, NumericVector sigma2) {
+int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
 
@@ -367,7 +478,29 @@ if(wm == "wle")
           
             }   
         
-      }
+      } else if(wm == "robust")
+        {
+            
+            for(int newr = 0; newr < maxsteps; newr++)
+              {
+              NumericMatrix reso = L4pl_robust(awm,DELTA,ALPHA,CS,DS,THETA,H);
+              THETA = reso(_,3);
+              
+              NumericVector diffs = reso(_,2);
+              LogicalVector bxy = is_na(THETA);
+              NumericVector diffs1 = diffs[!bxy];
+              
+              if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
+                {
+                  resPP(_,0) = THETA;
+                  resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
+                  howlong = newr + 1;
+                  break;
+                }
+            
+              }    
+          
+        }
 
 // ----
 return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
@@ -415,6 +548,43 @@ double P = exp(zae) / nenner;
 
 return P;
 }
+
+
+
+// [[Rcpp::export]]
+NumericVector r_huber_gpcm(NumericVector delta, double alpha,
+                           double theta, int resp, double H) {
+
+int nthres = delta.size();
+double zae = 0;
+int nthresm1 = nthres - 1;
+double deltaw0 = delta(-0);
+double resid = 0;
+NumericVector Resv(2);
+// compute residuum
+
+// dont start with the first - because this is always zero!
+for(int ru = 1; ru < nthres; ru++)
+  {
+  resid += alpha * (theta - delta(ru))/nthresm1;
+  }
+
+// compute Huber weight
+
+if(abs(resid) <= H)
+  {
+  Resv(1) = 1;  
+  } else 
+    {
+    Resv(1) = H/abs(resid);
+    }
+
+Resv(0) = resid;
+
+return Resv;
+}
+
+
 
 
 

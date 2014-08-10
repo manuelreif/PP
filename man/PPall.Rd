@@ -51,6 +51,9 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{object}{an object of class gpcm4pl which is the result of using the \code{PPall()} function}
 }
+\value{
+The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+}
 \description{
 Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation.
 }

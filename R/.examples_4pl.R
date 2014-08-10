@@ -26,6 +26,9 @@ res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar))
 res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
 # EAP estimation
 res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "eap")
+# robust estimation
+res1plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust",maxsteps = 500)
+
 
 ## 2PL model ##### 
 
@@ -37,6 +40,9 @@ res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
 # EAP estimation
 res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
+# robust estimation
+res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
+
 
 ## 3PL model ##### 
 
