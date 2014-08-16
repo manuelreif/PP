@@ -29,6 +29,11 @@ res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar))
 # robust estimation
 res1plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust")
 
+# summarize results
+summary(res1plmle)
+summary(res1plwle)
+summary(res1plmap)
+
 
 ## 2PL model ##### 
 
@@ -41,7 +46,7 @@ res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
 # EAP estimation
 res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
 # robust estimation
-res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust",theta_start = res2plmle$resPP$resPP[,1])
+res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
 
 
 ## 3PL model ##### 
@@ -66,4 +71,21 @@ res4plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=
 res4plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "map")
 # EAP estimation
 res4pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "eap")
+
+
+## A special on robust estimation:
+# it reproduces the example given in Schuster & Ke-Hai 2011:
+
+diffpar <- c(-3,-2,-1,0,1,2,3)
+
+AWM <- matrix(0,7,7)
+diag(AWM) <- 1
+
+res1plmle <- PP_4pl(respm = AWM,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")
+
+summary(res1plmle)
+
+res1plrob <- PP_4pl(respm = AWM,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust")
+
+summary(res1plrob)
 
