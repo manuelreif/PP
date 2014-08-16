@@ -14,10 +14,25 @@ install_github("PP", "manuelreif", ref="master")
 
 TO-DOs for the next release version:
 
+What is missing?
+
+* robust person parameter estimation:
+    * GPCM
+    * mixed
+* EAP
+    * GPCM
+    * mixed
+* Plausible values
+    * mixed
+* add print and summary for
+    * Plausible values
+    * JK methods
+* think about graphics - any suggestions?
+
+
+
+Further extensions:
+
 * **fit indices**: these will be built in by [Jan Steinfeld](https://github.com/jansteinfeld)
-* add robust person parameter estimation [in progress: jk = almost done, jk_AMT = almost done, huber estimates = done for 4pl - in a few days for GPCM and PPall]
-* EAP [done for 4PL & GPCM + next: PPall]
-* Plausible values [done for 4PL & GPCM + next: PPall]
-* add print and summary routines [done] - some more would be nice
 
 
