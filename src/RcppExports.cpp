@@ -44,7 +44,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // r_huber_4pl
-NumericVector r_huber_4pl(NumericVector delta, double alpha, double theta, double la, double ua, double H);
+double r_huber_4pl(NumericVector delta, double alpha, double theta, double la, double ua, double H);
 RcppExport SEXP PP_r_huber_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -56,7 +56,7 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type la(laSEXP );
         Rcpp::traits::input_parameter< double >::type ua(uaSEXP );
         Rcpp::traits::input_parameter< double >::type H(HSEXP );
-        NumericVector __result = r_huber_4pl(delta, alpha, theta, la, ua, H);
+        double __result = r_huber_4pl(delta, alpha, theta, la, ua, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
@@ -172,7 +172,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // r_huber_gpcm
-NumericVector r_huber_gpcm(NumericVector delta, double alpha, double theta, int resp, double H);
+double r_huber_gpcm(NumericVector delta, double alpha, double theta, int resp, double H);
 RcppExport SEXP PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
@@ -183,7 +183,7 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type theta(thetaSEXP );
         Rcpp::traits::input_parameter< int >::type resp(respSEXP );
         Rcpp::traits::input_parameter< double >::type H(HSEXP );
-        NumericVector __result = r_huber_gpcm(delta, alpha, theta, resp, H);
+        double __result = r_huber_gpcm(delta, alpha, theta, resp, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

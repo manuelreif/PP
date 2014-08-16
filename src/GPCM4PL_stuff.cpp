@@ -91,37 +91,36 @@ return PP1I;
 
 
 
-
 // [[Rcpp::export]]
-NumericVector r_huber_4pl(NumericVector delta, double alpha,
+double r_huber_4pl(NumericVector delta, double alpha,
                           double theta, double la, double ua, double H) {
 
 double nenner = 0;
 double zae = 0;
-NumericVector Resv(2);
-
+double HU = 0;
 double beta = delta(1); // weil der erste muss 0 sein, weil ja auch in der thres matrix GPCM items drinstehen koennen
 
 // compute residuum
-double resid = la + (ua - la) * exp(alpha*(theta - beta));
+//double resid = log(la + (ua - la) * exp(alpha*(theta - beta)));
+double resid = alpha*(theta - beta);
 // compute Huber weight
 
-if(abs(resid) <= H)
+if(resid < 0)
   {
-  Resv(1) = 1;  
+  resid = resid * (-1);  
+  }
+
+
+if(resid <= H)
+  {
+  HU = 1;  
   } else 
     {
-    Resv(1) = H/abs(resid);
+    HU = H/resid;
     }
 
-Resv(0) = resid;
-
-return Resv;
+return HU;
 }
-
-
-
-
 
 
 // LIKELIHOOD - L1, L2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -372,12 +371,16 @@ for(int it = 0; it < nitem; it++)
         
      ergP = P_4pl(delta1, alpha, theta, lowerA, upperA);
      // compute huber weight
-     NumericVector hub = r_huber_4pl(delta1,alpha, theta, lowerA, upperA, H);                     
+     //NumericVector hub = r_huber_4pl(delta=delta1,alpha, theta, lowerA, upperA, H);
+     double hub = r_huber_4pl(delta=delta1,alpha, theta, lowerA, upperA, H); 
       // l1
       double Qj = 1 - ergP(0);
       // huber weighted first deriv and Inf
-      l1l2M(pe,0) += hub(1)*(resp - ergP(0))/(ergP(0)*Qj) * ergP(1);
-      l1l2M(pe,1) +=  ergP(2) * hub(1);
+      
+      l1l2M(pe,0) += hub*(resp - ergP(0))/(ergP(0)*Qj) * ergP(1);
+      //l1l2M(pe,0) += hub(1)*(resp - ergP(0))/(hub(1)*(ergP(0)*Qj)) * ergP(1);
+      //l1l2M(pe,1) +=  ergP(2) * hub(1);
+      l1l2M(pe,1) +=  ergP(2);
 
       }
 
@@ -386,9 +389,11 @@ for(int it = 0; it < nitem; it++)
   }
   
 l1l2M(_,1) = l1l2M(_,1) * (-1);
+//l1l2M(_,1) = l1l2M(_,1);
 l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
 l1l2M(_,3) = THETA - l1l2M(_,2);
 
+//std::cout << "l1 = " << l1l2M(6,0) <<  std::endl ;
 
 return l1l2M;
 
@@ -552,7 +557,7 @@ return P;
 
 
 // [[Rcpp::export]]
-NumericVector r_huber_gpcm(NumericVector delta, double alpha,
+double r_huber_gpcm(NumericVector delta, double alpha,
                            double theta, int resp, double H) {
 
 int nthres = delta.size();
@@ -560,7 +565,7 @@ double zae = 0;
 int nthresm1 = nthres - 1;
 double deltaw0 = delta(-0);
 double resid = 0;
-NumericVector Resv(2);
+double HU = 0;
 // compute residuum
 
 // dont start with the first - because this is always zero!
@@ -571,17 +576,23 @@ for(int ru = 1; ru < nthres; ru++)
 
 // compute Huber weight
 
-if(abs(resid) <= H)
+if(resid < 0)
   {
-  Resv(1) = 1;  
+  resid = resid * (-1);  
+  }
+
+
+if(resid <= H)
+  {
+  HU = 1;  
   } else 
     {
-    Resv(1) = H/abs(resid);
+    HU = H/resid;
     }
 
-Resv(0) = resid;
 
-return Resv;
+
+return HU;
 }
 
 

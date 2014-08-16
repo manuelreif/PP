@@ -48,6 +48,7 @@ theta_start <- estobj$ipar$theta_start
 mu <- estobj$ipar$mu
 sigma2 <- estobj$ipar$sigma2
 cont <- estobj$ipar$cont
+H <- estobj$ipar$H
 
 # in case the killdupli option = TRUE 
 ## if not, create a vector which indicates merely each row
@@ -73,7 +74,7 @@ for(jkrun in loa)
   
   jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun],DELTA = thres[,-jkrun],ALPHA = slopes[-jkrun],
                                 CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
-                                wm=type,maxsteps,exac,mu,sigma2)$resPP[,1] 
+                                wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
       
   }
 
