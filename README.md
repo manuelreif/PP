@@ -34,5 +34,6 @@ What is missing?
 Further extensions:
 
 * **fit indices**: these will be built in by [Jan Steinfeld](https://github.com/jansteinfeld)
-
+* Simulation functions for 4-PL and GPCM
+* Person Parameter estimation for other models
 
