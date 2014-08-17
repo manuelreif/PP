@@ -23,6 +23,7 @@ resgpcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "eap")
 # robust estimation
 resgpcmrob <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust")
 
+
 ## PCM model ##### 
 
 # MLE estimation

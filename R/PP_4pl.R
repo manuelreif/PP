@@ -195,7 +195,7 @@ cat("type =",type,"\n")
   
   
   # add NA and Inf in case of mle estimation and full oder 0 score
-  if(type=="mle")
+  if(type=="mle" | type=="robust")
   {
     resPPx <- ansol(respm,maxsc)  
     respm <- respm[!is.na(resPPx[,2]),]
@@ -264,7 +264,7 @@ if(cont$killdupli)
    resPP$resPP <- resPP$resPP[dupvec$posvec,]
   }
 
-if(type=="mle")
+if(type=="mle" | type=="robust")
   {
    resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
    resPP$resPP <- resPPx

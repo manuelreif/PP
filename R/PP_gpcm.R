@@ -140,7 +140,7 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
 
 
 # add NA and Inf in case of mle estimation and full oder 0 score
-if(type=="mle")
+if(type=="mle"| type=="robust")
 {
   resPPx <- ansol(respm,maxsc)  
   respm <- respm[!is.na(resPPx[,2]),]
@@ -211,7 +211,7 @@ if(type %in% c("mle","wle","map"))
     }
   
   # add Inf and -Inf 
-  if(type=="mle")
+  if(type=="mle" | type=="robust")
     {
       resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
       resPP$resPP <- resPPx
