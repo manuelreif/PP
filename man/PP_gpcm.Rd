@@ -4,7 +4,7 @@
 \title{Estimate Person Parameters for the GPCM}
 \usage{
 PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001,
+  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001, H = 1,
   ctrl = list())
 }
 \arguments{
@@ -25,6 +25,8 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
+
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
 
 \item{ctrl}{more controls
 \itemize{
@@ -64,7 +66,8 @@ resgpcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "wle")
 resgpcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "map")
 # EAP estimation
 resgpcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "eap")
-
+# robust estimation
+resgpcmrob <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust")
 
 ## PCM model ##### 
 

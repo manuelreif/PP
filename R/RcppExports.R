@@ -33,8 +33,8 @@ P_gpcm <- function(delta, alpha, theta, resp) {
     .Call('PP_P_gpcm', PACKAGE = 'PP', delta, alpha, theta, resp)
 }
 
-r_huber_gpcm <- function(delta, alpha, theta, resp, H) {
-    .Call('PP_r_huber_gpcm', PACKAGE = 'PP', delta, alpha, theta, resp, H)
+r_huber_gpcm <- function(delta, alpha, theta, H) {
+    .Call('PP_r_huber_gpcm', PACKAGE = 'PP', delta, alpha, theta, H)
 }
 
 L12gpcm <- function(awm, DELTA, ALPHA, THETA, mu, sigma2, map) {
@@ -49,8 +49,12 @@ L12gpcm_wle <- function(awm, DELTA, ALPHA, THETA) {
     .Call('PP_L12gpcm_wle', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA)
 }
 
-NR_GPCM <- function(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2) {
-    .Call('PP_NR_GPCM', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2)
+L12gpcm_robust <- function(awm, DELTA, ALPHA, THETA, H) {
+    .Call('PP_L12gpcm_robust', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, H)
+}
+
+NR_GPCM <- function(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H) {
+    .Call('PP_NR_GPCM', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H)
 }
 
 Lgpcm4pl_mle <- function(awm, DELTA, ALPHA, CS, DS, THETA, model, mu, sigma2, map) {

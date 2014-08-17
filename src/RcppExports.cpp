@@ -172,8 +172,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // r_huber_gpcm
-double r_huber_gpcm(NumericVector delta, double alpha, double theta, int resp, double H);
-RcppExport SEXP PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP, SEXP HSEXP) {
+double r_huber_gpcm(NumericVector delta, double alpha, double theta, double H);
+RcppExport SEXP PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -181,9 +181,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< NumericVector >::type delta(deltaSEXP );
         Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP );
         Rcpp::traits::input_parameter< double >::type theta(thetaSEXP );
-        Rcpp::traits::input_parameter< int >::type resp(respSEXP );
         Rcpp::traits::input_parameter< double >::type H(HSEXP );
-        double __result = r_huber_gpcm(delta, alpha, theta, resp, H);
+        double __result = r_huber_gpcm(delta, alpha, theta, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
@@ -246,9 +245,28 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// L12gpcm_robust
+NumericMatrix L12gpcm_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, double H);
+RcppExport SEXP PP_L12gpcm_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP );
+        Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP );
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        NumericMatrix __result = L12gpcm_robust(awm, DELTA, ALPHA, THETA, H);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // NR_GPCM
-List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2);
-RcppExport SEXP PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
+List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
+RcppExport SEXP PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -262,7 +280,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type exac(exacSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP );
-        List __result = NR_GPCM(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2);
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        List __result = NR_GPCM(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

@@ -558,7 +558,7 @@ return P;
 
 // [[Rcpp::export]]
 double r_huber_gpcm(NumericVector delta, double alpha,
-                           double theta, int resp, double H) {
+                           double theta, double H) {
 
 int nthres = delta.size();
 double zae = 0;
@@ -590,7 +590,7 @@ if(resid <= H)
     HU = H/resid;
     }
 
-
+//std::cout << "hu = " << HU <<  std::endl ;
 
 return HU;
 }
@@ -943,11 +943,116 @@ return l1l2M;
 
 
 
+
+// [[Rcpp::export]]
+NumericMatrix L12gpcm_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
+                      NumericVector THETA, double H) {
+// awm = antwortmatrix
+// 
+int npers = awm.nrow();
+int nitem = awm.ncol();
+int maxca = DELTA.nrow();
+// ALPHA muss so lang sein wie nitem anzeigt
+// THETA muss so lang sein wie npers anzeigt
+// DELTA muss so viele Spalten haben wie nitem anzeigt
+// maxca gibt an wieviele maximale kategorien
+
+// l1 fuer die personen
+//NumericVector l1vec(npers);
+//NumericVector l2vec(npers);
+// 4 columns: 1st deriv of logL; 2nd deriv of logL; delta = 1st/2nd; theta - delta
+NumericMatrix l1l2M(npers,4);
+
+for(int it = 0; it < nitem; it++)
+  {
+    
+  // Response vector of one item  
+  IntegerVector respvec = awm(_,it);
+  double alpha = ALPHA(it);
+  NumericVector delta = DELTA(_,it);
+  LogicalVector nas(maxca);
+  
+  // find NA and kill them
+  for (int fna = 0; fna < maxca; ++fna) {
+    nas[fna] = NumericVector::is_na(delta[fna]);
+  }
+  // parameters without missing values. missing values should only be possible at the end of the matrix
+  NumericVector delta1 = delta[!nas];
+  
+  int kmax = delta1.size();
+  
+  
+  
+  for(int pe = 0; pe < npers; pe++)
+    {
+     
+    int resp = respvec(pe);
+    double theta = THETA(pe);
+     
+    // NA handling 
+
+    // if the i,j obs is NA, add nothing
+    if(IntegerVector::is_na(resp))
+    {
+    continue;
+    // jumps to next iteration step
+//    l1l2M(pe,0) += 0;
+//    l1l2M(pe,1) += 0;
+
+    } else 
+      {
+        
+      // rattert die ks durch
+      
+      double rs = 0;
+      double rs2 = 0;
+      double ls2 = 0;
+      double ergP = 0;
+      
+      
+      double hu = r_huber_gpcm(delta1,alpha,theta,H);
+      
+      for(int ks = 0; ks < kmax; ks++)
+        {
+      ergP = P_gpcm(delta1, alpha, theta, ks);
+      
+      rs += ks * alpha * ergP;
+      // second derivates right and left side
+      rs2 += ks * alpha * ergP;
+      ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+        }
+      rs2 = pow(rs2,2);
+      
+      // write first and second derivs in 2 column matrix - for each person
+      l1l2M(pe,0) += (resp * alpha - rs)*hu;
+      l1l2M(pe,1) += ls2 - rs2;
+      
+      //std::cout << "oben = " << l1l2M(pe,0) <<  std::endl ;
+      }
+//    double showme = l1l2M(pe,0); // weg
+//    std::cout << "l1 = " << showme <<  std::endl ; // weg
+    }
+    
+  }
+
+   
+    l1l2M(_,1) = l1l2M(_,1) * (-1);
+    l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+    l1l2M(_,3) = THETA - l1l2M(_,2);
+      
+
+
+return l1l2M;
+
+}
+
+
+
 // NR - Algorithm --->>>  MLE + WLE  <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
 List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA,
-             String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2) {
+             String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
 
@@ -963,7 +1068,7 @@ if(wm == "wle")
     NumericMatrix reso = L12gpcm_wle(awm,DELTA,ALPHA,THETA);
     THETA = reso(_,5);
     
-    if( is_true(all(abs(reso(_,4)) < exac)))
+    if( is_true(all(abs(reso(_,4)) < exac))| newr == (maxsteps-1))
       {
         resPP(_,0) = THETA;
         resPP(_,1) = pow(1/reso(_,1),0.5);
@@ -981,7 +1086,7 @@ if(wm == "wle")
       NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
       THETA = reso(_,3);
       
-      if( is_true(all(abs(reso(_,2)) < exac)))
+      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -999,7 +1104,7 @@ if(wm == "wle")
             NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
             THETA = reso(_,3);
             
-            if( is_true(all(abs(reso(_,2)) < exac)))
+            if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
               {
                 resPP(_,0) = THETA;
                 resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1009,7 +1114,25 @@ if(wm == "wle")
           
             }   
         
-      }
+      } else if(wm == "robust")
+          {  
+              for(int newr = 0; newr < maxsteps; newr++)
+                {
+                NumericMatrix reso = L12gpcm_robust(awm,DELTA,ALPHA,THETA,H);
+                THETA = reso(_,3);
+                //std::cout << "theta = " << resPP(1,0) <<  std::endl ;
+
+                if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+                  {
+                    resPP(_,0) = THETA;
+                    resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
+                    howlong = newr;
+                    break;
+                  }
+              
+                }   
+            
+          }
 
 // ----
 return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);

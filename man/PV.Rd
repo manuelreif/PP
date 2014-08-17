@@ -14,17 +14,17 @@ PV(estobj, ...)
   burnin = 10, mult = 2, ...)
 }
 \arguments{
-\item{estobj}{An object which originated from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}. EAP estimation is recommanded (type = "eap").}
+\item{estobj}{An object which originated from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}. EAP estimation is recommanded (type = "eap"), when plausible values are drawn afterwards.}
 
-\item{npv}{the number of plausible values}
+\item{npv}{the number of (effective returned) plausible values}
 
-\item{approx}{Whether a normal approximation \code{N(mu,sigma2)} is used to draw the plausible values. Default = TRUE.}
+\item{approx}{Whether a normal approximation \code{N(mu,sigma2)} is used to draw the plausible values. Default = TRUE. If FALSE a Metropolitan-Hastings-Algorithm will draw the values.}
 
-\item{thinning}{A numeric vector if length = 1. If approx = FALSE, a Metropolitan-Hastings-Algorithm draws the plausible values. To avoid autocorrelation, thinning takes every kth value. The default is 6 (every 6th value is taken), which works appropriately in almost all cases.}
+\item{thinning}{A numeric vector of length = 1. If approx = FALSE, a Metropolitan-Hastings-Algorithm draws the plausible values. To avoid autocorrelation, thinning takes every kth value as effective plausible value. The default is 6 (every 6th value is taken), which works appropriately in almost all cases here.}
 
-\item{burnin}{How many draws at the chains beginning should be discarded? Default is 10 - and this seems reasonable high, because starting point is the EAP.}
+\item{burnin}{How many draws at the chains beginning should be discarded? Default is 10 - and this seems reasonable high (probably 5 will be enough as well), because starting point is the EAP.}
 
-\item{mult}{multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error.}
+\item{mult}{multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.}
 
 \item{...}{points}
 }

@@ -13,6 +13,7 @@
 #'@param type There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure. 
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
+#'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.
 #'@param ctrl more controls
 #'\itemize{
 #' \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
@@ -50,7 +51,7 @@
 
 
 PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
-                    mu = NULL, sigma2 = NULL, type="wle", maxsteps=100, exac=0.001,ctrl=list())
+                    mu = NULL, sigma2 = NULL, type="wle", maxsteps=100, exac=0.001,H=1,ctrl=list())
 {
   
   ### 
@@ -160,18 +161,45 @@ cat("Estimating: GPCM ... \n")
 cat("type =",type,"\n")
 
 
-if(type!="eap")
+# 
+# if(type %in% c("mle","wle","map"))
+# {
+#   
+#   resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
+#   
+# } else if(type == "robust")
+# {
+#   
+#   resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
+#   
+# } else if(type == "eap")
+# {
+#   resPP <- list()
+#   resPP$resPP <- eap_4pl(respm, thres, slopes, lowerA=lowerA, upperA=upperA,
+#                          mu = mu, sigma2 = sigma2)
+#   resPP$nsteps <- 0
+# }
+
+
+if(type %in% c("mle","wle","map"))
   {
     # ----- estimation procedure -------------# 
     
-    resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2) 
-  } else 
+    resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2,H=H) 
+  } else if(type == "robust")
     {
-      resPP <- list()
-      resPP$resPP <- eap_gpcm(respm, thres, slopes,
-                             mu = mu, sigma2 = sigma2)
-      resPP$nsteps <- 0  
-    }
+    warning("Robust estimation for GPCM is still very experimental! \n")
+    resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2,H=H) 
+      
+    } else if(type == "eap")
+      {
+        resPP <- list()
+        resPP$resPP <- eap_gpcm(respm, thres, slopes,
+                                mu = mu, sigma2 = sigma2)
+        resPP$nsteps <- 0    
+      }
+
+
     
   ### result preperation --------------------------
   
