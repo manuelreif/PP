@@ -2,7 +2,7 @@
 #' 
 #' Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 #'
-#' There are not Details up to now.
+#'Details ...
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
 #'@param thres An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
@@ -36,6 +36,8 @@
 #'Samejima, Fumiko (1993). The bias function of the maximum likelihood estimate of ability for the dichotomous response level. Psychometrika,  58, 195-209.
 #'
 #'Samejima, Fumiko (1993). An approximation of the bias function of the maximum likelihood estimate of a latent variable for the general case where the item responses are discrete. Psychometrika,  58, 119-138.
+#'
+#' Schuster, C., & Yuan, K. H. (2011). Robust estimation of latent ability in item response models. Journal of Educational and Behavioral Statistics, 36(6), 720-735.
 #'
 #'Wang, S. and Wang, T. (2001). Precision of Warm's Weighted Likelihood Estimates for a Polytomous Model in Computerized Adaptive Testing. Applied Psychological Measurement, 25, 317-331.
 #'
@@ -220,7 +222,7 @@ if(type %in% c("mle","wle","map"))
   colnames(resPP$resPP) <- c("estimate","SE")
   
 
-  ipar <- list(respm=respm,thres=thres,slopes=slopes,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont)
+  ipar <- list(respm=respm,thres=thres,slopes=slopes,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont,H=H)
   
   
   if(cont$killdupli)

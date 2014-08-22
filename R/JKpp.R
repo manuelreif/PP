@@ -134,7 +134,9 @@ JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500,
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
-  
+  H <- estobj$ipar$H  
+
+
 if(!is.null(estobj$ipar$dupvec$posvec))
   {
     
@@ -159,7 +161,7 @@ if(!is.null(estobj$ipar$dupvec$posvec))
     
     jk_mat[,jkrun] <- NR_GPCM(respm[,-jkrun], thres[,-jkrun],
                               slopes[-jkrun], theta_start, type,
-                              maxsteps, exac, mu, sigma2)$resPP[,1]  
+                              maxsteps, exac, mu, sigma2,H=H)$resPP[,1]  
     
   }
   

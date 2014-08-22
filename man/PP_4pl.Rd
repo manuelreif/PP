@@ -45,7 +45,7 @@ The function returns a list with the estimation results and pretty much everythi
 Compute Person Parameters for the 1/2/3/4pl model and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
 }
 \details{
-blabla
+The \bold{robust} estimation method, applies a Huber-type estimator, which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
 }
 \examples{
 ################# 4PL ###########################################################################

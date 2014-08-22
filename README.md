@@ -17,7 +17,7 @@ TO-DOs for the next release version:
 What is missing?
 
 * robust person parameter estimation:
-    * GPCM
+    * GPCM **[done]**
     * mixed
 * EAP
     * GPCM
