@@ -30,7 +30,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{sigma2}{A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
-\item{type}{There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
 
 \item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter were estimated. There are 2 valid input up to now: "GPCM" and "4PL"}
 
@@ -78,12 +78,12 @@ THRESx[2,1:3] <- NA
 la     <- c(0.02,0.1,0,0,0,0)
 ua     <- c(0.97,0.91,1,1,1,1)
 
-awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1
+awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,2,0,0,0,0,0,0,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
 # create model2est
-
+# this function tries to help finding the appropriate model by inspecting the THRESx.
 model2est <- findmodel(THRESx)
 
 
@@ -106,6 +106,11 @@ respcmeap1 <- PPall(respm = awmatrix,thres = THRESx,
                     model2est=model2est)
 
 
+# summary to summarize the results
+summary(respcmlmle1)
+summary(respcmlwle1)
+summary(respcmlmap1)
+summary(respcmleap1)
 }
 \author{
 Manuel Reif
@@ -122,6 +127,8 @@ Muraki, Eiji (1993). Information Functions of the Generalized Partial Credit Mod
 Samejima, Fumiko (1993). The bias function of the maximum likelihood estimate of ability for the dichotomous response level. Psychometrika,  58, 195-209.
 
 Samejima, Fumiko (1993). An approximation of the bias function of the maximum likelihood estimate of a latent variable for the general case where the item responses are discrete. Psychometrika,  58, 119-138.
+
+Schuster, C., & Yuan, K. H. (2011). Robust estimation of latent ability in item response models. Journal of Educational and Behavioral Statistics, 36(6), 720-735.
 
 Wang, S. and Wang, T. (2001). Precision of Warm's Weighted Likelihood Estimates for a Polytomous Model in Computerized Adaptive Testing. Applied Psychological Measurement, 25, 317-331.
 
