@@ -15,7 +15,7 @@ THRESx[2,1:3] <- NA
 la     <- c(0.02,0.1,0,0,0,0)
 ua     <- c(0.97,0.91,1,1,1,1)
 
-awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1
+awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,2,0,0,0,0,0,0,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
@@ -36,3 +36,15 @@ respcmwle1 <- PPall(respm = awmatrix,thres = THRESx,
 respcmmap1 <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "map",
                     model2est=model2est)
+
+# EAP estimation
+respcmeap1 <- PPall(respm = awmatrix,thres = THRESx, 
+                    slopes = sl,lowerA = la, upperA=ua, type = "eap",
+                    model2est=model2est)
+
+
+# summary to summarize the results
+summary(respcmlmle1)
+summary(respcmlwle1)
+summary(respcmlmap1)
+summary(respcmleap1)

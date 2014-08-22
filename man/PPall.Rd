@@ -99,6 +99,13 @@ respcmwle1 <- PPall(respm = awmatrix,thres = THRESx,
 respcmmap1 <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "map",
                     model2est=model2est)
+
+# EAP estimation
+respcmeap1 <- PPall(respm = awmatrix,thres = THRESx, 
+                    slopes = sl,lowerA = la, upperA=ua, type = "eap",
+                    model2est=model2est)
+
+
 }
 \author{
 Manuel Reif

@@ -188,8 +188,22 @@ cat("Estimating: mixed ",modelcat, "... \n")
 cat("type =",type,"\n")
 
 
+
+
+if(type %in% c("mle","wle","map"))
+  {
+    # ----- estimation procedure -------------# 
+    
     resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2)
     
+  } else if(type == "eap")
+    {
+      resPP <- list()
+      resPP$resPP <- eap_mixed(respm, thres, slopes, lowerA=lowerA,
+                               upperA=upperA, mu = mu, sigma2 = sigma2, model2est=model2est)
+      resPP$nsteps <- 0    
+    }
+
 
   
 
