@@ -20,7 +20,7 @@ What is missing?
     * GPCM **[done]**
     * mixed
 * EAP
-    * mixed
+    * mixed **[done]**
 * Plausible values
     * mixed
 * add print and summary for
