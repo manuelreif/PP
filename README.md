@@ -22,7 +22,7 @@ What is missing?
 * EAP
     * mixed **[done]**
 * Plausible values
-    * mixed
+    * mixed **[done]**
 * add print and summary for
     * Plausible values
     * JK methods
