@@ -100,14 +100,18 @@ eap_mixed <- function(respm, thres, slopes, lowerA, upperA, mu = NULL, sigma2 = 
       weimat[qrun,]  <- qres[[1]]$weights
     }
     
-    
-    FPL_eap <- sapply(1:nrow(respm),function(ep)
-    {
       # 4pl part
       thres4pl  <- thres[,where4pl,drop=FALSE]
       slopes4pl  <- slopes[where4pl]
       lowerA4pl <- lowerA[where4pl]
       upperA4pl <- upperA[where4pl]
+      # gpcm part
+      thresgpcm <- thres[,wheregpcm,drop=FALSE]
+      slopegpcm <- slopes[wheregpcm]
+      
+    
+    FPL_eap <- sapply(1:nrow(respm),function(ep)
+    {
       
       oben <- exp(t(outer(nodmat[ep,],thres4pl[2,],"-"))*slopes4pl)
       oben2 <- oben * (upperA4pl - lowerA4pl)
@@ -122,10 +126,6 @@ eap_mixed <- function(respm, thres, slopes, lowerA, upperA, mu = NULL, sigma2 = 
       li  <- pxi + qxi
       
       Li4pl <- apply(li,2,function(x)prod(x,na.rm=TRUE))
-      
-      # gpcm part
-      thresgpcm <- thres[,wheregpcm,drop=FALSE]
-      slopegpcm <- slopes[wheregpcm]
       
       Ligpcm    <- Likgpcm(respm_gpcm[ep,],thresgpcm,slopegpcm,nodmat[ep,])
       

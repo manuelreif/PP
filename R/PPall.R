@@ -226,7 +226,7 @@ if(type=="mle")
 colnames(resPP$resPP) <- c("estimate","SE")
 
 ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,
-             upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont)
+             upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2,cont=cont,model2est=model2est)
 
 
 if(cont$killdupli)

@@ -3,6 +3,7 @@
 \alias{PV}
 \alias{PV.fourpl}
 \alias{PV.gpcm}
+\alias{PV.gpcm4pl}
 \title{Draw Plausible values}
 \usage{
 PV(estobj, ...)
@@ -11,6 +12,9 @@ PV(estobj, ...)
   burnin = 10, mult = 2, ...)
 
 \method{PV}{gpcm}(estobj, npv = 10, approx = TRUE, thinning = 6,
+  burnin = 10, mult = 2, ...)
+
+\method{PV}{gpcm4pl}(estobj, npv = 10, approx = TRUE, thinning = 6,
   burnin = 10, mult = 2, ...)
 }
 \arguments{
@@ -102,6 +106,66 @@ resgpcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "eap")
 
 
 res_gpcmpv  <- PV(resgpcmeap,approx = FALSE,npv = 20)
+
+
+
+### GPCM and 4pl model - plausible values 
+
+
+
+# some threshold parameters
+THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
+                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
+# slopes
+sl     <- c(0.5,1,1.5,1.1,1,0.98)
+
+THRESx <- THRES
+THRESx[2,1:3] <- NA
+
+# for the 4PL item the estimated parameters are submitted, 
+# for the GPCM items the lower asymptote = 0 
+# and the upper asymptote = 1.
+la     <- c(0.02,0.1,0,0,0,0)
+ua     <- c(0.97,0.91,1,1,1,1)
+
+awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
+                     ,2,0,0,0,0,0,0,0,0,1
+                     ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
+
+# create model2est
+# this function tries to help finding the appropriate model by inspecting the THRESx.
+model2est <- findmodel(THRESx)
+
+
+# EAP estimation
+respcmeap1 <- PPall(respm = awmatrix,thres = THRESx, 
+                    slopes = sl,lowerA = la, upperA=ua, type = "eap",
+                    model2est=model2est)
+
+
+res_mixedpv_1  <- PV(respcmeap1,approx = FALSE,npv = 200)
+
+rowMeans(res_mixedpv_1)
+
+respcmeap1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
