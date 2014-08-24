@@ -145,10 +145,13 @@ respcmeap1 <- PPall(respm = awmatrix,thres = THRESx,
 
 res_mixedpv_1  <- PV(respcmeap1,approx = FALSE,npv = 200)
 
+# rowMeans of plausible values should approximate the EAPs
 rowMeans(res_mixedpv_1)
-
+# EAPs
 respcmeap1
 
+# show the quantiles of the empirical distribution
+apply(res_mixedpv_1,1,quantile)
 
 
 

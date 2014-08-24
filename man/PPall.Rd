@@ -7,7 +7,7 @@
 \usage{
 PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
   sigma2 = NULL, type = "wle", model2est, maxsteps = 100, exac = 0.001,
-  ctrl = list())
+  H = 1, ctrl = list())
 
 \method{print}{ppeo}(x, ...)
 
@@ -37,6 +37,8 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
+
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
 
 \item{ctrl}{more controls
 
@@ -103,6 +105,11 @@ respcmmap1 <- PPall(respm = awmatrix,thres = THRESx,
 # EAP estimation
 respcmeap1 <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "eap",
+                    model2est=model2est)
+
+# Robust estimation
+respcmrob1 <- PPall(respm = awmatrix,thres = THRESx, 
+                    slopes = sl,lowerA = la, upperA=ua, type = "robust",
                     model2est=model2est)
 
 

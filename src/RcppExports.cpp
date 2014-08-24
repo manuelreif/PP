@@ -333,9 +333,31 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// Lgpcm4pl_robust
+NumericMatrix Lgpcm4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, CharacterVector model, double H);
+RcppExport SEXP PP_Lgpcm4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP );
+        Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type CS(CSSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type DS(DSSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP );
+        Rcpp::traits::input_parameter< CharacterVector >::type model(modelSEXP );
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        NumericMatrix __result = Lgpcm4pl_robust(awm, DELTA, ALPHA, CS, DS, THETA, model, H);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // NR_mixed
-List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, CharacterVector model, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2);
-RcppExport SEXP PP_NR_mixed(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
+List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA, CharacterVector model, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
+RcppExport SEXP PP_NR_mixed(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP CSSEXP, SEXP DSSEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
@@ -352,7 +374,8 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< double >::type exac(exacSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP );
         Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP );
-        List __result = NR_mixed(awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2);
+        Rcpp::traits::input_parameter< double >::type H(HSEXP );
+        List __result = NR_mixed(awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2, H);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

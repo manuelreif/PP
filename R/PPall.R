@@ -18,6 +18,7 @@
 #'
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
+#'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.
 #'@param ctrl more controls
 #'
 #'\itemize{
@@ -60,7 +61,7 @@
 #'
 PPall <- function(respm, thres, slopes, lowerA, upperA, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", model2est,
-                  maxsteps=100, exac=0.001,ctrl=list())
+                  maxsteps=100, exac=0.001,H=1,ctrl=list())
 {
 ### 
 call <- match.call()  
@@ -195,7 +196,13 @@ if(type %in% c("mle","wle","map"))
   {
     # ----- estimation procedure -------------# 
     
-    resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2)
+    resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H)
+    
+  } else if(type == "robust")
+  {
+    warning("Robust estimation for GPCM is still very experimental! \n")
+    
+    resPP <- NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H=H) 
     
   } else if(type == "eap")
     {

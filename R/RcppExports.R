@@ -65,8 +65,12 @@ Lgpcm4pl_wle <- function(awm, DELTA, ALPHA, CS, DS, THETA, model) {
     .Call('PP_Lgpcm4pl_wle', PACKAGE = 'PP', awm, DELTA, ALPHA, CS, DS, THETA, model)
 }
 
-NR_mixed <- function(awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2) {
-    .Call('PP_NR_mixed', PACKAGE = 'PP', awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2)
+Lgpcm4pl_robust <- function(awm, DELTA, ALPHA, CS, DS, THETA, model, H) {
+    .Call('PP_Lgpcm4pl_robust', PACKAGE = 'PP', awm, DELTA, ALPHA, CS, DS, THETA, model, H)
+}
+
+NR_mixed <- function(awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2, H) {
+    .Call('PP_NR_mixed', PACKAGE = 'PP', awm, DELTA, ALPHA, CS, DS, THETA, model, wm, maxsteps, exac, mu, sigma2, H)
 }
 
 Likgpcm <- function(awv, DELTA, ALPHA, nodes) {

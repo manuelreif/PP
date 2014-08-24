@@ -59,6 +59,11 @@ respcmeap1 <- PPall(respm = awmatrix,thres = THRESx,
                     slopes = sl,lowerA = la, upperA=ua, type = "eap",
                     model2est=model2est)
 
+# Robust estimation
+respcmrob1 <- PPall(respm = awmatrix,thres = THRESx, 
+                    slopes = sl,lowerA = la, upperA=ua, type = "robust",
+                    model2est=model2est)
+
 
 # summary to summarize the results
 summary(respcmlmle1)

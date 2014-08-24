@@ -1492,6 +1492,161 @@ return l1l2M;
 
 
 
+// GPCM - 4PL mixed - ROBUST*************************************************
+
+// [[Rcpp::export]]
+NumericMatrix Lgpcm4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
+                           NumericVector CS, NumericVector DS, NumericVector THETA, 
+                           CharacterVector model, double H) {
+// awm = antwortmatrix
+// 
+int npers = awm.nrow();
+int nitem = awm.ncol();
+int maxca = DELTA.nrow();
+// ALPHA muss so lang sein wie nitem anzeigt
+// THETA muss so lang sein wie npers anzeigt
+// DELTA muss so viele Spalten haben wie nitem anzeigt
+// maxca gibt an wieviele maximale kategorien
+
+// l1 fuer die personen
+//NumericVector l1vec(npers);
+//NumericVector l2vec(npers);
+// 4 columns: 1st deriv of logL; 2nd deriv of logL; delta = 1st/2nd; theta - delta
+NumericMatrix l1l2M(npers,4);
+
+for(int it = 0; it < nitem; it++)
+  {
+    
+  String modit = model(it);
+  //std::cout << "modit = " << modit <<  std::endl ;
+  IntegerVector respvec = awm(_,it);
+  double alpha = ALPHA(it);
+  NumericVector delta = DELTA(_,it);
+  LogicalVector nas(maxca);
+  
+  if(modit == "4PL")  
+    {
+
+  double lowerA = CS(it);
+  double upperA = DS(it);
+  
+  // find NA and kill them
+  for (int fna = 0; fna < maxca; fna++) {
+    nas[fna] = NumericVector::is_na(delta[fna]);
+  }
+  // parameters without missing values. missing values should only be possible at the end of the matrix
+  NumericVector delta1 = delta[!nas];
+  
+  int kmax = delta1.size();
+  
+  for(int pe = 0; pe < npers; pe++)
+    {
+     
+    int resp = respvec(pe);
+    double theta = THETA(pe);
+    NumericVector ergP(3);
+    
+    
+    // NA handling 
+
+    // if the i,j obs is NA, add nothing
+    if(IntegerVector::is_na(resp))
+    { // in case of missing value as response
+    continue;
+    } else 
+      {
+     double hub = r_huber_4pl(delta=delta1,alpha, theta, lowerA, upperA, H);   
+     ergP = P_4pl(delta1, alpha, theta, lowerA, upperA);  
+      
+      // l1
+      double Qj = 1 - ergP(0);
+      l1l2M(pe,0) += hub*(resp - ergP(0))/(ergP(0)*Qj) * ergP(1);
+      l1l2M(pe,1) +=  ergP(2);
+
+      }
+
+//    std::cout << "l1 = " << showme <<  std::endl ; // weg
+    }
+      
+    
+      
+    } else if(modit == "GPCM")
+      {
+        
+        // find NA and kill them
+        for (int fna = 0; fna < maxca; fna++) {
+          nas[fna] = NumericVector::is_na(delta[fna]);
+        }
+        // parameters without missing values. missing values should only be possible at the end of the matrix
+        NumericVector delta1 = delta[!nas];
+        
+        int kmax = delta1.size();
+        
+      
+        for(int pe = 0; pe < npers; pe++)
+          {
+           
+          int resp = respvec(pe);
+          double theta = THETA(pe);
+           
+          // NA handling 
+      
+          // if the i,j obs is NA, add nothing
+          if(IntegerVector::is_na(resp))
+          {
+          continue;
+          // jumps to next iteration step
+      //    l1l2M(pe,0) += 0;
+      //    l1l2M(pe,1) += 0;
+      
+          } else 
+            {
+              
+            // rattert die ks durch
+            
+            double rs = 0;
+            double rs2 = 0;
+            double ls2 = 0;
+            double ergP = 0;
+            
+            double hu = r_huber_gpcm(delta1,alpha,theta,H);
+            
+            for(int ks = 0; ks < kmax; ks++)
+              {
+            ergP = P_gpcm(delta1, alpha, theta, ks);
+            
+            rs += ks * alpha * ergP;
+            // second derivates right and left side
+            rs2 += ks * alpha * ergP;
+            ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+              }
+            rs2 = pow(rs2,2);
+            
+            // write first and second derivs in 2 column matrix - for each person
+            l1l2M(pe,0) += (resp * alpha - rs) * hu;
+            l1l2M(pe,1) += ls2 - rs2;
+            }
+      //    double showme = l1l2M(pe,0); // weg
+      //    std::cout << "l1 = " << showme <<  std::endl ; // weg
+          }
+              
+              
+      }
+    
+
+  }
+
+    
+    l1l2M(_,1) = l1l2M(_,1) * (-1);
+    l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+    l1l2M(_,3) = THETA - l1l2M(_,2);
+      
+
+
+return l1l2M;
+
+}
+
 
 
 // NR - Algorithm mixed --->>>  MLE + WLE + MAP <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++
@@ -1499,7 +1654,7 @@ return l1l2M;
 // [[Rcpp::export]]
 List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS,
               NumericVector DS, NumericVector THETA, CharacterVector model,
-              String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2) {
+              String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
 
@@ -1562,7 +1717,26 @@ if(wm == "wle")
           
             }   
         
+      } else if(wm == "robust")
+    {
+      
+
+    for(int newr = 0; newr < maxsteps; newr++)
+      {
+      NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,CS,DS,THETA,model, H);
+      THETA = reso(_,3);
+      
+      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+        {
+          resPP(_,0) = THETA;
+          resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
+          howlong = newr + 1;
+          break;
+        }
+    
       }
+
+    }
 
 // ----
 return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
