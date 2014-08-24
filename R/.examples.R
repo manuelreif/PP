@@ -25,33 +25,33 @@ model2est <- findmodel(THRESx)
 
 
 # MLE estimation
-respcmlmle1 <- PPall(respm = awmatrix,thres = THRESx, 
+respmixed_mle <- PPall(respm = awmatrix,thres = THRESx, 
                      slopes = sl,lowerA = la, upperA=ua,type = "mle",
                      model2est=model2est)
 # WLE estimation
-respcmwle1 <- PPall(respm = awmatrix,thres = THRESx, 
+respmixed_wle <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua,type = "wle",
                     model2est=model2est)
 # MAP estimation
-respcmmap1 <- PPall(respm = awmatrix,thres = THRESx, 
+respmixed_map <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "map",
                     model2est=model2est)
 
 # EAP estimation
-respcmeap1 <- PPall(respm = awmatrix,thres = THRESx, 
+respmixed_eap <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "eap",
                     model2est=model2est)
 
 # Robust estimation
-respcmrob1 <- PPall(respm = awmatrix,thres = THRESx, 
+respmixed_rob <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua, type = "robust",
                     model2est=model2est)
 
 
 # summary to summarize the results
-summary(respcmlmle1)
-summary(respcmlwle1)
-summary(respcmlmap1)
-summary(respcmleap1)
-summary(respcmrob1)
+summary(respmixed_mle)
+summary(respmixed_wle)
+summary(respmixed_map)
+summary(respmixed_eap)
+summary(respmixed_rob)
 

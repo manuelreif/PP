@@ -18,7 +18,7 @@ What is missing?
 
 * robust person parameter estimation:
     * GPCM **[done]**
-    * mixed
+    * mixed **[done]**
 * EAP
     * mixed **[done]**
 * Plausible values
