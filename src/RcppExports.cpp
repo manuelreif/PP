@@ -400,6 +400,25 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// sim_4pl
+IntegerMatrix sim_4pl(NumericVector beta, NumericVector alpha, NumericVector lowerA, NumericVector upperA, NumericVector theta);
+RcppExport SEXP PP_sim_4pl(SEXP betaSEXP, SEXP alphaSEXP, SEXP lowerASEXP, SEXP upperASEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< NumericVector >::type beta(betaSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type alpha(alphaSEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type lowerA(lowerASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type upperA(upperASEXP );
+        Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP );
+        IntegerMatrix __result = sim_4pl(beta, alpha, lowerA, upperA, theta);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // ansol
 NumericMatrix ansol(IntegerMatrix awm, IntegerVector maxsc);
 RcppExport SEXP PP_ansol(SEXP awmSEXP, SEXP maxscSEXP) {

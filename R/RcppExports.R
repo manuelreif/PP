@@ -77,6 +77,27 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
     .Call('PP_Likgpcm', PACKAGE = 'PP', awv, DELTA, ALPHA, nodes)
 }
 
+#' Simulate data for 4-pl model
+#' 
+#' This function returns a dichotomous matrix of simulated responses under given item and person parameters
+#' 
+#' Not details until now, because the function is very easy to use.
+#' 
+#' 
+#'@param beta An numeric vector which contains the difficulty parameters for each item.
+#'@param alpha A numeric vector, which contains the slope parameters for each item.
+#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
+#'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
+#'@param theta A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+#'
+#'
+#'@example ./R/.examples_sim.R
+#'
+#'@export
+sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
+    .Call('PP_sim_4pl', PACKAGE = 'PP', beta, alpha, lowerA, upperA, theta)
+}
+
 ansol <- function(awm, maxsc) {
     .Call('PP_ansol', PACKAGE = 'PP', awm, maxsc)
 }

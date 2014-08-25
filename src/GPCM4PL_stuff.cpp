@@ -1818,7 +1818,7 @@ return Likpernode;
 //'@param theta A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
 //'
 //'
-//'
+//'@example ./R/.examples_sim.R
 //'
 //'@export
 // [[Rcpp::export]]
