@@ -1801,5 +1801,63 @@ return Likpernode;
 }
 
 
+// --------------------------- simulation ------------------------------------
+
+
+//' Simulate data for 4-pl model
+//' 
+//' This function returns a dichotomous matrix of simulated responses under given item and person parameters
+//' 
+//' Not details until now, because the function is very easy to use.
+//' 
+//' 
+//'@param beta An numeric vector which contains the difficulty parameters for each item.
+//'@param alpha A numeric vector, which contains the slope parameters for each item.
+//'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
+//'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
+//'@param theta A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+//'
+//'
+//'
+//'
+//'@export
+// [[Rcpp::export]]
+IntegerMatrix sim_4pl(NumericVector beta, NumericVector alpha,
+                      NumericVector lowerA, NumericVector upperA, NumericVector theta) 
+    {
+    
+    RNGScope scope;
+    
+    int dvs = beta.size();
+    int ntheta = theta.size();
+    IntegerMatrix simres(ntheta,dvs);
+    
+    for(int pers = 0; pers < ntheta; pers++)
+      {
+      double th = theta(pers);
+      NumericVector Pl = lowerA + (upperA - lowerA) * exp(alpha*(th - beta))/(1+exp(alpha*(th - beta)));
+      NumericVector ru = runif(dvs);
+      simres(pers,_) = ifelse(Pl > ru,1,0);
+      }
+    
+    return simres;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
