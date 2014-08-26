@@ -30,6 +30,7 @@
 #' @useDynLib PP
 #' @importFrom Rcpp evalCpp
 #'
+#'
 #'@export
 #'
 #'@author Manuel Reif
