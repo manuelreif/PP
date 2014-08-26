@@ -1815,7 +1815,7 @@ return Likpernode;
 //'@param alpha A numeric vector, which contains the slope parameters for each item.
 //'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
 //'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
-//'@param theta A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+//'@param theta A numeric vector which contains person parameters.
 //'
 //'
 //'@example ./R/.examples_sim.R
