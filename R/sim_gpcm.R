@@ -9,7 +9,7 @@
 #'@param alpha A numeric vector, which contains the slope parameters - one parameter per item is expected.
 #'@param theta A numeric vector which contains person parameters.
 #'
-#'@example ./R/.examples_sim.R
+#'@example ./R/.examples_simgpcm.R
 #'
 #'@export
 #'
