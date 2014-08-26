@@ -14,7 +14,7 @@ sim_4pl(beta, alpha, lowerA, upperA, theta)
 
 \item{upperA}{numeric vector, which contains the upper asymptote parameters for each item.}
 
-\item{theta}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
+\item{theta}{A numeric vector which contains person parameters.}
 }
 \description{
 This function returns a dichotomous matrix of simulated responses under given item and person parameters
