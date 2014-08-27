@@ -29,7 +29,7 @@ mat01 <- sapply(theta, function(th)
         {
         thr <- thres[whereNna[,it],it]
         
-        prob <- sapply(0:numbcat[it],function(ct)PP:::P_gpcm(thr,alpha[it],th,ct))
+        prob <- sapply(0:numbcat[it],function(ct) P_gpcm(thr,alpha[it],th,ct))
         sample(0:numbcat[it],1,prob=prob)
         
         })

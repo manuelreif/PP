@@ -16,6 +16,9 @@ TO-DOs for the next release version:
 
 What is missing?
 
+* add print and summary for
+    * Plausible values
+    * JK methods
 * robust person parameter estimation:
     * GPCM **[done]**
     * mixed **[done]**
@@ -23,16 +26,13 @@ What is missing?
     * mixed **[done]**
 * Plausible values
     * mixed **[done]**
-* add print and summary for
-    * Plausible values
-    * JK methods
-* think about graphics - any suggestions?
+* Simulation functions for 4-PL and GPCM **[done]**
+* any ideas for graphics?
 
 
 
 Further extensions:
 
 * **fit indices**: these will be built in by [Jan Steinfeld](https://github.com/jansteinfeld)
-* Simulation functions for 4-PL and GPCM
 * Person Parameter estimation for other models
 

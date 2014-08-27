@@ -11,7 +11,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \method{print}{ppeo}(x, ...)
 
-\method{summary}{ppeo}(object, ...)
+\method{summary}{ppeo}(object, nrowmax = 15, ...)
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.}
@@ -51,7 +51,9 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{...}{just some points.}
 
-\item{object}{an object of class gpcm4pl which is the result of using the \code{PPall()} function}
+\item{object}{An object of class gpcm4pl which is the result of using the \code{PPall()} function}
+
+\item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }
 \value{
 The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
