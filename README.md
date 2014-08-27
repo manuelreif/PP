@@ -14,19 +14,9 @@ install_github("PP", "manuelreif", ref="master")
 
 TO-DOs for the next release version:
 
-What is missing?
-
-* add print and summary for
-    * Plausible values
-    * JK methods
-* robust person parameter estimation:
-    * GPCM **[done]**
-    * mixed **[done]**
-* EAP
-    * mixed **[done]**
-* Plausible values
-    * mixed **[done]**
-* Simulation functions for 4-PL and GPCM **[done]**
+* remove typos
+* clarify this and that
+* some more tests
 * any ideas for graphics?
 
 
