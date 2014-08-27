@@ -8,21 +8,22 @@
 #'@param thres An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
 #'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
-#'@param mu A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
-#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.
-#'@param type There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure. 
+#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
+#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.
+#'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.
 #'@param maxsteps The maximum number of steps the NR Algorithm will take.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
-#'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.
+#'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
 #'@param ctrl more controls
 #'\itemize{
 #' \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
 #'}
 #'
+#'
 #'@template resulttemplate
 #'
-#' @seealso \link{PPall}, \link{PP_4pl}, \link{JKpp}
+#' @seealso \link{PPall}, \link{PP_4pl}, \link{JKpp}, \link{PV}
 #'
 #'@export
 #'

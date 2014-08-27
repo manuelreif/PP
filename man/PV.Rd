@@ -4,6 +4,8 @@
 \alias{PV.fourpl}
 \alias{PV.gpcm}
 \alias{PV.gpcm4pl}
+\alias{print.pv}
+\alias{summary.pv}
 \title{Draw Plausible values}
 \usage{
 PV(estobj, ...)
@@ -16,11 +18,15 @@ PV(estobj, ...)
 
 \method{PV}{gpcm4pl}(estobj, npv = 10, approx = TRUE, thinning = 6,
   burnin = 10, mult = 2, ...)
+
+\method{print}{pv}(x, ...)
+
+\method{summary}{pv}(object, nrowmax = 15, ...)
 }
 \arguments{
 \item{estobj}{An object which originated from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}. EAP estimation is recommanded (type = "eap"), when plausible values are drawn afterwards.}
 
-\item{npv}{the number of (effective returned) plausible values}
+\item{npv}{The number of (effective returned) plausible values - default is 10.}
 
 \item{approx}{Whether a normal approximation \code{N(mu,sigma2)} is used to draw the plausible values. Default = TRUE. If FALSE a Metropolitan-Hastings-Algorithm will draw the values.}
 
@@ -28,15 +34,25 @@ PV(estobj, ...)
 
 \item{burnin}{How many draws at the chains beginning should be discarded? Default is 10 - and this seems reasonable high (probably 5 will be enough as well), because starting point is the EAP.}
 
-\item{mult}{multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.}
+\item{mult}{Multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.}
 
-\item{...}{points}
+\item{...}{More arguments}
+
+\item{x}{An object of class jk which is the result of using the \code{PV()} function}
+
+\item{object}{An object of class jk which is the result of using the \code{PV()} function}
+
+\item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }
 \description{
-This function draws npv plausible values for each person from their posterior density.
+This function draws \code{npv} plausible values for each person from their posterior density.
 }
 \examples{
-### 4pl - plausible values 
+################# Plausible values #############################################################
+
+
+### 4 PL model ######
+
 
 ### data creation ##########
 
@@ -57,10 +73,11 @@ res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
 
 # draw 10 plausible values
 res_pv  <- PV(res2pleap)
+summary(res_pv)
 
 # draw 10 plausible values - use a metropolitan hastings algorithm
 res_pv2  <- PV(res2pleap,approx = FALSE)
-
+summary(res_p2)
 
 # ------ check the PVs
 
@@ -89,7 +106,8 @@ apply(res_pvac2,1, quantile)
 
 
 
-### GPCM - plausible values 
+
+### GPCM model ######
 
 
 # some threshold parameters
@@ -109,8 +127,8 @@ res_gpcmpv  <- PV(resgpcmeap,approx = FALSE,npv = 20)
 
 
 
-### GPCM and 4pl model - plausible values 
 
+### GPCM and 4PL model ######
 
 
 # some threshold parameters
@@ -153,29 +171,16 @@ respcmeap1
 # show the quantiles of the empirical distribution
 apply(res_mixedpv_1,1,quantile)
 
+}
+\author{
+Manuel Reif
+}
+\references{
+Mislevy, R. J. (1991). Randomization-based inference about latent variables from complex samples. Psychometrika, 56(2), 177-196.
 
+Von Davier, M., Gonzalez, E., & Mislevy, R. (2009). What are plausible values and why are they useful. IERI monograph series, 2, 9-36.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Kruschke, J. (2010). Doing Bayesian data analysis: A tutorial introduction with R. Academic Press.
 }
 \seealso{
 \link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}

@@ -1,21 +1,29 @@
 #' Draw Plausible values
 #' 
-#' This function draws npv plausible values for each person from their posterior density.
+#' This function draws \code{npv} plausible values for each person from their posterior density.
 #' 
 #' 
 #' @param estobj An object which originated from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}. EAP estimation is recommanded (type = "eap"), when plausible values are drawn afterwards.
-#' @param npv the number of (effective returned) plausible values
+#' @param npv The number of (effective returned) plausible values - default is 10.
 #' @param approx Whether a normal approximation \code{N(mu,sigma2)} is used to draw the plausible values. Default = TRUE. If FALSE a Metropolitan-Hastings-Algorithm will draw the values.
 #' @param thinning A numeric vector of length = 1. If approx = FALSE, a Metropolitan-Hastings-Algorithm draws the plausible values. To avoid autocorrelation, thinning takes every kth value as effective plausible value. The default is 6 (every 6th value is taken), which works appropriately in almost all cases here.
 #' @param burnin How many draws at the chains beginning should be discarded? Default is 10 - and this seems reasonable high (probably 5 will be enough as well), because starting point is the EAP.
-#' @param mult multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.
-#' @param ... points
+#' @param mult Multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is $N(theta_v,mult*SE_eap)$ - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.
+#' @param ... More arguments
+#'
+#'@references Mislevy, R. J. (1991). Randomization-based inference about latent variables from complex samples. Psychometrika, 56(2), 177-196.
+#'
+#'Von Davier, M., Gonzalez, E., & Mislevy, R. (2009). What are plausible values and why are they useful. IERI monograph series, 2, 9-36.
+#'
+#'Kruschke, J. (2010). Doing Bayesian data analysis: A tutorial introduction with R. Academic Press.
+#'
 #'
 #' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}
 #'
 #' @rdname PV
 #' @example ./R/.example_pv.R
 #' @export
+#'@author Manuel Reif
 
 PV <- function(estobj,...) UseMethod("PV")
 
@@ -25,6 +33,10 @@ PV <- function(estobj,...) UseMethod("PV")
 #' @export
 PV.fourpl <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
 {
+  
+  call <- match.call()  
+  attr(call, "date") <- date() 
+  attr(call,"version") <- packageVersion("PP")
   
   # grep objects 
   respm <- estobj$ipar$respm
@@ -107,7 +119,12 @@ PV.fourpl <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
   }  
   
 
-t(pvs)  
+pvdraws <- t(pvs)  
+
+retpv <- list(pvdraws=pvdraws,call=call)
+class(retpv) <- "pv"
+return(retpv)
+
 }
 
 
@@ -119,6 +136,10 @@ t(pvs)
 #' @export
 PV.gpcm <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
 {
+  
+  call <- match.call()  
+  attr(call, "date") <- date() 
+  attr(call,"version") <- packageVersion("PP")
   
   # grep objects 
   respm <- estobj$ipar$respm
@@ -196,7 +217,11 @@ PV.gpcm <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
   }  
   
   
-  t(pvs)  
+  pvdraws <- t(pvs)  
+  
+  retpv <- list(pvdraws=pvdraws,call=call)
+  class(retpv) <- "pv"
+  return(retpv)
 }
 
 
@@ -208,6 +233,10 @@ PV.gpcm <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
 #' @export
 PV.gpcm4pl <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...)
 {
+  
+  call <- match.call()  
+  attr(call, "date") <- date() 
+  attr(call,"version") <- packageVersion("PP")
   
   # grep objects 
   respm <- estobj$ipar$respm
@@ -316,8 +345,11 @@ PV.gpcm4pl <- function(estobj,npv=10,approx=TRUE,thinning=6,burnin=10,mult=2,...
     
   }  
   
-  
-  t(pvs)  
+
+  pvdraws <- t(pvs)  
+  retpv <- list(pvdraws=pvdraws,call=call)
+  class(retpv) <- "pv"
+  return(retpv)
 }
 
 

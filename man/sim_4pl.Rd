@@ -23,7 +23,8 @@ This function returns a dichotomous matrix of simulated responses under given it
 Not details until now, because the function is very easy to use.
 }
 \examples{
-### simulation examples
+################# simulate 4PL #############################################################
+
 
 set.seed(1700)
 
@@ -31,5 +32,8 @@ simdat <- sim_4pl(beta=seq(-4,4,length.out=7), alpha=rep(1,7), lowerA=rep(0,7), 
 
 
 head(simdat)
+}
+\author{
+Manuel Reif
 }
 

@@ -2,14 +2,14 @@
 #' 
 #' This function uses a jackknife approach to compute person parameters.
 #' 
-#' Please use the Jackknife Standard-Error output with caution. It is implemented as suggested in the mentioned paper, but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. This was not the case for different examples! 
+#' Please use the Jackknife Standard-Error output with \bold{caution.} It is implemented as suggested in the mentioned paper, but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. This was not the case for different examples! 
 #' 
 #' 
-#' AMT-robustified jackknife: When choosing AMT, the single jackknife-ability estimates and the original ability estimate are combined to a single jackknife-ability value. The AMT (or Sine M-estimator) is one of the winners in the Princeton Robustness Study of 1972. To get a better idea how the estimation process works, take a closer look to the paper which is mentioned below (Wainer & Wright, 1980).
+#' \bold{AMT-robustified jackknife:} When choosing \code{AMT}, the single jackknife-ability estimates and the original ability estimate are combined to a single jackknife-ability value. The AMT (or Sine M-estimator) is one of the winners in the Princeton Robustness Study of 1972. To get a better idea how the estimation process works, take a closer look to the paper which is mentioned below (Wainer & Wright, 1980).
 #' 
 #' @param estobj An object which originates from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}.
 #' 
-#' @param ...  Three points!
+#' @param ...  More input.
 #' @export
 #' @rdname Jkpp
 #' @references
@@ -19,7 +19,7 @@
 #' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{PPall}
 #' 
 #'@example ./R/.examples_JK.R
-#' 
+#'@author Manuel Reif
 JKpp <- function(estobj,...) UseMethod("JKpp")
 
 
@@ -30,13 +30,18 @@ JKpp <- function(estobj,...) UseMethod("JKpp")
 #' @param cmeth Choose the centering method, to summarize the n jackknife results to one single ability estimate. There are three valid entries: "mean", "median" and "AMT".
 #' @param maxsteps The maximum number of steps the NR Algorithm will take.
 #' @param exac How accurate are the estimates supposed to be? Default is 0.001.
-#' @param ctrl more controls
+#' @param fullmat Default = FALSE. If TRUE, the function returns the whole jackknife matrix, which is the basis for the jackknife estimator.
+#' @param ctrl More controls
+#' 
 #' @method JKpp fourpl
 #' @export
 JKpp.fourpl <- function(estobj, cmeth="mean", maxsteps=500,
-                        exac=0.001, ctrl=list(), ...)
+                        exac=0.001, fullmat=FALSE,ctrl=list(), ...)
 {
   
+call <- match.call()  
+attr(call, "date") <- date() 
+attr(call,"version") <- packageVersion("PP")
 
 # pick out objects  
 respm <- estobj$ipar$respm
@@ -104,7 +109,20 @@ if(cont$killdupli)
 resjk <- estobj$resPP$resPP
 resjk[notna,] <- resjk_raw
   
-return(resjk)
+if(fullmat)
+  {
+  
+  endres <- list(resjk=resjk,call=call,type=type,jk_mat=jk_mat)  
+    
+  } else 
+    {
+      
+    endres <- list(resjk=resjk,call=call,type=type)
+      
+    }
+
+class(endres) <- c("jk")
+return(endres)
 
 }
 
@@ -120,8 +138,12 @@ return(resjk)
 #' @method JKpp gpcm
 #' @export
 JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500, 
-                      exac=0.001,  ctrl=list(), ...)
+                      exac=0.001, fullmat=FALSE,  ctrl=list(), ...)
 {
+  
+  call <- match.call()  
+  attr(call, "date") <- date() 
+  attr(call,"version") <- packageVersion("PP")
   
   
   # pick out objects  
@@ -190,7 +212,20 @@ if(!is.null(estobj$ipar$dupvec$posvec))
   resjk <- estobj$resPP$resPP
   resjk[notna,] <- cbind(output_jk,jk_se)
   
-  return(resjk)
+  if(fullmat)
+    {
+      
+      endres <- list(resjk=resjk,call=call,type=type,jk_mat=jk_mat)  
+      
+    } else 
+      {
+        
+        endres <- list(resjk=resjk,type=type,call=call)
+        
+      }
+
+  class(endres) <- c("jk")
+  return(endres)
 
 }
 
@@ -204,9 +239,12 @@ if(!is.null(estobj$ipar$dupvec$posvec))
 #' @method JKpp gpcm4pl
 #' @export 
 JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
-                         exac=0.001, ctrl=list(), ...)
+                         exac=0.001, fullmat=FALSE, ctrl=list(), ...)
 {
   
+  call <- match.call()  
+  attr(call, "date") <- date() 
+  attr(call,"version") <- packageVersion("PP")
   
   # pick out objects  
   respm  <- estobj$ipar$respm
@@ -272,13 +310,22 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   resjk <- estobj$resPP$resPP
   resjk[notna,] <- cbind(output_jk,jk_se)
   
-  return(resjk)
+  
+  if(fullmat)
+    {
+      
+      endres <- list(resjk=resjk,call=call,type=type,jk_mat=jk_mat)  
+      
+    } else 
+      {
+        
+        endres <- list(resjk=resjk,type=type,call=call)
+        
+      }
+  class(endres) <- c("jk")
+  return(endres)
   
 }
-
-
-
-
 
 
 

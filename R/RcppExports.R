@@ -93,6 +93,8 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
 #'
 #'@example ./R/.examples_sim.R
 #'
+#'@author Manuel Reif
+#'
 #'@export
 sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
     .Call('PP_sim_4pl', PACKAGE = 'PP', beta, alpha, lowerA, upperA, theta)

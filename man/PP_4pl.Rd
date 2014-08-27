@@ -20,17 +20,17 @@ PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
 
 \item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
-\item{type}{There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
 
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
 \item{ctrl}{more controls:
 \itemize{
@@ -39,7 +39,7 @@ PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
 }}
 }
 \value{
-The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
 Compute Person Parameters for the 1/2/3/4pl model and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
@@ -48,7 +48,7 @@ Compute Person Parameters for the 1/2/3/4pl model and choose between five common
 The \bold{robust} estimation method, applies a Huber-type estimator, which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
 }
 \examples{
-################# 4PL ###########################################################################
+################# 4 PL #############################################################
 
 
 ### data creation ##########
@@ -159,7 +159,7 @@ Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Respon
 Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 }
 \seealso{
-\link{PPall}, \link{PP_gpcm}, \link{JKpp}
+\link{PPall}, \link{PP_gpcm}, \link{JKpp}, \link{PV}
 }
 \keyword{4pl}
 \keyword{Parameters,}

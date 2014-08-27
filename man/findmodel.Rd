@@ -12,7 +12,7 @@ findmodel(thres)
 This is a small helper function which creates a vector template for the \code{PPall()} function quick and easily. Modify this template as you like.
 }
 \details{
-This function tries to guess the model which was applied to each item by using the matrix of threshold parameters. It only discriminates between gpcm and 4pl model, and returns a character vector which length equals the number of items, which contains "GPCM" or "4PL" depending on the structure of the THRESx matrix.
+This function tries to guess the model which was applied to each item by using the matrix of threshold parameters. It only discriminates between gpcm and 4pl model, and returns a character vector which length equals the number of items, which contains \code{GPCM} or \code{4PL} depending on the structure of the thres matrix.
 }
 \examples{
 ################# GPCM  and 4PL mixed #############################################################
@@ -75,6 +75,9 @@ summary(respmixed_rob)
 }
 \author{
 Manuel Reif
+}
+\seealso{
+\link{PPall}
 }
 \keyword{Parameters}
 \keyword{Person}

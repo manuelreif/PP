@@ -13,8 +13,8 @@ NumericVector P_4pl(NumericVector delta, double alpha, double theta, double la, 
 // hier wird nur die Wahrscheinlichkeit berechnet zu loesen
 
 //int nthres = delta.size();
-double nenner = 0;
-double zae = 0;
+//double nenner = 0;
+//double zae = 0;
 NumericVector PP1I(3);
 
 double beta = delta(1); // weil der erste muss 0 sein, weil ja auch in der thres matrix GPCM items drinstehen koennen
@@ -41,8 +41,8 @@ NumericVector P_4pl4wle(NumericVector delta, double alpha, double theta, double 
 // hier wird nur die Wahrscheinlichkeit berechnet zu loesen
 
 //int nthres = delta.size();
-double nenner = 0;
-double zae = 0;
+//double nenner = 0;
+//double zae = 0;
 NumericVector PP1I(6);
 
 double beta = delta(1); // weil der erste muss 0 sein, weil ja auch in der thres matrix GPCM items drinstehen koennen
@@ -95,8 +95,8 @@ return PP1I;
 double r_huber_4pl(NumericVector delta, double alpha,
                           double theta, double la, double ua, double H) {
 
-double nenner = 0;
-double zae = 0;
+//double nenner = 0;
+//double zae = 0;
 double HU = 0;
 double beta = delta(1); // weil der erste muss 0 sein, weil ja auch in der thres matrix GPCM items drinstehen koennen
 
@@ -160,7 +160,7 @@ for(int it = 0; it < nitem; it++)
   // parameters without missing values. missing values should only be possible at the end of the matrix
   NumericVector delta1 = delta[!nas];
   
-  int kmax = delta1.size();
+  //int kmax = delta1.size();
   
   for(int pe = 0; pe < npers; pe++)
     {
@@ -255,7 +255,7 @@ for(int it = 0; it < nitem; it++)
   // parameters without missing values. missing values should only be possible at the end of the matrix
   NumericVector delta1 = delta[!nas];
   
-  int kmax = delta1.size();
+  //int kmax = delta1.size();
   
   for(int pe = 0; pe < npers; pe++)
     {
@@ -350,7 +350,7 @@ for(int it = 0; it < nitem; it++)
   // parameters without missing values. missing values should only be possible at the end of the matrix
   NumericVector delta1 = delta[!nas];
   
-  int kmax = delta1.size();
+  //int kmax = delta1.size();
   
   for(int pe = 0; pe < npers; pe++)
     {
@@ -427,7 +427,7 @@ if(wm == "wle")
     LogicalVector bxy = is_na(THETA);
     NumericVector diffs1 = diffs[!bxy];
 
-    if( is_true(all(abs(diffs1) < exac))| newr == (maxsteps-1))
+    if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
       {
         resPP(_,0) = THETA;
         resPP(_,1) = pow(1/reso(_,1),0.5);
@@ -451,7 +451,7 @@ if(wm == "wle")
       LogicalVector bxy = is_na(THETA);
       NumericVector diffs1 = diffs[!bxy];
       
-      if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
+      if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -473,7 +473,7 @@ if(wm == "wle")
             LogicalVector bxy = is_na(THETA);
             NumericVector diffs1 = diffs[!bxy];
             
-            if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
+            if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
               {
                 resPP(_,0) = THETA;
                 resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -495,7 +495,7 @@ if(wm == "wle")
               LogicalVector bxy = is_na(THETA);
               NumericVector diffs1 = diffs[!bxy];
               
-              if( is_true(all(abs(diffs1) < exac)) | newr == (maxsteps-1))
+              if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
                 {
                   resPP(_,0) = THETA;
                   resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -561,9 +561,9 @@ double r_huber_gpcm(NumericVector delta, double alpha,
                            double theta, double H) {
 
 int nthres = delta.size();
-double zae = 0;
+//double zae = 0;
 int nthresm1 = nthres - 1;
-double deltaw0 = delta(-0);
+//double deltaw0 = delta(-0);
 double resid = 0;
 double HU = 0;
 // compute residuum
@@ -1068,7 +1068,7 @@ if(wm == "wle")
     NumericMatrix reso = L12gpcm_wle(awm,DELTA,ALPHA,THETA);
     THETA = reso(_,5);
     
-    if( is_true(all(abs(reso(_,4)) < exac))| newr == (maxsteps-1))
+    if( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1)))
       {
         resPP(_,0) = THETA;
         resPP(_,1) = pow(1/reso(_,1),0.5);
@@ -1086,7 +1086,7 @@ if(wm == "wle")
       NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
       THETA = reso(_,3);
       
-      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+      if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1104,7 +1104,7 @@ if(wm == "wle")
             NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
             THETA = reso(_,3);
             
-            if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+            if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
               {
                 resPP(_,0) = THETA;
                 resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1122,7 +1122,7 @@ if(wm == "wle")
                 THETA = reso(_,3);
                 //std::cout << "theta = " << resPP(1,0) <<  std::endl ;
 
-                if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+                if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
                   {
                     resPP(_,0) = THETA;
                     resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1188,7 +1188,7 @@ for(int it = 0; it < nitem; it++)
   // parameters without missing values. missing values should only be possible at the end of the matrix
   NumericVector delta1 = delta[!nas];
   
-  int kmax = delta1.size();
+  //int kmax = delta1.size();
   
   for(int pe = 0; pe < npers; pe++)
     {
@@ -1366,7 +1366,7 @@ for(int it = 0; it < nitem; it++)
       // parameters without missing values. missing values should only be possible at the end of the matrix
       NumericVector delta1 = delta[!nas];
       
-      int kmax = delta1.size();
+      //int kmax = delta1.size();
       
       for(int pe = 0; pe < npers; pe++)
         {
@@ -1537,7 +1537,7 @@ for(int it = 0; it < nitem; it++)
   // parameters without missing values. missing values should only be possible at the end of the matrix
   NumericVector delta1 = delta[!nas];
   
-  int kmax = delta1.size();
+  //int kmax = delta1.size();
   
   for(int pe = 0; pe < npers; pe++)
     {
@@ -1669,7 +1669,7 @@ if(wm == "wle")
     NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,CS,DS,THETA,model);
     THETA = reso(_,5);
     
-    if( is_true(all(abs(reso(_,4)) < exac)) | newr == (maxsteps-1))
+    if( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1)))
       {
         resPP(_,0) = THETA;
         resPP(_,1) = pow(1/reso(_,1),0.5);
@@ -1688,7 +1688,7 @@ if(wm == "wle")
       NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,CS,DS,THETA,model, mu, sigma2, map);
       THETA = reso(_,3);
       
-      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+      if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1707,7 +1707,7 @@ if(wm == "wle")
             NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,CS,DS,THETA,model, mu, sigma2, map);
             THETA = reso(_,3);
             
-            if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+            if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
               {
                 resPP(_,0) = THETA;
                 resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1726,7 +1726,7 @@ if(wm == "wle")
       NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,CS,DS,THETA,model, H);
       THETA = reso(_,3);
       
-      if( is_true(all(abs(reso(_,2)) < exac)) | newr == (maxsteps-1))
+      if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
         {
           resPP(_,0) = THETA;
           resPP(_,1) = 1/pow(reso(_,1)*(-1),0.5);
@@ -1819,6 +1819,8 @@ return Likpernode;
 //'
 //'
 //'@example ./R/.examples_sim.R
+//'
+//'@author Manuel Reif
 //'
 //'@export
 // [[Rcpp::export]]

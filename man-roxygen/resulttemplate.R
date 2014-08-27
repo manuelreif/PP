@@ -1,2 +1,1 @@
-#'@return The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
-#'
+#'@return The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.

@@ -1,4 +1,8 @@
-### 4pl - plausible values 
+################# Plausible values #############################################################
+
+
+### 4 PL model ######
+
 
 ### data creation ##########
 
@@ -19,10 +23,11 @@ res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
 
 # draw 10 plausible values
 res_pv  <- PV(res2pleap)
+summary(res_pv)
 
 # draw 10 plausible values - use a metropolitan hastings algorithm
 res_pv2  <- PV(res2pleap,approx = FALSE)
-
+summary(res_p2)
 
 # ------ check the PVs
 
@@ -51,7 +56,8 @@ apply(res_pvac2,1, quantile)
 
 
 
-### GPCM - plausible values 
+
+### GPCM model ######
 
 
 # some threshold parameters
@@ -71,8 +77,8 @@ res_gpcmpv  <- PV(resgpcmeap,approx = FALSE,npv = 20)
 
 
 
-### GPCM and 4pl model - plausible values 
 
+### GPCM and 4PL model ######
 
 
 # some threshold parameters
@@ -114,27 +120,4 @@ respcmeap1
 
 # show the quantiles of the empirical distribution
 apply(res_mixedpv_1,1,quantile)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

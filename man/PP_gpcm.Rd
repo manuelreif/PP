@@ -16,17 +16,17 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 
 \item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
-\item{type}{There are three valid entries possible: "mle", "wle" or "map". "wle" is recommanded. For a deeper understanding the papers mentioned below would be helpful for sure.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
 
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
 \item{ctrl}{more controls
 \itemize{
@@ -35,7 +35,7 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 }}
 }
 \value{
-The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
 Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
@@ -81,8 +81,8 @@ respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES))
 # EAP estimation
 respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
 
-################# GPCM  ###########################################################################
-## with different number of categories
+
+#### with different number of categories ##
 
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
 THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))
@@ -120,7 +120,7 @@ Wang, S. and Wang, T. (2001). Precision of Warm's Weighted Likelihood Estimates 
 Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
 }
 \seealso{
-\link{PPall}, \link{PP_4pl}, \link{JKpp}
+\link{PPall}, \link{PP_4pl}, \link{JKpp}, \link{PV}
 }
 \keyword{GPCM}
 \keyword{Parameters,}

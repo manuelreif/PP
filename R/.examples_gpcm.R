@@ -35,8 +35,8 @@ respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES))
 # EAP estimation
 respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
 
-################# GPCM  ###########################################################################
-## with different number of categories
+
+#### with different number of categories ##
 
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
 THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))

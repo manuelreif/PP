@@ -40,9 +40,9 @@ res_jk3 <- JKpp(res1plmap)
 
 
 test_that("result = matrix with same dimension",{
-  expect_that(dim(res1plmle$resPP$resPP),is_identical_to(dim(res_jk1)))
-  expect_that(dim(res1plwle$resPP$resPP),is_identical_to(dim(res_jk2)))
-  expect_that(dim(res1plmap$resPP$resPP),is_identical_to(dim(res_jk3)))
+  expect_that(dim(res1plmle$resPP$resPP),is_identical_to(dim(res_jk1$resjk)))
+  expect_that(dim(res1plwle$resPP$resPP),is_identical_to(dim(res_jk2$resjk)))
+  expect_that(dim(res1plmap$resPP$resPP),is_identical_to(dim(res_jk3$resjk)))
 })
 
 

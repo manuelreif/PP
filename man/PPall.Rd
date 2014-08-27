@@ -28,7 +28,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
 \item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
 
@@ -38,9 +38,9 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
-\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and H modulates how fast the downweighting takes place.}
+\item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
-\item{ctrl}{more controls
+\item{ctrl}{More controls
 
 \itemize{
 \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
@@ -56,7 +56,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 \item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }
 \value{
-The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in OBJ$resPP. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
 Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation.
@@ -148,8 +148,6 @@ Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Respon
 Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 }
 \seealso{
-\link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}
+\link{PP_gpcm}, \link{PP_4pl}, \link{JKpp}, \link{PV}
 }
-\keyword{Parameters}
-\keyword{Person}
 
