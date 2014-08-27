@@ -46,6 +46,14 @@ Compute Person Parameters for the 1/2/3/4pl model and choose between five common
 }
 \details{
 The \bold{robust} estimation method, applies a Huber-type estimator, which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
+
+With this function you can estimate:
+\itemize{
+\item \bold{1-PL model} (Rasch model) by submitting: the data matrix, item difficulties and \bold{nothing else}, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
+\item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
+\item \bold{3-PL model} by submitting anything except the upper asymptote parameters
+\item \bold{4-PL model} ---> submit all parameters ...
+}
 }
 \examples{
 ################# 4 PL #############################################################

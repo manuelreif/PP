@@ -4,6 +4,14 @@
 #'
 #' The \bold{robust} estimation method, applies a Huber-type estimator, which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
 #' 
+#' With this function you can estimate:
+#' \itemize{
+#' \item \bold{1-PL model} (Rasch model) by submitting: the data matrix, item difficulties and \bold{nothing else}, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
+#' \item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
+#' \item \bold{3-PL model} by submitting anything except the upper asymptote parameters
+#' \item \bold{4-PL model} ---> submit all parameters ...
+#'}
+#' 
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
 #'@param thres An numeric vector or a numeric matrix which contains the threshold parameter for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!
@@ -212,7 +220,7 @@ cat("type =",type,"\n")
   {
     # this vector contains the indices, to recreate the large matrix in the end of the estimation
     dupvec <- make_dup(respm)
-    respm <- respm[dupvec$ndpat,]
+    respm <- respm[dupvec$ndpat,,drop=FALSE]
   }
   
   

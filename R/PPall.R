@@ -172,7 +172,7 @@ if(cont$killdupli)
   {
   # this vector contains the indices, to recreate the large matrix in the end of the estimation
   dupvec <- make_dup(respm)
-  respm <- respm[dupvec$ndpat,]
+  respm <- respm[dupvec$ndpat,,drop=FALSE]
   }
 
 

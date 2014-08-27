@@ -156,7 +156,7 @@ if(type=="mle"| type=="robust")
 if(cont$killdupli)
 {
   dupvec <- make_dup(respm)
-  respm <- respm[dupvec$ndpat,]
+  respm <- respm[dupvec$ndpat,,drop=FALSE]
 }
 
 
