@@ -3,7 +3,7 @@
 \alias{PP_4pl}
 \title{Estimate Person Parameters for the 4pl model}
 \usage{
-PP_4pl(respm, thres, slopes, lowerA = NULL, upperA = NULL,
+PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
   theta_start = NULL, mu = NULL, sigma2 = NULL, type = "wle",
   maxsteps = 40, exac = 0.001, H = 1, ctrl = list())
 }
@@ -69,15 +69,15 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 ## 1PL model ##### 
 
 # MLE estimation
-res1plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")
+res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE estimation
-res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle")
+res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 # MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
+res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
 # EAP estimation
-res1pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "eap")
+res1pleap <- PP_4pl(respm = awm,thres = diffpar,type = "eap")
 # robust estimation
-res1plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust")
+res1plrob <- PP_4pl(respm = awm,thres = diffpar,type = "robust")
 
 # summarize results
 summary(res1plmle)
@@ -102,25 +102,33 @@ res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
 ## 3PL model ##### 
 
 # MLE estimation
-res3plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "mle")
+res3plmle <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,type = "mle")
 # WLE estimation
-res3plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "wle")
+res3plwle <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,type = "wle")
 # MAP estimation
-res3plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,type = "map")
+res3plmap <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,type = "map")
 # EAP estimation
-res3pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la, type = "eap")
+res3pleap <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la, type = "eap")
 
 
 ## 4PL model ##### 
 
 # MLE estimation
-res4plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "mle")
+res4plmle <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,upperA=ua,type = "mle")
 # WLE estimation
-res4plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "wle")
+res4plwle <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,upperA=ua,type = "wle")
 # MAP estimation
-res4plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "map")
+res4plmap <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,upperA=ua,type = "map")
 # EAP estimation
-res4pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la,upperA=ua,type = "eap")
+res4pleap <- PP_4pl(respm = awm,thres = diffpar,
+                    slopes = sl,lowerA = la,upperA=ua,type = "eap")
 
 
 ## A special on robust estimation:
@@ -131,11 +139,11 @@ diffpar <- c(-3,-2,-1,0,1,2,3)
 AWM <- matrix(0,7,7)
 diag(AWM) <- 1
 
-res1plmle <- PP_4pl(respm = AWM,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")
+res1plmle <- PP_4pl(respm = AWM,thres = diffpar, type = "mle")
 
 summary(res1plmle)
 
-res1plrob <- PP_4pl(respm = AWM,thres = diffpar, slopes = rep(1,length(diffpar)),type = "robust")
+res1plrob <- PP_4pl(respm = AWM,thres = diffpar, type = "robust")
 
 summary(res1plrob)
 

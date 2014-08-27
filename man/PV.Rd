@@ -77,7 +77,7 @@ summary(res_pv)
 
 # draw 10 plausible values - use a metropolitan hastings algorithm
 res_pv2  <- PV(res2pleap,approx = FALSE)
-summary(res_p2)
+summary(res_pv2)
 
 # ------ check the PVs
 

@@ -27,7 +27,7 @@ summary(res_pv)
 
 # draw 10 plausible values - use a metropolitan hastings algorithm
 res_pv2  <- PV(res2pleap,approx = FALSE)
-summary(res_p2)
+summary(res_pv2)
 
 # ------ check the PVs
 
@@ -45,14 +45,14 @@ res_pvac  <- PV(res2pleap,approx = FALSE,npv = 200)
 # approx = TRUE. So this acts as a kind of benchmark for the MH-Alg.
 res_pvac2  <- PV(res2pleap,approx = TRUE,npv = 200)
 
-apply(res_pvac,1,autocor)
-apply(res_pvac2,1,autocor)
+apply(res_pvac$pvdraws,1,autocor)
+apply(res_pvac2$pvdraws,1,autocor)
 
 # -- autocorrelation distr?
 
 
-apply(res_pvac,1,quantile)
-apply(res_pvac2,1, quantile)
+apply(res_pvac$pvdraws,1,quantile)
+apply(res_pvac2$pvdraws,1, quantile)
 
 
 
@@ -114,10 +114,10 @@ respcmeap1 <- PPall(respm = awmatrix,thres = THRESx,
 res_mixedpv_1  <- PV(respcmeap1,approx = FALSE,npv = 200)
 
 # rowMeans of plausible values should approximate the EAPs
-rowMeans(res_mixedpv_1)
+rowMeans(res_mixedpv_1$pvdraws)
 # EAPs
 respcmeap1
 
 # show the quantiles of the empirical distribution
-apply(res_mixedpv_1,1,quantile)
+apply(res_mixedpv_1$pvdraws,1,quantile)
 

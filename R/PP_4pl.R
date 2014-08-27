@@ -57,7 +57,7 @@
 
 
 
-PP_4pl <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=NULL,
+PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_start=NULL,
                    mu = NULL, sigma2 = NULL, type="wle", maxsteps=40, exac=0.001,H=1,ctrl=list())
 {
   
@@ -66,7 +66,8 @@ PP_4pl <- function(respm, thres, slopes, lowerA=NULL, upperA=NULL, theta_start=N
   attr(call, "date") <- date() 
   attr(call,"version") <- packageVersion("PP")
   ###
-  
+
+nitem <- ncol(respm)  
   
 ## --------- user controls
 cont <- list(killdupli=FALSE)
@@ -162,8 +163,8 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
   
 # ----- CHOOSE MODEL -------------#
 
-
-if(is.null(lowerA) & is.null(upperA)) 
+if(is.null(lowerA) & is.null(upperA) & is.null(slopes))
+{modest <- "1pl"} else if(is.null(lowerA) & is.null(upperA)) 
 {modest <- "2pl"} else if(is.null(upperA))
 {modest <- "3pl"} else if(is.null(lowerA))
 {modest <- "3pl_upperA"} else 
@@ -225,18 +226,22 @@ cat("type =",type,"\n")
   
 
 # prepare not submitted vectors
-
-      if(modest == "2pl")
-        {
-          lowerA <- rep(0,length(slopes))  
-          upperA <- rep(1,length(slopes))  
-        } else if(modest == "3pl")
-          {
-            upperA <- rep(1,length(slopes))  
-          } else if(modest == "3pl_upperA")
+  if(modest == "1pl")
+    {
+      lowerA <- rep(0,nitem)  
+      upperA <- rep(1,nitem)
+      slopes <- rep(1,nitem)
+    } else if(modest == "2pl")
             {
-              lowerA <- rep(0,length(slopes))    
-            }
+              lowerA <- rep(0,nitem)  
+              upperA <- rep(1,nitem)  
+            } else if(modest == "3pl")
+              {
+                upperA <- rep(1,nitem)  
+              } else if(modest == "3pl_upperA")
+                {
+                  lowerA <- rep(0,nitem)    
+                }
         
 if(type %in% c("mle","wle","map"))
   {
