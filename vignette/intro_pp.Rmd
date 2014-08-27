@@ -7,11 +7,14 @@ First of all a few questions, whether the `PP` package is the one you are lookin
 
 
 1. You have a data set with item responses from several persons
-2. You have item parameter estimates (e.g. difficulty parameters) of these items from (perhaps from a former application of these items)
+2. You have item parameter estimates (e.g. difficulty parameters) from these items from (perhaps from a former application of these items)
 3. and these items follow the 1/2/3/4-PL model or the generalized partial credit model
-4. You are interested in estimating each persons **ability ** with traditional approaches (mle, wle, map, eap) or
+4. You are interested in estimating each persons **ability** with traditional approaches (mle, wle, map, eap) or
 5. drawing **plausible values** for each person e.g. to apply secondary analysis or
 6. getting **robust** ability estimates with Jackknife Methods or with weighted likelihood approaches
+
+
+If you agree to question 1-3 and at least to one of question 3-6, then this package could be the right one for your tasks.
 
 
 In future versions:
@@ -36,7 +39,7 @@ In this example, we want to gain ability estimates for each person in our sample
 
 ### Get
 
-Getting the data inside the R workspace is quite easy in this case, because we merely load the data set which already comes with the PP package. It contains 60 response sets (60 persons anwered to a test of 12 Items) - and we have additional information, which we do not take into account for now. We first inspect the data, and in a second step informations about item difficulty and the slope parameters are extracted from the data sets attributes.
+Getting the data inside the R workspace is quite easy in this case, because we merely load the data set which already comes with the PP package. It contains 60 response sets (60 persons answered to a test of 12 items) - and we have additional information, which we do not take into account for now. We first inspect the data, and in a second step informations about item difficulty and the slope parameters are extracted from the dataset attributes.
 
 ```{r get}
 
@@ -58,7 +61,7 @@ slope_par <- attr(fourpl_df,"slopes")
 ### Check and Reshape
 
 
-Now we explore the item response data regarding full or zero score, missing values etc. . Consindering this information, we are able to decide which estimation method we will apply.
+Now we explore the item response data regarding full or zero score, missing values etc. . Considering this information, we are able to decide which estimation method we will apply.
 
 
 ```{r check}
@@ -78,7 +81,7 @@ any(nullsc)
 # are there missing values? how many and where?
 nasc <- apply(itmat,1,function(x) sum(is.na(x)))
 any(nasc > 0)
-which(nasc)
+#which(nasc)
 
 # is our data dichotomous as expected?
 apply(itmat,2,function(x) table(x))
@@ -94,9 +97,17 @@ sum(rdup)
 
 ### Decide and Run
 
-#(in this case this is simply a computational issue, because the right estimates are plugged in as a last step.)
 
-We use the `PP_4pl()` function for our estimation. We decide to apply a common maximum likelihood estimation, and do not remove duplicated response pattern from estimation because there are only `r sum(rdup)` duplicated pattern. If the data set were much larger, duplicated pattern are more likely and therefore choosing to remove these pattern would speed up the estimation process significantly. (Choosing this option or not, does not change the numerical results!)
+We use the `PP_4pl()` function for our estimation. So perhaps you are thinking:"Why are we using a function to fit the 4-PL model, when we acutally have a dataset which stems from a 2-PL model scaled test?!" This is because with the `PP_4pl()` function you can fit the:
+
+1. **1-PL model** (Rasch model) by submitting: the data matrix, item difficulties and **nothing else**, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
+2. **2-PL model** by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
+3. **3-PL model** by submitting anything except the upper asymptote parameters
+4. **4-PL model** $\rightarrow$ submit all parameters ...
+
+In this case, difficulty parameters and slopes are available, so we will submit them, and a 2-PL model is fitted **automatically**.
+
+We decide to apply a common maximum likelihood estimation (`type = "mle"`), and do not remove duplicated response patterns (see argument: `ctrl=list()`) from estimation because there are only `r sum(rdup)` duplicated patterns. If the data set would have been much larger, duplicated patterns are more likely and therefore choosing to remove these patterns would speed up the estimation process significantly. (Choosing this option or not, does not change the numerical results!)
 
 
 ```{r decide}
@@ -110,7 +121,7 @@ summary(res1plmle)
 
 Some facts:
 
-1. The function returns the **point estimators** and standard errors for each person. Whatever the (valid) input was, the main result is always an matrix with two columns and a number of rows which equals the number of persons (`res1plmle$resPP$resPP`).
+1. The function returns the **point estimators** and **standard errors** for each person. Whatever the (valid) input was, the main result is always a matrix with two columns and a number of rows which equals the number of persons (`res1plmle$resPP$resPP`).
 2. The function deals with **missing values**. These are treated as if the person has never seen this item.
 3. The order of the output estimates = order of the input. So the first estimate belongs to the first response pattern of the input data matrix.
 
@@ -129,7 +140,7 @@ head(dafest,10)
 ```
 
 
-One shortcoming of the plain maximum likelihood estimate is the fact, that the extreme scores do not lead to valid parameter estimates (`-Inf` and `Inf` are hardly useful for practitioners). One possibility to overcome this issue, is to change the estimation method - for instance `type = wle` performs weighted likelihood estimation, which is on the one hand less biased than the mle estimate, and on the other hand provides reasonable estimates for the extreme scores.
+One shortcoming of the plain maximum likelihood estimate is the fact, that the **extreme scores** do not lead to valid parameter estimates (`-Inf` and `Inf` are hardly useful for practitioners). One possibility to overcome this issue, is to change the estimation method - for instance `type = wle` performs weighted likelihood estimation, which is on the one hand less biased than the mle estimate, and on the other hand provides reasonable estimates for the extreme scores.
 
 
 ### Rerun

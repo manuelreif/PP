@@ -1,6 +1,6 @@
 #' Estimate Person Parameters
 #' 
-#' Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation.
+#' Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 #'
 #' There are not Details up to now.
 #' 
