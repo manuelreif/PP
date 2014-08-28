@@ -13,7 +13,7 @@
 #'}
 #' 
 #' The Probability function of the 4-PL model is:
-#'\deqn{P(x_{ij} = 1 | \alpha, \beta, \theta, c, d ) = c + (d-c) \frac{exp(\alpha_i (\theta_{j} - \beta_{i}))}{1 + exp(\alpha_i (\theta_{j} - \beta_{i}))}}
+#'\deqn{P(x_{ij} = 1 | \hat \alpha_i, \hat\beta_i, \theta_j, \hat\zeta_i, \hat\delta_i ) = \hat\zeta_i + (\hat\delta_i-\hat\zeta_i) \frac{exp(\hat \alpha_i (\theta_{j} - \hat\beta_{i}))}{\,1 + exp(\hat\alpha_i (\theta_{j} - \hat\beta_{i}))}}
 #' 
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
