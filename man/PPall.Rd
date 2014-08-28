@@ -47,11 +47,11 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 }}
 
-\item{x}{an object of class gpcm4pl which is the result of using the \code{PPall()} function}
+\item{x}{an object of class \code{gpcm4pl} which is the result of using the \code{PPall()} function}
 
 \item{...}{just some points.}
 
-\item{object}{An object of class gpcm4pl which is the result of using the \code{PPall()} function}
+\item{object}{An object of class \code{gpcm4pl} which is the result of using the \code{PPall()} function}
 
 \item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }
@@ -65,7 +65,7 @@ Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose betw
 There are not Details up to now.
 }
 \examples{
-################# GPCM  and 4PL mixed #############################################################
+################# GPCM  and 4PL mixed #########################################
 
 # some threshold parameters
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
@@ -87,7 +87,8 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
 # create model2est
-# this function tries to help finding the appropriate model by inspecting the THRESx.
+# this function tries to help finding the appropriate 
+# model by inspecting the THRESx.
 model2est <- findmodel(THRESx)
 
 

@@ -1,4 +1,4 @@
-################# Jackknife #############################################################
+################# Jackknife ###################################################
 
 
 ### 4 PL model ######
@@ -21,24 +21,22 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 ## 1PL model ##### 
 
 # MLE estimation
-res1plmle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = rep(1,length(diffpar)),type = "mle")
+res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE estimation
-res1plwle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = rep(1,length(diffpar)),type = "wle")
+res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 # MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = rep(1,length(diffpar)),type = "map")
+res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
+# EAP estimation
+res1pleap <- PP_4pl(respm = awm,thres = diffpar,type = "eap")
 # robust estimation
-res1plrob <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = rep(1,length(diffpar)),type = "robust")
-
+res1plrob <- PP_4pl(respm = awm,thres = diffpar,type = "robust")
 
 ## centering method = mean
 res_jk1 <- JKpp(res1plmle)
 res_jk2 <- JKpp(res1plwle)
 res_jk3 <- JKpp(res1plmap)
 res_jk4 <- JKpp(res1plrob)
+res_jk5 <- JKpp(res1pleap)
 
 
 summary(res_jk1)
@@ -67,13 +65,17 @@ res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
 res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
+# EAP estimation
+res2pleap <- PP_4pl(respm = awm,thres = diffpar,slopes = sl,type = "eap")
+# robust estimation
+res2plrob <- PP_4pl(respm = awm,thres = diffpar,slopes = sl,type = "robust")
 
 
-
-res_jk4 <- JKpp(res2plmle)
-res_jk5 <- JKpp(res2plwle)
-res_jk6 <- JKpp(res2plmap)
-
+res_jk6 <- JKpp(res2plmle)
+res_jk7 <- JKpp(res2plwle)
+res_jk8 <- JKpp(res2plmap)
+res_jk9 <- JKpp(res2pleap)
+res_jk10 <- JKpp(res2plrob)
 
 
 ### GPCM model ######
@@ -103,9 +105,54 @@ respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES,
                      slopes = rep(1,ncol(THRES)),type = "map")
 
 
-res_jk7 <- JKpp(respcmlmle)
-res_jk8 <- JKpp(respcmwle)
-res_jk9 <- JKpp(respcmmap)
+res_jk11 <- JKpp(respcmlmle)
+res_jk12 <- JKpp(respcmwle)
+res_jk13 <- JKpp(respcmmap)
+
+
+
+### GPCM/4-PL mixed model ######
+
+
+
+THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
+                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
+
+sl     <- c(0.5,1,1.5,1.1,1,0.98)
+
+THRESx <- THRES
+THRESx[2,1:3] <- NA
+
+# for the 4PL item the estimated parameters are submitted, 
+# for the GPCM items the lower asymptote = 0 
+# and the upper asymptote = 1.
+la     <- c(0.02,0.1,0,0,0,0)
+ua     <- c(0.97,0.91,1,1,1,1)
+
+awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
+                     ,2,0,0,0,0,0,0,0,0,1
+                     ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
+
+# create model2est
+# this function tries to help finding the appropriate 
+# model by inspecting the THRESx.
+model2est <- findmodel(THRESx)
+
+
+# MLE estimation
+respmixed_mle <- PPall(respm = awmatrix,thres = THRESx, 
+                       slopes = sl,lowerA = la, upperA=ua,type = "mle",
+                       model2est=model2est)
+# WLE estimation
+respmixed_wle <- PPall(respm = awmatrix,thres = THRESx, 
+                       slopes = sl,lowerA = la, upperA=ua,type = "wle",
+                       model2est=model2est)
+
+
+res_jk114 <- JKpp(respmixed_mle)
+res_jk115 <- JKpp(respmixed_wle)
+
+
 
 
 

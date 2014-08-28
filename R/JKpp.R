@@ -1,6 +1,6 @@
 #' Run a jackknife
 #' 
-#' This function uses a jackknife approach to compute person parameters.
+#' This function uses a jackknife approach to compute person parameters. The jackknife ability measure is based on primarily estimated models (depending on the data \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}) - so the function is applied on the estimation objects.
 #' 
 #' Please use the Jackknife Standard-Error output with \bold{caution.} It is implemented as suggested in the mentioned paper, but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. This was not the case for different examples! 
 #' 
@@ -72,16 +72,33 @@ loa <- 1:ncol(respm)
 jk_mat <- matrix(0,nrow=nrow(respm),ncol=length(loa))
 
   
-# run the 4pl jackknife  
-for(jkrun in loa)
+# run the 4pl jackknife 
+if(type %in% c("mle","wle","map","robust"))
   {
     
-  
-  jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun],DELTA = thres[,-jkrun],ALPHA = slopes[-jkrun],
-                                CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
-                                wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
+  for(jkrun in loa)
+    {
       
-  }
+    
+    jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun],
+                                  CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
+                                  wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
+        
+    }
+  
+  } else if(type == "eap")
+      {
+    
+    
+      for(jkrun in loa)
+        {
+            jk_mat[,jkrun] <- eap_4pl(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE],
+                                      slopes[-jkrun], lowerA=lowerA[-jkrun], upperA=upperA[-jkrun],
+                                      mu = mu, sigma2 = sigma2)[,1]
+        }
+      }
+
+
 
 notna <- !is.na(estobj$resPP$resPP[,2])
 
@@ -176,16 +193,35 @@ if(!is.null(estobj$ipar$dupvec$posvec))
   jk_mat <- matrix(0,nrow=nrow(respm),ncol=length(loa))
   
   
-  # run the 4pl jackknife  
+
+
+if(type %in% c("mle","wle","map","robust"))
+{
+  
   for(jkrun in loa)
   {
     
     
-    jk_mat[,jkrun] <- NR_GPCM(respm[,-jkrun], thres[,-jkrun],
+    jk_mat[,jkrun] <- NR_GPCM(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE],
                               slopes[-jkrun], theta_start, type,
-                              maxsteps, exac, mu, sigma2,H=H)$resPP[,1]  
+                              maxsteps, exac, mu, sigma2,H=H)$resPP[,1] 
     
   }
+  
+} else if(type == "eap")
+    {
+      
+      for(jkrun in loa)
+        {
+        jk_mat[,jkrun] <- eap_gpcm(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE], slopes[-jkrun],
+                                   mu = mu, sigma2 = sigma2)[,1]
+        }
+    }
+
+
+
+
+
   
   notna <- !is.na(estobj$resPP$resPP[,2])
   
@@ -256,6 +292,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
+  H <- estobj$ipar$H
 
   if(!is.null(estobj$ipar$dupvec$posvec))
     {
@@ -273,16 +310,35 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   jk_mat <- matrix(0,nrow=nrow(respm),ncol=length(loa))
   
   
-  # run the 4pl jackknife  
-  for(jkrun in loa)
+  
+  if(type %in% c("mle","wle","map","robust"))
+  {
+    
+    for(jkrun in loa)
     {
       
-      jk_mat[,jkrun] <- NR_GPCM(respm[,-jkrun], thres[,-jkrun],
-                                slopes[-jkrun], theta_start, type,
-                                maxsteps, exac, mu, sigma2)$resPP[,1]  
+      
+      jk_mat[,jkrun] <- NR_mixed(awm=respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],
+                                 ALPHA = slopes[-jkrun],CS = lowerA[-jkrun],DS = upperA[-jkrun],
+                                 THETA = theta_start, model=model2est,wm=type,maxsteps=maxsteps,
+                                 exac=exac,mu=mu,sigma2=sigma2,H=H)$resPP[,1] 
       
     }
     
+  } else if(type == "eap")
+    {
+      
+      for(jkrun in loa)
+        {
+        jk_mat[,jkrun] <- eap_mixed(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE],
+                                    slopes[-jkrun], lowerA=lowerA[-jkrun],
+                                    upperA=upperA[,-jkrun], mu = mu, sigma2 = sigma2,
+                                    model2est=model2est)[,1]
+        }
+    }
+    
+  
+
   
 
   notna <- !is.na(estobj$resPP$resPP[,2])

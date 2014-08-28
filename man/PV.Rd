@@ -38,9 +38,9 @@ PV(estobj, ...)
 
 \item{...}{More arguments}
 
-\item{x}{An object of class jk which is the result of using the \code{PV()} function}
+\item{x}{An object of class \code{pv} which is the result of using the \code{PV()} function}
 
-\item{object}{An object of class jk which is the result of using the \code{PV()} function}
+\item{object}{An object of class \code{pv} which is the result of using the \code{PV()} function}
 
 \item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }

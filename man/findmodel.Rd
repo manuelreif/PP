@@ -15,7 +15,7 @@ This is a small helper function which creates a vector template for the \code{PP
 This function tries to guess the model which was applied to each item by using the matrix of threshold parameters. It only discriminates between gpcm and 4pl model, and returns a character vector which length equals the number of items, which contains \code{GPCM} or \code{4PL} depending on the structure of the thres matrix.
 }
 \examples{
-################# GPCM  and 4PL mixed #############################################################
+################# GPCM  and 4PL mixed #########################################
 
 # some threshold parameters
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
@@ -37,7 +37,8 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
 # create model2est
-# this function tries to help finding the appropriate model by inspecting the THRESx.
+# this function tries to help finding the appropriate 
+# model by inspecting the THRESx.
 model2est <- findmodel(THRESx)
 
 

@@ -1804,20 +1804,19 @@ return Likpernode;
 // --------------------------- simulation ------------------------------------
 
 
-//' Simulate data for 4-pl model
+//' Simulate data for 1/2/3/4-pl model
 //' 
-//' This function returns a dichotomous matrix of simulated responses under given item and person parameters
-//' 
-//' Not details until now, because the function is very easy to use.
+//' This function returns a dichotomous matrix of simulated responses under given item and person parameters.
 //' 
 //' 
-//'@param beta An numeric vector which contains the difficulty parameters for each item.
+//' 
+//'@param beta A numeric vector which contains the difficulty parameters for each item.
 //'@param alpha A numeric vector, which contains the slope parameters for each item.
 //'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
 //'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
 //'@param theta A numeric vector which contains person parameters.
 //'
-//'
+//'@seealso \link{sim_gpcm}, \link{PP_4pl}
 //'@example ./R/.examples_sim.R
 //'
 //'@author Manuel Reif

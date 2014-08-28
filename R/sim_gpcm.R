@@ -1,8 +1,7 @@
 #' Simulate data for the gpcm model
 #'
-#' This function returns a integer matrix of simulated responses under given item and person parameters
+#' This function returns a integer matrix of simulated responses under given item and person parameters.
 #'
-#'_
 #'
 #'
 #'@param thres An numeric matrix which contains threshold parameters for each item. The first row must contain zeroes only!
@@ -10,6 +9,8 @@
 #'@param theta A numeric vector which contains person parameters.
 #'
 #'@example ./R/.examples_simgpcm.R
+#'
+#'@seealso \link{sim_4pl}, \link{PP_gpcm}
 #'
 #'@export
 #'

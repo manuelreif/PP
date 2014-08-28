@@ -1,7 +1,7 @@
 
 #'@export
 #'@rdname PPall
-#'@param x an object of class gpcm4pl which is the result of using the \code{PPall()} function
+#'@param x an object of class \code{gpcm4pl} which is the result of using the \code{PPall()} function
 #'@param ... just some points.
 #'@method print ppeo
 print.ppeo <-
@@ -14,7 +14,7 @@ print.ppeo <-
 
 #'@export
 #'@rdname PPall
-#'@param object An object of class gpcm4pl which is the result of using the \code{PPall()} function
+#'@param object An object of class \code{gpcm4pl} which is the result of using the \code{PPall()} function
 #'@param nrowmax When printing the matrix of estimates - how many rows should be shown? Default = 15.
 #'@method summary ppeo
 summary.ppeo <-
@@ -44,7 +44,7 @@ summary.ppeo <-
 
 #'@export
 #'@rdname Jkpp
-#'@param x an object of class jk which is the result of using the \code{JKpp()} function
+#'@param x an object of class \code{jk} which is the result of using the \code{JKpp()} function
 #'@method print jk
 print.jk <-
   function(x, ...)
@@ -59,7 +59,7 @@ print.jk <-
 
 #'@export
 #'@rdname Jkpp
-#'@param object An object of class jk which is the result of using the \code{JKpp()} function
+#'@param object An object of class \code{jk} which is the result of using the \code{JKpp()} function
 #'@param nrowmax When printing the matrix of estimates - how many rows should be shown? Default = 15.
 #'@method summary jk
 summary.jk <-
@@ -94,7 +94,7 @@ summary.jk <-
 
 #'@export
 #'@rdname PV
-#'@param x An object of class jk which is the result of using the \code{PV()} function
+#'@param x An object of class \code{pv} which is the result of using the \code{PV()} function
 #'@method print pv
 print.pv <-
   function(x, ...)
@@ -109,7 +109,7 @@ print.pv <-
 
 #'@export
 #'@rdname PV
-#'@param object An object of class jk which is the result of using the \code{PV()} function
+#'@param object An object of class \code{pv} which is the result of using the \code{PV()} function
 #'@param nrowmax When printing the matrix of estimates - how many rows should be shown? Default = 15.
 #'@method summary pv
 summary.pv <-
