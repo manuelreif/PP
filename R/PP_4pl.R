@@ -12,6 +12,9 @@
 #' \item \bold{4-PL model} ---> submit all parameters ...
 #'}
 #' 
+#' The Probability function of the 4-PL model is:
+#'\deqn{P(x_{ij} = 1 | \alpha, \beta, \theta, c, d ) = c + (d-c) \frac{exp(\alpha_i (\theta_{j} - \beta_{i}))}{1 + exp(\alpha_i (\theta_{j} - \beta_{i}))}}
+#' 
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
 #'@param thres An numeric vector or a numeric matrix which contains the threshold parameter for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!

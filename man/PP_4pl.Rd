@@ -54,6 +54,9 @@ With this function you can estimate:
 \item \bold{3-PL model} by submitting anything except the upper asymptote parameters
 \item \bold{4-PL model} ---> submit all parameters ...
 }
+
+The Probability function of the 4-PL model is:
+\deqn{P(x_{ij} = 1 | \alpha, \beta, \theta, c, d ) = c + (d-c) \frac{exp(\alpha_i (\theta_{j} - \beta_{i}))}{1 + exp(\alpha_i (\theta_{j} - \beta_{i}))}}
 }
 \examples{
 ################# 4 PL #############################################################

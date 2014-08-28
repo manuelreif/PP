@@ -293,6 +293,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
   H <- estobj$ipar$H
+  model2est <- estobj$ipar$model2est
 
   if(!is.null(estobj$ipar$dupvec$posvec))
     {

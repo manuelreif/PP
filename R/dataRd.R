@@ -5,5 +5,5 @@
 #' @format A data.frame with 60 rows and 14 columns.
 #' @source simulation
 #' @seealso \link{sim_4pl}
-#' @name daf
+#' @name fourpl_df
 NULL
