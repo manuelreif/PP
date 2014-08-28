@@ -30,11 +30,11 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
-\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
-\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter were estimated. There are 2 valid input up to now: "GPCM" and "4PL"}
+\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter were estimated. There are 2 valid input up to now: \code{"GPCM"} and \code{"4PL"}.}
 
-\item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
+\item{maxsteps}{The maximum number of steps the NR Algorithm will take. Default = 100.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 

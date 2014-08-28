@@ -10,8 +10,8 @@
 #'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
 #'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
 #'@param sigma2 A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.
-#'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.
-#'@param maxsteps The maximum number of steps the NR Algorithm will take.
+#'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases.
+#'@param maxsteps The maximum number of steps the NR Algorithm will take. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
 #'@param ctrl more controls

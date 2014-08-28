@@ -24,9 +24,9 @@ PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
 
 \item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
 
-\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is "wle" which is a good choice in many cases.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
-\item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
+\item{maxsteps}{The maximum number of steps the NR Algorithm will take. Default = 100.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
@@ -163,8 +163,6 @@ Manuel Reif
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
 
 Magis, D. (2013). A note on the item information function of the four-parameter logistic model. Applied Psychological Measurement, 37(4), 304-315.
-
-Muraki, Eiji (1993). Information Functions of the Generalized Partial Credit Model. Applied Psychological Measurement, 17, 351-363.
 
 Samejima, Fumiko (1993). The bias function of the maximum likelihood estimate of ability for the dichotomous response level. Psychometrika,  58, 195-209.
 
