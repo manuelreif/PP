@@ -1,7 +1,7 @@
 
 #' Estimation of Person Parameters for the 1,2,3,4-PL model and the GPCM.
 #'
-#' PP-package has been developed to easily compute ML, WL (Warm 1989) and MAP estimates of Person-Parameters for a given response matrix and given item parameters of the 1,2,3,4-PL model (Birnbaum 1968, 4PL Citation) and the GPCM (Muraki 1992). It provides c++ routines which makes estimation of parameters very fast.
+#' PP-package has been developed to easily compute ML, WL (Warm 1989), MAP, EAP and robust estimates of Person-Parameters for a given response matrix and given item parameters of the 1,2,3,4-PL model (Birnbaum 1968, Barton & Lord 1981) and the GPCM (Muraki 1992). It provides c++ routines which makes estimation of parameters very fast. Read the vignette for getting started with this package.
 #'
 #'
 #' @docType package
@@ -9,6 +9,9 @@
 #' @author Manuel Reif
 #' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{PPall}
 #' @references 
+#' 
+#' Barton, M. A., & Lord, F. M. (1981). An Upper Asymptote for the Three-Parameter Logistic Item-Response Model.
+#' 
 #' Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In Lord, F.M. & Novick, M.R. (Eds.), Statistical theories of mental test scores. Reading, MA: Addison-Wesley.
 #'  
 #'Muraki, Eiji (1992). A Generalized Partial Credit Model: Application of an EM Algorithm. Applied Psychological Measurement, 16, 159-176.

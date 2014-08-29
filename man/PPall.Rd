@@ -40,7 +40,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
-\item{ctrl}{More controls
+\item{ctrl}{More controls:
 
 \itemize{
 \item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
@@ -62,7 +62,9 @@ The function returns a list with the estimation results and pretty much everythi
 Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 }
 \details{
-There are not Details up to now.
+For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item.
+
+Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 }
 \examples{
 ################# GPCM  and 4PL mixed #########################################
@@ -129,6 +131,8 @@ Manuel Reif
 }
 \references{
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
+
+Barton, M. A., & Lord, F. M. (1981). An Upper Asymptote for the Three-Parameter Logistic Item-Response Model.
 
 Magis, D. (2013). A note on the item information function of the four-parameter logistic model. Applied Psychological Measurement, 37(4), 304-315.
 

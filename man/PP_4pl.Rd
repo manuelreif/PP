@@ -45,8 +45,6 @@ The function returns a list with the estimation results and pretty much everythi
 Compute Person Parameters for the 1/2/3/4pl model and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
 }
 \details{
-The \bold{robust} estimation method, applies a Huber-type estimator, which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
-
 With this function you can estimate:
 \itemize{
 \item \bold{1-PL model} (Rasch model) by submitting: the data matrix, item difficulties and \bold{nothing else}, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
@@ -56,7 +54,27 @@ With this function you can estimate:
 }
 
 The Probability function of the 4-PL model is:
-\deqn{P(x_{ij} = 1 | \hat \alpha_i, \hat\beta_i, \theta_j, \hat\zeta_i, \hat\delta_i ) = \hat\zeta_i + (\hat\delta_i-\hat\zeta_i) \frac{exp(\hat \alpha_i (\theta_{j} - \hat\beta_{i}))}{\,1 + exp(\hat\alpha_i (\theta_{j} - \hat\beta_{i}))}}
+\deqn{P(x_{ij} = 1 | \hat \alpha_i, \hat\beta_i, \hat\gamma_i, \hat\delta_i, \theta_j ) = \hat\gamma_i + (\hat\delta_i-\hat\gamma_i) \frac{exp(\hat \alpha_i (\theta_{j} - \hat\beta_{i}))}{\,1 + exp(\hat\alpha_i (\theta_{j} - \hat\beta_{i}))}}
+
+In our case \eqn{\theta} is to be estimated, and the four item parameters are assumed as fixed (usually these are estimates of a former scaling procedure).
+
+The 3-PL model is the same, except that \eqn{\delta_i = 1, \forall i}.
+
+In the 2-PL model \eqn{\delta_i = 1, \gamma_i = 0, \forall i}.
+
+In the 1-PL model \eqn{\delta_i = 1, \gamma_i = 0, \alpha_i = 1, \forall i}.
+
+.
+
+The \bold{robust} estimation method, applies a Huber-type estimator (Schuster & Yuan, 2011), which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
+
+residuum:
+\deqn{r_i = \alpha_i(\theta - \beta_i)}
+
+weight:
+
+\deqn{w(r_i) =  1 \rightarrow if\, |r_i| \leq H}
+\deqn{w(r_i) = H/|r| \rightarrow if\, |r_i| > H}
 }
 \examples{
 ################# 4 PL #############################################################
@@ -165,11 +183,17 @@ Manuel Reif
 \references{
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
 
+Barton, M. A., & Lord, F. M. (1981). An Upper Asymptote for the Three-Parameter Logistic Item-Response Model.
+
+Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In Lord, F.M. & Novick, M.R. (Eds.), Statistical theories of mental test scores. Reading, MA: Addison-Wesley.
+
 Magis, D. (2013). A note on the item information function of the four-parameter logistic model. Applied Psychological Measurement, 37(4), 304-315.
 
 Samejima, Fumiko (1993). The bias function of the maximum likelihood estimate of ability for the dichotomous response level. Psychometrika,  58, 195-209.
 
 Samejima, Fumiko (1993). An approximation of the bias function of the maximum likelihood estimate of a latent variable for the general case where the item responses are discrete. Psychometrika,  58, 119-138.
+
+Schuster, C., & Yuan, K. H. (2011). Robust estimation of latent ability in item response models. Journal of Educational and Behavioral Statistics, 36(6), 720-735.
 
 Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
 

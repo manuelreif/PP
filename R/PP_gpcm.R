@@ -2,7 +2,18 @@
 #' 
 #' Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 #'
-#'Details ...
+#'
+#' Please note, that \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
+#'
+#'
+#' The probability choosing the k-th category is as follows:
+#'
+#'\deqn{P(x_{ij} = k | \hat \alpha_i, \hat\beta_{iv}, \theta_j) = \frac{exp(\sum_{v=0}^{(k-1)}\hat \alpha_{i}(\theta_j - \hat \beta_{iv}))}{\,\sum_{c=0}^{m_i - 1}exp(\sum_{v=0}^{c}\hat \alpha_{i}(\theta_j - \hat \beta_{iv})))}}
+#'
+#'In our case \eqn{\theta} is to be estimated. The item parameters are assumed as fixed (usually these are estimates of a former scaling procedure).
+#'
+#'The model simplifies to the Partial Credit Model by setting \eqn{\alpha_{i} = 1, \forall i}.
+#'
 #' 
 #'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
 #'@param thres An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
@@ -29,6 +40,8 @@
 #'
 #'@author Manuel Reif
 #'@references Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
+#'
+#'Masters, G. N. (1982). A Rasch model for partial credit scoring. Psychometrika, 47(2), 149-174.
 #'
 #'Muraki, Eiji (1992). A Generalized Partial Credit Model: Application of an EM Algorithm. Applied Psychological Measurement, 16, 159-176.
 #'
