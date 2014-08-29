@@ -75,7 +75,7 @@ attr(call,"version") <- packageVersion("PP")
 
 
 ## --------- user controls
-cont <- list(killdupli=FALSE)
+cont <- list(killdupli=FALSE,skipcheck=FALSE)
 
 user_ctrlI <- match(names(ctrl),names(cont))
 if(any(is.na(user_ctrlI)))
@@ -129,16 +129,17 @@ if(is.matrix(thres))
 
 # check for errors and warnings etc  --------------
 
-# ----- ARGUMENT INPUTS
-type <- match.arg(type,c("mle","wle","map","eap","robust"))
-if(length(type) != 1) stop("Submit a single value as 'type'!\n")
+## --------- check user inputs
+if(!cont$skipcheck) # to save time e.g. when running simulations
+{
+  ## --------- check user inputs
+  checkINP(respm, thres, slopes, theta_start, type)
+  # -----------------------------------------------------  
+}
 
 model2est <- match.arg(model2est,c("GPCM","4PL"),several.ok = TRUE)
 if(length(model2est) < ncol(respm)) stop("Check the properties for the submitted model2est vector!\n")
 
-
-if(!is.matrix(respm)) stop("respm must be a matrix!\n")
-if(!is.matrix(thres)) stop("thres must be a matrix!\n")
 
 
 # in case map is chosen and no mu and/or sigma2 is/are submitted.

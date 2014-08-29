@@ -78,7 +78,7 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   
   
   ## --------- user controls
-  cont <- list(killdupli=FALSE)
+  cont <- list(killdupli=FALSE,skipcheck=FALSE)
   
   user_ctrlI <- match(names(ctrl),names(cont))
   if(any(is.na(user_ctrlI)))
@@ -99,14 +99,6 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
     theta_start <- rep(0,nrow(respm))
   }
   
-  #---
-  
-#   if(cont$cdiag) 
-#   {
-#     cont$killdupli <- FALSE
-#     warning("killdupli in 'ctrl' is forced to FALSE!\n")  
-#   }
-  
 
 
 ## --------- threshold matrix
@@ -121,17 +113,12 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
   
 
-  
-
-  
+if(!cont$skipcheck) # to save time e.g. when running simulations
+{
 ## --------- check user inputs
-match.arg(type,c("mle","wle","map","eap","robust"))
-
-if(length(type) != 1) stop("Submit a single value as 'type'!\n")
-
-
-if(!is.matrix(respm)) stop("respm must be a matrix!\n")
-if(!is.matrix(thres)) stop("thres must be a matrix!\n")
+checkINP(respm, thres, slopes, theta_start, type)
+# -----------------------------------------------------  
+}
 
 # in case map is chosen and no mu and/or sigma2 is/are submitted.
 if( (any(is.null(mu)) | any(is.null(sigma2))))
@@ -175,26 +162,6 @@ if(cont$killdupli)
 
 cat("Estimating: GPCM ... \n")
 cat("type =",type,"\n")
-
-
-# 
-# if(type %in% c("mle","wle","map"))
-# {
-#   
-#   resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
-#   
-# } else if(type == "robust")
-# {
-#   
-#   resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
-#   
-# } else if(type == "eap")
-# {
-#   resPP <- list()
-#   resPP$resPP <- eap_4pl(respm, thres, slopes, lowerA=lowerA, upperA=upperA,
-#                          mu = mu, sigma2 = sigma2)
-#   resPP$nsteps <- 0
-# }
 
 
 if(type %in% c("mle","wle","map"))

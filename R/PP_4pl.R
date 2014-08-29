@@ -103,7 +103,7 @@ PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_st
 nitem <- ncol(respm)  
   
 ## --------- user controls
-cont <- list(killdupli=FALSE)
+cont <- list(killdupli=FALSE,skipcheck=FALSE)
 
 user_ctrlI <- match(names(ctrl),names(cont))
 
@@ -169,9 +169,12 @@ if(is.matrix(thres))
 
   
 ## --------- check user inputs
-match.arg(type,c("mle","wle","map","eap","robust"))
-
-if(length(type) != 1) stop("Submit a single value as 'type'!\n")
+if(!cont$skipcheck) # to save time e.g. when running simulations
+{
+  ## --------- check user inputs
+  checkINP(respm, thres, slopes, theta_start, type)
+  # -----------------------------------------------------  
+}
 
 # in case map is chosen and no mu and/or sigma2 is/are submitted.
 if( (any(is.null(mu)) | any(is.null(sigma2))))

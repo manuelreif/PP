@@ -1,6 +1,10 @@
 checkINP <- function(respm, thres, slopes, theta_start, type)
 {
   
+# dim checks
+if(ncol(respm) != ncol(thres)) stop("ncol(respm) != ncol(thres)\n")  
+if(ncol(respm) != length(slopes) & !is.null(slopes)) stop("ncol(respm) != length(slopes)")
+
 # type input
 match.arg(type,c("mle","wle","map","eap","robust"))
 if(length(type) != 1) stop("Submit a single value as 'type'!\n")
