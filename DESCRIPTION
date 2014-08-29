@@ -1,8 +1,8 @@
 Package: PP
 Type: Package
 Title: Person Parameter estimation
-Version: 0.4-12
-Date: 2014-08-28
+Version: 0.4-13
+Date: 2014-08-29
 Author: Manuel Reif <manuel.reif@gmail.com>
 Maintainer: Manuel Reif <manuel.reif@gmail.com>
 Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
