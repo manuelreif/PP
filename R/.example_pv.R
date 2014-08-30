@@ -100,8 +100,6 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,2,0,0,0,0,0,0,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
-# create model2est
-# this function tries to help finding the appropriate model by inspecting the THRESx.
 model2est <- findmodel(THRESx)
 
 

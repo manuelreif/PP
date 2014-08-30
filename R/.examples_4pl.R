@@ -18,9 +18,9 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 
 ## 1PL model ##### 
 
-# MLE estimation
+# MLE
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
-# WLE estimation
+# WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 # MAP estimation
 res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
@@ -37,9 +37,9 @@ summary(res1plmap)
 
 ## 2PL model ##### 
 
-# MLE estimation
+# MLE
 res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-# WLE estimation
+# WLE
 res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
@@ -51,10 +51,10 @@ res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
 
 ## 3PL model ##### 
 
-# MLE estimation
+# MLE
 res3plmle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,type = "mle")
-# WLE estimation
+# WLE
 res3plwle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,type = "wle")
 # MAP estimation
@@ -67,10 +67,10 @@ res3pleap <- PP_4pl(respm = awm,thres = diffpar,
 
 ## 4PL model ##### 
 
-# MLE estimation
+# MLE
 res4plmle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,upperA=ua,type = "mle")
-# WLE estimation
+# WLE
 res4plwle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,upperA=ua,type = "wle")
 # MAP estimation

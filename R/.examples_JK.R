@@ -20,9 +20,9 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 
 ## 1PL model ##### 
 
-# MLE estimation
+# MLE
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
-# WLE estimation
+# WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 # MAP estimation
 res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
@@ -59,9 +59,9 @@ summary(res_jk3b)
 
 ## 2PL model ##### 
 
-# MLE estimation
+# MLE
 res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-# WLE estimation
+# WLE
 res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
@@ -94,10 +94,10 @@ awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1,2,0,0,0,0,0,0,0,0,1,
 
 ### PCM model ######
 
-# MLE estimation
+# MLE
 respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES,
                       slopes = rep(1,ncol(THRES)),type = "mle")
-# WLE estimation
+# WLE
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES,
                      slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation

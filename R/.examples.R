@@ -25,11 +25,11 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
 model2est <- findmodel(THRESx)
 
 
-# MLE estimation
+# MLE
 respmixed_mle <- PPall(respm = awmatrix,thres = THRESx, 
                      slopes = sl,lowerA = la, upperA=ua,type = "mle",
                      model2est=model2est)
-# WLE estimation
+# WLE
 respmixed_wle <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua,type = "wle",
                     model2est=model2est)
