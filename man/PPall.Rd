@@ -43,7 +43,9 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 \item{ctrl}{More controls:
 
 \itemize{
-\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+
+\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 
 }}
 
@@ -94,11 +96,11 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
 model2est <- findmodel(THRESx)
 
 
-# MLE estimation
+# MLE
 respmixed_mle <- PPall(respm = awmatrix,thres = THRESx, 
                      slopes = sl,lowerA = la, upperA=ua,type = "mle",
                      model2est=model2est)
-# WLE estimation
+# WLE
 respmixed_wle <- PPall(respm = awmatrix,thres = THRESx, 
                     slopes = sl,lowerA = la, upperA=ua,type = "wle",
                     model2est=model2est)

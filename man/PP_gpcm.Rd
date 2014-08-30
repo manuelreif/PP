@@ -30,8 +30,9 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 
 \item{ctrl}{more controls
 \itemize{
-\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 
+\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 }}
 }
 \value{
@@ -66,9 +67,9 @@ awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1
 
 ## GPCM model ##### 
 
-# MLE estimation
+# MLE
 resgpcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "mle")
-# WLE estimation
+# WLE
 resgpcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "wle")
 # MAP estimation
 resgpcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "map")
@@ -80,9 +81,9 @@ resgpcmrob <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust
 
 ## PCM model ##### 
 
-# MLE estimation
+# MLE
 respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "mle")
-# WLE estimation
+# WLE
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation
 respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
@@ -98,9 +99,9 @@ THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))
 awmatrix1 <- matrix(c(1,0,2,0,1,3,1,0,0,1,3,1,0,0
                       ,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
-# MLE estimation
+# MLE
 respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle")
-# WLE estimation
+# WLE
 respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
 # MAP estimation
 respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")

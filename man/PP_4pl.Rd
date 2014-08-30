@@ -34,7 +34,9 @@ PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
 
 \item{ctrl}{more controls:
 \itemize{
-\item \code{killdupli} Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+
+\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 
 }}
 }
@@ -97,9 +99,9 @@ awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
 
 ## 1PL model ##### 
 
-# MLE estimation
+# MLE
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
-# WLE estimation
+# WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 # MAP estimation
 res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
@@ -116,9 +118,9 @@ summary(res1plmap)
 
 ## 2PL model ##### 
 
-# MLE estimation
+# MLE
 res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-# WLE estimation
+# WLE
 res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
 # MAP estimation
 res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
@@ -130,10 +132,10 @@ res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
 
 ## 3PL model ##### 
 
-# MLE estimation
+# MLE
 res3plmle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,type = "mle")
-# WLE estimation
+# WLE
 res3plwle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,type = "wle")
 # MAP estimation
@@ -146,10 +148,10 @@ res3pleap <- PP_4pl(respm = awm,thres = diffpar,
 
 ## 4PL model ##### 
 
-# MLE estimation
+# MLE
 res4plmle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,upperA=ua,type = "mle")
-# WLE estimation
+# WLE
 res4plwle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,upperA=ua,type = "wle")
 # MAP estimation
