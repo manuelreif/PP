@@ -31,9 +31,11 @@ respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)
 # WLE
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation
-respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
+respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),
+                     type = "map")
 # EAP estimation
-respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
+respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),
+                     type = "eap")
 
 
 #### with different number of categories ##
@@ -44,9 +46,9 @@ THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))
 awmatrix1 <- matrix(c(1,0,2,0,1,3,1,0,0,1,3,1,0,0
                       ,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
-# MLE
+# MLE estimation
 respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle")
-# WLE
+# WLE estimation
 respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
 # MAP estimation
 respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")

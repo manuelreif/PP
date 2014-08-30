@@ -1,6 +1,6 @@
-#' Estimate Person Parameters for the 4pl model
+#' Estimate Person Parameters for the 4-PL model
 #' 
-#' Compute Person Parameters for the 1/2/3/4pl model and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All items parameters are treated as fixed.
+#' Compute Person Parameters for the 1/2/3/4-PL model and choose between five common estimation techniques: ML, WL, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 #'
 #' 
 #' With this function you can estimate:
@@ -11,7 +11,7 @@
 #' \item \bold{4-PL model} ---> submit all parameters ...
 #'}
 #' 
-#' The Probability function of the 4-PL model is:
+#' The probability function of the 4-PL model is:
 #'\deqn{P(x_{ij} = 1 | \hat \alpha_i, \hat\beta_i, \hat\gamma_i, \hat\delta_i, \theta_j ) = \hat\gamma_i + (\hat\delta_i-\hat\gamma_i) \frac{exp(\hat \alpha_i (\theta_{j} - \hat\beta_{i}))}{\,1 + exp(\hat\alpha_i (\theta_{j} - \hat\beta_{i}))}}
 #' 
 #' In our case \eqn{\theta} is to be estimated, and the four item parameters are assumed as fixed (usually these are estimates of a former scaling procedure).
@@ -34,15 +34,15 @@
 #' \deqn{w(r_i) =  1 \rightarrow if\, |r_i| \leq H}
 #' \deqn{w(r_i) = H/|r| \rightarrow if\, |r_i| > H}
 #' 
-#'@param respm An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.
-#'@param thres An numeric vector or a numeric matrix which contains the threshold parameter for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!
+#'@param respm An integer matrix, which contains the examinees responses. A persons x items matrix is expected.
+#'@param thres A numeric vector or a numeric matrix which contains the threshold parameter for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
 #'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
 #'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
 #'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
-#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.
-#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.
-#'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases. 
+#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
+#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
+#'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases. 
 #'@param maxsteps The maximum number of steps the NR Algorithm will take. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011). 
