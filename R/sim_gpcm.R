@@ -1,6 +1,6 @@
 #' Simulate data for the gpcm model
 #'
-#' This function returns a integer matrix of simulated responses under given item and person parameters.
+#' This function returns an integer matrix of simulated responses under given item and person parameters.
 #'
 #'
 #'
