@@ -13,7 +13,7 @@ sim_gpcm(thres, alpha, theta)
 \item{theta}{A numeric vector which contains person parameters.}
 }
 \description{
-This function returns a integer matrix of simulated responses under given item and person parameters.
+This function returns an integer matrix of simulated responses under given item and person parameters.
 }
 \examples{
 ################# simulate GPCM ###############################################

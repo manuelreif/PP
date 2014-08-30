@@ -8,7 +8,7 @@ Maintainer: Manuel Reif <manuel.reif@gmail.com>
 Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
     person parameters for the 1,2,3,4-PL model and the GPCM (generalized
     partial credit model). The parameters are estimated under the assumption
-    that the item parameters are known and fixed. The package is useful e.g. in 
+    that the item parameters are known and fixed. The package is useful e.g. in
     the case that items from an item pool / item bank with known item parameters
     are administered to a new population of test-takers and an ability
     estimation for every test-taker is needed.

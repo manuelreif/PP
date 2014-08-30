@@ -14,9 +14,9 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 \method{summary}{ppeo}(object, nrowmax = 15, ...)
 }
 \arguments{
-\item{respm}{An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.}
+\item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
 
-\item{thres}{An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
+\item{thres}{A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
 
@@ -26,15 +26,15 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.}
 
-\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
-\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter were estimated. There are 2 valid input up to now: \code{"GPCM"} and \code{"4PL"}.}
+\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}.}
 
-\item{maxsteps}{The maximum number of steps the NR Algorithm will take. Default = 100.}
+\item{maxsteps}{The maximum number of steps the NR algorithm will take. Default = 100.}
 
 \item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
 
@@ -61,7 +61,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
-Compute Person Parameters for the 1,2,3,4-PL Model and for the GPCM. Choose between MLE, WLE, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
+Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person. [FRAGE: nur für 4-Pl und GPCM? warum steht dann davor auch 1,2,3-PL model???]
 }
 \details{
 For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item.

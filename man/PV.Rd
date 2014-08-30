@@ -24,7 +24,7 @@ PV(estobj, ...)
 \method{summary}{pv}(object, nrowmax = 15, ...)
 }
 \arguments{
-\item{estobj}{An object which originates from using \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}. EAP estimation is strongly recommanded (\code{type = "eap"}), when plausible values are drawn afterwards, because the EAP estimate is used as starting point for the MH algorithm.}
+\item{estobj}{An object which originates from using \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}. EAP estimation is strongly recommended (\code{type = "eap"}), when plausible values are drawn afterwards, because the EAP estimate is used as starting point for the MH algorithm.}
 
 \item{npv}{The number of (effectively returned) plausible values - default is 10.}
 
@@ -32,9 +32,9 @@ PV(estobj, ...)
 
 \item{thinning}{A numeric vector of length = 1. If approx = FALSE, a Metropolitan-Hastings-Algorithm draws the plausible values. To avoid autocorrelation, thinning takes every \bold{kth} value as effective plausible value. The default is 6 (every 6th value is taken), which works appropriately in almost all cases here (with default settings).}
 
-\item{burnin}{How many draws at the chains beginning should be discarded? Default is 10 - and this seems reasonable high (probably 5 will be enough as well), because starting point is the EAP.}
+\item{burnin}{How many draws should be discarded at the chains beginning? Default is 10 - and this seems reasonable high (probably 5 will be enough as well), because starting point is the EAP.}
 
-\item{mult}{Multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is \code{N(theta_v,mult*SE_eap)} - when a MH-Alorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.}
+\item{mult}{Multiplication constant (default = 2). Use this parameter to vary the width of the proposal distribution - which is \code{N(theta_v,mult*SE_eap)} - when a MH-Algorithm is applied. So the constant quantifies the width in terms of multiples of the EAP standard error. 2 works fine with the default thinning. If the supplied value is large, thinning can take lower values without causing autocorrelation.}
 
 \item{...}{More arguments}
 
@@ -45,7 +45,7 @@ PV(estobj, ...)
 \item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 }
 \value{
-The function returns a list which main element is \code{pvdraws}. This is a matrix of size numer_of_persons x npv - so if 10 plausible values are requested for 100 persons, a 100x10 matrix is returned.
+The function returns a list which main element is \code{pvdraws}. This is a matrix of size number_of_persons x npv - so if 10 plausible values are requested for 100 persons, a 100x10 matrix is returned.
 }
 \description{
 This function draws \code{npv} plausible values for each person from their posterior density.

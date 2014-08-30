@@ -28,7 +28,7 @@ JKpp(estobj, ...)
 
 \item{...}{More input.}
 
-\item{cmeth}{Choose the centering method, to summarize the n jackknife results to one single ability estimate. There are three valid entries: "mean", "median" and "AMT".}
+\item{cmeth}{Choose the centering method, to summarize the n jackknife results to one single ability estimate. There are three valid entries: "mean", "median" and "AMT" (see Details for further description).}
 
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take.}
 
@@ -48,7 +48,7 @@ JKpp(estobj, ...)
 This function uses a jackknife approach to compute person parameters. The jackknife ability measure is based on primarily estimated models (\code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}) - so the function is applied on the estimation objects, and jackknifed ability measures are returned.
 }
 \details{
-Please use the Jackknife \bold{Standard-Error} output with \bold{caution}! It is implemented as suggested in Wainer & Wright 1980, but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. This was not the case for different examples!
+Please use the Jackknife \bold{Standard-Error} output with \bold{caution}! It is implemented as suggested in Wainer and Wright (1980), but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. Actually, in all examples an underestimation of the SE was observed compared to the MLE/WLE-SE!
 
 \bold{AMT-robustified jackknife:} When choosing \code{cmeth = AMT}, the jackknife ability subsample estimates and the original supplied ability estimate are combined to a single jackknife-ability value by the Sine M-estimator. The AMT (or Sine M-estimator) is one of the winners in the Princeton Robustness Study of 1972. To get a better idea how the estimation process works, take a closer look to the paper which is mentioned below (Wainer & Wright, 1980).
 }

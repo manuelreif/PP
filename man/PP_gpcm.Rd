@@ -8,19 +8,19 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
   ctrl = list())
 }
 \arguments{
-\item{respm}{An integer matrix, which contains the examinees reponses. An Persons x items matrix is expected.}
+\item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
 
-\item{thres}{An numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
+\item{thres}{A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
 
 \item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for map estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for map estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.}
 
-\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quiet helpful. The default is \code{"wle"} which is a good choice in many cases.}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
 \item{maxsteps}{The maximum number of steps the NR Algorithm will take. Default = 100.}
 
@@ -39,7 +39,7 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
-Compute Person Parameters for the GPCM and choose between five common estimation techniques: MLE, WLE, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
+Compute person parameters for the GPCM and choose between five common estimation techniques: ML, WL, MAP, EAP and a robust estimation. All item parameters are treated as fixed.
 }
 \details{
 Please note, that \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
@@ -86,9 +86,11 @@ respcmlmle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)
 # WLE
 respcmwle <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "wle")
 # MAP estimation
-respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "map")
+respcmmap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),
+                     type = "map")
 # EAP estimation
-respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),type = "eap")
+respcmeap <- PP_gpcm(respm = awmatrix,thres = THRES, slopes = rep(1,ncol(THRES)),
+                     type = "eap")
 
 
 #### with different number of categories ##
@@ -99,9 +101,9 @@ THRES1 <- rbind(THRES,c(NA,NA,NA,NA,1.7,1))
 awmatrix1 <- matrix(c(1,0,2,0,1,3,1,0,0,1,3,1,0,0
                       ,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
-# MLE
+# MLE estimation
 respcmlmle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "mle")
-# WLE
+# WLE estimation
 respcmwle1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "wle")
 # MAP estimation
 respcmmap1 <- PP_gpcm(respm = awmatrix1,thres = THRES1, slopes = sl,type = "map")
