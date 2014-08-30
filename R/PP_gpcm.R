@@ -116,7 +116,7 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
 if(!cont$skipcheck) # to save time e.g. when running simulations
 {
 ## --------- check user inputs
-checkINP(respm, thres, slopes, theta_start, type)
+checkINP(respm, thres, slopes, theta_start, lowerA=NULL, upperA=NULL, type)
 # -----------------------------------------------------  
 }
 

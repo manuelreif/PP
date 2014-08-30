@@ -1,6 +1,6 @@
-checkINP <- function(respm, thres, slopes, theta_start, type)
+checkINP <- function(respm, thres, slopes, theta_start, lowerA, upperA, type)
 {
-  
+  #browser()
 # dim checks
 if(ncol(respm) != ncol(thres)) stop("ncol(respm) != ncol(thres)\n")  
 if(ncol(respm) != length(slopes) & !is.null(slopes)) stop("ncol(respm) != length(slopes)")

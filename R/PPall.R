@@ -133,7 +133,7 @@ if(is.matrix(thres))
 if(!cont$skipcheck) # to save time e.g. when running simulations
 {
   ## --------- check user inputs
-  checkINP(respm, thres, slopes, theta_start, type)
+  checkINP(respm, thres, slopes, theta_start, lowerA, upperA, type)
   # -----------------------------------------------------  
 }
 
