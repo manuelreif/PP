@@ -49,7 +49,8 @@ thres <- estobj$ipar$thres
 slopes <- estobj$ipar$slopes
 lowerA <- estobj$ipar$lowerA
 upperA <- estobj$ipar$upperA
-theta_start <- estobj$ipar$theta_start
+#theta_start <- estobj$ipar$theta_start
+theta_start <- rep(0,ncol(respm))
 mu <- estobj$ipar$mu
 sigma2 <- estobj$ipar$sigma2
 cont <- estobj$ipar$cont
@@ -71,6 +72,7 @@ loa <- 1:ncol(respm)
 # save the responses into this matrix
 jk_mat <- matrix(0,nrow=nrow(respm),ncol=length(loa))
 
+#browser()
   
 # run the 4pl jackknife 
 if(type %in% c("mle","wle","map","robust"))
@@ -91,11 +93,10 @@ if(type %in% c("mle","wle","map","robust"))
       for(jkrun in loa)
         {
             jk_mat[,jkrun] <- eap_4pl(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE],
-                                      slopes[-jkrun], lowerA=lowerA[-jkrun], upperA=upperA[-jkrun],
-                                      mu = mu, sigma2 = sigma2)[,1]
+                                      slopes[-jkrun], lowerA=lowerA[-jkrun],
+                                      upperA=upperA[-jkrun],mu = mu, sigma2 = sigma2)[,1]
         }
       }
-
 
 
 notna <- !is.na(estobj$resPP$resPP[,2])
@@ -167,7 +168,8 @@ JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500,
   slopes <- estobj$ipar$slopes
 #   lowerA <- estobj$ipar$lowerA
 #   upperA <- estobj$ipar$upperA
-  theta_start <- estobj$ipar$theta_start
+  #theta_start <- estobj$ipar$theta_start
+  theta_start <- rep(0,ncol(respm))
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
@@ -286,7 +288,8 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   slopes <- estobj$ipar$slopes
   lowerA <- estobj$ipar$lowerA
   upperA <- estobj$ipar$upperA
-  theta_start <- estobj$ipar$theta_start
+  #theta_start <- estobj$ipar$theta_start
+  theta_start <- rep(0,ncol(respm))
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont

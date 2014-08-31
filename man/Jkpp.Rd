@@ -68,8 +68,8 @@ la     <- round(runif(12,0,0.25),2)
 ua     <- round(runif(12,0.8,1),2)
 
 # response matrix
-awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
-
+abpar <- rnorm(10,0,1.7)
+awm <- sim_4pl(beta = diffpar,alpha = sl,lowerA = la,upperA=ua,theta = abpar)
 
 
 ## 1PL model ##### 
@@ -205,9 +205,6 @@ respmixed_wle <- PPall(respm = awmatrix,thres = THRESx,
 
 res_jk114 <- JKpp(respmixed_mle)
 res_jk115 <- JKpp(respmixed_wle)
-
-
-
 
 
 }
