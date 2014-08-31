@@ -2,6 +2,7 @@
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{Getting started with PP}
 -->
+# Getting started with PP
 
 First of all a few questions, whether the `PP` package is the one you are looking for.
 
