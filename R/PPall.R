@@ -1,6 +1,6 @@
 #' Estimate Person Parameters
 #' 
-#' Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person. [FRAGE: nur für 4-Pl und GPCM? warum steht dann davor auch 1,2,3-PL model???]
+#' Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 #'
 #' 
 #' For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item. 
@@ -203,13 +203,13 @@ if(type %in% c("mle","wle","map"))
   {
     # ----- estimation procedure -------------# 
     
-    resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H)
+    resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA = lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H)
     
   } else if(type == "robust")
   {
     warning("Robust estimation for GPCM is still very experimental! \n")
     
-    resPP <- NR_mixed(respm,DELTA = thres,ALPHA = slopes, CS = lowerA, DS = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H=H) 
+    resPP <- NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA= lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H=H) 
     
   } else if(type == "eap")
     {

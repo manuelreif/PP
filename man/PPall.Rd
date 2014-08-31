@@ -61,7 +61,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
 }
 \description{
-Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person. [FRAGE: nur für 4-Pl und GPCM? warum steht dann davor auch 1,2,3-PL model???]
+Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 }
 \details{
 For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item.

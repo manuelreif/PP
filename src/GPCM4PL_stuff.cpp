@@ -127,7 +127,7 @@ return HU;
 
 // [[Rcpp::export]]
 NumericMatrix L4pl(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
-                   NumericVector CS, NumericVector DS, NumericVector THETA, bool map, 
+                   NumericVector LOWA, NumericVector UPPA, NumericVector THETA, bool map, 
                    NumericVector mu, NumericVector sigma2) {
 
 int npers = awm.nrow();
@@ -150,8 +150,8 @@ for(int it = 0; it < nitem; it++)
   double alpha = ALPHA(it);
   NumericVector delta = DELTA(_,it);
   LogicalVector nas(maxca);
-  double lowerA = CS(it);
-  double upperA = DS(it);
+  double lowerA = LOWA(it);
+  double upperA = UPPA(it);
   
   // find NA and kill them
   for (int fna = 0; fna < maxca; ++fna) {
@@ -223,7 +223,8 @@ return l1l2M;
 // LIKELIHOOD - L1, L2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
-NumericMatrix L4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS, NumericVector DS, NumericVector THETA) {
+NumericMatrix L4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
+                NumericVector LOWA, NumericVector UPPA, NumericVector THETA) {
 
 int npers = awm.nrow();
 int nitem = awm.ncol();
@@ -245,8 +246,8 @@ for(int it = 0; it < nitem; it++)
   double alpha = ALPHA(it);
   NumericVector delta = DELTA(_,it);
   LogicalVector nas(maxca);
-  double lowerA = CS(it);
-  double upperA = DS(it);
+  double lowerA = LOWA(it);
+  double upperA = UPPA(it);
   
   // find NA and kill them
   for (int fna = 0; fna < maxca; ++fna) {
@@ -317,7 +318,7 @@ return l1l2M;
 
 // [[Rcpp::export]]
 NumericMatrix L4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
-                          NumericVector CS, NumericVector DS,
+                          NumericVector LOWA, NumericVector UPPA,
                           NumericVector THETA, double H) {
 
 int npers = awm.nrow();
@@ -340,8 +341,8 @@ for(int it = 0; it < nitem; it++)
   double alpha = ALPHA(it);
   NumericVector delta = DELTA(_,it);
   LogicalVector nas(maxca);
-  double lowerA = CS(it);
-  double upperA = DS(it);
+  double lowerA = LOWA(it);
+  double upperA = UPPA(it);
   
   // find NA and kill them
   for (int fna = 0; fna < maxca; ++fna) {
@@ -406,7 +407,7 @@ return l1l2M;
 
 // [[Rcpp::export]]
 List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
-NumericVector CS, NumericVector DS, NumericVector THETA, String wm, 
+NumericVector LOWA, NumericVector UPPA, NumericVector THETA, String wm, 
 int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
@@ -420,7 +421,7 @@ if(wm == "wle")
     
   for(int newr = 0; newr < maxsteps; newr++)
     {
-    NumericMatrix reso = L4pl_wle(awm,DELTA,ALPHA,CS,DS,THETA);
+    NumericMatrix reso = L4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETA);
     THETA = reso(_,5);
     
     NumericVector diffs = reso(_,4);
@@ -444,7 +445,7 @@ if(wm == "wle")
 
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = L4pl(awm,DELTA,ALPHA,CS,DS,THETA,map,mu,sigma2);
+      NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETA,map,mu,sigma2);
       THETA = reso(_,3);
       
       NumericVector diffs = reso(_,2);
@@ -466,7 +467,7 @@ if(wm == "wle")
        bool map = TRUE; 
           for(int newr = 0; newr < maxsteps; newr++)
             {
-            NumericMatrix reso = L4pl(awm,DELTA,ALPHA,CS,DS,THETA,map,mu,sigma2);
+            NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETA,map,mu,sigma2);
             THETA = reso(_,3);
             
             NumericVector diffs = reso(_,2);
@@ -488,7 +489,7 @@ if(wm == "wle")
             
             for(int newr = 0; newr < maxsteps; newr++)
               {
-              NumericMatrix reso = L4pl_robust(awm,DELTA,ALPHA,CS,DS,THETA,H);
+              NumericMatrix reso = L4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETA,H);
               THETA = reso(_,3);
               
               NumericVector diffs = reso(_,2);
@@ -816,7 +817,8 @@ return corrts;
 // P FUNCTION L1, L2 --->>>  WLE  <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
-NumericMatrix L12gpcm_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA) {
+NumericMatrix L12gpcm_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
+                          NumericVector THETA) {
 // awm = antwortmatrix
 // 
 int npers = awm.nrow();
@@ -1147,7 +1149,7 @@ return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
 
 // [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_mle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
-                           NumericVector CS, NumericVector DS, NumericVector THETA, 
+                           NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model, NumericVector mu, NumericVector sigma2, bool map) {
 // awm = antwortmatrix
 // 
@@ -1178,8 +1180,8 @@ for(int it = 0; it < nitem; it++)
   if(modit == "4PL")  
     {
 
-  double lowerA = CS(it);
-  double upperA = DS(it);
+  double lowerA = LOWA(it);
+  double upperA = UPPA(it);
   
   // find NA and kill them
   for (int fna = 0; fna < maxca; fna++) {
@@ -1322,7 +1324,7 @@ return l1l2M;
 
 // [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
-                           NumericVector CS, NumericVector DS, NumericVector THETA, 
+                           NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model)
 {
 // awm = antwortmatrix
@@ -1356,8 +1358,8 @@ for(int it = 0; it < nitem; it++)
    if(modit == "4PL")  
       {
 
-      double lowerA = CS(it);
-      double upperA = DS(it);
+      double lowerA = LOWA(it);
+      double upperA = UPPA(it);
       
       // find NA and kill them
       for (int fna = 0; fna < maxca; ++fna) {
@@ -1496,7 +1498,7 @@ return l1l2M;
 
 // [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
-                           NumericVector CS, NumericVector DS, NumericVector THETA, 
+                           NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model, double H) {
 // awm = antwortmatrix
 // 
@@ -1527,8 +1529,8 @@ for(int it = 0; it < nitem; it++)
   if(modit == "4PL")  
     {
 
-  double lowerA = CS(it);
-  double upperA = DS(it);
+  double lowerA = LOWA(it);
+  double upperA = UPPA(it);
   
   // find NA and kill them
   for (int fna = 0; fna < maxca; fna++) {
@@ -1652,8 +1654,8 @@ return l1l2M;
 // NR - Algorithm mixed --->>>  MLE + WLE + MAP <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++
 
 // [[Rcpp::export]]
-List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector CS,
-              NumericVector DS, NumericVector THETA, CharacterVector model,
+List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
+              NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model,
               String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
@@ -1666,7 +1668,7 @@ if(wm == "wle")
     
   for(int newr = 0; newr < maxsteps; newr++)
     {
-    NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,CS,DS,THETA,model);
+    NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model);
     THETA = reso(_,5);
     
     if( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1)))
@@ -1685,7 +1687,7 @@ if(wm == "wle")
     bool map = FALSE;
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,CS,DS,THETA,model, mu, sigma2, map);
+      NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, mu, sigma2, map);
       THETA = reso(_,3);
       
       if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
@@ -1704,7 +1706,7 @@ if(wm == "wle")
         
           for(int newr = 0; newr < maxsteps; newr++)
             {
-            NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,CS,DS,THETA,model, mu, sigma2, map);
+            NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, mu, sigma2, map);
             THETA = reso(_,3);
             
             if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
@@ -1723,7 +1725,7 @@ if(wm == "wle")
 
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,CS,DS,THETA,model, H);
+      NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, H);
       THETA = reso(_,3);
       
       if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))

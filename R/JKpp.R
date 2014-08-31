@@ -80,9 +80,7 @@ if(type %in% c("mle","wle","map","robust"))
     {
       
     
-    jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun],
-                                  CS = lowerA[-jkrun],DS = upperA[-jkrun], THETA = theta_start, 
-                                  wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
+    jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun], LOWA = lowerA[-jkrun],UPPA = upperA[-jkrun], THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
         
     }
   
@@ -319,9 +317,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
     {
       
       
-      jk_mat[,jkrun] <- NR_mixed(awm=respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],
-                                 ALPHA = slopes[-jkrun],CS = lowerA[-jkrun],DS = upperA[-jkrun],
-                                 THETA = theta_start, model=model2est,wm=type,maxsteps=maxsteps,
+      jk_mat[,jkrun] <- NR_mixed(awm=respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun],LOWA = lowerA[-jkrun],UPPA = upperA[-jkrun],THETA = theta_start, model=model2est,wm=type,maxsteps=maxsteps,
                                  exac=exac,mu=mu,sigma2=sigma2,H=H)$resPP[,1] 
       
     }
