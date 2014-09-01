@@ -29,7 +29,7 @@ thresl <- apply(thres,2,function(x) length(x) - sum(is.na(x)))
 if(allNA){stop("Check thres input! Some colums contain only NA.\n")}
 
 # respm
-itmax <- apply(respm,2,function(x) max(x))
+itmax <- apply(respm,2,function(x) max(x, na.rm=TRUE))
 if(any(itmax > (thresl-1))) stop("Responses in categories which so not exist according to thres!\n")
   
 # theta
