@@ -29,7 +29,7 @@ model2est <- findmodel(THRESx)
 awm3 <- awm2 <- awm 
 awm2[3,1] <- 3
 
-awm3[,1] <- NA
+#awm3[,1] <- NA
 
 # ------------------------- testing 1>>>
 
@@ -49,7 +49,7 @@ test_that("errors - warnings misspelling and length #1",{
   
   expect_that(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
   
-  expect_that(PPall(respm = awm3,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_that(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
   
   expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est, type="robust"), gives_warning())
 })

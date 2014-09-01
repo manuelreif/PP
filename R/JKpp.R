@@ -50,7 +50,7 @@ slopes <- estobj$ipar$slopes
 lowerA <- estobj$ipar$lowerA
 upperA <- estobj$ipar$upperA
 #theta_start <- estobj$ipar$theta_start
-theta_start <- rep(0,ncol(respm))
+theta_start <- rep(0,nrow(respm))
 mu <- estobj$ipar$mu
 sigma2 <- estobj$ipar$sigma2
 cont <- estobj$ipar$cont
@@ -169,7 +169,7 @@ JKpp.gpcm <- function(estobj, cmeth="mean", maxsteps=500,
 #   lowerA <- estobj$ipar$lowerA
 #   upperA <- estobj$ipar$upperA
   #theta_start <- estobj$ipar$theta_start
-  theta_start <- rep(0,ncol(respm))
+  theta_start <- rep(0,nrow(respm))
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
@@ -289,7 +289,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
   lowerA <- estobj$ipar$lowerA
   upperA <- estobj$ipar$upperA
   #theta_start <- estobj$ipar$theta_start
-  theta_start <- rep(0,ncol(respm))
+  theta_start <- rep(0,nrow(respm))
   mu <- estobj$ipar$mu
   sigma2 <- estobj$ipar$sigma2
   cont <- estobj$ipar$cont
@@ -422,8 +422,8 @@ cco <- function(psvalues,cmeth)
     
     jkest <- apply(psvalues,1,function(psv)
     {
-      negpv <- psv[psv <= 0]
-      pospv <- psv[psv > 0]
+      negpv <- psv[psv <= 0 & !is.na(psv) & !is.nan(psv)]
+      pospv <- psv[psv > 0 & !is.na(psv) & !is.nan(psv)]
       
       if(all(is.nan(psv)))
       {
