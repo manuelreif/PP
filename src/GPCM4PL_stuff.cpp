@@ -675,7 +675,8 @@ for(int it = 0; it < nitem; it++)
       rs += ks * alpha * ergP;
       // second derivates right and left side
       rs2 += ks * alpha * ergP;
-      ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      ls2 += ks*ks * pow(alpha,2) * ergP;
         }
       rs2 = pow(rs2,2);
       
@@ -889,7 +890,8 @@ for(int it = 0; it < nitem; it++)
       rs += ks * alpha * ergP;
       // second derivates right and left side
       rs2 += ks * alpha * ergP;
-      ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      ls2 += ks*ks * pow(alpha,2) * ergP;
         }
       rs2 = pow(rs2,2);
       
@@ -1021,7 +1023,8 @@ for(int it = 0; it < nitem; it++)
       rs += ks * alpha * ergP;
       // second derivates right and left side
       rs2 += ks * alpha * ergP;
-      ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+      ls2 += ks*ks * pow(alpha,2) * ergP;
         }
       rs2 = pow(rs2,2);
       
@@ -1269,7 +1272,8 @@ for(int it = 0; it < nitem; it++)
             rs += ks * alpha * ergP;
             // second derivates right and left side
             rs2 += ks * alpha * ergP;
-            ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+            //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+            ls2 += ks*ks * pow(alpha,2) * ergP;
               }
             rs2 = pow(rs2,2);
             
@@ -1454,7 +1458,8 @@ for(int it = 0; it < nitem; it++)
           rs += ks * alpha * ergP;
           // second derivates right and left side
           rs2 += ks * alpha * ergP;
-          ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+          //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+          ls2 += ks*ks * pow(alpha,2) * ergP;
             }
           rs2 = pow(rs2,2);
           
@@ -1620,7 +1625,8 @@ for(int it = 0; it < nitem; it++)
             rs += ks * alpha * ergP;
             // second derivates right and left side
             rs2 += ks * alpha * ergP;
-            ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+            //ls2 += pow(ks,2) * pow(alpha,2) * ergP;
+            ls2 += ks*ks * pow(alpha,2) * ergP;
               }
             rs2 = pow(rs2,2);
             
