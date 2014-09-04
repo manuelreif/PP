@@ -37,12 +37,12 @@ for(int pe = 0; pe < npers; pe++)
   
   if(sumresp == summax)
     {
-    pperg(pe,0)  = INFINITY;
+    pperg(pe,0)  = R_PosInf;
     pperg(pe,1)  = NA_REAL;
       
     } else if(sumresp == 0)
       {
-      pperg(pe,0)  = -INFINITY;
+      pperg(pe,0)  =  R_NegInf;
       pperg(pe,1)  = NA_REAL;  
         
       } else 

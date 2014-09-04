@@ -166,7 +166,7 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
 
 
 # ----- MLE: Inf and NA ---------------#
-if(type=="mle")
+if(type=="mle" | type=="robust")
   {
     resPPx <- ansol(respm,maxsc)  
     respm <- respm[!is.na(resPPx[,2]),]
