@@ -232,7 +232,7 @@ if(cont$killdupli)
    resPP$resPP <- resPP$resPP[dupvec$posvec,]
   }
 
-if(type=="mle")
+if(type=="mle" | type=="robust")
   {
    resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
    resPP$resPP <- resPPx

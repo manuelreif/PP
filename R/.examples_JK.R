@@ -4,7 +4,7 @@
 
 ### data creation ##########
 
-set.seed(1622)
+set.seed(1623)
 # intercepts
 diffpar <- seq(-3,3,length=12)
 # slope parameters
