@@ -285,11 +285,15 @@ if(type %in% c("mle","wle","map"))
   {
     
   resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, LOWA = lowerA, UPPA = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
+  
+  resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
     
   } else if(type == "robust")
     {
     
     resPP <- NR_4PL(respm,DELTA = thres,ALPHA = slopes, LOWA = lowerA, UPPA = upperA, THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)
+    
+    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
     
     } else if(type == "eap")
         {

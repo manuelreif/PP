@@ -170,11 +170,15 @@ if(type %in% c("mle","wle","map"))
     # ----- estimation procedure -------------# 
     
     resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2,H=H) 
+    
+    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
   } else if(type == "robust")
     {
     warning("Robust estimation for GPCM is still very experimental! \n")
     resPP <- NR_GPCM(respm,thres,slopes,theta_start,type,maxsteps,exac,mu,sigma2,H=H) 
       
+    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
+    
     } else if(type == "eap")
       {
         resPP <- list()

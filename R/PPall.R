@@ -198,18 +198,21 @@ cat("type =",type,"\n")
 
 
 
-
 if(type %in% c("mle","wle","map"))
   {
     # ----- estimation procedure -------------# 
     
     resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA = lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H)
     
+    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
+    
   } else if(type == "robust")
   {
     warning("Robust estimation for GPCM is still very experimental! \n")
     
     resPP <- NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA= lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H=H) 
+    
+    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
     
   } else if(type == "eap")
     {
