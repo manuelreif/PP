@@ -15,7 +15,12 @@ dontgit
 Testing_functions.R
 check_runtime_dup.R
 informelles_testen/
+informelles_testen
 PP.Rproj
 .dll
 LICENSE
 man-roxygen
+ideas
+Makefile
+newPfit
+figure

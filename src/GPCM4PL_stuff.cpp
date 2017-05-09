@@ -205,12 +205,42 @@ if(map)
     
     l1l2M(_,1) = l1l2M(_,1) * (-1);
     l1l2M(_,2) = (l1l2M(_,0) - corrterm1) / (l1l2M(_,1)-corrterm2);
+    
+    
+    // Korrekturterm um divergieren zu verhindern:
+    for(int ai = 0; ai<npers; ai++)
+      {
+        if(std::abs(l1l2M(ai,2)) <= 5) 
+        {
+          continue;
+        } else {
+          l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+        }
+        
+      }
+      
+    
     l1l2M(_,3) = THETA - l1l2M(_,2); 
     
   } else {
     
           l1l2M(_,1) = l1l2M(_,1) * (-1);
           l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+          
+          
+          for(int ai = 0; ai<npers; ai++)
+            {
+              if(std::abs(l1l2M(ai,2)) <= 5) 
+              {
+                continue;
+              } else {
+                l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+              }
+              
+            }
+            
+          
+          
           l1l2M(_,3) = THETA - l1l2M(_,2);
     
          }
@@ -307,6 +337,21 @@ for(int it = 0; it < nitem; it++)
 NumericVector corru = l1l2M(_,3) / (2 * l1l2M(_,1)*l1l2M(_,1));
 
 l1l2M(_,4) = (l1l2M(_,0) + l1l2M(_,2) / (2*l1l2M(_,1))) / (l1l2M(_,1) + corru);
+
+// Korrekturterm um divergieren zu verhindern:
+  for(int ai = 0; ai<npers; ai++)
+    {
+      if(std::abs(l1l2M(ai,4)) <= 5) 
+        {
+          continue;
+        } else {
+                l1l2M(ai,4) = l1l2M(ai,4)/std::abs(l1l2M(ai,4)) * 5;
+               }
+      
+    }
+    
+
+
 l1l2M(_,5) = THETA + l1l2M(_,4);
 //l1l2M(_,1) = l1l2M(_,1) * (-1); // erst jetzt * (-1)
 
@@ -395,6 +440,19 @@ for(int it = 0; it < nitem; it++)
 l1l2M(_,1) = l1l2M(_,1) * (-1);
 //l1l2M(_,1) = l1l2M(_,1);
 l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+
+// Korrekturterm um divergieren zu verhindern:
+for(int ai = 0; ai<npers; ai++)
+  {
+    if(std::abs(l1l2M(ai,2)) <= 5) 
+    {
+      continue;
+    } else {
+      l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+    }
+    
+  }
+
 l1l2M(_,3) = THETA - l1l2M(_,2);
 
 //std::cout << "l1 = " << l1l2M(6,0) <<  std::endl ;
@@ -705,6 +763,20 @@ if(map)
   
   l1l2M(_,1) = l1l2M(_,1) * (-1);
   l1l2M(_,2) = (l1l2M(_,0) - corrterm1) / (l1l2M(_,1)-corrterm2);
+  
+  // Korrekturterm um divergieren zu verhindern:
+  for(int ai = 0; ai<npers; ai++)
+    {
+      if(std::abs(l1l2M(ai,2)) <= 5) 
+      {
+        continue;
+      } else {
+        l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+      }
+      
+    }
+  
+  
   l1l2M(_,3) = THETA - l1l2M(_,2); 
   
   } else 
@@ -712,6 +784,20 @@ if(map)
       
     l1l2M(_,1) = l1l2M(_,1) * (-1);
     l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+    
+    // Korrekturterm um divergieren zu verhindern:
+    for(int ai = 0; ai<npers; ai++)
+      {
+        if(std::abs(l1l2M(ai,2)) <= 5) 
+        {
+          continue;
+        } else {
+          l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+        }
+        
+      }
+    
+    
     l1l2M(_,3) = THETA - l1l2M(_,2);
       
     }
@@ -941,6 +1027,20 @@ l1l2M(_,3) = l1l2M(_,3)/(2*l1l2M(_,1)*l1l2M(_,1));
 //l1l2M(_,5) = (l1l2M(_,0) + l1l2M(_,2)/(2*l1l2M(_,3))) / (l1l2M(_,3)*(-1) + l1l2M(_,4)); // here
 
 l1l2M(_,4) = (l1l2M(_,0) + l1l2M(_,2)/(2*l1l2M(_,1))) / (l1l2M(_,1)*(-1) + l1l2M(_,3));
+
+// Korrekturterm um divergieren zu verhindern:
+for(int ai = 0; ai<npers; ai++)
+  {
+    if(std::abs(l1l2M(ai,4)) <= 5) 
+    {
+      continue;
+    } else {
+      l1l2M(ai,4) = l1l2M(ai,4)/std::abs(l1l2M(ai,4)) * 5;
+    }
+    
+  }
+
+
 l1l2M(_,5) = THETA - l1l2M(_,4);
 
 
@@ -1047,6 +1147,19 @@ for(int it = 0; it < nitem; it++)
    
     l1l2M(_,1) = l1l2M(_,1) * (-1);
     l1l2M(_,2) = l1l2M(_,0)/l1l2M(_,1);
+    
+    // Korrekturterm um divergieren zu verhindern:
+    for(int ai = 0; ai<npers; ai++)
+      {
+        if(std::abs(l1l2M(ai,2)) <= 5) 
+        {
+          continue;
+        } else {
+          l1l2M(ai,2) = l1l2M(ai,2)/std::abs(l1l2M(ai,2)) * 5;
+        }
+        
+      }
+      
     l1l2M(_,3) = THETA - l1l2M(_,2);
       
 

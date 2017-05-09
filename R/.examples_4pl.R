@@ -1,7 +1,19 @@
 ################# 4 PL #############################################################
 
 
-### data creation ##########
+### real data ##########
+
+data(pp_amt)
+
+d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
+
+rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
+summary(rd_res)
+
+
+
+### fake data ##########
+# smaller ... faster
 
 set.seed(1522)
 # intercepts
@@ -13,7 +25,6 @@ ua     <- round(runif(12,0.8,1),2)
 
 # response matrix
 awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
-
 
 
 ## 1PL model ##### 
