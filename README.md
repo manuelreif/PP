@@ -23,6 +23,7 @@ install_github("PP", "manuelreif", ref="master")
 * Jan programmed the great `Pfit()` function, to estimate a bunch of **fit indices**!
 *  Use the brandnew `PPass()` function, to estimate Person Parameters and fit indices in one step!
 * We added a real-world dataset, which contains responses to a adaptive intelligence test. Load the data and start trying the functions of PP.
+* You can now fit your model with the great `eRm` package, and put the object into the `PPass()` function to estimate person parameters and person fit indices.
 
 
 
