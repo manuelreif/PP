@@ -3,6 +3,7 @@ PP
 
 [![](http://www.r-pkg.org/badges/version/PP)](http://www.r-pkg.org/pkg/PP)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/PP)](http://www.r-pkg.org/pkg/PP)
+[![Build Status](https://travis-ci.org/manuelreif/PP.svg?branch=master)](https://travis-ci.org/manuelreif/PP)
 
 ### Version 0.6.0-05 is on github, and will be soon on cran!
 
