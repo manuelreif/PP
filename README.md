@@ -15,7 +15,7 @@ To install this package from github, install [devtools](https://github.com/hadle
 
 ```R
 library(devtools)
-install_github("PP", "manuelreif", ref="master")
+install_github("PP", "manuelreif", ref="master", build_vignettes = TRUE)
 ```
 
 ### What's NEW?
