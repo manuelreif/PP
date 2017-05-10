@@ -12,7 +12,6 @@ Testing_functions*.R
 Testing_*
 wiki
 dontgit
-Testing_functions.R
 check_runtime_dup.R
 informelles_testen/
 informelles_testen
@@ -24,3 +23,4 @@ ideas
 Makefile
 newPfit
 figure
+^\.travis\.yml$
