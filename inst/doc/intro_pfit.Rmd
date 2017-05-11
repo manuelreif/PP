@@ -7,7 +7,7 @@ output:
     highlight: github
 ---
 <!--
-%\VignetteEngine{knitr::knitr}
+%\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Getting started with Person-Fit in PP}
 %\VignetteEncoding{UTF-8}
 -->

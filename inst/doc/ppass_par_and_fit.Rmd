@@ -1,6 +1,15 @@
+---
+title: Analyzing a dataset
+author: Manuel Reif
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
 <!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Getting started with Personfit in PP}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Analyzing a dataset}
+%\VignetteEncoding{UTF-8}
 -->
 # Analyzing a simulated data set
 
@@ -104,11 +113,6 @@ setorder(outdt,ID)
 outdt[, c("su") := NULL]
 outdt
 ```
-
-### Using person fit statistics 
-
-
-
 
 
 

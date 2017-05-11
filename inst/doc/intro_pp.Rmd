@@ -1,6 +1,15 @@
+---
+title: Getting started with PP
+author: Manuel Reif
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
 <!--
-%\VignetteEngine{knitr::knitr}
+%\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Getting started with PP}
+%\VignetteEncoding{UTF-8}
 -->
 # Getting started with PP
 
