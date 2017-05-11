@@ -7,7 +7,7 @@ output:
     highlight: github
 ---
 <!--
-%\VignetteEngine{knitr::rmarkdown}
+%\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Getting started with Person-Fit in PP}
 %\VignetteEncoding{UTF-8}
 -->
@@ -15,7 +15,8 @@ output:
 
 A brief introduction of all currently implemented person-fit functions will be added soon. Currently the **LZ, LZ*** and also the **Infit-Outfit-Statistics** are implemented. We also added the Infit-Outfit-Functions for the Partial-Credit Model. Meanwhile we are working on plots for a better understanding of the person misfit as well as on inference statistic methods.
 
-```{r settings}
+
+```r
 knitr::opts_chunk$set(message = FALSE, results='hide')
 ```
 
@@ -23,7 +24,8 @@ knitr::opts_chunk$set(message = FALSE, results='hide')
 
 Now a simple example will be given.
 First, we will simulate some data for our hands on example:
-```{r start, message=FALSE, warning=FALSE}
+
+```r
 library(PP)
 
 set.seed(1337)
@@ -41,7 +43,8 @@ awm <- matrix(sample(0:1,100*15,replace=TRUE),ncol=15)
 
 We will start with a simple 1PL-Model. First, we have to estimate the person parameters. Here we have to choose an estimation method. It is important, that you can choose **mle, wle or map** only for the LZ and LZ* Index. For the Infit-Outfit statistic we support **mle and wle** estimates.
 
-```{r 1pl, message=FALSE, warning=FALSE}
+
+```r
 # MLE
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE
@@ -49,8 +52,8 @@ res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
 ```
 
 We also support the 2PL, 3PL and 4PL Model:
-```{r 234-pl, message=FALSE, warning=FALSE}
 
+```r
 # ------------------------------------------------------------------------
 ## 2PL model #####
 # ------------------------------------------------------------------------
@@ -81,8 +84,8 @@ res4plwle <- PP_4pl(respm = awm,thres = diffpar,
 
 After the estimation of the person parameter we are able to calculate the person fits. At this point you are able to calculate only one kind of personfit as well as all various simultaneously (as shown next).
 
-```{r pfit, message=FALSE, warning=FALSE}
 
+```r
 # ------------------------------------------------------------------------
 ## 1PL model #####
 # ------------------------------------------------------------------------
@@ -115,7 +118,8 @@ pfit4pl_li <- Pfit(respm=awm,pp=res4plwle,fitindices=c("lzstar","infit","outfit"
 
 We can also use different person parameter estimates.
 
-```{r wle, message=FALSE, warning=FALSE}
+
+```r
 # ------------------------------------------------------------------------
 ## 1PL model #####
 # ------------------------------------------------------------------------
@@ -127,7 +131,8 @@ pfit1pl_wle_l <- Pfit(respm=awm,pp=res1plwle,fitindices="lzstar")
 ```
 
 If desired you can simply plot the results of the person-fit statistics as shown below.
-```{r example-1, message=FALSE, warning=FALSE}
+
+```r
 # eine Grafik erzeugen
 
 res.pp <- Pfit(respm=awm,pp=res1plmle,fitindices=c("lzstar"),SE=TRUE)
@@ -139,7 +144,11 @@ plot(x,y, type="l", lwd=2, col = "blue", xlim = c(-8.5,8.5),xlab="", ylab="")
 title(main="Density plot of lz* Person-Fit", xlab="density", ylab="score")
 lines(density(res.pp$lzstar[,"lzstar"], bw = 0.5), lwd = 2, lty = 2)
 rug(res.pp$lzstar[,"lzstar"],col="red")
+```
 
+![plot of chunk example-1](figure/example-1-1.png)
+
+```r
 # zweite Grafik erzeugen
 x <- 1:nrow(res.pp$lzstar)
 avg <- res.pp$lzstar[,"lzstar"]
@@ -154,11 +163,14 @@ arrows(avg-sdev, x, avg+sdev, length=0.05, angle=90, code=3)
 abline(v=0,col = "red", lwd = 3)
 ```
 
+![plot of chunk example-1](figure/example-1-2.png)
+
 ## Real data example
 
 
 First we have to load the dataset
-```{r example-2, message=FALSE, warning=FALSE}
+
+```r
 data(pp_amt)
 betas <- pp_amt$betas$Itemparameter
 diffpar <- pp_amt$Itemparameter
@@ -188,7 +200,11 @@ plot(x,y, type="l", lwd=2, col = "blue", xlim = c(-lim,lim),xlab="", ylab="")
 title(main="Density plot of lz* Person-Fit", xlab="density", ylab="score")
 lines(density(out[,"lzstar"], bw = 0.5), lwd = 2, lty = 2)
 rug(out[,"lzstar"],col="red")
+```
 
+![plot of chunk example-2](figure/example-2-1.png)
+
+```r
 # second example of illustration
 x <- 1:nrow(out)
 avg <- out[,"lzstar"]
@@ -204,6 +220,8 @@ axis(side=2, at = c(1:nrow(out)),labels = c(1:nrow(out)), las = 2,cex.axis=0.66)
 arrows(avg-sdev, x, avg+sdev, length=0.05, angle=90, code=3)
 abline(v=0,col = "red", lwd = 3)
 ```
+
+![plot of chunk example-2](figure/example-2-2.png)
 
 **Interpretation of some selected person-fit statistics.**
 

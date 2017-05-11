@@ -1,29 +1,7 @@
----
-title: Getting started with Person-Fit in PP
-author: Jan Steinfeld
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
----
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Getting started with Person-Fit in PP}
-%\VignetteEncoding{UTF-8}
--->
-# Getting started with Person-Fit functions
-
-A brief introduction of all currently implemented person-fit functions will be added soon. Currently the **LZ, LZ*** and also the **Infit-Outfit-Statistics** are implemented. We also added the Infit-Outfit-Functions for the Partial-Credit Model. Meanwhile we are working on plots for a better understanding of the person misfit as well as on inference statistic methods.
-
-```{r settings}
+## ----settings------------------------------------------------------------
 knitr::opts_chunk$set(message = FALSE, results='hide')
-```
 
-## First example
-
-Now a simple example will be given.
-First, we will simulate some data for our hands on example:
-```{r start, message=FALSE, warning=FALSE}
+## ----start, message=FALSE, warning=FALSE---------------------------------
 library(PP)
 
 set.seed(1337)
@@ -37,19 +15,14 @@ ua     <- round(runif(15,0.8,1),2)
 
 # simulate response matrix (not following any IRT model)
 awm <- matrix(sample(0:1,100*15,replace=TRUE),ncol=15)
-```
 
-We will start with a simple 1PL-Model. First, we have to estimate the person parameters. Here we have to choose an estimation method. It is important, that you can choose **mle, wle or map** only for the LZ and LZ* Index. For the Infit-Outfit statistic we support **mle and wle** estimates.
-
-```{r 1pl, message=FALSE, warning=FALSE}
+## ----1pl, message=FALSE, warning=FALSE-----------------------------------
 # MLE
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
-```
 
-We also support the 2PL, 3PL and 4PL Model:
-```{r 234-pl, message=FALSE, warning=FALSE}
+## ----234-pl, message=FALSE, warning=FALSE--------------------------------
 
 # ------------------------------------------------------------------------
 ## 2PL model #####
@@ -77,11 +50,8 @@ res4plmle <- PP_4pl(respm = awm,thres = diffpar,
 # WLE
 res4plwle <- PP_4pl(respm = awm,thres = diffpar,
                     slopes = sl,lowerA = la,upperA=ua,type = "wle")
-```
 
-After the estimation of the person parameter we are able to calculate the person fits. At this point you are able to calculate only one kind of personfit as well as all various simultaneously (as shown next).
-
-```{r pfit, message=FALSE, warning=FALSE}
+## ----pfit, message=FALSE, warning=FALSE----------------------------------
 
 # ------------------------------------------------------------------------
 ## 1PL model #####
@@ -111,11 +81,8 @@ pfit3pl_li <- Pfit(respm=awm,pp=res3plwle,fitindices=c("lzstar","infit","outfit"
 pfit4pl_lz <- Pfit(respm=awm,pp=res4plwle,fitindices="lzstar")
 ## LZ*-Index combined with Infit-Outfit #####
 pfit4pl_li <- Pfit(respm=awm,pp=res4plwle,fitindices=c("lzstar","infit","outfit"))
-```
 
-We can also use different person parameter estimates.
-
-```{r wle, message=FALSE, warning=FALSE}
+## ----wle, message=FALSE, warning=FALSE-----------------------------------
 # ------------------------------------------------------------------------
 ## 1PL model #####
 # ------------------------------------------------------------------------
@@ -124,10 +91,8 @@ We can also use different person parameter estimates.
 pfit1pl_mle_l <- Pfit(respm=awm,pp=res1plmle,fitindices="lzstar")
 ## wle ####
 pfit1pl_wle_l <- Pfit(respm=awm,pp=res1plwle,fitindices="lzstar")
-```
 
-If desired you can simply plot the results of the person-fit statistics as shown below.
-```{r example-1, message=FALSE, warning=FALSE}
+## ----example-1, message=FALSE, warning=FALSE-----------------------------
 # eine Grafik erzeugen
 
 res.pp <- Pfit(respm=awm,pp=res1plmle,fitindices=c("lzstar"),SE=TRUE)
@@ -152,13 +117,8 @@ plot(avg, x,
 )
 arrows(avg-sdev, x, avg+sdev, length=0.05, angle=90, code=3)
 abline(v=0,col = "red", lwd = 3)
-```
 
-## Real data example
-
-
-First we have to load the dataset
-```{r example-2, message=FALSE, warning=FALSE}
+## ----example-2, message=FALSE, warning=FALSE-----------------------------
 data(pp_amt)
 betas <- pp_amt$betas$Itemparameter
 diffpar <- pp_amt$Itemparameter
@@ -203,26 +163,4 @@ plot(avg, x,
 axis(side=2, at = c(1:nrow(out)),labels = c(1:nrow(out)), las = 2,cex.axis=0.66)
 arrows(avg-sdev, x, avg+sdev, length=0.05, angle=90, code=3)
 abline(v=0,col = "red", lwd = 3)
-```
 
-**Interpretation of some selected person-fit statistics.**
-
-In the second example we used the provided real dataset of the 'Adaptive Matrices Test'. Theses data where collected at the Unitersity of Vienna, Fakulty of Psychology, Division of Psychological Assessment and Applied Psychometrics. In the second plot we used only a subset of the provided data, because the computation of the standard error (here we used a jackknife (Efron & Stein, 1981)) takes a while.
-Magis, Raîche & Béland (2012) and also Armstrong, Stoumbos, Kung and Shi (2007) provide useful information for the inrepretation of the lz (Drasgow, Levine & Williams, 1985) and lz* (Snijders, 2001) person-fit index.
-The interpretation of the lz-values is very simple. The smaller (negative) the values, the stronger the indicated misfit. The lz-values ar asymptotically standard normally distributed. Molenaar and Hoijtink (1990) (and others) showed, that the asymptotically standard normal distrubution only holds, if the $\theta$ values are known. To overcome thes problem Snijders (2001) intruduced his lz* person-fit index. The inrepration of this index does not change. In summary Magis, Raîche & Béland (2012) propose if the lz* index is lower than a certain critical value $z_\alpha$, than this person-fit value indicates a misfit.
-
-
-# References
-Armstrong, R.D., Z.G. Stoumbos, M.T. Kung, and M. Shi. 2007. On the Performance of the Lz Person-Fit Statistic. *Practical Assessment, Research & Evaluation*, 12(16).
-
-Drasgow, F., M.V. Levine, and E.A. Williams. 1985. Appropriateness Measurement with Polychotomous Item Response Models and Standardized Indices. *British Journal of Mathematical and Statistical Psychology*, 38(1). Wiley Online Library: 67-86.
-
-Efron, B., and C. Stein. 1981. The Jackknife Estimate of Variance. *The Annals of Statistics JSTOR*, 586-96.
-
-Magis, D., G. Raîche, and S. Béland. 2012. A Didactic Presentation of Snijders's Lz* Index of Person Fit with Emphasis on Response Model Selection and Ability Estimation *Journal of Educational and Behavioral Statistics*, 37(1). SAGE Publications Sage CA: Los Angeles, CA: 57-81.
-
-Molenaar, I.W., and H. Hoijtink. 1990. The Many Null Distributions of Person Fit Indices. *Psychometrika*, 55(1). Springer: 75-106.
-
-Snijders, T.AB. 2001. Asymptotic Null Distribution of Person Fit Statistics with Estimated Person Parameter. *Psychometrika*}, 66(3). Springer: 331-342.
-
-Snijders, T.B. 2001. Asymptotic Null Distribution of Person Fit Statistics with Estimated Person Parameter. *Rasch Measurement Transactions*, 66(3): 331-342.

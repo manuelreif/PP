@@ -1,29 +1,10 @@
----
-title: Analyzing a dataset
-author: Manuel Reif
-output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
----
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Analyzing a dataset}
-%\VignetteEncoding{UTF-8}
--->
-# Analyzing a simulated data set
-
-
-```{r loadall}
+## ----loadall-------------------------------------------------------------
 
 library(PP)
 library(data.table)
 
-```
 
-## First example
-
-```{r simulate_data1}
+## ----simulate_data1------------------------------------------------------
 set.seed(1526)
 
 # intercepts
@@ -39,11 +20,8 @@ awm <- PP::sim_4pl(beta = diffpar, alpha = sl,
                    theta = rnorm(200))
 
 awm <- as.data.frame(awm)
-```
 
-### Estimating and using person parameters 
-
-```{r data_wrangling1}
+## ----data_wrangling1-----------------------------------------------------
 out <- PPass(respdf = awm,thres = diffpar,
              items="all", mod=c("1PL"), 
              fitindices=c("lz","lzstar","infit","outfit"))
@@ -65,23 +43,8 @@ outdt[, c("su") := NULL]
 
 # done
 outdt
-```
 
-
-### Using person fit statistics 
-
-
-
-
-
-
-
-## Second example
-
-
-Now there are two groups.
-
-```{r simulate_data2}
+## ----simulate_data2------------------------------------------------------
 
 awm <- PP::sim_4pl(beta = diffpar, alpha = sl, lowerA = la, 
                    upperA = ua, theta = c(rnorm(500),rnorm(500,0.5,1.2)))
@@ -89,11 +52,8 @@ awm <- PP::sim_4pl(beta = diffpar, alpha = sl, lowerA = la,
 awm <- as.data.frame(awm)
 
 
-```
 
-### Estimating and using person parameters 
-
-```{r data_wrangling2}
+## ----data_wrangling2-----------------------------------------------------
 out <- PPass(respdf = awm, thres = diffpar, 
              items="all", mod=c("1PL"), 
              fitindices= c("lz","lzstar","infit","outfit"))
@@ -112,7 +72,4 @@ outdt <- outdt[outdtu[,list(agegroup,roundest,PR)],,on=c("agegroup","roundest")]
 setorder(outdt,ID)
 outdt[, c("su") := NULL]
 outdt
-```
-
-
 
