@@ -21,8 +21,6 @@ awm <- matrix(sample(0:1,100*15,replace=TRUE),ncol=15)
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
-# MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
 
 ## ----234-pl, message=FALSE, warning=FALSE--------------------------------
 
@@ -93,8 +91,6 @@ pfit4pl_li <- Pfit(respm=awm,pp=res4plwle,fitindices=c("lzstar","infit","outfit"
 pfit1pl_mle_l <- Pfit(respm=awm,pp=res1plmle,fitindices="lzstar")
 ## wle ####
 pfit1pl_wle_l <- Pfit(respm=awm,pp=res1plwle,fitindices="lzstar")
-## map ####
-pfit1pl_map_l <- Pfit(respm=awm,pp=res1plmap,fitindices="lzstar")
 
 ## ----example-1, message=FALSE, warning=FALSE-----------------------------
 # eine Grafik erzeugen

@@ -1,6 +1,14 @@
+---
+title: Getting started with Person-Fit in PP
+author: Jan Steinfeld
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Getting started with PP}
+%\VignetteIndexEntry{Getting started with Person-Fit in PP}
 %\VignetteEncoding{UTF-8}
 -->
 # Getting started with Person-Fit functions
@@ -38,8 +46,6 @@ We will start with a simple 1PL-Model. First, we have to estimate the person par
 res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
 # WLE
 res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
-# MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
 ```
 
 We also support the 2PL, 3PL and 4PL Model:
@@ -118,8 +124,6 @@ We can also use different person parameter estimates.
 pfit1pl_mle_l <- Pfit(respm=awm,pp=res1plmle,fitindices="lzstar")
 ## wle ####
 pfit1pl_wle_l <- Pfit(respm=awm,pp=res1plwle,fitindices="lzstar")
-## map ####
-pfit1pl_map_l <- Pfit(respm=awm,pp=res1plmap,fitindices="lzstar")
 ```
 
 If desired you can simply plot the results of the person-fit statistics as shown below.
