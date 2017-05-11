@@ -1,6 +1,5 @@
 ################# 4 PL #############################################################
 
-
 ### real data ##########
 
 data(pp_amt)
@@ -9,7 +8,6 @@ d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
 
 rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
 summary(rd_res)
-
 
 
 ### fake data ##########
@@ -107,4 +105,3 @@ summary(res1plmle)
 res1plrob <- PP_4pl(respm = AWM,thres = diffpar, type = "robust")
 
 summary(res1plrob)
-

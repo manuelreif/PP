@@ -1,7 +1,5 @@
 
 library(eRm)
-
-
 ### real data ##########
 
 data(pp_amt)
@@ -22,7 +20,6 @@ my_data <- eRm::sim.rasch(200, 12)
 my_rm <- eRm::RM(my_data)
 
 res_pp1 <- PPass(my_rm)
-
 
 
 ## ========== PCM - eRm
@@ -64,4 +61,3 @@ out <- PPass(respdf = awm,thres = diffpar, items="all",
 
 # show first rows
 head(out)
-

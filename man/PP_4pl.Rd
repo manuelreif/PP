@@ -11,7 +11,7 @@ PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
 
-\item{thres}{A numeric vector or a numeric matrix which contains the threshold parameter for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!}
+\item{thres}{A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!}
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
 
@@ -82,7 +82,6 @@ weight:
 \examples{
 ################# 4 PL #############################################################
 
-
 ### real data ##########
 
 data(pp_amt)
@@ -91,7 +90,6 @@ d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
 
 rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
 summary(rd_res)
-
 
 
 ### fake data ##########
@@ -189,7 +187,6 @@ summary(res1plmle)
 res1plrob <- PP_4pl(respm = AWM,thres = diffpar, type = "robust")
 
 summary(res1plrob)
-
 }
 \references{
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.
