@@ -64,7 +64,6 @@
 #' @import utils
 #' @import stats
 #' @import graphics
-#' @import prettydoc
 #'
 #'@export
 #'
