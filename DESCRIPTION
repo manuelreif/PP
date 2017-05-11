@@ -25,8 +25,9 @@ Suggests:
     roxygen2,
     knitr,
     eRm,
-    data.table
+    data.table,
+    prettydoc
 Imports:
-    Rcpp (>= 0.11.2),prettydoc
+    Rcpp (>= 0.11.2)
 LinkingTo: Rcpp
 RoxygenNote: 6.0.1
