@@ -5,7 +5,7 @@ lz <- function( data,
                 lowerAs=NULL, 
                 slopes=NULL,
                 higherAs=NULL,...){ 
-  if(is.null(slopes)) slope <- rep(1,length(betas))
+  if(is.null(slopes)) slopes <- rep(1,length(betas))
   if(is.null(lowerAs))lowerAs <- rep(0,length(betas))
   if(is.null(higherAs))higherAs <- rep(1,length(betas))
   if(!all(apply(data,2,function(x) { all(na.omit(x) %in% 0:1) }))) stop("Please check the input, only 0/1/NA are allowed \n")
