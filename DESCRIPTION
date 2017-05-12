@@ -1,6 +1,6 @@
 Package: PP
 Type: Package
-Title: Person Parameter estimation
+Title: Person Parameter Estimation
 Version: 0.6.1
 Date: 2017-05-11
 Authors@R: c(
