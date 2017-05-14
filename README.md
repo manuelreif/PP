@@ -5,7 +5,7 @@ PP
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/PP)](http://www.r-pkg.org/pkg/PP)
 [![Build Status](https://travis-ci.org/manuelreif/PP.svg?branch=master)](https://travis-ci.org/manuelreif/PP)
 
-### Version 0.6.0-05 is on github, and will be soon on cran!
+### Version 0.6.1 is on cran!
 
 
 This R package provides Person Parameter estimation for the 1,2,3,4PL model and the generalized partial credit model. This package will soon be uploaded to cran!
