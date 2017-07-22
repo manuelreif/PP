@@ -90,7 +90,9 @@ d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
 
 rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
 summary(rd_res)
+
 rd_res1 <- PP_4pl(respm = d, thres = pp_amt$betas[,2], theta_start = 0,type = "wle")
+summary(rd_res1)
 
 ### fake data ##########
 # smaller ... faster
