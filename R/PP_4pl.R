@@ -162,8 +162,8 @@ if(is.null(theta_start))
     })
   } else if(length(theta_start) == 1)
       {
-      theta_start <- rep(theta_start, nrow(respm))  
-      }
+      theta_start <- rep(theta_start, nrow(respm))
+      } 
   
 
 ## --------- check user inputs
@@ -275,8 +275,9 @@ cat("type =",type,"\n")
               } else if(modest == "3pl_upperA")
                 {
                   lowerA <- rep(0,nitem)    
-                }
-        
+              }
+
+
 if(type %in% c("mle","wle","map"))
   {
     
@@ -299,7 +300,6 @@ if(type %in% c("mle","wle","map"))
           resPP$nsteps <- 0
         }
         
-      
 
   
 ### result preperation --------------------------
