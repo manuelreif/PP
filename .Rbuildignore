@@ -24,3 +24,6 @@ Makefile
 newPfit
 figure
 ^\.travis\.yml$
+Checks_PP.zip
+packagename_init.c
+BUILD.R

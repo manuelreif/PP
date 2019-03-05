@@ -50,3 +50,6 @@ newPfit
 *.png
 *.csv
 ideas
+Checks_PP.zip
+Build.R
+packagename_init.c

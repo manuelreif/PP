@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // P_4pl
 NumericVector P_4pl(NumericVector delta, double alpha, double theta, double la, double ua);
-RcppExport SEXP PP_P_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP) {
+RcppExport SEXP _PP_P_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,7 +22,7 @@ END_RCPP
 }
 // P_4pl4wle
 NumericVector P_4pl4wle(NumericVector delta, double alpha, double theta, double la, double ua);
-RcppExport SEXP PP_P_4pl4wle(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP) {
+RcppExport SEXP _PP_P_4pl4wle(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // r_huber_4pl
 double r_huber_4pl(NumericVector delta, double alpha, double theta, double la, double ua, double H);
-RcppExport SEXP PP_r_huber_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_r_huber_4pl(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP laSEXP, SEXP uaSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -53,7 +53,7 @@ END_RCPP
 }
 // L4pl
 NumericMatrix L4pl(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, bool map, NumericVector mu, NumericVector sigma2);
-RcppExport SEXP PP_L4pl(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP mapSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
+RcppExport SEXP _PP_L4pl(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP mapSEXP, SEXP muSEXP, SEXP sigma2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,7 +72,7 @@ END_RCPP
 }
 // L4pl_wle
 NumericMatrix L4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA);
-RcppExport SEXP PP_L4pl_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP) {
+RcppExport SEXP _PP_L4pl_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -88,7 +88,7 @@ END_RCPP
 }
 // L4pl_robust
 NumericMatrix L4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, double H);
-RcppExport SEXP PP_L4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_L4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -105,7 +105,7 @@ END_RCPP
 }
 // NR_4PL
 List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP PP_NR_4PL(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_NR_4PL(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -127,7 +127,7 @@ END_RCPP
 }
 // P_gpcm
 double P_gpcm(NumericVector delta, double alpha, double theta, int resp);
-RcppExport SEXP PP_P_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP) {
+RcppExport SEXP _PP_P_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -141,7 +141,7 @@ END_RCPP
 }
 // r_huber_gpcm
 double r_huber_gpcm(NumericVector delta, double alpha, double theta, double H);
-RcppExport SEXP PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_r_huber_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -155,7 +155,7 @@ END_RCPP
 }
 // L12gpcm
 NumericMatrix L12gpcm(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, NumericVector mu, NumericVector sigma2, bool map);
-RcppExport SEXP PP_L12gpcm(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP mapSEXP) {
+RcppExport SEXP _PP_L12gpcm(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -172,7 +172,7 @@ END_RCPP
 }
 // Pcorr1_gpcm
 NumericVector Pcorr1_gpcm(NumericVector delta, double alpha, double theta);
-RcppExport SEXP PP_Pcorr1_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP) {
+RcppExport SEXP _PP_Pcorr1_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -185,7 +185,7 @@ END_RCPP
 }
 // L12gpcm_wle
 NumericMatrix L12gpcm_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA);
-RcppExport SEXP PP_L12gpcm_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP) {
+RcppExport SEXP _PP_L12gpcm_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -199,7 +199,7 @@ END_RCPP
 }
 // L12gpcm_robust
 NumericMatrix L12gpcm_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, double H);
-RcppExport SEXP PP_L12gpcm_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_L12gpcm_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -214,7 +214,7 @@ END_RCPP
 }
 // NR_GPCM
 List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -234,7 +234,7 @@ END_RCPP
 }
 // Lgpcm4pl_mle
 NumericMatrix Lgpcm4pl_mle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model, NumericVector mu, NumericVector sigma2, bool map);
-RcppExport SEXP PP_Lgpcm4pl_mle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP mapSEXP) {
+RcppExport SEXP _PP_Lgpcm4pl_mle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP mapSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -254,7 +254,7 @@ END_RCPP
 }
 // Lgpcm4pl_wle
 NumericMatrix Lgpcm4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model);
-RcppExport SEXP PP_Lgpcm4pl_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP) {
+RcppExport SEXP _PP_Lgpcm4pl_wle(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -271,7 +271,7 @@ END_RCPP
 }
 // Lgpcm4pl_robust
 NumericMatrix Lgpcm4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model, double H);
-RcppExport SEXP PP_Lgpcm4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_Lgpcm4pl_robust(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -289,7 +289,7 @@ END_RCPP
 }
 // NR_mixed
 List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP PP_NR_mixed(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
+RcppExport SEXP _PP_NR_mixed(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -312,7 +312,7 @@ END_RCPP
 }
 // Likgpcm
 NumericVector Likgpcm(IntegerVector awv, NumericMatrix DELTA, NumericVector ALPHA, NumericVector nodes);
-RcppExport SEXP PP_Likgpcm(SEXP awvSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP nodesSEXP) {
+RcppExport SEXP _PP_Likgpcm(SEXP awvSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP nodesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -326,7 +326,7 @@ END_RCPP
 }
 // sim_4pl
 IntegerMatrix sim_4pl(NumericVector beta, NumericVector alpha, NumericVector lowerA, NumericVector upperA, NumericVector theta);
-RcppExport SEXP PP_sim_4pl(SEXP betaSEXP, SEXP alphaSEXP, SEXP lowerASEXP, SEXP upperASEXP, SEXP thetaSEXP) {
+RcppExport SEXP _PP_sim_4pl(SEXP betaSEXP, SEXP alphaSEXP, SEXP lowerASEXP, SEXP upperASEXP, SEXP thetaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -341,7 +341,7 @@ END_RCPP
 }
 // ansol
 NumericMatrix ansol(IntegerMatrix awm, IntegerVector maxsc);
-RcppExport SEXP PP_ansol(SEXP awmSEXP, SEXP maxscSEXP) {
+RcppExport SEXP _PP_ansol(SEXP awmSEXP, SEXP maxscSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -350,4 +350,34 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(ansol(awm, maxsc));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_PP_P_4pl", (DL_FUNC) &_PP_P_4pl, 5},
+    {"_PP_P_4pl4wle", (DL_FUNC) &_PP_P_4pl4wle, 5},
+    {"_PP_r_huber_4pl", (DL_FUNC) &_PP_r_huber_4pl, 6},
+    {"_PP_L4pl", (DL_FUNC) &_PP_L4pl, 9},
+    {"_PP_L4pl_wle", (DL_FUNC) &_PP_L4pl_wle, 6},
+    {"_PP_L4pl_robust", (DL_FUNC) &_PP_L4pl_robust, 7},
+    {"_PP_NR_4PL", (DL_FUNC) &_PP_NR_4PL, 12},
+    {"_PP_P_gpcm", (DL_FUNC) &_PP_P_gpcm, 4},
+    {"_PP_r_huber_gpcm", (DL_FUNC) &_PP_r_huber_gpcm, 4},
+    {"_PP_L12gpcm", (DL_FUNC) &_PP_L12gpcm, 7},
+    {"_PP_Pcorr1_gpcm", (DL_FUNC) &_PP_Pcorr1_gpcm, 3},
+    {"_PP_L12gpcm_wle", (DL_FUNC) &_PP_L12gpcm_wle, 4},
+    {"_PP_L12gpcm_robust", (DL_FUNC) &_PP_L12gpcm_robust, 5},
+    {"_PP_NR_GPCM", (DL_FUNC) &_PP_NR_GPCM, 10},
+    {"_PP_Lgpcm4pl_mle", (DL_FUNC) &_PP_Lgpcm4pl_mle, 10},
+    {"_PP_Lgpcm4pl_wle", (DL_FUNC) &_PP_Lgpcm4pl_wle, 7},
+    {"_PP_Lgpcm4pl_robust", (DL_FUNC) &_PP_Lgpcm4pl_robust, 8},
+    {"_PP_NR_mixed", (DL_FUNC) &_PP_NR_mixed, 13},
+    {"_PP_Likgpcm", (DL_FUNC) &_PP_Likgpcm, 4},
+    {"_PP_sim_4pl", (DL_FUNC) &_PP_sim_4pl, 5},
+    {"_PP_ansol", (DL_FUNC) &_PP_ansol, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_PP(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
