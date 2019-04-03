@@ -27,8 +27,9 @@ stdrdize_hist <- function(At,quadnodes)
       Nq <- eins * At_new[LG]
     } else {
       
-      drueber <- which(x < quadnodesCS)[1] # gibt mir den darüberliegenden node
-      drunter <- which(x > quadnodesCS)[length(which(x > quadnodesCS))] # gibt mir jenen node der strikt kleiner ist als mein dings     
+      drueber <- which(x < quadnodesCS)[1] # gibt mir den darueberliegenden node
+      drunter <- which(x > quadnodesCS)[length(which(x > quadnodesCS))]
+      
       Nq <- (x - quadnodesCS[drunter])/DELTA * (At_new[drueber] - At_new[drunter]) + At_new[drunter]
     }
     

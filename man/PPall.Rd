@@ -6,9 +6,9 @@
 \alias{summary.ppeo}
 \title{Estimate Person Parameters}
 \usage{
-PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", model2est, maxsteps = 100, exac = 0.001,
-  H = 1, ctrl = list())
+PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL,
+  mu = NULL, sigma2 = NULL, type = "wle", model2est,
+  maxsteps = 100, exac = 0.001, H = 1, ctrl = list())
 
 \method{print}{ppeo}(x, ...)
 
