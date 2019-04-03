@@ -50,3 +50,6 @@ newPfit
 *.png
 *.csv
 ideas
+*.zip
+BUILD.R
+
