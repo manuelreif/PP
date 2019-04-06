@@ -1,3 +1,5 @@
+Meta
+doc
 *.aux
 *.bbl
 *.blg
@@ -50,3 +52,8 @@ newPfit
 *.png
 *.csv
 ideas
+*.zip
+BUILD.R
+PP.Rcheck
+.Rapp.history
+

@@ -39,7 +39,7 @@
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
 #'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
 #'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
-#'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+#'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
 #'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
 #'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases. 
@@ -122,23 +122,6 @@ if(any(is.na(user_ctrlI)))
 
   cont[user_ctrlI] <- ctrl
   
-  
-  ## starting values
-  
-if(is.null(theta_start))
-  {
-    theta_start <- rep(0,nrow(respm))
-  }
-  
-  #---
-  
-#   if(cont$cdiag) 
-#     {
-#       cont$killdupli <- FALSE
-#       warning("killdupli in 'ctrl' is forced to FALSE!\n")  
-#     }
-  
-  
 
 ## --------- threshold matrix
   
@@ -169,9 +152,20 @@ if(is.matrix(thres))
         maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
       }
 
-
-
+## starting values
+if(is.null(theta_start))
+  {
+  thresv <- thres[2,]
+  theta_start <- apply(respm, 1, function(st)
+    {
+    mean(thresv[!is.na(st)])  
+    })
+  } else if(length(theta_start) == 1)
+      {
+      theta_start <- rep(theta_start, nrow(respm))
+      } 
   
+
 ## --------- check user inputs
 if(!cont$skipcheck) # to save time e.g. when running simulations
 {
@@ -281,8 +275,9 @@ cat("type =",type,"\n")
               } else if(modest == "3pl_upperA")
                 {
                   lowerA <- rep(0,nitem)    
-                }
-        
+              }
+
+
 if(type %in% c("mle","wle","map"))
   {
     
@@ -305,7 +300,6 @@ if(type %in% c("mle","wle","map"))
           resPP$nsteps <- 0
         }
         
-      
 
   
 ### result preperation --------------------------

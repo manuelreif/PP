@@ -24,6 +24,6 @@ test_that("errors and warnings are thrown in the gpcm when necessary",{
   expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl[-1]),throws_error())
   expect_that(PP_gpcm(respm = awmatrix,thres = THRESna, slopes = sl),throws_error())
   expect_that(PP_gpcm(respm = awmatrix_2,thres = THRES, slopes = sl),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,theta_start = 2),throws_error())
+  #expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,theta_start = 2),throws_error())
 })
 
