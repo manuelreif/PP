@@ -1,3 +1,5 @@
+^Meta$
+^doc$
 .*~
 .git
 .git/
@@ -16,6 +18,7 @@ check_runtime_dup.R
 informelles_testen/
 informelles_testen
 PP.Rproj
+pp_dev.Rproj
 .dll
 LICENSE
 man-roxygen
@@ -24,3 +27,9 @@ Makefile
 newPfit
 figure
 ^\.travis\.yml$
+Checks_PP.zip
+packagename_init.c
+BUILD.R
+pkgdown/
+docs/
+/PP.Rcheck

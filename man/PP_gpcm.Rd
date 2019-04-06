@@ -5,8 +5,8 @@
 \title{Estimate Person Parameters for the GPCM}
 \usage{
 PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001, H = 1,
-  ctrl = list())
+  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001,
+  H = 1, ctrl = list())
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
@@ -15,7 +15,7 @@ PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
 
-\item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
+\item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
 \item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
 

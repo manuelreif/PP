@@ -19,7 +19,7 @@ PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
 
 \item{upperA}{numeric vector, which contains the upper asymptote parameters for each item.}
 
-\item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
+\item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
 \item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
 
@@ -91,6 +91,8 @@ d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
 rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
 summary(rd_res)
 
+rd_res1 <- PP_4pl(respm = d, thres = pp_amt$betas[,2], theta_start = 0,type = "wle")
+summary(rd_res1)
 
 ### fake data ##########
 # smaller ... faster

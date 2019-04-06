@@ -18,7 +18,7 @@
 #'@param respm An integer matrix, which contains the examinees responses. A persons x items matrix is expected.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
-#'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+#'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
 #'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
 #'@param sigma2 A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.
@@ -92,15 +92,9 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   
   cont[user_ctrlI] <- ctrl
   
-  
-  ## --------- starting values
-  
-  if(is.null(theta_start))
-  {
-    theta_start <- rep(0,nrow(respm))
-  }
-  
 
+
+  
 
 ## --------- threshold matrix
 
@@ -112,6 +106,20 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   
   # compute the maximal score per item
   maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
+  
+  
+  ## starting values
+if(is.null(theta_start))
+  {
+  thresv <- apply(thres[2,,drop=FALSE],2, function(tr) mean(tr,na.rm=TRUE))
+  theta_start <- apply(respm, 1, function(st)
+    {
+    mean(thresv[!is.na(st)])  
+    })
+  } else if(length(theta_start) == 1)
+      {
+      theta_start <- rep(theta_start, nrow(respm))  
+      }
   
 
 if(!cont$skipcheck) # to save time e.g. when running simulations

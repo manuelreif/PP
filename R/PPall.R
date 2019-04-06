@@ -12,7 +12,7 @@
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. 
 #'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0.
 #'@param upperA numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1.
-#'@param theta_start A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.
+#'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
 #'@param mu A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
 #'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.
@@ -67,7 +67,7 @@
 #'
 PPall <- function(respm, thres, slopes, lowerA, upperA, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", model2est,
-                  maxsteps=100, exac=0.001,H=1,ctrl=list())
+                  maxsteps=100, exac=0.001, H=1, ctrl=list())
 {
 ### 
 call <- match.call()  
@@ -91,24 +91,6 @@ if(any(is.na(user_ctrlI)))
 cont[user_ctrlI] <- ctrl
 
 
-
-## starting values
-
-if(is.null(theta_start))
-  {
-    theta_start <- rep(0,nrow(respm))
-  }
-
-#---
-
-# if(cont$cdiag) 
-#   {
-#   cont$killdupli <- FALSE
-#   warning("killdupli in 'ctrl' is forced to FALSE!\n")  
-#   }
-
-
-
 ######## take care of the threshold matrix
 
 if(is.matrix(thres))
@@ -125,6 +107,21 @@ if(is.matrix(thres))
   # are there any items with more than 2 categories?
    #allebigger <- any(maxsc > 1)
   }
+
+  ## starting values
+if(is.null(theta_start))
+  {
+  thresv <- apply(thres[2,,drop=FALSE],2, function(tr) mean(tr,na.rm=TRUE))
+  theta_start <- apply(respm, 1, function(st)
+    {
+    mean(thresv[!is.na(st)])  
+    })
+  } else if(length(theta_start) == 1)
+      {
+      theta_start <- rep(theta_start, nrow(respm))  
+      }
+  
+
 
 ## ----------------------
 

@@ -2,79 +2,79 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 P_4pl <- function(delta, alpha, theta, la, ua) {
-    .Call('PP_P_4pl', PACKAGE = 'PP', delta, alpha, theta, la, ua)
+    .Call(`_PP_P_4pl`, delta, alpha, theta, la, ua)
 }
 
 P_4pl4wle <- function(delta, alpha, theta, la, ua) {
-    .Call('PP_P_4pl4wle', PACKAGE = 'PP', delta, alpha, theta, la, ua)
+    .Call(`_PP_P_4pl4wle`, delta, alpha, theta, la, ua)
 }
 
 r_huber_4pl <- function(delta, alpha, theta, la, ua, H) {
-    .Call('PP_r_huber_4pl', PACKAGE = 'PP', delta, alpha, theta, la, ua, H)
+    .Call(`_PP_r_huber_4pl`, delta, alpha, theta, la, ua, H)
 }
 
 L4pl <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, map, mu, sigma2) {
-    .Call('PP_L4pl', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, map, mu, sigma2)
+    .Call(`_PP_L4pl`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, map, mu, sigma2)
 }
 
 L4pl_wle <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA) {
-    .Call('PP_L4pl_wle', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA)
+    .Call(`_PP_L4pl_wle`, awm, DELTA, ALPHA, LOWA, UPPA, THETA)
 }
 
 L4pl_robust <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, H) {
-    .Call('PP_L4pl_robust', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, H)
+    .Call(`_PP_L4pl_robust`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, H)
 }
 
 NR_4PL <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu, sigma2, H) {
-    .Call('PP_NR_4PL', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu, sigma2, H)
+    .Call(`_PP_NR_4PL`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu, sigma2, H)
 }
 
 P_gpcm <- function(delta, alpha, theta, resp) {
-    .Call('PP_P_gpcm', PACKAGE = 'PP', delta, alpha, theta, resp)
+    .Call(`_PP_P_gpcm`, delta, alpha, theta, resp)
 }
 
 r_huber_gpcm <- function(delta, alpha, theta, H) {
-    .Call('PP_r_huber_gpcm', PACKAGE = 'PP', delta, alpha, theta, H)
+    .Call(`_PP_r_huber_gpcm`, delta, alpha, theta, H)
 }
 
 L12gpcm <- function(awm, DELTA, ALPHA, THETA, mu, sigma2, map) {
-    .Call('PP_L12gpcm', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, mu, sigma2, map)
+    .Call(`_PP_L12gpcm`, awm, DELTA, ALPHA, THETA, mu, sigma2, map)
 }
 
 Pcorr1_gpcm <- function(delta, alpha, theta) {
-    .Call('PP_Pcorr1_gpcm', PACKAGE = 'PP', delta, alpha, theta)
+    .Call(`_PP_Pcorr1_gpcm`, delta, alpha, theta)
 }
 
 L12gpcm_wle <- function(awm, DELTA, ALPHA, THETA) {
-    .Call('PP_L12gpcm_wle', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA)
+    .Call(`_PP_L12gpcm_wle`, awm, DELTA, ALPHA, THETA)
 }
 
 L12gpcm_robust <- function(awm, DELTA, ALPHA, THETA, H) {
-    .Call('PP_L12gpcm_robust', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, H)
+    .Call(`_PP_L12gpcm_robust`, awm, DELTA, ALPHA, THETA, H)
 }
 
 NR_GPCM <- function(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H) {
-    .Call('PP_NR_GPCM', PACKAGE = 'PP', awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H)
+    .Call(`_PP_NR_GPCM`, awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H)
 }
 
 Lgpcm4pl_mle <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, mu, sigma2, map) {
-    .Call('PP_Lgpcm4pl_mle', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, mu, sigma2, map)
+    .Call(`_PP_Lgpcm4pl_mle`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, mu, sigma2, map)
 }
 
 Lgpcm4pl_wle <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, model) {
-    .Call('PP_Lgpcm4pl_wle', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, model)
+    .Call(`_PP_Lgpcm4pl_wle`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, model)
 }
 
 Lgpcm4pl_robust <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, H) {
-    .Call('PP_Lgpcm4pl_robust', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, H)
+    .Call(`_PP_Lgpcm4pl_robust`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, H)
 }
 
 NR_mixed <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, wm, maxsteps, exac, mu, sigma2, H) {
-    .Call('PP_NR_mixed', PACKAGE = 'PP', awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, wm, maxsteps, exac, mu, sigma2, H)
+    .Call(`_PP_NR_mixed`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, wm, maxsteps, exac, mu, sigma2, H)
 }
 
 Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
-    .Call('PP_Likgpcm', PACKAGE = 'PP', awv, DELTA, ALPHA, nodes)
+    .Call(`_PP_Likgpcm`, awv, DELTA, ALPHA, nodes)
 }
 
 #' Simulate data for 1/2/3/4-pl model
@@ -96,10 +96,10 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
 #'
 #'@export
 sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
-    .Call('PP_sim_4pl', PACKAGE = 'PP', beta, alpha, lowerA, upperA, theta)
+    .Call(`_PP_sim_4pl`, beta, alpha, lowerA, upperA, theta)
 }
 
 ansol <- function(awm, maxsc) {
-    .Call('PP_ansol', PACKAGE = 'PP', awm, maxsc)
+    .Call(`_PP_ansol`, awm, maxsc)
 }
 

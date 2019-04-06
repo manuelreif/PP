@@ -6,9 +6,9 @@
 \alias{summary.ppeo}
 \title{Estimate Person Parameters}
 \usage{
-PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", model2est, maxsteps = 100, exac = 0.001,
-  H = 1, ctrl = list())
+PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL,
+  mu = NULL, sigma2 = NULL, type = "wle", model2est,
+  maxsteps = 100, exac = 0.001, H = 1, ctrl = list())
 
 \method{print}{ppeo}(x, ...)
 
@@ -25,7 +25,7 @@ PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL, mu = NULL,
 
 \item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1.}
 
-\item{theta_start}{A vector which contains a starting value for each person. Currently this is necessary to supply, but soon it will be set automatically if nothing is committed.}
+\item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
 \item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
 
