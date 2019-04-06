@@ -1,3 +1,5 @@
+^Meta$
+^doc$
 .*~
 .git
 .git/
@@ -7,7 +9,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 Testing_functions.R
-README.md
 Testing_functions*.R
 Testing_*
 wiki
@@ -16,6 +17,7 @@ check_runtime_dup.R
 informelles_testen/
 informelles_testen
 PP.Rproj
+pp_dev.Rproj
 .dll
 LICENSE
 man-roxygen
@@ -24,3 +26,8 @@ Makefile
 newPfit
 figure
 ^\.travis\.yml$
+Checks_PP.zip
+BUILD.R
+pkgdown/
+docs/
+/PP.Rcheck
