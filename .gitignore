@@ -52,8 +52,7 @@ newPfit
 *.png
 *.csv
 ideas
-*.zip
-BUILD.R
+Checks_PP.zip
+Build.R
+packagename_init.c
 PP.Rcheck
-.Rapp.history
-

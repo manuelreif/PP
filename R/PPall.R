@@ -67,7 +67,7 @@
 #'
 PPall <- function(respm, thres, slopes, lowerA, upperA, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", model2est,
-                  maxsteps=100, exac=0.001,H=1,ctrl=list())
+                  maxsteps=100, exac=0.001, H=1, ctrl=list())
 {
 ### 
 call <- match.call()  
@@ -166,7 +166,7 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
 if(type=="mle" | type=="robust")
   {
     resPPx <- ansol(respm,maxsc)  
-    respm <- respm[!is.na(resPPx[,2]),,drop = FALSE]
+    respm <- respm[!is.na(resPPx[,2]),]
   }
 
 
