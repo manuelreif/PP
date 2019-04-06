@@ -26,11 +26,11 @@ awm <- rbind(awm,rep(1,12))
 ## 1PL model ##### 
 
 # MLE estimation
-res1plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")
+res1plmle <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle"))
 # WLE estimation
-res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle")
+res1plwle <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle"))
 # MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")
+res1plmap <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map"))
 
 
 

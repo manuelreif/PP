@@ -14,8 +14,8 @@ JKpp(estobj, ...)
 \method{JKpp}{fourpl}(estobj, cmeth = "mean", maxsteps = 500,
   exac = 0.001, fullmat = FALSE, ctrl = list(), ...)
 
-\method{JKpp}{gpcm}(estobj, cmeth = "mean", maxsteps = 500, exac = 0.001,
-  fullmat = FALSE, ctrl = list(), ...)
+\method{JKpp}{gpcm}(estobj, cmeth = "mean", maxsteps = 500,
+  exac = 0.001, fullmat = FALSE, ctrl = list(), ...)
 
 \method{JKpp}{gpcm4pl}(estobj, cmeth = "mean", maxsteps = 500,
   exac = 0.001, fullmat = FALSE, ctrl = list(), ...)
