@@ -45,11 +45,9 @@ check_runtime_dup.R
 informelles_testen/
 PP.Rproj
 *.dll
-*.html
 *.pdf
 buttons.txt
 newPfit
-*.png
 *.csv
 ideas
 Checks_PP.zip
