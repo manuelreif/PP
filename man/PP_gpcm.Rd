@@ -5,8 +5,8 @@
 \title{Estimate Person Parameters for the GPCM}
 \usage{
 PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001, H = 1,
-  ctrl = list())
+  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001,
+  H = 1, ctrl = list())
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
