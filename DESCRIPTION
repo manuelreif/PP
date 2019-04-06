@@ -1,8 +1,8 @@
 Package: PP
 Type: Package
 Title: Person Parameter Estimation
-Version: 0.6.1
-Date: 2019-04-03
+Version: 0.6.2
+Date: 2019-04-06
 Authors@R: c(
         person(given = "Manuel", 
          family = "Reif", 
@@ -12,9 +12,13 @@ Authors@R: c(
         person(given = "Jan", 
          family = "Steinfeld", 
          email = "jan.d.steinfeld@gmail.com", 
-         role = c("cre",aut"),
+         role = c("cre","aut"),
          comment = c(ORCID = "0000-0001-9853-8260")
          )
+    )
+Author: Manuel Reif [aut],
+        Jan Steinfeld [cre, aut] (<https://orcid.org/0000-0001-9853-8260>)
+Maintainer: Jan Steinfeld <jan.d.steinfeld@gmail.com>
 Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
     person parameters for the 1,2,3,4-PL model and the GPCM (generalized
     partial credit model). The parameters are estimated under the assumption
@@ -23,11 +27,13 @@ Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
     are administered to a new population of test-takers and an ability
     estimation for every test-taker is needed.
 URL: https://github.com/manuelreif/PP
+BugReports: https://github.com/manuelreif/PP/issues
 License: GPL-3
 LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
 Depends: R (>= 3.0)
+Encoding: UTF-8
 Suggests: 
     testthat, 
     roxygen2, 
@@ -37,11 +43,6 @@ Suggests:
     prettydoc
 Imports: 
     Rcpp (>= 0.11.2)
-LinkingTo: 
-    Rcpp
-RoxygenNote: 
-    6.1.1
+LinkingTo: Rcpp
+RoxygenNote: 6.1.1
 NeedsCompilation: yes
-Author: Manuel Reif [cre, aut],
-        Jan Steinfeld [aut] (<https://orcid.org/0000-0001-9853-8260>),
-Maintainer: Jan Steinfeld <jan.d.steinfeld@gmail.com>
