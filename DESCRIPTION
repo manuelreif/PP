@@ -1,23 +1,23 @@
 Package: PP
 Type: Package
 Title: Person Parameter Estimation
-Version: 0.6.2
-Date: 2019-04-06
+Version: 0.6.3
+Date: 2021-05-02
 Authors@R: c(
-        person(given = "Manuel", 
-         family = "Reif", 
-         email = "manuel.reif@gmail.com", 
-         role = c("aut")
-         ),
         person(given = "Jan", 
          family = "Steinfeld", 
          email = "jan.d.steinfeld@gmail.com", 
          role = c("cre","aut"),
          comment = c(ORCID = "0000-0001-9853-8260")
+         ),
+         person(given = "Manuel", 
+         family = "Reif", 
+         email = "manuel.reif@gmail.com", 
+         role = c("aut")
          )
     )
-Author: Manuel Reif [aut],
-        Jan Steinfeld [cre, aut] (<https://orcid.org/0000-0001-9853-8260>)
+Author: Jan Steinfeld [cre, aut] (<https://orcid.org/0000-0001-9853-8260>),
+        Manuel Reif [aut]
 Maintainer: Jan Steinfeld <jan.d.steinfeld@gmail.com>
 Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
     person parameters for the 1,2,3,4-PL model and the GPCM (generalized
@@ -26,8 +26,8 @@ Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
     the case that items from an item pool / item bank with known item parameters
     are administered to a new population of test-takers and an ability
     estimation for every test-taker is needed.
-URL: https://github.com/manuelreif/PP
-BugReports: https://github.com/manuelreif/PP/issues
+URL: https://github.com/jansteinfeld/PP
+BugReports: https://github.com/jansteinfeld/PP/issues
 License: GPL-3
 LazyLoad: yes
 LazyData: true
