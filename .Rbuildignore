@@ -33,3 +33,4 @@ BUILD.R
 pkgdown/
 docs/
 /PP.Rcheck
+.tgz

@@ -144,5 +144,5 @@ Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Respon
 Manuel Reif
 }
 \keyword{GPCM}
-\keyword{Parameters,}
+\keyword{Parameters}
 \keyword{Person}

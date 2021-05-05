@@ -175,6 +175,6 @@ Wright, B. D., & Masters, G. N. (1982). \emph{Rating Scale Analysis. Rasch Measu
 Jan Steinfeld
 }
 \keyword{Infit-Outfit}
-\keyword{LZ-Index,}
+\keyword{LZ-Index}
 \keyword{Person}
-\keyword{fit,}
+\keyword{fit}

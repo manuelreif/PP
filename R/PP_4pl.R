@@ -89,7 +89,7 @@
 #'
 
 #'@example ./R/.examples_4pl.R
-#'@keywords Person Parameters, 4pl
+#'@keywords Person Parameters 4pl
 #'@rdname PP_4pl
 #'
 

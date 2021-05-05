@@ -15,7 +15,7 @@ NULL
 #'
 #' 
 #' The data are provided from the Unitersity of Vienna, Faculty of Psychology, Department of Psychological Assessment.
-#' Thanks to Schuhfried \url{https://www.schuhfried.at/test/AMT}.
+#' Thanks to Schuhfried \url{https://marketplace.schuhfried.com/de/AMT}.
 #' 
 #' @format A list with two data.frames. The first data.frame 'daten_amt' contains 298 columns and 710 rows. Each row contains responses from on examinee. The second data.frame 'betas' contains the difficulty parameter (1PL) (These parameters came with the raw-score extraction.).
 #' @source Division of Psychological Assessment and Applied Psychometrics, Fakulty of Psychology, University of Vienna

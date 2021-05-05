@@ -31,7 +31,7 @@ This power test assesses logical reasoning as an indicator of general intelligen
 }
 \details{
 The data are provided from the Unitersity of Vienna, Faculty of Psychology, Department of Psychological Assessment.
-Thanks to Schuhfried \url{https://www.schuhfried.at/test/AMT}.
+Thanks to Schuhfried \url{https://marketplace.schuhfried.com/de/AMT}.
 }
 \references{
 \itemize{

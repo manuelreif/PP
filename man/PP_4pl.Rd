@@ -228,5 +228,5 @@ Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empiric
 Manuel Reif
 }
 \keyword{4pl}
-\keyword{Parameters,}
+\keyword{Parameters}
 \keyword{Person}

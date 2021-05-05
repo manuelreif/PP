@@ -65,7 +65,7 @@
 #' Wright, B. D., & Masters, G. N. (1982). \emph{Rating Scale Analysis. Rasch Measurement.} MESA Press, 5835 S. Kimbark Avenue, Chicago, IL 60637.
 #' 
 #' @example ./R/.examples_pfit.R
-#' @keywords Person fit, LZ-Index, Infit-Outfit
+#' @keywords Person fit LZ-Index Infit-Outfit
 #' @export
 Pfit <- function(respm,pp,fitindices,SE=FALSE) UseMethod("Pfit",object=pp)
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------
