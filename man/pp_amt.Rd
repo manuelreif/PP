@@ -3,7 +3,9 @@
 \name{pp_amt}
 \alias{pp_amt}
 \title{Adaptive Matrices Test data}
-\format{A list with two data.frames. The first data.frame 'daten_amt' contains 298 columns and 710 rows. Each row contains responses from on examinee. The second data.frame 'betas' contains the difficulty parameter (1PL) (These parameters came with the raw-score extraction.).}
+\format{
+A list with two data.frames. The first data.frame 'daten_amt' contains 298 columns and 710 rows. Each row contains responses from on examinee. The second data.frame 'betas' contains the difficulty parameter (1PL) (These parameters came with the raw-score extraction.).
+}
 \source{
 Division of Psychological Assessment and Applied Psychometrics, Fakulty of Psychology, University of Vienna
 \itemize{

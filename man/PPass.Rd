@@ -8,12 +8,15 @@
 \usage{
 PPass(...)
 
-\method{PPass}{default}(respdf, items = "all", mod = c("1PL", "2PL",
-  "3PL", "4PL", "PCM", "GPCM", "MIXED"), fitindices = c("lz", "lzstar",
-  "infit", "outfit"), ...)
+\method{PPass}{default}(
+  respdf,
+  items = "all",
+  mod = c("1PL", "2PL", "3PL", "4PL", "PCM", "GPCM", "MIXED"),
+  fitindices = c("lz", "lzstar", "infit", "outfit"),
+  ...
+)
 
-\method{PPass}{Rm}(RMobj, fitindices = c("lz", "lzstar", "infit",
-  "outfit"), ...)
+\method{PPass}{Rm}(RMobj, fitindices = c("lz", "lzstar", "infit", "outfit"), ...)
 }
 \arguments{
 \item{respdf}{A data.frame which contains the items, and perhaps other informations. Each row is a person related resonse patter. Each column denotes a variable.}

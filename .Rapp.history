@@ -1,814 +1,660 @@
-finde.packages()
-find.package()
-list.files("/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-diese <- list.files("/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-install.packages(diese,dependencies=TRUE)
-install.packages("pdftools")
-pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-pdftools::pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-daten <- pdftools::pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-head(daten)
-text2 <- strsplit(daten, "\n")
-text2
-text2[[1]]
-text2[[1]][[1]]
-strsplit(text2[[1]][[1]],"\t")
-strsplit(text2[[1]][[1]],"\\t")
-strsplit(text2[[1]][[1]],"\\s")
-install.packages("dexterMST")
-db = create_mst_project(":memory:")
-library(dexterMST)
-db = create_mst_project(":memory:")
-db
-add_scoring_rules_mst(db, scoring_rules)
-routing_rules = mst_rules(#
-  easy = Mod_1[0:5] --+ Mod_2, #
-  hard = Mod_1[6:10] --+ Mod_3)
-create_mst_test(db,#
-                test_design = design,#
-                routing_rules = routing_rules,#
-                test_id = 'ZwitserMaris')
-add_booklet_mst(db, bk1, test_id = 'ZwitserMaris', booklet_id = 'easy')
-?fit_enorm_mst
-routing_rules
-fit_enorm_mst
-library(dexterMST)#
-library(dplyr)#
-# start a project#
-db = create_mst_project(":memory:")#
+(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+ii <- 2
+(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+ii <- 3
+(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+min_nai
+max_nai
+nai
+minSolved_stage_i
+maxSolved_i
+nai
+min_naui
+max_nai
+maxSolved_stage_i
+g012[[nai]][[1]]
+g012[[nai]][[1]][min_nai:max_nai]
+nai <- 4
+min_nai <- minSolved_stage_i[[nai]] + 1#
+        max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]
+go_i
+g0_i
+g012[[nai]][[1]]
+items_i[[nai]]
+items_i
+par_n <- c(desmat %*% par)#
+       par_i <- lapply(items_l, FUN = function(x){#
+          lapply(x,FUN = function(y){#
+            as.numeric(par_n[y])#
+          })#
+        })#
+      oj_i <- lapply(par_i, function(x) lapply(x, function(y) rep(1,length(y))))#
+      out <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+      g012 <- mapply(FUN = tmt:::esf_mst_sum_vector, parlist = par_i,#
+                     ojlist = oj_i, order = 2, minSolved = minSolved_i, maxSolved = maxSolved_i,#
+                     minSolved_design = minSolved_stage_i, maxSolved_design = maxSolved_stage_i, SIMPLIFY = FALSE)#
+      ## loop over observed NA patterns      #
+      for(nai in 1:nrow(mstdesign)) {#
+        max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- minSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]#
+        i_i <- ncol(y_i[[nai]])#
+        g1dg0 <- g1_i/g0_i#
+        hessian <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+        for (ii in seq_len(i_i)){#
+         # if(length(unlist(items_l[[nai]]))>0){#
+            hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }else{#
+         #  hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }#
+        }#
+        out <- out + hessian#
+      }
+head(out)
+tail(out)
+maxSolved_stage_i
+items_i
+par_i
+minSolved_i
+maxSolved_i
+items_i
+nai <- 1
+par_n <- c(desmat %*% par)#
+       par_i <- lapply(items_l, FUN = function(x){#
+          lapply(x,FUN = function(y){#
+            as.numeric(par_n[y])#
+          })#
+        })#
+      oj_i <- lapply(par_i, function(x) lapply(x, function(y) rep(1,length(y))))#
+      out <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+      g012 <- mapply(FUN = tmt:::esf_mst_sum_vector, parlist = par_i,#
+                     ojlist = oj_i, order = 2, minSolved = minSolved_i, maxSolved = maxSolved_i,#
+                     minSolved_design = minSolved_stage_i, maxSolved_design = maxSolved_stage_i, SIMPLIFY = FALSE)
+max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- minSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]#
+        i_i <- ncol(y_i[[nai]])#
+        g1dg0 <- g1_i/g0_i#
+        hessian <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)
+ii <- 1
+(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+hessian[items_i[[nai]][ii],items_i[[nai]]]
+items_i[[nai]]
+hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+hessian
+items_i
+for (ii in seq_len(i_i)){#
+         # if(length(unlist(items_l[[nai]]))>0){#
+            hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }else{#
+         #  hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }#
+        }
+hessian
+tmt:::esf_mst_sum_vector
+par_test <- list(log(c(1/1,1/2,1/3)),log(c(1/1,1/2,1/3,1/4)))#
 #
-# define dummy item scoring rules (i.e. response==score)#
-scoring_rules = data.frame(item_id = rep(sprintf("item%02.0f",1:50), each=2),#
-                            response = rep(0:1,times=50),#
-                            item_score = rep(0:1,times=50))#
-#
-add_scoring_rules_mst(db, scoring_rules)#
-#
-# define routing rules#
-routing_rules = mst_rules(#
-  easy = Mod_1[0:5] --+ Mod_2, #
-  hard = Mod_1[6:10] --+ Mod_3)#
-#
-# define a module design (i.e., specifify which items belong to which modules)#
-design = data.frame(module_id = rep(c('Mod_2','Mod_1','Mod_3'), times=c(20,10,20)),#
-                   item_id = paste0("item",sprintf("%02.0f",1:50)),#
-                   item_position = c(1:20,1:10,1:20))#
-#
-# create/define an mst test#
-create_mst_test(db,#
-                test_design = design,#
-                routing_rules = routing_rules,#
-                test_id = 'ZwitserMaris')
-sim_RM = function(theta,delta)#
-{#
-  nP=length(theta)#
-  dat=matrix(0,nP,length(delta))#
-  for (i in 1:length(delta)) dat[,i]=1*(rlogis(nP,0,1)<=(theta-delta[i]))#
-  return(dat)#
-}#
-a = rep(1,50)#
-delta = c(runif(20,-2.3,0),runif(10,-0.6,2),runif(20,1.2,2.4)) # M2, M1, M3#
-b=exp(-delta)#
-c = rep(0,50)#
-nP = 10000#
-# simulate theta from a mixture of two normals#
-grp = sample(2, nP, replace = TRUE, prob = c(.6,.4))#
-theta = rnorm(nP, mean = c(0,1)[grp], sd = c(1.5,0.5)[grp])#
-#
-data = data.frame(sim_RM(theta, delta))#
-colnames(data) = sprintf("item%02.0f",1:50)#
-#
-# add person id to the data#
-data$person_id = 1:nrow(data)#
-#
-# extract two booklets from the complete data, based on the sum score on the first module#
-bk1 = data[rowSums(data[,21:30])<=5,] %>% select(person_id, item01:item30)#
-bk2 = data[rowSums(data[,21:30])>5,] %>% select(person_id, item21:item30, item31:item50)#
-#
-# add response data to the project#
-add_booklet_mst(db, bk1, test_id = 'ZwitserMaris', booklet_id = 'easy')#
-add_booklet_mst(db, bk2, test_id = 'ZwitserMaris', booklet_id = 'hard')#
-# IRT, extended nominal response model#
-f = fit_enorm_mst(db)#
-#
-head(f)#
-item_id	item_score	delta	beta	se_b#
-item01	1	-1.9458047	-2.5723980	0.0385977#
-item02	1	0.1697511	-0.4568422	0.0298956#
-item03	1	-1.9278217	-2.5544150	0.0384445#
-item04	1	0.2018686	-0.4247248	0.0298913#
-item05	1	0.1164153	-0.5101780	0.0299112#
-item06	1	-2.0222084	-2.6488017	0.0392681#
-# ability estimates per person#
-rsp_data = get_responses_mst(db)#
-abl = ability(rsp_data, parms = f)#
-head(abl)
-db
-fit_enorm_mst(db)
-coef(9)
-coef()
-fit_enorm_mst
-db
-data
-head(data)
-fit_enorm_mst(db)
-?fit_enorm_mst()
-library(ggpubr)
-install.packages("ggpubr")
-library(ggpubr)
-read.csv2("~/CloudStation/Publikation_Präsentation_Poster/Präsentation/2018-09_DGPS/Analysen/Daten/dgps_mldif_ma_matura__2018-09-15_1600__PROC2.csv")
-daten <- read.csv2("~/CloudStation/Publikation_Präsentation_Poster/Präsentation/2018-09_DGPS/Analysen/Daten/dgps_mldif_ma_matura__2018-09-15_1600__PROC2.csv")
-head(daten)
-nrow(daten)
-length(unique(daten$skz))
-length(unique(paste0(daten$skz,daten$klasse))
-)
-library(Rcpp)
-evalCpp( "1+1")
-Error in sourceCpp(code = code, env = env, rebuild = rebuild, cacheDir = cacheDir,  : #
-  Error 1 occurred building shared library.
-evalCpp("1+1",showOutput=1,rebuild=1)
-sessionInfo()
-install.packages(c('Rcpp', 'RcppArmadillo'))
-evalCpp("1+1",showOutput=1,rebuild=1)
-Rcpp::evalCpp("1+1",showOutput=1,rebuild=1)
-install.packages("RcppArmadillo", type = "source")
-Sys.getenv("PATH")
-Sys.getenv(".Renviron")
-Sys.getenv()
-Rcpp::evalCpp("1+1")
-devtools::has_devel()
-Rcpp::evalCpp("1+1")
-install.packages("RcppArmadillo", type = "source")
-install.packages("eRm")
-library(eRm)
-sim.rasch(1,1)
-install.packages("Rcpp")
-library(Rcpp)
-evalCpp("1+1")
-.libPaths()
-R.home()
-library(dexterMST)#
-library(dplyr)
-# start a project#
-db = create_mst_project(":memory:")#
-#
-# define dummy item scoring rules (i.e. response==score)#
-scoring_rules = data.frame(item_id = rep(sprintf("item%02.0f",1:50), each=2),#
-                            response = rep(0:1,times=50),#
-                            item_score = rep(0:1,times=50))#
-#
-add_scoring_rules_mst(db, scoring_rules)#
-#
-# define routing rules#
-routing_rules = mst_rules(#
-  easy = Mod_1[0:5] --+ Mod_2, #
-  hard = Mod_1[6:10] --+ Mod_3)#
-#
-# define a module design (i.e., specifify which items belong to which modules)#
-design = data.frame(module_id = rep(c('Mod_2','Mod_1','Mod_3'), times=c(20,10,20)),#
-                   item_id = paste0("item",sprintf("%02.0f",1:50)),#
-                   item_position = c(1:20,1:10,1:20))#
-#
-# create/define an mst test#
-create_mst_test(db,#
-                test_design = design,#
-                routing_rules = routing_rules,#
-                test_id = 'ZwitserMaris')
-design_plot(db)
-sim_RM = function(theta,delta)#
-{#
-  nP=length(theta)#
-  dat=matrix(0,nP,length(delta))#
-  for (i in 1:length(delta)) dat[,i]=1*(rlogis(nP,0,1)<=(theta-delta[i]))#
-  return(dat)#
-}#
-a = rep(1,50)#
-delta = c(runif(20,-2.3,0),runif(10,-0.6,2),runif(20,1.2,2.4)) # M2, M1, M3#
-b=exp(-delta)#
-c = rep(0,50)#
-nP = 10000#
-# simulate theta from a mixture of two normals#
-grp = sample(2, nP, replace = TRUE, prob = c(.6,.4))#
-theta = rnorm(nP, mean = c(0,1)[grp], sd = c(1.5,0.5)[grp])#
-#
-data = data.frame(sim_RM(theta, delta))#
-colnames(data) = sprintf("item%02.0f",1:50)#
-#
-# add person id to the data#
-data$person_id = 1:nrow(data)#
-#
-# extract two booklets from the complete data, based on the sum score on the first module#
-bk1 = data[rowSums(data[,21:30])<=5,] %>% select(person_id, item01:item30)#
-bk2 = data[rowSums(data[,21:30])>5,] %>% select(person_id, item21:item30, item31:item50)#
-#
-# add response data to the project#
-add_booklet_mst(db, bk1, test_id = 'ZwitserMaris', booklet_id = 'easy')#
-add_booklet_mst(db, bk2, test_id = 'ZwitserMaris', booklet_id = 'hard')
-f = fit_enorm_mst(db)
-r
-head(f)
-db
-fit_enorm_mst
-fit_enorm_mst_
-dexterMST::fit_enorm_mst_
-dexterMST:::fit_enorm_mst_
-predicate = NULL
-mst_inputs = get_mst_data(db, qtpredicate, env)
-mst_inputs = dexterMST::get_mst_data(db, qtpredicate, env)
-mst_inputs = dexterMST:::get_mst_data(db, qtpredicate, env)
-mst_inputs = dexterMST:::get_mst_data(db, qtpredicate)
-env = caller_env()
-env = dexterMST:::caller_env()
-env = dexterMST::caller_env()
-environment
-environment()
-env <- environment()
-mst_inputs = dexterMST:::get_mst_data(db, qtpredicate)
-qtpredicate = eval(substitute(quote(predicate)))
-mst_inputs = dexterMST:::get_mst_data(db, qtpredicate)
-mst_inputs
-im = as.matrix(table(mst_inputs$booklet_design$item_id, paste(mst_inputs$booklet_design$test_id, #
-        mst_inputs$booklet_design$booklet_id, sep = ".")))
-im
-data
-str(g)
-str(f)
-head(data)
-install.packages("microbenchmark")
-library(microbenchmark)
-microbenchmark(fit_enorm_mst(db),tmtCML::raschmodel(data))
-head(data)
-microbenchmark(fit_enorm_mst(db),tmtCML::raschmodel(data[,-51]))
-}
-ajshd
-lakjsd
-asjdlkajsd
-laskjd
-alskjd
-library(sirt)
-?sirt
-library(CDM)#
-data(data.read)#
-dat <- data.read#
-I <- ncol(dat) # number of items#
-#
-# Rasch model#
-mod1 <- sirt::rasch.mml2( dat )#
-summary(mod1)
-summary(mod1)#
-plot( mod1 )    # plot all items#
-# title 'Rasch model', display curves from -3 to 3 only for items 1, 5 and 8#
-plot(mod1, main="Rasch model Items 1, 5 and 8", xlim=c(-3,3), items=c(1,5,8) )
-devtools::document(roclets=c('rd', 'collate', 'namespace', 'vignette'))
-devtools::install(reload = TRUE)
-Rcpp::evalCpp("1+1")
-parlist <- list(log(c(0.5,0.5)),log(c(0.5,0.5)),log(c(0.5,0.5)))#
-ojlist = list(c(1,1),c(1,1),c(1,1))#
-minSolved = c(0,0,0)#
-maxSolved = c(2,2,2)
-parlist <- list(log(c(1,0.5)),log(c(0.5,1)),log(c(0.5,1/3)))
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")[[3]]
-esf_mst_vector_v2_agrad_2o(parlist, ojlist = ojlist, minSolved = minSolved, maxSolved = maxSolved, order = 2)[[3]]
-parlist <- list(log(c(0.5,0.5)),log(c(0.5,0.5)),log(c(0.5,0.5)))
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")[[3]]
-parlist <- list(log(c(1,0.5)),log(c(0.5,1)),log(c(0.5,1/3)))
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")
-parlist <- list(log(c(1,0.5)),log(c(0.5,1)),log(c(0.5,1/3)))
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")
-parlist <- list(log(c(1,0.5)),log(c(0.5,1)),log(c(0.5,1/3)))
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")
-parlist <- list(log(c(1,0.5,1/3,1)),log(c(0.5,1)),log(c(0.5,1,1/3)))
-ojlist = list(c(1,1,1,1),c(1,1),c(1,1,1))
-minSolved = c(0,0,0)
-maxSolved = c(4,2,3)
-esf_mst_vector_v2_agrad_2o(parlist, ojlist = ojlist, minSolved = minSolved, maxSolved = maxSolved, order = 2)
-1%%4
-1:4%%4
-1:4%%3
-1:4%%5
-1:4%%5-1
-5:6%%3-1
-5:6%%3
-5:6%%2
-5:6%%3
-5:6%%1
-5:6%%2
-7:9%%3
-7:9%%4
-7:9%%3
-6:8%%3
-0:3%%3
-0:3%%4
-parlist <- list(log(c(1,0.5,1/3,1)),log(c(0.5,1)),log(c(0.5,1,1/3)))#
-ojlist = list(c(1,1,1,1),c(1,1),c(1,1,1))#
-minSolved = c(0,0,0)#
-maxSolved = c(4,2,3)
-psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")
-library(tmt)
-library(tictoc)
-tic("start")
-dat <- tmt:::sim.rm(theta = 100,b = 10,seed = 1111)#
-dat.rm <- tmt_rm(dat = dat)#
-dat.rm$betapar#
-#
-##############################################################################
-# Example for multistage-design#
-##############################################################################
-mstdesign <- "#
-  B1 =~ c(i1, i2, i3, i4, i5)#
-  B2 =~ c(i6, i7, i8, i9, i10)#
-  B3 =~ c(i11, i12, i13, i14, i15)#
-  B4 =~ c(i16, i17, i18, i19, i20)#
-  B5 =~ c(i21, i22, i23, i24, i25)#
-  B6 =~ c(i26, i27, i28, i29, i30)#
-#
-  # define starting Block#
-  Start == B4#
-#
-  # define branches#
-  b1 := Start(0,2) + B2(0,2) + B1(0,5)#
-  b2 := Start(0,2) + B2(3,5) + B3(0,5)#
-  b3 := Start(3,5) + B5(0,2) + B3(0,5)#
-  b4 := Start(3,5) + B5(3,5) + B6(0,5)#
-"#
-#
-items <- seq(-3,3,length.out = 30)#
-names(items) <- paste0("i",1:30)#
-persons = 10000#
-mean = 0#
-sd = 1#
-dat <- tmt_sim(mstdesign = mstdesign, #
-  items = items, persons = persons, mean = mean, sd = sd)#
-dat.rm <- tmt_rm(dat = dat, mstdesign = mstdesign)#
-summary(dat.rm)
-toc()
-tic("start")
-dat <- tmt:::sim.rm(theta = 100,b = 10,seed = 1111)#
-dat.rm <- tmt_rm(dat = dat)#
-dat.rm$betapar#
-#
-##############################################################################
-# Example for multistage-design#
-##############################################################################
-mstdesign <- "#
-  B1 =~ c(i1, i2, i3, i4, i5)#
-  B2 =~ c(i6, i7, i8, i9, i10)#
-  B3 =~ c(i11, i12, i13, i14, i15)#
-#
-  # define starting Block#
-  Start == B2#
-#
-  # define branches#
-  b1 := Start(0,2) + B1#
-  b2 := Start(3,5) + B3#
-"#
-#
-items <- seq(-1,1,length.out = 15)#
-names(items) <- paste0("i",1:15)#
-persons = 1000#
-mean = 0#
-sd = 1#
-dat <- tmt_sim(mstdesign = mstdesign, #
-  items = items, persons = persons, mean = mean, sd = sd)#
-dat.rm <- tmt_rm(dat = dat, mstdesign = mstdesign)#
-summary(dat.rm)
-toc()
-tic("start")
-# Example simple Rasch model #
-##############################################################################
-dat <- tmt:::sim.rm(theta = 100,b = 10,seed = 1111)#
-dat.rm <- tmt_rm(dat = dat)#
-summary(dat.rm)#
-#
-##############################################################################
-# Example for multistage-design#
-##############################################################################
-mstdesign <- "#
-  B1 =~ c(i1, i2, i3, i4, i5)#
-  B2 =~ c(i6, i7, i8, i9, i10)#
-  B3 =~ c(i11, i12, i13, i14, i15)#
-#
-  # define starting Block#
-  Start == B2#
-#
-  # define branches#
-  b1 := Start(0,2) + B1#
-  b2 := Start(3,5) + B3#
-"#
-#
-items <- seq(-1,1,length.out = 15)#
-names(items) <- paste0("i",1:15)#
-persons = 1000#
-mean = 0#
-sd = 1#
-dat <- tmt_sim(mstdesign = mstdesign, #
-  items = items, persons = persons, mean = mean, sd = sd)#
-dat.rm <- tmt_rm(dat = dat, mstdesign = mstdesign)#
-summary(dat.rm)
-toc()
-?dexterMST
-??dexterMST
-?sirt
-??sirt
-??PP
-library(PP)
-?PP
-library(TAM)
-?TAM
-library(dexterMST)
-?dexterMST
-??dexterMST
-library(tmt)
-model <- "#
-  B1 =~ c(i1, i2, i3, i4, i5)#
-  B2 =~ c(i6, i7, i8, i9, i10)#
-  B3 =~ c(i11, i12, i13, i14, i15)#
-  B4 =~ c(i16, i17, i18, i19, i20)#
-  B5 =~ c(i21, i22, i23, i24, i25)#
-  B6 =~ c(i26, i27, i28, i29, i30)#
-#
-  # define starting Block#
-  Start == B4#
-#
-  # define branches#
-  b1 := Start(0,2) + B2(0,2) + B1(0,5)#
-  b2 := Start(0,2) + B2(3,5) + B3(0,5)#
-  b3 := Start(3,5) + B5(0,2) + B3(0,5)#
-  b4 := Start(3,5) + B5(3,5) + B6(0,5)#
-"#
-items <- seq(-3,3,length.out = 30)#
-names(items) <- paste0("i",1:30)#
-persons = 10000#
-mean = 0#
-sd = 1#
-#
-dat <- list()#
-for(i in 1:1000){#
-  cat("\r","Durchgang: ",formatC(i,flag = 0,digits = 3))#
- dat[[i]] <- tmt::tmt_sim(mstdesign = model, items = items, persons = persons, mean = mean, sd = sd)$data#
-}
-ausgabe <- list()#
-for(i in 1:1000){#
-  cat("\r","Durchgang: ",formatC(i,flag = 0,digits = 3))#
-  dat.rm <- tmt_rm(dat[[i]])#
-  dat.lrt <- tmt_lrtest(dat.rm)#
-  ausgabe[[i]] <- list(betapar = dat.rm$betapar, LRvalue = dat.lrt$LRvalue, df = dat.lrt$df)#
-}#
-mat <- matrix(NA,nrow=1000,ncol=2)#
-for(i in 1:1000){#
-  mat[i,] <- unlist(ausgabe[[i]][2:3])#
-}#
-table(mat[,2])#
-quantile(mat[,1],probs=c(0.95,0.99))#
-qchisq(p = 0.95,29);qchisq(p = 0.99,29)
-head(mat)
-dat[[1]]
-str(dat[[1]])
-mat_ohneMST <- mat
-dat <- list()#
-for(i in 1:1000){#
-  cat("\r","Durchgang: ",formatC(i,flag = 0,digits = 3))#
- dat[[i]] <- tmt::tmt_sim(mstdesign = model, items = items, persons = persons, mean = mean, sd = sd)#
-}
-ausgabe <- list()#
-for(i in 1:1000){#
-  cat("\r","Durchgang: ",formatC(i,flag = 0,digits = 3))#
-  dat.rm <- tmt_rm(dat[[i]])#
-  dat.lrt <- tmt_lrtest(dat.rm)#
-  ausgabe[[i]] <- list(betapar = dat.rm$betapar, LRvalue = dat.lrt$LRvalue, df = dat.lrt$df)#
-}#
-mat <- matrix(NA,nrow=1000,ncol=2)#
-for(i in 1:1000){#
-  mat[i,] <- unlist(ausgabe[[i]][2:3])#
-}#
-#
-table(mat[,2])#
-quantile(mat[,1],probs=c(0.95,0.99))#
-qchisq(p = 0.95,29);qchisq(p = 0.99,29)
-library(roxygen2)
-?examples
-??examples
-? tag_examples
-library(devtools)#
-install_github('andreacirilloac/updateR')#
-library(updateR)#
-updateR(admin_password = 'need')
-library(updateR)
-library(devtools)#
-install_github('andreacirilloac/updateR')#
-library(updateR)#
-updateR(admin_password = 'need')
-updateR()
-updateR("need")
-install.packages("rlang",dependencies=TRUE)
-Rcpp::evalCpp("1+1")
-Rcpp::sourceCpp('src/esf_mst_vector_v2_agrad.cpp')
-Rcpp::compileAttributes()
-Rcpp::evalCpp("1+1")
-setwd("/Users/jansteinfeld/CloudStation/GIT/PP")
-pkgdown::build_site()
-pkgdown::build_site()
-pkgdown::build_site()
-pkgdown::build_site()
-pkgdown::build_site()
-pkgdown::build_site()
-pkgdown::build_site()
-setwd("/Users/jansteinfeld/CloudStation/GIT/PP")#
-pkgbuild::compile_dll()#
-Rcpp::compileAttributes()#
-roxygen2::roxygenise()#
-devtools::document()#
-devtools::check()#
-devtools::document(roclets=c('rd', 'collate', 'namespace', 'vignette'))#
-devtools::install('.', reload = TRUE, args = '--build --preclean', build_vignettes = TRUE)#
-devtools::build_vignettes()#
-pkgdown::build_site()#
-# pkgdown::build_site()#
-devtools::test()#
-devtools::build_manual()#
-devtools::build()#
-# HERE push to GitHub#
-p <- utils::packageDescription("PP")#
-p$Version#
-system(paste0("R CMD check --as-cran ~/CloudStation/GIT/PP_",p$Version,".tar.gz"))#
-# rhub checks.#
-# runs the build and check on Linux, in valgrind to find memory leaks and pointer errors.#
-rhub::check_with_valgrind()#
-# R-hub provides a special Docker image to run Address Sanitizer (ASAN) and Undefined Behavior Sanitizer (UBSAN)#
-rhub::check_with_sanitizers()#
-# Check an R-package on R-hub, for a CRAN submission.#
-rhub::check_for_cran()#
-rhub::check_on_windows()#
-rhub::check(platform = 'debian-gcc-devel')
-devtools::load_all()
-library(testthat)
-context("4PL model")#
-#
-# ------------------------- testing 1>>>#
-THRESx  <- c(-2,-1,1,2)#
-sl     <- c(0.5,1,1.5,1.1)#
-#
-awmatrix <- matrix(c(1,0,1,0,1,1,1,0),nrow=2,byrow=TRUE)#
-awmatrix <- rbind(awmatrix,c(1,1,1,1),c(0,0,0,0),c(1,0,1,0),c(1,0,1,0),c(1,1,0,0))#
-#
-ua     <- c(0.98,0.85,0.9,0.95)#
-la     <- c(0,0.05,0.12,0.001)#
-estmod <- rep(c("mle","wle","map"),4)#
-LA <- vector(mode="list",length=length(estmod))#
-UA <- vector(mode="list",length=length(estmod))#
-for(i in c(4,5,6,10,11,12))#
-  {#
-    LA[[i]] <- la      #
-  }#
-#
-for(i in c(7,8,9,10,11,12))#
-  {#
-    UA[[i]] <- ua#
-  }#
-res234pl_dup1 <- vector(mode="list",length=length(estmod))#
-res234pl_dup2 <- vector(mode="list",length=length(estmod))#
-for(a in 1:length(estmod))#
-  {#
-    res234pl_dup1[[a]]  <- PP_4pl(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=TRUE),upperA = UA[[a]],lowerA = LA[[a]])#
-    res234pl_dup2[[a]] <- PP_4pl(awmatrix,THRESx,slopes = sl,type = estmod[[a]],ctrl = list(killdupli=FALSE),upperA = UA[[a]],lowerA = LA[[a]])#
-  }#
-#t#
-test_that("Output = the same - with or without removing duplicates",{#
-#
-for(te in 1:length(estmod))#
-{#
-expect_that(res234pl_dup1[[te]],equals(res234pl_dup1[[te]]))  #
-}#
-#
-})#
-# ------------------------- testing 2>>>#
-set.seed(1523)#
-# intercepts#
-diffpar <- seq(-3,3,length=12)#
-la     <- round(runif(12,0,0.25),2)#
-ua     <- round(runif(12,0.8,1),2)#
-# slope parameters#
-sl     <- round(runif(12,0.5,1.5),2)#
-#
-# antwortmatrix (für neue MLE routine)#
-awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)#
-awm2 <- awm#
-awm2[3,2] <- 2#
-#
-diffparM <- rbind(0,diffpar)#
-diffparM2 <- diffparM#
-diffparM2[2,4] <- NA#
-#
-b1 <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")#
-b2 <- PP_4pl(respm = awm,thres = diffparM, slopes = sl,type = "wle")#
-#
-b3 <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")#
-b4 <- PP_4pl(respm = awm,thres = diffparM, slopes = sl,type = "mle")#
-#
-#t#
-test_that("Output = the same on 1,2,3,4pl - with vector or matrix input",{#
-  expect_that(b1[[1]],equals(b2[[1]]))#
-  expect_that(b3[[1]],equals(b4[[1]]))#
-})#
-# ------------------------- testing 3>>>#
-#
-#t#
-test_that("errors - warnings misspelling and length #1",{#
-  expect_that(PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "aaa"), throws_error())#
-  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl), throws_error())#
-  expect_that(PP_4pl(respm = awm[,-1],thres = diffpar, slopes = sl), throws_error()) #
-  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1]), throws_error()) #
-  expect_that(PP_4pl(respm = awm,thres = diffpar, slopes = sl,lowerA = la[-1]), throws_error()) #
-  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1]), throws_error()) #
-  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1],lowerA = la[-1]), throws_error())#
-  expect_that(PP_4pl(respm = awm,thres = diffpar[-1], slopes = sl[-1],upperA = ua[-1],lowerA = la[-1]), throws_error())#
-  expect_that(PP_4pl(respm = awm2,thres = diffpar, slopes = sl), throws_error())#
-  expect_that(PP_4pl(respm = awm2,thres = diffparM2, slopes = sl), throws_error())#
-})
-b1
-b2
+parlist = par_test#
+ojlist = lapply(par_test,function(x) rep(1,length(x)))#
+order = 2#
+minSolved = rep(0,length(par_test))#
+maxSolved = lengths(par_test)#
+minSolved_design = rep(0,length(par_test))#
+maxSolved_design = cumsum(lengths(par_test))#
+probs = rep(1,sum(lengths(par_test)+length(par_test)))
+tmt_g012 <- esf_mst_sum_vector(#
+    parlist = parlist,#
+    ojlist = ojlist, #
+    order = order, #
+    minSolved = minSolved, #
+    maxSolved = maxSolved,#
+    minSolved_design = minSolved_design, #
+    maxSolved_design = maxSolved_design)#
+psychotools_g012 <- psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")#
+round(abs(tmt_g012[[3]][,,1] - psychotools_g012[[3]][,,1]),4)
+tmt_g012 <- tmt:::esf_mst_sum_vector(#
+    parlist = parlist,#
+    ojlist = ojlist, #
+    order = order, #
+    minSolved = minSolved, #
+    maxSolved = maxSolved,#
+    minSolved_design = minSolved_design, #
+    maxSolved_design = maxSolved_design)#
+psychotools_g012 <- psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")#
+round(abs(tmt_g012[[3]][,,1] - psychotools_g012[[3]][,,1]),4)
 ls()
-b3
-b4
-context("GPCM")#
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1#
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)#
+mstdesign
+head(fit$hessian)
+head(ahessian(fit$par))
+fit$hessian - ahessian(fit$par)
+round(fit$hessian - ahessian(fit$par),4)
+round(fit$hessian - ahessian(fit$par),6)
+sqrt(diag(desmat %*% solve(fit$hessian) %*% t( desmat )))
+sqrt(diag(desmat %*% solve(ahessian(fit$par)) %*% t( desmat )))
+install.packages("sirt")
+library(sirt)
+citatoin(sirt)
+citation("sirt")
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
+)
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
 #
-sl     <- c(0.5,1,1.5,1.1,1,0.98)#
-awmatrix <- matrix(c(1,0,2,0,1,1,1,0,0,1#
-                     ,2,0,0,0,0,0,0,0,0,1,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)#
-awmatrix_2 <- awmatrix#
-awmatrix_2[2,1] <- 3#
+  # define routing criteria#
+  r1 = c(0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.25,0.2,0.15,0.1)#
+  r2 = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.75,0.8,0.85,0.9)#
 #
-THRESna  <- THRES#
+  # define path#
+  p1 := B2(r1) + B1#
+  p2 := B2(r2) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
 #
-THRESna[,1] <- NA#
+data_gen <- function(x,mstdesign,items,persons){#
+    out <- list()#
+    mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }#
+    for(i in seq(x)){#
+        cat("\r",paste0("Durchgang: "), formatC(i,flag=0,width=nchar(x)))#
+        flush.console()#
+        theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)#
+        out[[i]] <- tmt_sim(mstdesign, items = items, persons = theta)#
+    }#
+    out#
+}
+m02_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 5000)#
+saveRDS(m02_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m02_generalizedMST_2020.rds")
+rm(m02_generalizedMST_2020);gc();gc()#
+# m03 =  2,000#
+m03_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 2000)#
+saveRDS(m03_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m03_generalizedMST_2020.rds")#
+rm(m03_generalizedMST_2020);gc();gc()#
+# m04 =  1,000#
+m04_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 1000)#
+saveRDS(m04_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m04_generalizedMST_2020.rds")#
+rm(m04_generalizedMST_2020);gc();gc()#
+# m05 =    500#
+m05_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 500)#
+saveRDS(m05_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m05_generalizedMST_2020.rds")#
+rm(m05_generalizedMST_2020);gc();gc()#
+# m06 =    250#
+m06_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 250)#
+saveRDS(m06_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m06_generalizedMST_2020.rds")#
+rm(m06_generalizedMST_2020);gc();gc()
+solvemat <- function(nr, nc){#
+	set.seed(2907)#
+	m1 <- matrix(runif(nr*nc), nrow = nr, ncol = nc)#
+	m2 <- t(m1)%*%m1#
+	m3 <- solve(m2)#
+}#
+system.time(replicate(2, solvemat(10000, 5000)))
+?system.time
+install.packages("benchmarkme")
+res = benchmark_std(runs = 1)
+library(benchmarkme)
+res = benchmark_std(runs = 1)
+plot(res)
+get_ram()
+get_cpu()
+get_byte_compiler()
+et_platform_info()
+get_platform_info()
+library(tmt)
+esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3)), #
+  minSolved = c(1,1),#
+  minSolved_design = c(1,2),#
+  maxSolved = c(3,3),#
+  maxSolved_design = c(3,6),#
+  order = 2)
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3)), #
+  minSolved = c(1,1),#
+  minSolved_design = c(1,2),#
+  maxSolved = c(3,3),#
+  maxSolved_design = c(3,6),#
+  order = 2)
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3),rep(1,3)), #
+  minSolved = c(1,0,1),#
+  minSolved_design = c(1,1,2),#
+  maxSolved = c(3,3,3),#
+  maxSolved_design = c(3,6,9),#
+  order = 1)[[2]]
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3),rep(1,3)), #
+  minSolved = c(1,0,1),#
+  minSolved_design = c(1,1,2),#
+  maxSolved = c(3,3,3),#
+  maxSolved_design = c(3,6,9),#
+  order = 1)
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
+)
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
 #
-test_that("errors and warnings are thrown in the gpcm when necessary",{#
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust"),gives_warning())#
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "A"),throws_error())#
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl),throws_error())#
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES[,-1], slopes = sl),throws_error())#
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl[-1]),throws_error())#
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRESna, slopes = sl),throws_error())#
-  expect_that(PP_gpcm(respm = awmatrix_2,thres = THRES, slopes = sl),throws_error())#
-  #expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,theta_start = 2),throws_error())#
-})
-context("GPCM&4PL model")#
+  # define path#
+  p1 := B2(0, 5) + B1#
+  p2 := B2(6,10) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
 #
-# some threshold parameters#
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1#
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)#
-# slopes#
-sl     <- c(0.5,1,1.5,1.1,1,0.98)#
+dat <- tmt_sim(mstdesign, items = items, persons = 10000, seed = 1111)#
+saveRDS(dat,file="dat_tmp.rds")#
+tmt_rm(dat, optimization="nlminb")#
+tmt_rm(dat, optimization="nlminb")$betapar#
+tmt_rm(dat, optimization="optim")$betapar
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
+)
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
 #
-THRESx <- THRES#
-THRESx[2,1:3] <- NA#
-THRESx2 <- THRESx#
+  # define path#
+  p1 := B2(0, 5) + B1#
+  p2 := B2(6,10) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
 #
-THRESx2[,4] <- NA#
+dat <- tmt_sim(mstdesign, items = items, persons = 10000, seed = 1111)#
+saveRDS(dat,file="dat_tmp.rds")#
+tmt_rm(dat, optimization="nlminb")#
+tmt_rm(dat, optimization="nlminb")$betapar#
+tmt_rm(dat, optimization="optim")$betapar
+tmt_rm(dat, optimization="nlminb")$se.beta#
+tmt_rm(dat, optimization="optim")$se.beta
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+n = 1000
+d = 0.3
+pi = 1
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+pi = 0.1
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+pi = 0.3
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+y1
+?base::scale
+tinytex::pdflatex("~/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2020_distributions_MST/MST_distributions.tex")
+log(-0.5)
+log(0.5)
+exp(-0.5)
+exp(0.5)
+# your code goes here#
+library(OPDOE)#
 #
-##
-la     <- c(0.02,0.1,0,0,0,0)#
-ua     <- c(0.97,0.91,1,1,1,1)#
+size.t.test(#
+delta       = 10,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.8,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+install.packages("OPDOE")
+# your code goes here#
+library(OPDOE)#
 #
-awm <- matrix(c(1,0,1,0,1,1,1,0,0,1#
-                     ,2,0,0,0,0,0,0,0,0,1#
-                     ,0,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)#
+size.t.test(#
+delta       = 10,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.8,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+# your code goes here#
+library(OPDOE)#
 #
-# create model2est#
-# this function tries to help finding the appropriate #
-# model by inspecting the THRESx.#
-model2est <- findmodel(THRESx)#
+size.t.test(#
+delta       = 6.67,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.95,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+citation(dexterMST)
+citation("dexterMST")
+citation("tmt")
+1/(2^2/3)
+1/(2^2/3)*2^2/3
+2*2^1/2
+2*2^(1/2)
+2*2^(1/2) / 1^(1/2)
+1/(2^(2/3))
+1/(2^(2/3))*2^(2/3)
+2*sqrt(2/1)
+3+(12/1)
+175
+1/5
+3/5
+?rnorm
+Metrics::bias
+?Metrics::bias
+install.packages("SimDesign")
+SimDesign::RMSE
+actual <- c(1.1, 1.9, 3.0, 4.4, 5.0, 5.6) #
+predicted <- c(0.9, 1.8, 2.5, 4.5, 5.0, 6.2) #
+Metrics::bias(actual, predicted)
+SimDesign::bias
+SimDesign::bias()
+SimDesign::bias(estimate=predicted,parameter=)
+SimDesign::bias(estimate=predicted,parameter=actual)
+actual <- c(1.1, 1.9, 3.0, 4.4, 5.0, 5.6) #
+predicted <- c(0.9, 1.8, 2.5, 4.5, 5.0, 6.2) #
+Metrics::bias(actual, predicted)
+==rmse
+??rmse
+install.packages(c(‚tidyverse‘))
+install.packages(c(‘tidyverse‘))
+install.packages(c(“tidyverse“))
+# library#
+require(foreign)#
+require(eRm)#
+require(psych)#
+require(TAM)
+dat <- read.spss("~/SynologyDrive/Lehre/Workshop/Test_und_Fragebogenkonstruktion/Daten/Daten_Workshop/IntelligenceWichertEtal2012.sav",to.data.frame=T)#
+colnames(dat)#
+head(dat)#
+# Fälle ausschließen, die kein einziges Item beantwortet haben#
+dat.1 <- subset(dat,rowSums(is.na(dat[,5:40]))<36)
+head(dat)
+describe(dat.1[,5:40])
+rasch.m1 <- RM(dat.1[,5:39],se=T)
+summary(rasch.m1)
+layout(1:2)#
+plot(1:35,colMeans(dat.1[,5:39]),pch=19,#
+     xlab="Items 1-35",ylab="Itemmittelwerte",#
+     main="Itemmittelwerte")#
+plot(1:35,-1*rasch.m1$betapar,pch=19,#
+     xlab="Items 1-35",ylab="Itemschwierigkeiten",#
+     main="Itemschweirigkeitsparameter (Rasch)")
+ls()
+LRtest(rasch.m1)
+installr::updateR()
+install.packages("installr")
+remotes::install_github('talgalili/installr')
+devtools::install_github("AndreaCirilloAC/updateR")
+updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR(auto = TRUE, .Rprofile = NULL,admin_password="need")
+?updateR
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+admin_password <- "need"
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR
+admin_password <- "need"
+username <- system("whoami", intern = TRUE)
+command <- paste0("echo '", admin_password, "' | sudo -S -l")
+command
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")#
+    latest <- latest_r_version()
+library(updateR)
+out <- system(command, intern = TRUE)
+need
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")
+installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()
+library(tidyverse)
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")#
+    latest <- latest_r_version()
+latest <- updateR::latest_r_version()
+latest_r_version
+installing <- list_packages()
+latest <- updateR:::latest_r_version()
+updateR:::check_compactability(status = latest)#
+    installing <- updateR:::list_packages()#
+    folderpath <- sprintf("/Users/%s/Downloads/", system2("whoami", #
+        stdout = TRUE))#
+    pkgfile <- regmatches(latest$url, regexpr("R.*$", latest$url))#
+    fullpath <- sprintf("%s%s", folderpath, pkgfile)
+latest <- updateR:::latest_r_version()
+updateR:::check_compactability(status = latest)#
+    installing <- updateR:::list_packages()#
+    folderpath <- sprintf("/Users/%s/Downloads/", system2("whoami", #
+        stdout = TRUE))#
+    pkgfile <- regmatches(latest$url, regexpr("R.*$", latest$url))#
+    fullpath <- sprintf("%s%s", folderpath, pkgfile)
+download.file(latest$url, fullpath)
+message(paste0("Installing R-", latest$latest, "...please wait"))#
+    command <- paste0("echo '", admin_password, "' | sudo -S installer -pkg ", #
+        "'", fullpath, "'", " -target /")#
+    system(command, ignore.stdout = TRUE)
+need
+arg <- paste0("--check-signature ", fullpath)
+arg
+latest
+needed_packages
+updateR:::restore_packages(status = latest)#
+r
+load(file = "/tmp/needed_packages.RData")
+ls()
+?install.packages
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4)
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4,ask=FALSE)
+options(install.packages.compile.from.source = "always")#
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4,verbose=TRUE)
+options(install.packages.compile.from.source = "always")#
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4)
+library(tidyverse)
+library(sirt)
+update.packages(ask=FALSE)
+library(sirt)
+library(tmt)
+library(TAM)
+library(PP)
+?stats::fitted
+# muss nun die Itemparameter (nicht scaled) überprüfen#
+all_identical <- function(x) {#
+  if (length(x) == 1L) {#
+    warning("'x' has a length of only 1")#
+    return(TRUE)#
+  } else if (length(x) == 0L) {#
+    warning("'x' has a length of 0")#
+    return(logical(0))#
+  } else {#
+    TF <- vapply(1:(length(x)-1),#
+                 function(n) identical(x[[n]], x[[n+1]]),#
+                 logical(1))#
+    if (all(TF)) TRUE else FALSE#
+  }#
+}
+dateneinlesen <- function(path){#
+	datenliste <- list.files(path, recursive = TRUE, pattern = ".out",full.names=TRUE)#
+	out <- list()#
+# Namen bestimmen#
 #
-awm3 <- awm2 <- awm #
-awm2[3,1] <- 3#
+	for(n in datenliste){#
+		cat("\r Datensatz: ",n)#
+		flush.console()#
+		out_tmp <- readRDS(n)#
+		nam <- gsub("/","-",n)#
+    nam <- gsub("__dat_itpar.out","",nam)#
+		out[[nam]] <- out_tmp#
+	}#
+	return(out)#
+}
+dat <- dateneinlesen("/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2020_distributions_MST/daten/singlestage")
+length(dat)
+apply(dat[[1]],2,all_identical)
+i <- 1
+lapply(dat[[i]],FUN = function(x){#
+		apply(x,2,all_identical)#
+	})
+out <- list()#
+for(i in seq_along(dat)){#
+	out[[i]] <- lapply(dat[[i]],FUN = function(x){#
+		apply(x,2,all_identical)#
+	})#
+}
+cat("Check für Bedingung: ",i,"\r")
+nichtschaetzbar <- function(x) unlist(.mapply(function(...) which(c(...)==TRUE), x, NULL))#
+nichtschaetzbar(out2[[5]])#
+out_ne <- lapply(out,nichtschaetzbar)#
 #
-#awm3[,1] <- NA#
-#
-# ------------------------- testing 1>>>#
-#
-#t#
-test_that("errors - warnings misspelling and length #1",{#
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,type = "aaa",model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm,thres = THRESx[,-1], slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl[-1],lowerA=la,upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la[-1],upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua[-1],model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm[,-1],thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())#
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est, type="robust"), gives_warning())#
-})
-# tests ##########################
-########## 2/3/4PL Model #########
-#################################################################
-context("Jackknife")#
-#
-# ------------------------- testing 1>>>#
-set.seed(1622)#
-# intercepts#
-diffpar <- seq(-3,3,length=12)#
-# slope parameters#
-sl     <- round(runif(12,0.5,1.5),2)#
-la     <- round(runif(12,0,0.25),2)#
-ua     <- round(runif(12,0.8,1),2)#
-#
-# response matrix#
-awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)#
-#
-awm <- rbind(awm,c(rep(1,11),0))#
-awm <- rbind(awm,rep(1,12))#
-awm <- rbind(awm,rep(1,12))#
-## 1PL model ##### #
-#
-# MLE estimation#
-res1plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle")#
-# WLE estimation#
-res1plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle")#
-# MAP estimation#
-res1plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map")#
-res_jk1 <- JKpp(res1plmle)#
-res_jk2 <- JKpp(res1plwle)#
-res_jk3 <- JKpp(res1plmap)#
-test_that("result = matrix with same dimension",{#
-  expect_that(dim(res1plmle$resPP$resPP),is_identical_to(dim(res_jk1$resjk)))#
-  expect_that(dim(res1plwle$resPP$resPP),is_identical_to(dim(res_jk2$resjk)))#
-  expect_that(dim(res1plmap$resPP$resPP),is_identical_to(dim(res_jk3$resjk)))#
-})
-res1plmle
-res1plwle
-res1plmap
-res_jk1
-res_jk2
-res_jk3
-# tests ##########################
-########## 2/3/4PL Model #########
-#################################################################
-context("Jackknife")#
-#
-# ------------------------- testing 1>>>#
-set.seed(1622)#
-# intercepts#
-diffpar <- seq(-3,3,length=12)#
-# slope parameters#
-sl     <- round(runif(12,0.5,1.5),2)#
-la     <- round(runif(12,0,0.25),2)#
-ua     <- round(runif(12,0.8,1),2)#
-#
-# response matrix#
-awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)#
-#
-awm <- rbind(awm,c(rep(1,11),0))#
-awm <- rbind(awm,rep(1,12))#
-awm <- rbind(awm,rep(1,12))#
-## 1PL model ##### #
-#
-# MLE estimation#
-res1plmle <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "mle"))#
-# WLE estimation#
-res1plwle <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "wle"))#
-# MAP estimation#
-res1plmap <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1,length(diffpar)),type = "map"))#
-res_jk1 <- JKpp(res1plmle)#
-res_jk2 <- JKpp(res1plwle)#
-res_jk3 <- JKpp(res1plmap)#
-test_that("result = matrix with same dimension",{#
-  expect_that(dim(res1plmle$resPP$resPP),is_identical_to(dim(res_jk1$resjk)))#
-  expect_that(dim(res1plwle$resPP$resPP),is_identical_to(dim(res_jk2$resjk)))#
-  expect_that(dim(res1plmap$resPP$resPP),is_identical_to(dim(res_jk3$resjk)))#
-})
-setwd("/Users/jansteinfeld/CloudStation/GIT/PP")
-devtools::test()
-library(testthat)#
-test_check("PP")
-devtools::test()
-devtools::test()
-devtools::check()
-test_package()
-test_package(".")
-test_check()
-test_check(".")
-test_package("PP")
-testthat::test_dir("tests/")
-PPall
-rm(list=ls())
-setwd("/Users/jansteinfeld/CloudStation/GIT/PP")#
-pkgbuild::compile_dll()#
-Rcpp::compileAttributes()#
-roxygen2::roxygenise()#
-devtools::document()#
-devtools::check()#
-devtools::document(roclets=c('rd', 'collate', 'namespace', 'vignette'))#
-devtools::install('.', reload = TRUE, args = '--build --preclean', build_vignettes = TRUE)#
-devtools::build_vignettes()#
-pkgdown::build_site()#
-# pkgdown::build_site()#
-devtools::test()#
-devtools::build_manual()#
-devtools::build()#
-# HERE push to GitHub#
-p <- utils::packageDescription("PP")#
-p$Version#
-system(paste0("R CMD check --as-cran ~/CloudStation/GIT/PP_",p$Version,".tar.gz"))
+which(lengths(out_ne) < 1000 & lengths(out_ne) > 0)
+which(lengths(out_ne) < 1000 & lengths(out_ne) > 0)
+out_ne
+dat[[1]][[1]]
+round(rowSums(dat[[1]][[1]]),4)
+round(colSums(dat[[1]][[1]]),4)
+size_n.one_way.model_1(alpha = 0.05, beta = 0.2, delta =0.67, a = 4,cases = "maximin")
+library(opdoe)
+install.packages("opdoe")
+library(OPDOE)
+size_n.one_way.model_1(alpha = 0.05, beta = 0.2, delta =0.67, a = 4,cases = "maximin")
+install.packages("OPDOE", repos = "https://packagemanager.rstudio.com/cran/latest")
+chi_dist <- function(n,df) {#
+		X <- rchisq(n, df)#
+		out <- c(base::scale(X))#
+    return(out)#
+	}
+?scale
+set.seed(1111)
+test1 <- chi_dist(1000,1)
+set.seed(1111)
+test2 <- rchisq(1000,1)
+mean(test1)
+mean(test2)
+?scale
+sd(Test1)
+sd(test1)
+sd(test2)
+sd(scale(test2,scale=FALSE))
+sd(scale(test2,scale=TRUE))
+mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }#
+    for(i in seq(x)){#
+        cat("\r",paste0("Durchgang: "), formatC(i,flag=0,width=nchar(x)))#
+        flush.console()#
+        theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }
+theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+persons =1000
+theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+mean(theta)
+sd(theta)
+library(sirt)
+setwd("/Users/jansteinfeld/SynologyDrive/GIT/PP")#
+devtools::build()
+pkgbuild::compile_dll()
+install.packages("tmt",type="source")

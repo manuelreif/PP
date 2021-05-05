@@ -2,7 +2,7 @@ Package: PP
 Type: Package
 Title: Person Parameter Estimation
 Version: 0.6.3
-Date: 2021-05-02
+Date: 2021-05-05
 Authors@R: c(
         person(given = "Jan", 
          family = "Steinfeld", 
@@ -40,9 +40,10 @@ Suggests:
     knitr, 
     eRm, 
     data.table, 
-    prettydoc
+    prettydoc,
+    rmarkdown
 Imports: 
     Rcpp (>= 0.11.2)
 LinkingTo: Rcpp
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
 NeedsCompilation: yes

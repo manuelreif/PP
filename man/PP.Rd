@@ -3,7 +3,6 @@
 \docType{package}
 \name{PP}
 \alias{PP}
-\alias{PP-package}
 \title{Estimation of Person Parameters and calculation of Person Fit for the 1,2,3,4-PL model and the GPCM.}
 \description{
 PP-package has been developed to easily compute ML, WL (Warm 1989), MAP, EAP and robust estimates of person parameters for a given response matrix and given item parameters of the 1,2,3,4-PL model (Birnbaum 1968, Barton & Lord 1981) and the GPCM (Muraki 1992). It provides c++ routines which makes estimation of parameters very fast. Additional some methods to calculate the person fit are provided like the infit-outfit-, lz- and lz*-idex. Read the vignettes for getting started with this package.

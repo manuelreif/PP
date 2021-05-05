@@ -8,21 +8,29 @@
 
 <title>Draw Plausible values — PV • PP</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +40,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Draw Plausible values — PV" />
 
+<meta property="og:title" content="Draw Plausible values — PV" />
 <meta property="og:description" content="This function draws npv plausible values for each person from their posterior density." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,9 +57,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PP</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3</span>
       </span>
     </div>
 
@@ -73,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,11 +108,10 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/manuelreif/PP">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/jansteinfeld/PP/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -114,42 +122,38 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Draw Plausible values</h1>
-    <small class="dont-index">Source: <a href='https://github.com/manuelreif/PP/blob/master/R/PV.R'><code>R/PV.R</code></a>, <a href='https://github.com/manuelreif/PP/blob/master/R/prints.R'><code>R/prints.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jansteinfeld/PP/blob/master/R/PV.R'><code>R/PV.R</code></a>, <a href='https://github.com/jansteinfeld/PP/blob/master/R/prints.R'><code>R/prints.R</code></a></small>
     <div class="hidden name"><code>PV.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function draws <code>npv</code> plausible values for each person from their posterior density.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>PV</span>(<span class='no'>estobj</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>PV</span><span class='op'>(</span><span class='va'>estobj</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for fourpl</span>
-<span class='fu'>PV</span>(<span class='no'>estobj</span>, <span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>thinning</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>burnin</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>mult</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>PV</span><span class='op'>(</span><span class='va'>estobj</span>, npv <span class='op'>=</span> <span class='fl'>10</span>, approx <span class='op'>=</span> <span class='cn'>TRUE</span>, thinning <span class='op'>=</span> <span class='fl'>6</span>, burnin <span class='op'>=</span> <span class='fl'>10</span>, mult <span class='op'>=</span> <span class='fl'>2</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for gpcm</span>
-<span class='fu'>PV</span>(<span class='no'>estobj</span>, <span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>thinning</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>burnin</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>mult</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>PV</span><span class='op'>(</span><span class='va'>estobj</span>, npv <span class='op'>=</span> <span class='fl'>10</span>, approx <span class='op'>=</span> <span class='cn'>TRUE</span>, thinning <span class='op'>=</span> <span class='fl'>6</span>, burnin <span class='op'>=</span> <span class='fl'>10</span>, mult <span class='op'>=</span> <span class='fl'>2</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for gpcm4pl</span>
-<span class='fu'>PV</span>(<span class='no'>estobj</span>, <span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>thinning</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>burnin</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>mult</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+<span class='fu'>PV</span><span class='op'>(</span><span class='va'>estobj</span>, npv <span class='op'>=</span> <span class='fl'>10</span>, approx <span class='op'>=</span> <span class='cn'>TRUE</span>, thinning <span class='op'>=</span> <span class='fl'>6</span>, burnin <span class='op'>=</span> <span class='fl'>10</span>, mult <span class='op'>=</span> <span class='fl'>2</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pv</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pv</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>object</span>, <span class='kw'>nrowmax</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>object</span>, nrowmax <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,21 +198,21 @@
       <td><p>When printing the matrix of estimates - how many rows should be shown? Default = 15.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function returns a list which main element is <code>pvdraws</code>. This is a matrix of size number_of_persons x npv - so if 10 plausible values are requested for 100 persons, a 100x10 matrix is returned.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Mislevy, R. J. (1991). Randomization-based inference about latent variables from complex samples. Psychometrika, 56(2), 177-196.</p>
 <p>Von Davier, M., Gonzalez, E., &amp; Mislevy, R. (2009). What are plausible values and why are they useful. IERI monograph series, 2, 9-36.</p>
 <p>Kruschke, J. (2010). Doing Bayesian data analysis: A tutorial introduction with R. Academic Press.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='PP_gpcm.html'>PP_gpcm</a>, <a href='PP_4pl.html'>PP_4pl</a>, <a href='Jkpp.html'>JKpp</a></p></div>
-    
+    <div class='dont-index'><p><a href='PP_gpcm.html'>PP_gpcm</a>, <a href='PP_4pl.html'>PP_4pl</a>, <a href='JKpp.html'>JKpp</a></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Manuel Reif</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>################# Plausible values #############################################################</span>
@@ -219,131 +223,138 @@
 
 <span class='co'>### data creation ##########</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1522</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1522</span><span class='op'>)</span>
 <span class='co'># intercepts</span>
-<span class='no'>diffpar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>12</span>)
+<span class='va'>diffpar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>,<span class='fl'>3</span>,length<span class='op'>=</span><span class='fl'>12</span><span class='op'>)</span>
 <span class='co'># slope parameters</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span>),<span class='fl'>2</span>)
-<span class='no'>la</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span>),<span class='fl'>2</span>)
-<span class='no'>ua</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span>),<span class='fl'>2</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>la</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>ua</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'># response matrix</span>
-<span class='no'>awm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>0</span>:<span class='fl'>1</span>,<span class='fl'>10</span>*<span class='fl'>12</span>,<span class='kw'>replace</span><span class='kw'>=</span><span class='fl'>TRUE</span>),<span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>12</span>)
+<span class='va'>awm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>,<span class='fl'>10</span><span class='op'>*</span><span class='fl'>12</span>,replace<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>12</span><span class='op'>)</span>
 
 
 <span class='co'># EAP estimation - 2pl model</span>
-<span class='no'>res2pleap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>, <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"eap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2pleap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>, slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"eap"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = eap 
 #&gt; Estimation finished!</div><div class='input'>
 <span class='co'># draw 10 plausible values</span>
-<span class='no'>res_pv</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>res2pleap</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>res_pv</span>)</div><div class='output co'>#&gt; PP Version:  0.6.2 
+<span class='va'>res_pv</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>res2pleap</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res_pv</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; PP Version:  0.6.3 
 #&gt; 
 #&gt;  Call: PV.fourpl(estobj = res2pleap) 
-#&gt; - job started @ Sat Apr  6 22:29:07 2019 
+#&gt; - job started @ Wed May  5 17:19:16 2021 
 #&gt; 
 #&gt; Estimation type: Plausible values 
 #&gt; 
 #&gt; -------------------------------------
 #&gt;          [,1]    [,2]    [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]
-#&gt;  [1,]  0.2849 -0.8399  0.1263 -0.2914  0.7585 -0.9033 -0.0164 -0.5492  0.0752
-#&gt;  [2,]  0.2858 -0.2503  0.3525  0.9842  1.2551  0.0531 -0.3093  0.4639  1.4262
-#&gt;  [3,] -2.1970 -1.7316 -1.8037 -0.8349 -1.1762 -0.7708 -1.7662  0.1117 -1.1213
-#&gt;  [4,]  0.5945  1.0955  0.6689  1.8165  0.3504  1.9685  1.0176  0.7236  1.4350
-#&gt;  [5,] -0.9250 -0.1317 -0.4898  0.4182  0.0862  0.6171 -0.7258  0.6639  0.4870
-#&gt;  [6,] -0.3328 -1.0243 -0.2474 -0.8543 -0.3952  0.1281 -0.4713 -0.9901 -0.6095
-#&gt;  [7,]  1.1968  0.0894  2.3471  0.9454  1.1854  0.2188  0.1992  1.6062  0.6255
-#&gt;  [8,] -0.1486  0.7962  0.3512  0.3345  0.0946  1.1413  1.1616  0.3152  0.4724
-#&gt;  [9,] -0.2419  0.6962  0.8546  0.9651 -0.0233 -0.5305  0.6511 -0.4432  0.5983
-#&gt; [10,]  0.8961  0.8519 -0.0992 -0.1151  0.3014 -0.2799 -1.1283  0.8383  0.9891
+#&gt;  [1,]  0.6953 -0.4238  0.5376  0.1220  1.1666 -0.4869  0.3956 -0.1345  0.4868
+#&gt;  [2,]  1.8993  1.3331  1.9698  2.6371  2.9233  1.6535  1.2706  2.0875  3.1040
+#&gt;  [3,] -0.1233  0.3234  0.2542  1.1840  0.8564  1.2455  0.2902  2.0925  0.9092
+#&gt;  [4,] -0.0955  0.4056 -0.0211  1.1267 -0.3397  1.2787  0.3276  0.0335  0.7451
+#&gt;  [5,] -0.3687  0.4171  0.0624  0.9619  0.6330  1.1589 -0.1714  1.2052  1.0300
+#&gt;  [6,] -0.1402 -0.8282 -0.0552 -0.6590 -0.2023  0.3184 -0.2779 -0.7942 -0.4154
+#&gt;  [7,]  0.4481 -0.6536  1.5925  0.1980  0.4367 -0.5248 -0.5444  0.8554 -0.1203
+#&gt;  [8,] -1.0657 -0.1015 -0.5556 -0.5727 -0.8175  0.2507  0.2714 -0.5924 -0.4320
+#&gt;  [9,] -0.1300  0.8070  0.9653  1.0756  0.0884 -0.4184  0.7620 -0.3311  0.7093
+#&gt; [10,]  0.0168 -0.0284 -1.0015 -1.0178 -0.5916 -1.1864 -2.0544 -0.0423  0.1119
 #&gt;         [,10]
-#&gt;  [1,]  1.0343
-#&gt;  [2,]  1.2712
-#&gt;  [3,] -1.4602
-#&gt;  [4,]  0.5751
-#&gt;  [5,] -0.5285
-#&gt;  [6,]  0.0357
-#&gt;  [7,]  1.6658
-#&gt;  [8,] -0.3791
-#&gt;  [9,] -0.3184
-#&gt; [10,]  0.6129</div><div class='input'>
+#&gt;  [1,]  1.4409
+#&gt;  [2,]  2.9403
+#&gt;  [3,]  0.5839
+#&gt;  [4,] -0.1149
+#&gt;  [5,]  0.0241
+#&gt;  [6,]  0.2265
+#&gt;  [7,]  0.9147
+#&gt;  [8,] -1.3009
+#&gt;  [9,] -0.2065
+#&gt; [10,] -0.2729</div><div class='input'>
 <span class='co'># draw 10 plausible values - use a metropolitan hastings algorithm</span>
-<span class='no'>res_pv2</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>res2pleap</span>,<span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>res_pv2</span>)</div><div class='output co'>#&gt; PP Version:  0.6.2 
+<span class='va'>res_pv2</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>res2pleap</span>,approx <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res_pv2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; PP Version:  0.6.3 
 #&gt; 
 #&gt;  Call: PV.fourpl(estobj = res2pleap, approx = FALSE) 
-#&gt; - job started @ Sat Apr  6 22:29:07 2019 
+#&gt; - job started @ Wed May  5 17:19:16 2021 
 #&gt; 
 #&gt; Estimation type: Plausible values 
 #&gt; 
 #&gt; -------------------------------------
 #&gt;          [,1]    [,2]    [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]
-#&gt;  [1,]  0.1063  0.2596  0.4287 -0.2565 -0.0178 -0.0940  0.7777  0.0004  0.9865
-#&gt;  [2,]  0.9826  0.1859  0.6093 -0.6073 -0.0066  0.2557  0.3615  0.5634  0.8210
-#&gt;  [3,] -0.8380 -1.1269 -2.0664 -1.4512 -0.8584 -1.1183 -2.7336 -1.0119 -0.8509
-#&gt;  [4,]  1.3695  1.3933  1.7289  1.1075  2.1475  0.9849  0.7975  0.5150  0.3568
-#&gt;  [5,] -1.2661 -0.6133  0.0946 -0.7375 -0.2471 -0.8094 -0.5720 -1.1541 -1.8190
-#&gt;  [6,]  0.2656 -1.5660 -0.3889  0.2105 -0.5320 -0.7372 -0.3340  0.5602 -1.5145
-#&gt;  [7,]  0.3527  1.0687  0.3419  1.6038  2.1238  1.0738  1.4654  1.3370  1.4402
-#&gt;  [8,]  0.0452 -0.1372  0.1853  0.6594  0.2218  0.7285 -0.4091  0.1851  0.0329
-#&gt;  [9,]  0.3570  0.6845  1.9792 -0.6045  0.0182  1.0854  0.6714  0.8380  0.0487
-#&gt; [10,] -0.7171  0.0143 -0.3525 -0.6199 -0.3015  0.4301  0.4934  0.7282  0.0696
+#&gt;  [1,]  0.5176  0.6702  0.8384  0.1567  0.3942  0.3183  1.1856  0.4123  1.3934
+#&gt;  [2,]  2.6354  1.7938  2.2411  0.9559  1.5905  1.8675  1.9793  2.1926  2.4647
+#&gt;  [3,]  1.1811  0.9038  0.2391  0.3320  0.5533  0.0269  0.3355  0.7387  2.3213
+#&gt;  [4,]  0.6674  1.2358 -0.1539  0.4765 -0.9007  0.0618 -0.0947  0.1080  0.3025
+#&gt;  [5,]  1.2287  0.7294  1.1350  0.1083  0.2721  0.2760  0.1822  0.9192 -0.1466
+#&gt;  [6,] -0.3054  0.4222  0.1953 -0.1967 -1.2530 -0.9176  0.8579 -1.0329 -0.1456
+#&gt;  [7,] -0.3392  1.3096  0.8709  0.1195  1.0242  0.6261  1.1982  0.1842  0.1152
+#&gt;  [8,] -1.2496 -1.1042  0.2793  0.6694 -1.1338 -0.2512 -0.3135 -0.2266 -0.8891
+#&gt;  [9,]  0.9876  1.1833 -0.3425  0.2033 -0.2409  1.1824 -0.5005  0.4128  1.8582
+#&gt; [10,]  0.1786 -0.3631 -0.1823 -0.8970  0.0599 -1.4422 -0.2283 -1.0609  0.3647
 #&gt;         [,10]
-#&gt;  [1,]  0.5857
-#&gt;  [2,]  0.8334
-#&gt;  [3,] -1.6135
-#&gt;  [4,]  0.6792
-#&gt;  [5,]  2.0566
-#&gt;  [6,] -0.1657
-#&gt;  [7,]  1.5907
-#&gt;  [8,]  0.3790
-#&gt;  [9,]  0.2874
-#&gt; [10,] -0.1292</div><div class='input'>
+#&gt;  [1,]  0.9946
+#&gt;  [2,]  2.4778
+#&gt;  [3,]  0.8432
+#&gt;  [4,] -0.5142
+#&gt;  [5,]  1.0123
+#&gt;  [6,]  0.7441
+#&gt;  [7,]  0.7339
+#&gt;  [8,] -0.7373
+#&gt;  [9,]  0.4449
+#&gt; [10,] -1.4295</div><div class='input'>
 <span class='co'># ------ check the PVs</span>
 
 
 <span class='co'># -- autocorrelation?</span>
-<span class='no'>autocor</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>acv</span>)
-  {
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/cor'>cor</a></span>(<span class='no'>acv</span>[-<span class='fl'>1</span>],<span class='no'>acv</span>[-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>acv</span>)])
-  }
+<span class='va'>autocor</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>acv</span><span class='op'>)</span>
+  <span class='op'>{</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/cor.html'>cor</a></span><span class='op'>(</span><span class='va'>acv</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>,<span class='va'>acv</span><span class='op'>[</span><span class='op'>-</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>acv</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span> 
+  <span class='op'>}</span>
 
 
-<span class='no'>res_pvac</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>res2pleap</span>,<span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,<span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>200</span>)
+<span class='va'>res_pvac</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>res2pleap</span>,approx <span class='op'>=</span> <span class='cn'>FALSE</span>,npv <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
 
 <span class='co'># independent draws - so there cannot be any systematic autocorrelation when</span>
 <span class='co'># approx = TRUE. So this acts as a kind of benchmark for the MH-Alg.</span>
-<span class='no'>res_pvac2</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>res2pleap</span>,<span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,<span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>200</span>)
+<span class='va'>res_pvac2</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>res2pleap</span>,approx <span class='op'>=</span> <span class='cn'>TRUE</span>,npv <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>res_pvac</span>$<span class='no'>pvdraws</span>,<span class='fl'>1</span>,<span class='no'>autocor</span>)</div><div class='output co'>#&gt;  [1] -0.008948301 -0.096009941  0.013121810  0.056082802  0.013035461
-#&gt;  [6]  0.040484550  0.049193755 -0.066361709 -0.102547722 -0.045116539</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>res_pvac2</span>$<span class='no'>pvdraws</span>,<span class='fl'>1</span>,<span class='no'>autocor</span>)</div><div class='output co'>#&gt;  [1]  0.006920584 -0.104560200 -0.158347328 -0.122063162 -0.049476247
-#&gt;  [6]  0.039796274  0.007845125 -0.042506301  0.117589194 -0.018718642</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>res_pvac</span><span class='op'>$</span><span class='va'>pvdraws</span>,<span class='fl'>1</span>,<span class='va'>autocor</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] -0.09218511 -0.09269937 -0.02118295 -0.10091570 -0.04938669 -0.04611125
+#&gt;  [7] -0.04625685 -0.02323778 -0.10955832 -0.08582139</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>res_pvac2</span><span class='op'>$</span><span class='va'>pvdraws</span>,<span class='fl'>1</span>,<span class='va'>autocor</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1]  0.0334621629 -0.1829705082  0.0348347988 -0.1514444247 -0.0932831102
+#&gt;  [6] -0.0421735214 -0.1183732851  0.0202321291 -0.0008060551 -0.0892993107</div><div class='input'>
 <span class='co'># -- autocorrelation distr?</span>
 
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>res_pvac</span>$<span class='no'>pvdraws</span>,<span class='fl'>1</span>,<span class='no'>quantile</span>)</div><div class='output co'>#&gt;            [,1]        [,2]       [,3]       [,4]        [,5]       [,6]
-#&gt; 0%   -1.2049462 -1.44365415 -3.2948083 -0.5678425 -2.48985457 -1.9652687
-#&gt; 25%  -0.2901465 -0.03595577 -1.7740131  0.5508183 -0.57541818 -0.7861396
-#&gt; 50%   0.1646006  0.50691502 -1.3727132  1.0794551 -0.05158748 -0.3546089
-#&gt; 75%   0.5931468  0.88658263 -0.9409898  1.4150078  0.41423453  0.2220813
-#&gt; 100%  2.0887933  2.14703344  0.5493923  2.3644447  1.57924273  1.3052280
-#&gt;            [,7]        [,8]       [,9]       [,10]
-#&gt; 0%   -0.8598164 -1.16974086 -1.3312702 -1.61621580
-#&gt; 25%   0.6307417 -0.05784003 -0.1054234 -0.31203162
-#&gt; 50%   1.0879195  0.46642037  0.3233410  0.07074937
-#&gt; 75%   1.5391564  0.87630182  0.7716687  0.56048001
-#&gt; 100%  2.5013721  2.06922229  2.1274696  1.56259027</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>res_pvac2</span>$<span class='no'>pvdraws</span>,<span class='fl'>1</span>, <span class='no'>quantile</span>)</div><div class='output co'>#&gt;             [,1]        [,2]       [,3]       [,4]        [,5]       [,6]
-#&gt; 0%   -1.17223288 -1.05285222 -3.1324569 -0.6208526 -2.10151286 -2.2052587
-#&gt; 25%  -0.29158122  0.01684578 -1.8436124  0.6138699 -0.48950262 -0.7561943
-#&gt; 50%   0.06785703  0.48022645 -1.4134069  0.9418383 -0.03977517 -0.3038957
-#&gt; 75%   0.50389497  0.96436130 -1.0741461  1.3738316  0.35053168  0.1348168
-#&gt; 100%  1.88220533  2.31182161  0.4957541  2.3118965  1.36337890  1.1584552
-#&gt;            [,7]        [,8]       [,9]      [,10]
-#&gt; 0%   -0.2696525 -1.31601470 -1.0193706 -1.0537454
-#&gt; 25%   0.6284523 -0.07345515 -0.0313920 -0.3117298
-#&gt; 50%   1.0961759  0.29511910  0.2473823  0.1927478
-#&gt; 75%   1.5282971  0.79685366  0.6822925  0.5430307
-#&gt; 100%  2.8890319  1.91636347  2.1392672  1.7856185</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>res_pvac</span><span class='op'>$</span><span class='va'>pvdraws</span>,<span class='fl'>1</span>,<span class='va'>quantile</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;            [,1]      [,2]       [,3]        [,4]        [,5]       [,6]
+#&gt; 0%   -1.1189126 0.6482584 -0.8599093 -1.17206073 -1.06657367 -1.9113879
+#&gt; 25%   0.1243905 1.6327885  0.2907127 -0.05658439 -0.03965872 -0.5590972
+#&gt; 50%   0.5966065 2.1110250  0.7791557  0.37603789  0.54105135 -0.1806396
+#&gt; 75%   1.1131146 2.6571856  1.1399531  0.73833154  1.01487874  0.1831070
+#&gt; 100%  2.7299487 3.7852102  2.1300067  2.24528325  1.92887105  1.7386137
+#&gt;             [,7]       [,8]        [,9]      [,10]
+#&gt; 0%   -1.39552654 -2.9369528 -0.89186083 -2.5718982
+#&gt; 25%  -0.03756925 -1.1410654  0.04793972 -1.2907359
+#&gt; 50%   0.44731563 -0.5981778  0.46023882 -0.9884915
+#&gt; 75%   0.93801834 -0.1137122  0.89671504 -0.4047435
+#&gt; 100%  2.07215601  0.9584107  2.37528014  0.9008073</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>res_pvac2</span><span class='op'>$</span><span class='va'>pvdraws</span>,<span class='fl'>1</span>, <span class='va'>quantile</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;             [,1]       [,2]       [,3]        [,4]         [,5]       [,6]
+#&gt; 0%   -1.91636101 0.01988437 -1.2642093 -1.29134152 -1.441746554 -1.8945768
+#&gt; 25%   0.06152027 1.66679080  0.2228406 -0.04999196  0.009426829 -0.5331227
+#&gt; 50%   0.65586226 2.08172297  0.6867953  0.36135697  0.552124816 -0.1308765
+#&gt; 75%   0.96952681 2.57572512  1.1293040  0.68278043  0.973946245  0.2960726
+#&gt; 100%  2.39979403 3.93395552  2.3552885  1.69208634  1.878495326  1.9703464
+#&gt;             [,7]       [,8]        [,9]      [,10]
+#&gt; 0%   -1.40250925 -2.4268740 -1.38035907 -2.3991210
+#&gt; 25%   0.04597495 -0.9474394  0.02987099 -1.1518491
+#&gt; 50%   0.46163170 -0.5717532  0.46486795 -0.7977427
+#&gt; 75%   0.93354670 -0.1431859  0.88224389 -0.4279617
+#&gt; 100%  2.03832546  1.2638010  1.99662599  0.6953115</div><div class='input'>
 
 
 
@@ -351,20 +362,21 @@
 
 
 <span class='co'># some threshold parameters</span>
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='co'># slopes</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span>)
-<span class='no'>awmatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
-                     ,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>5</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span><span class='op'>)</span>
+<span class='va'>awmatrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
+                     ,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,byrow<span class='op'>=</span><span class='cn'>TRUE</span>,nrow<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 
 
 <span class='co'># EAP estimation</span>
-<span class='no'>resgpcmeap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRES</span>, <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"eap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating: GPCM ... 
+<span class='va'>resgpcmeap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,thres <span class='op'>=</span> <span class='va'>THRES</span>, slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"eap"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating: GPCM ... 
 #&gt; type = eap 
 #&gt; Estimation finished!</div><div class='input'>
 
-<span class='no'>res_gpcmpv</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>resgpcmeap</span>,<span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,<span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>20</span>)
+<span class='va'>res_gpcmpv</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>resgpcmeap</span>,approx <span class='op'>=</span> <span class='cn'>FALSE</span>,npv <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
 
 
 
@@ -373,85 +385,81 @@
 
 
 <span class='co'># some threshold parameters</span>
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='co'># slopes</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span><span class='op'>)</span>
 
-<span class='no'>THRESx</span> <span class='kw'>&lt;-</span> <span class='no'>THRES</span>
-<span class='no'>THRESx</span>[<span class='fl'>2</span>,<span class='fl'>1</span>:<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='va'>THRESx</span> <span class='op'>&lt;-</span> <span class='va'>THRES</span>
+<span class='va'>THRESx</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
 
 <span class='co'># for the 4PL item the estimated parameters are submitted, </span>
 <span class='co'># for the GPCM items the lower asymptote = 0 </span>
 <span class='co'># and the upper asymptote = 1.</span>
-<span class='no'>la</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.02</span>,<span class='fl'>0.1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>)
-<span class='no'>ua</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.97</span>,<span class='fl'>0.91</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)
+<span class='va'>la</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.02</span>,<span class='fl'>0.1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>ua</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.97</span>,<span class='fl'>0.91</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>
 
-<span class='no'>awmatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
+<span class='va'>awmatrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
                      ,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
-                     ,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>5</span>)
+                     ,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,byrow<span class='op'>=</span><span class='cn'>TRUE</span>,nrow<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 
-<span class='no'>model2est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='findmodel.html'>findmodel</a></span>(<span class='no'>THRESx</span>)
+<span class='va'>model2est</span> <span class='op'>&lt;-</span> <span class='fu'><a href='findmodel.html'>findmodel</a></span><span class='op'>(</span><span class='va'>THRESx</span><span class='op'>)</span>
 
 
 <span class='co'># EAP estimation</span>
-<span class='no'>respcmeap1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRESx</span>,
-                    <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>lowerA</span> <span class='kw'>=</span> <span class='no'>la</span>, <span class='kw'>upperA</span><span class='kw'>=</span><span class='no'>ua</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"eap"</span>,
-                    <span class='kw'>model2est</span><span class='kw'>=</span><span class='no'>model2est</span>)</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
+<span class='va'>respcmeap1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,thres <span class='op'>=</span> <span class='va'>THRESx</span>, 
+                    slopes <span class='op'>=</span> <span class='va'>sl</span>,lowerA <span class='op'>=</span> <span class='va'>la</span>, upperA<span class='op'>=</span><span class='va'>ua</span>, type <span class='op'>=</span> <span class='st'>"eap"</span>,
+                    model2est<span class='op'>=</span><span class='va'>model2est</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
 #&gt; type = eap 
 #&gt; Estimation finished!</div><div class='input'>
 
-<span class='no'>res_mixedpv_1</span>  <span class='kw'>&lt;-</span> <span class='fu'>PV</span>(<span class='no'>respcmeap1</span>,<span class='kw'>approx</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,<span class='kw'>npv</span> <span class='kw'>=</span> <span class='fl'>200</span>)
+<span class='va'>res_mixedpv_1</span>  <span class='op'>&lt;-</span> <span class='fu'>PV</span><span class='op'>(</span><span class='va'>respcmeap1</span>,approx <span class='op'>=</span> <span class='cn'>FALSE</span>,npv <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
 
 <span class='co'># rowMeans of plausible values should approximate the EAPs</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colSums'>rowMeans</a></span>(<span class='no'>res_mixedpv_1</span>$<span class='no'>pvdraws</span>)</div><div class='output co'>#&gt; [1]  0.11300311 -0.08030674 -1.47834741  1.28331157 -0.06188681</div><div class='input'><span class='co'># EAPs</span>
-<span class='no'>respcmeap1</span></div><div class='output co'>#&gt;      estimate     SE
+<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowMeans</a></span><span class='op'>(</span><span class='va'>res_mixedpv_1</span><span class='op'>$</span><span class='va'>pvdraws</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1]  0.093466412 -0.083368876 -1.607109734  1.298907846  0.004484088</div><div class='input'><span class='co'># EAPs</span>
+<span class='va'>respcmeap1</span>
+</div><div class='output co'>#&gt;      estimate     SE
 #&gt; [1,]   0.0682 0.5905
 #&gt; [2,]  -0.0653 0.5950
 #&gt; [3,]  -1.5237 0.7046
 #&gt; [4,]   1.3112 0.6142
 #&gt; [5,]  -0.0417 0.6119</div><div class='input'>
 <span class='co'># show the quantiles of the empirical distribution</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>res_mixedpv_1</span>$<span class='no'>pvdraws</span>,<span class='fl'>1</span>,<span class='no'>quantile</span>)</div><div class='output co'>#&gt;             [,1]        [,2]       [,3]       [,4]        [,5]
-#&gt; 0%   -1.29749059 -2.11191179 -3.7802592 -0.2569328 -1.62143337
-#&gt; 25%  -0.29812261 -0.54016455 -2.0192149  0.8993609 -0.52884564
-#&gt; 50%   0.08681905 -0.02010644 -1.4657959  1.2821405 -0.01897721
-#&gt; 75%   0.48885557  0.40593624 -0.9015661  1.6813945  0.33571962
-#&gt; 100%  1.66992035  1.49155908  0.4501171  3.0730952  1.64339926</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>res_mixedpv_1</span><span class='op'>$</span><span class='va'>pvdraws</span>,<span class='fl'>1</span>,<span class='va'>quantile</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;            [,1]        [,2]       [,3]        [,4]        [,5]
+#&gt; 0%   -1.3485464 -1.57470138 -3.8011143 -0.01345653 -1.45492521
+#&gt; 25%  -0.3082155 -0.54806041 -2.0808571  0.82804669 -0.50233232
+#&gt; 50%   0.1284492 -0.01708521 -1.5534572  1.27125852  0.00656254
+#&gt; 75%   0.4943450  0.33145978 -1.0425829  1.72900086  0.49265666
+#&gt; 100%  1.6374132  1.49828104  0.2286223  2.90438148  1.62675981</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Manuel Reif</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Manuel Reif, Jan Steinfeld.</p>
+  <p>Developed by Jan Steinfeld, Manuel Reif.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

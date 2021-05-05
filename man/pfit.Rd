@@ -7,8 +7,7 @@
 \usage{
 Pfit(respm, pp, fitindices, SE = FALSE)
 
-\method{Pfit}{gpcm}(respm, pp, fitindices = c("infit", "outfit"),
-  SE = FALSE)
+\method{Pfit}{gpcm}(respm, pp, fitindices = c("infit", "outfit"), SE = FALSE)
 }
 \arguments{
 \item{respm}{numeric response matrix}
