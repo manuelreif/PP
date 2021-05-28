@@ -80,7 +80,6 @@ if(type %in% c("mle","wle","map","robust"))
     
   for(jkrun in loa)
     {
-      
     
     jk_mat[,jkrun] <- NR_4PL(respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun], LOWA = lowerA[-jkrun],UPPA = upperA[-jkrun], THETA = theta_start, wm=type,maxsteps,exac,mu,sigma2,H=H)$resPP[,1] 
         
@@ -320,7 +319,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
     {
       
       
-      jk_mat[,jkrun] <- NR_mixed(awm=respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun],LOWA = lowerA[-jkrun],UPPA = upperA[-jkrun],THETA = theta_start, model=model2est,wm=type,maxsteps=maxsteps,
+      jk_mat[,jkrun] <- NR_mixed(awm=respm[,-jkrun,drop=FALSE],DELTA = thres[,-jkrun,drop=FALSE],ALPHA = slopes[-jkrun],LOWA = lowerA[-jkrun],UPPA = upperA[-jkrun],THETA = theta_start, model=model2est[-jkrun],wm=type,maxsteps=maxsteps,
                                  exac=exac,mu=mu,sigma2=sigma2,H=H)$resPP[,1] 
       
     }
@@ -333,7 +332,7 @@ JKpp.gpcm4pl <- function(estobj, cmeth="mean", maxsteps=500,
         jk_mat[,jkrun] <- eap_mixed(respm[,-jkrun,drop=FALSE], thres[,-jkrun,drop=FALSE],
                                     slopes[-jkrun], lowerA=lowerA[-jkrun],
                                     upperA=upperA[,-jkrun], mu = mu, sigma2 = sigma2,
-                                    model2est=model2est)[,1]
+                                    model2est=model2est[-jkrun])[,1]
         }
     }
     

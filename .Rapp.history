@@ -1,16 +1,3 @@
-(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
-ii <- 2
-(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
-ii <- 3
-(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
-min_nai
-max_nai
-nai
-minSolved_stage_i
-maxSolved_i
-nai
-min_naui
-max_nai
 maxSolved_stage_i
 g012[[nai]][[1]]
 g012[[nai]][[1]][min_nai:max_nai]
@@ -654,7 +641,19 @@ theta <- mvNormal(n = persons,#
 mean(theta)
 sd(theta)
 library(sirt)
-setwd("/Users/jansteinfeld/SynologyDrive/GIT/PP")#
-devtools::build()
+Sys.getenv()
+Sys.getenv
+.Internal(Sys.getenv(character(), "")
+.Internal(Sys.getenv())
+.Internal(Sys.getenv(),"")
+.Internal(Sys.getenv(character(), "")
+)
+.Internal(Sys.getenv(character(), ""))
+PP::sim_4pl
+setwd("/Users/jansteinfeld/SynologyDrive/GIT/PP")
+Rcpp::compileAttributes()
 pkgbuild::compile_dll()
-install.packages("tmt",type="source")
+roxygen2::roxygenise()
+roxygen2::roxygenise()
+getwd()
+devtools::build()

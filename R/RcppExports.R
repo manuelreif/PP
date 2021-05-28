@@ -81,7 +81,8 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
 #' 
 #' This function returns a dichotomous matrix of simulated responses under given item and person parameters.
 #' 
-#' 
+#' @useDynLib PP
+#' @importFrom Rcpp evalCpp sourceCpp
 #' 
 #'@param beta A numeric vector which contains the difficulty parameters for each item.
 #'@param alpha A numeric vector, which contains the slope parameters for each item.
@@ -94,7 +95,7 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
 #'
 #'@author Manuel Reif
 #'
-#'@export
+#' @export
 sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
     .Call(`_PP_sim_4pl`, beta, alpha, lowerA, upperA, theta)
 }
