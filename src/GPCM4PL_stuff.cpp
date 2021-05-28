@@ -1607,45 +1607,8 @@ for(int it = 0; it < nitem; it++)
 
 l1l2M(_,3) = l1l2M(_,3)/(2*l1l2M(_,1)*l1l2M(_,1));
 
-// D E B U G G I N G 
-/* 
-NumericVector l1l2M_0 = l1l2M(_,0);
-NumericVector l1l2M_1 = l1l2M(_,1);
-NumericVector l1l2M_2 = l1l2M(_,2);
-NumericVector l1l2M_3 = l1l2M(_,3);
-NumericVector l1l2M_4 = l1l2M(_,4);
-NumericVector l1l2M_5 = l1l2M(_,5);
-
-Rcpp::Rcout << "l1l2M_1: " << l1l2M_0 << std::endl;
-Rcpp::Rcout << "l1l2M_2: " << l1l2M_1 << std::endl;
-Rcpp::Rcout << "l1l2M_3: " << l1l2M_2 << std::endl;
-Rcpp::Rcout << "l1l2M_4: " << l1l2M_3 << std::endl;
-Rcpp::Rcout << "l1l2M_5: " << l1l2M_4 << std::endl;
-Rcpp::Rcout << "l1l2M_6: " << l1l2M_5 << std::endl;
-*/
-// D E B U G G I N G 
-
 l1l2M(_,4) = (l1l2M(_,0) + l1l2M(_,2)/(2*l1l2M(_,1))) / (l1l2M(_,1)*(-1) + l1l2M(_,3));
 l1l2M(_,5) = THETA - l1l2M(_,4);
-
-// D E B U G G I N G 
-/* 
-NumericVector l1l2M_4_2 = l1l2M(_,4);
-NumericVector l1l2M_5_2 = l1l2M(_,5);
-
-Rcpp::Rcout << "-----------------------------------" << std::endl;
-Rcpp::Rcout << "l1l2M_4_2: " << l1l2M_4_2 << std::endl;
-Rcpp::Rcout << "l1l2M_5_2: " << l1l2M_5_2 << std::endl;
-Rcpp::Rcout << "awm: " << awm << std::endl;
-Rcpp::Rcout << "DELTA: " << DELTA << std::endl;
-Rcpp::Rcout << "ALPHA: " << ALPHA << std::endl;
-Rcpp::Rcout << "LOWA: " << LOWA << std::endl;
-Rcpp::Rcout << "UPPA: " << UPPA << std::endl;
-Rcpp::Rcout << "THETA: " << THETA << std::endl;
-Rcpp::Rcout << "model: " << model << std::endl;
-Rcpp::Rcout << "-----------------------------------" << std::endl;
-*/
-// D E B U G G I N G 
 
 return l1l2M;
 
@@ -1819,65 +1782,23 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
               String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
   int npers = awm.nrow();
-// Rcpp::Rcout << "maxsteps: " << maxsteps << std::endl;    
-  // NumericVector THETAC = Rcpp::clone(THETA);
   NumericVector THETAC = Rcpp::clone(THETA);
-  // NumericVector THETAC = THETA;
   NumericMatrix resPP(npers,2);
   int howlong = 1;
 
   if(wm == "wle")
   {
-    /* // D E B U G G I N G 
-    Rcpp::Rcout << "awm: " << awm << std::endl;    
-    Rcpp::Rcout << "DELTA: " << DELTA << std::endl;    
-    Rcpp::Rcout << "ALPHA: " << ALPHA << std::endl;    
-    Rcpp::Rcout << "LOWA: " << LOWA << std::endl;    
-    Rcpp::Rcout << "UPPA: " << UPPA << std::endl;    
-    Rcpp::Rcout << "THETAC_0: " << THETAC << std::endl;    
-    Rcpp::Rcout << "model: " << model << std::endl; 
-    */
 
   for(int newr = 0; newr < maxsteps; newr++)
     {
     NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model);
     THETAC = reso(_,5);
 
-    // D E B U G G I N G 
-      // Rcpp::Rcout << "THETAC_1: " << THETAC << std::endl;    
-      // Rcpp::Rcout << "reso: " << reso << std::endl;    
-      // NumericVector reso_4 = reso(_,4);
-      // Rcpp::Rcout << "reso_4: " << reso_4 << std::endl;
-            // Rcpp::Rcout << "abs(reso_4): " << Rcpp::abs(reso_4) << std::endl;
-            // Rcpp::Rcout << "all(abs(reso_4) < exac): " << (Rcpp::all(Rcpp::abs(reso_4) < exac)) << std::endl;
-            // Rcpp::Rcout << "is_true(all(abs(reso_4) < exac)): " << (Rcpp::is_true(Rcpp::all(Rcpp::abs(reso_4) < exac))) << std::endl;
-
-      // Rcpp::Rcout << "exac: " << exac << std::endl;
-      // Rcpp::Rcout << "newr: " << newr << std::endl;
-      // Rcpp::Rcout << "maxsteps-1: " << maxsteps-1 << std::endl;
-      // Rcpp::Rcout << "(is_true(all(abs(reso(_,4)) < exac))) " <<(all(abs(reso_4) < exac)).is_true() << std::endl;
-      // Rcpp::Rcout << "(is_true(all(abs(reso(_,4)) < exac))) " <<is_true(all(abs(reso_4) < exac)) << std::endl;
-      // Rcpp::Rcout << "(newr == (maxsteps-1)) " << (newr == (maxsteps-1)) << std::endl;
-      // Rcpp::Rcout << "( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1))) " << ( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1))) << std::endl;
-  //  D E B U G G I N G 
-
-
-    // bool check = all(abs(reso(_,4)) < exac).is_true();
-    // Rcpp::Rcout << "check: " << check << std::endl;  
-    
+   
     if( (is_true(all(abs(na_omit(reso(_,4))) < exac))) | (newr == (maxsteps-1)) )
-    // if( check | (newr == (maxsteps-1)))
       {
         
-        // D E B U G G I N G 
-        // Rcpp::Rcout << "-----------------------------------" << std::endl;
-        // Rcpp::Rcout << "0: THETAC: " << THETAC << std::endl;
-        // Rcpp::Rcout << "0: exac: " << exac << std::endl;
-        // Rcpp::Rcout << "0: newr: " << newr << std::endl;
-        // Rcpp::Rcout << "0: (maxsteps-1): " << (maxsteps-1) << std::endl;
-        // Rcpp::Rcout << "-----------------------------------" << std::endl;
-        // D E B U G G I N G 
-
+        
         resPP(_,0) = THETAC;
         resPP(_,1) = 1/reso(_,1);
         howlong += newr;
@@ -1895,8 +1816,6 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
       NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, mu, sigma2, map);
       THETAC = reso(_,3);
       
-      // bool check = all(abs(reso(_,2)) < exac).is_true();
-      // if( check | (newr == (maxsteps-1)))
     if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)) )
         {
           resPP(_,0) = THETAC;
@@ -1916,8 +1835,6 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
             NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, mu, sigma2, map);
             THETAC = reso(_,3);
             
-            // bool check = all(abs(reso(_,2)) < exac).is_true();
-            // if( check | (newr == (maxsteps-1)))
             if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)))
               {
                 resPP(_,0) = THETAC;
@@ -1937,8 +1854,6 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
       NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, H);
       THETAC = reso(_,3);
       
-      // bool check = all(abs(reso(_,2)) < exac).is_true();
-      // if( check | (newr == (maxsteps-1)))
       if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)))
         {
           resPP(_,0) = THETAC;
@@ -1950,9 +1865,7 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
       }
 
     }
-  // Rcpp::Rcout << "howlong: " << howlong << std::endl;
   return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
-// Rcpp::Rcout << "maxsteps: " << maxsteps << std::endl;    
   
 
 }
