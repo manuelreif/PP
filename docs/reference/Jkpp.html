@@ -8,21 +8,29 @@
 
 <title>Run a jackknife — JKpp • PP</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +40,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Run a jackknife — JKpp" />
 
+<meta property="og:title" content="Run a jackknife — JKpp" />
 <meta property="og:description" content="This function uses a jackknife approach to compute person parameters. The jackknife ability measure is based on primarily estimated models (PP_4pl(), PP_gpcm() or PPall()) - so the function is applied on the estimation objects, and jackknifed ability measures are returned." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,9 +57,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PP</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3-11</span>
       </span>
     </div>
 
@@ -73,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,11 +108,10 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/manuelreif/PP">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/jansteinfeld/PP/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -114,42 +122,62 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Run a jackknife</h1>
-    <small class="dont-index">Source: <a href='https://github.com/manuelreif/PP/blob/master/R/JKpp.R'><code>R/JKpp.R</code></a>, <a href='https://github.com/manuelreif/PP/blob/master/R/prints.R'><code>R/prints.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jansteinfeld/PP/blob/master/R/JKpp.R'><code>R/JKpp.R</code></a>, <a href='https://github.com/jansteinfeld/PP/blob/master/R/prints.R'><code>R/prints.R</code></a></small>
     <div class="hidden name"><code>Jkpp.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function uses a jackknife approach to compute person parameters. The jackknife ability measure is based on primarily estimated models (<code><a href='PP_4pl.html'>PP_4pl()</a></code>, <code><a href='PP_gpcm.html'>PP_gpcm()</a></code> or <code><a href='PPall.html'>PPall()</a></code>) - so the function is applied on the estimation objects, and jackknifed ability measures are returned.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>JKpp</span>(<span class='no'>estobj</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>estobj</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for fourpl</span>
-<span class='fu'>JKpp</span>(<span class='no'>estobj</span>, <span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>maxsteps</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>exac</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>fullmat</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ctrl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
+<span class='fu'>JKpp</span><span class='op'>(</span>
+  <span class='va'>estobj</span>,
+  cmeth <span class='op'>=</span> <span class='st'>"mean"</span>,
+  maxsteps <span class='op'>=</span> <span class='fl'>500</span>,
+  exac <span class='op'>=</span> <span class='fl'>0.001</span>,
+  fullmat <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ctrl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for gpcm</span>
-<span class='fu'>JKpp</span>(<span class='no'>estobj</span>, <span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>maxsteps</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>exac</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>fullmat</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ctrl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
+<span class='fu'>JKpp</span><span class='op'>(</span>
+  <span class='va'>estobj</span>,
+  cmeth <span class='op'>=</span> <span class='st'>"mean"</span>,
+  maxsteps <span class='op'>=</span> <span class='fl'>500</span>,
+  exac <span class='op'>=</span> <span class='fl'>0.001</span>,
+  fullmat <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ctrl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for gpcm4pl</span>
-<span class='fu'>JKpp</span>(<span class='no'>estobj</span>, <span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>maxsteps</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>exac</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>fullmat</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>ctrl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(), <span class='no'>...</span>)
+<span class='fu'>JKpp</span><span class='op'>(</span>
+  <span class='va'>estobj</span>,
+  cmeth <span class='op'>=</span> <span class='st'>"mean"</span>,
+  maxsteps <span class='op'>=</span> <span class='fl'>500</span>,
+  exac <span class='op'>=</span> <span class='fl'>0.001</span>,
+  fullmat <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  ctrl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for jk</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for jk</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>object</span>, <span class='kw'>nrowmax</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>object</span>, nrowmax <span class='op'>=</span> <span class='fl'>15</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,20 +222,21 @@
       <td><p>When printing the matrix of estimates - how many rows should be shown? Default = 15.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Please use the Jackknife <b>Standard-Error</b> output with <b>caution</b>! It is implemented as suggested in Wainer and Wright (1980), but the results seem a bit strange, because the JK-SE is supposed to overestimate the SE compared to the MLE-SE. Actually, in all examples an underestimation of the SE was observed compared to the MLE/WLE-SE!</p>
+
 <p><b>AMT-robustified jackknife:</b> When choosing <code>cmeth = AMT</code>, the jackknife ability subsample estimates and the original supplied ability estimate are combined to a single jackknife-ability value by the Sine M-estimator. The AMT (or Sine M-estimator) is one of the winners in the Princeton Robustness Study of 1972. To get a better idea how the estimation process works, take a closer look to the paper which is mentioned below (Wainer &amp; Wright, 1980).</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Wainer, H., &amp; Wright, B. D. (1980). Robust estimation of ability in the Rasch model. Psychometrika, 45(3), 373-391.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='PP_gpcm.html'>PP_gpcm</a>, <a href='PP_4pl.html'>PP_4pl</a>, <a href='PPall.html'>PPall</a></p></div>
-    
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Manuel Reif</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>################# Jackknife ###################################################</span>
@@ -216,47 +245,53 @@
 
 <span class='co'>### data creation ##########</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1623</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1623</span><span class='op'>)</span>
 <span class='co'># intercepts</span>
-<span class='no'>diffpar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>12</span>)
+<span class='va'>diffpar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>,<span class='fl'>3</span>,length<span class='op'>=</span><span class='fl'>12</span><span class='op'>)</span>
 <span class='co'># slope parameters</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span>),<span class='fl'>2</span>)
-<span class='no'>la</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span>),<span class='fl'>2</span>)
-<span class='no'>ua</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>12</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span>),<span class='fl'>2</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>la</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>ua</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>12</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'># response matrix</span>
-<span class='no'>abpar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>1.7</span>)
-<span class='no'>awm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sim_4pl.html'>sim_4pl</a></span>(<span class='kw'>beta</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>lowerA</span> <span class='kw'>=</span> <span class='no'>la</span>,<span class='kw'>upperA</span><span class='kw'>=</span><span class='no'>ua</span>,<span class='kw'>theta</span> <span class='kw'>=</span> <span class='no'>abpar</span>)
+<span class='va'>abpar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>0</span>,<span class='fl'>1.7</span><span class='op'>)</span>
+<span class='va'>awm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sim_4pl.html'>sim_4pl</a></span><span class='op'>(</span>beta <span class='op'>=</span> <span class='va'>diffpar</span>,alpha <span class='op'>=</span> <span class='va'>sl</span>,lowerA <span class='op'>=</span> <span class='va'>la</span>,upperA<span class='op'>=</span><span class='va'>ua</span>,theta <span class='op'>=</span> <span class='va'>abpar</span><span class='op'>)</span>
 
 <span class='co'>## 1PL model ##### </span>
 
 <span class='co'># MLE</span>
-<span class='no'>res1plmle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mle"</span>)</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res1plmle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,type <span class='op'>=</span> <span class='st'>"mle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = mle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># WLE</span>
-<span class='no'>res1plwle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"wle"</span>)</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res1plwle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,type <span class='op'>=</span> <span class='st'>"wle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># MAP estimation</span>
-<span class='no'>res1plmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"map"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res1plmap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,type <span class='op'>=</span> <span class='st'>"map"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = map 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># EAP estimation</span>
-<span class='no'>res1pleap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"eap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res1pleap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,type <span class='op'>=</span> <span class='st'>"eap"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = eap 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># robust estimation</span>
-<span class='no'>res1plrob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"robust"</span>)</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res1plrob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,type <span class='op'>=</span> <span class='st'>"robust"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = robust 
 #&gt; Estimation finished!</div><div class='input'>
 <span class='co'>## centering method = mean</span>
-<span class='no'>res_jk1</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmle</span>)
-<span class='no'>res_jk2</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plwle</span>)
-<span class='no'>res_jk3</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmap</span>)
-<span class='no'>res_jk4</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plrob</span>)
-<span class='no'>res_jk5</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1pleap</span>)
+<span class='va'>res_jk1</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmle</span><span class='op'>)</span>
+<span class='va'>res_jk2</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plwle</span><span class='op'>)</span>
+<span class='va'>res_jk3</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmap</span><span class='op'>)</span>
+<span class='va'>res_jk4</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plrob</span><span class='op'>)</span>
+<span class='va'>res_jk5</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1pleap</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>res_jk1</span>)</div><div class='output co'>#&gt; PP Version:  0.6.2 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res_jk1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; PP Version:  0.6.3.11 
 #&gt; 
 #&gt;  Call: JKpp.fourpl(estobj = res1plmle) 
-#&gt; - job started @ Sat Apr  6 22:29:00 2019 
+#&gt; - job started @ Mon May 24 13:27:51 2021 
 #&gt; 
 #&gt; Estimation type: Jackknife --&gt;  mle 
 #&gt; 
@@ -273,14 +308,15 @@
 #&gt;  [9,]  -1.6833 0.0982
 #&gt; [10,]  -0.0644 0.1186</div><div class='input'>
 <span class='co'>## centering method = median</span>
-<span class='no'>res_jk1a</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmle</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
-<span class='no'>res_jk2a</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plwle</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
-<span class='no'>res_jk3a</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmap</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"median"</span>)
+<span class='va'>res_jk1a</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmle</span>,cmeth <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span>
+<span class='va'>res_jk2a</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plwle</span>,cmeth <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span>
+<span class='va'>res_jk3a</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmap</span>,cmeth <span class='op'>=</span> <span class='st'>"median"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>res_jk2a</span>)</div><div class='output co'>#&gt; PP Version:  0.6.2 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res_jk2a</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; PP Version:  0.6.3.11 
 #&gt; 
 #&gt;  Call: JKpp.fourpl(estobj = res1plwle, cmeth = "median") 
-#&gt; - job started @ Sat Apr  6 22:29:00 2019 
+#&gt; - job started @ Mon May 24 13:27:51 2021 
 #&gt; 
 #&gt; Estimation type: Jackknife --&gt;  wle 
 #&gt; 
@@ -289,22 +325,23 @@
 #&gt;  [1,]   1.9587 0.1029
 #&gt;  [2,]  -1.7012 0.1933
 #&gt;  [3,]   0.8853 0.1336
-#&gt;  [4,]   2.6363 0.0908
+#&gt;  [4,]   2.6364 0.0908
 #&gt;  [5,]  -1.3424 0.1125
 #&gt;  [6,]   0.0000 0.0894
 #&gt;  [7,]  -0.8377 0.1377
-#&gt;  [8,]  -2.0417 0.1128
+#&gt;  [8,]  -2.0417 0.1129
 #&gt;  [9,]  -1.9587 0.0916
 #&gt; [10,]  -0.0843 0.1191</div><div class='input'>
 <span class='co'>## centering method = AMT</span>
-<span class='no'>res_jk1b</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmle</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"AMT"</span>)
-<span class='no'>res_jk2b</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plwle</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"AMT"</span>)
-<span class='no'>res_jk3b</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res1plmap</span>,<span class='kw'>cmeth</span> <span class='kw'>=</span> <span class='st'>"AMT"</span>)
+<span class='va'>res_jk1b</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmle</span>,cmeth <span class='op'>=</span> <span class='st'>"AMT"</span><span class='op'>)</span>
+<span class='va'>res_jk2b</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plwle</span>,cmeth <span class='op'>=</span> <span class='st'>"AMT"</span><span class='op'>)</span>
+<span class='va'>res_jk3b</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res1plmap</span>,cmeth <span class='op'>=</span> <span class='st'>"AMT"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/summary'>summary</a></span>(<span class='no'>res_jk3b</span>)</div><div class='output co'>#&gt; PP Version:  0.6.2 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res_jk3b</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; PP Version:  0.6.3.11 
 #&gt; 
 #&gt;  Call: JKpp.fourpl(estobj = res1plmap, cmeth = "AMT") 
-#&gt; - job started @ Sat Apr  6 22:29:00 2019 
+#&gt; - job started @ Mon May 24 13:27:51 2021 
 #&gt; 
 #&gt; Estimation type: Jackknife --&gt;  map 
 #&gt; 
@@ -324,139 +361,142 @@
 <span class='co'>## 2PL model ##### </span>
 
 <span class='co'># MLE</span>
-<span class='no'>res2plmle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>, <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mle"</span>)</div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2plmle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>, slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"mle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = mle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># WLE</span>
-<span class='no'>res2plwle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>, <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"wle"</span>)</div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2plwle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>, slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"wle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># MAP estimation</span>
-<span class='no'>res2plmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>, <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"map"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2plmap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>, slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"map"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = map 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># EAP estimation</span>
-<span class='no'>res2pleap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"eap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2pleap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"eap"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = eap 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># robust estimation</span>
-<span class='no'>res2plrob</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>,<span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"robust"</span>)</div><div class='output co'>#&gt; Estimating:  2pl model ... 
+<span class='va'>res2plrob</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_4pl.html'>PP_4pl</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>,slopes <span class='op'>=</span> <span class='va'>sl</span>,type <span class='op'>=</span> <span class='st'>"robust"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  2pl model ... 
 #&gt; type = robust 
 #&gt; Estimation finished!</div><div class='input'>
-<span class='no'>res_jk6</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res2plmle</span>)
-<span class='no'>res_jk7</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res2plwle</span>)
-<span class='no'>res_jk8</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res2plmap</span>)
-<span class='no'>res_jk9</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res2pleap</span>)
-<span class='no'>res_jk10</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>res2plrob</span>)
+<span class='va'>res_jk6</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res2plmle</span><span class='op'>)</span>
+<span class='va'>res_jk7</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res2plwle</span><span class='op'>)</span>
+<span class='va'>res_jk8</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res2plmap</span><span class='op'>)</span>
+<span class='va'>res_jk9</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res2pleap</span><span class='op'>)</span>
+<span class='va'>res_jk10</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>res2plrob</span><span class='op'>)</span>
 
 <span class='co'>### GPCM model ######</span>
 
 <span class='co'># some threshold parameters</span>
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='co'># slopes</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span>)
-<span class='no'>awmatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,
-                     <span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>5</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span><span class='op'>)</span>
+<span class='va'>awmatrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,
+                     <span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,byrow<span class='op'>=</span><span class='cn'>TRUE</span>,nrow<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 
 
 <span class='co'>### PCM model ######</span>
 
 <span class='co'># MLE</span>
-<span class='no'>respcmlmle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRES</span>,
-                      <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>THRES</span>)),<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mle"</span>)</div><div class='output co'>#&gt; Estimating: GPCM ... 
+<span class='va'>respcmlmle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,thres <span class='op'>=</span> <span class='va'>THRES</span>,
+                      slopes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>THRES</span><span class='op'>)</span><span class='op'>)</span>,type <span class='op'>=</span> <span class='st'>"mle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: GPCM ... 
 #&gt; type = mle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># WLE</span>
-<span class='no'>respcmwle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRES</span>,
-                     <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>THRES</span>)),<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"wle"</span>)</div><div class='output co'>#&gt; Estimating: GPCM ... 
+<span class='va'>respcmwle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,thres <span class='op'>=</span> <span class='va'>THRES</span>,
+                     slopes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>THRES</span><span class='op'>)</span><span class='op'>)</span>,type <span class='op'>=</span> <span class='st'>"wle"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: GPCM ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># MAP estimation</span>
-<span class='no'>respcmmap</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRES</span>,
-                     <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>THRES</span>)),<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"map"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating: GPCM ... 
+<span class='va'>respcmmap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PP_gpcm.html'>PP_gpcm</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,thres <span class='op'>=</span> <span class='va'>THRES</span>,
+                     slopes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>THRES</span><span class='op'>)</span><span class='op'>)</span>,type <span class='op'>=</span> <span class='st'>"map"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: all mu's are set to 0! </span></div><div class='output co'>#&gt; <span class='warning'>Warning: all sigma2's are set to 1! </span></div><div class='output co'>#&gt; Estimating: GPCM ... 
 #&gt; type = map 
 #&gt; Estimation finished!</div><div class='input'>
 
-<span class='no'>res_jk11</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>respcmlmle</span>)
-<span class='no'>res_jk12</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>respcmwle</span>)
-<span class='no'>res_jk13</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>respcmmap</span>)
+<span class='va'>res_jk11</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>respcmlmle</span><span class='op'>)</span>
+<span class='va'>res_jk12</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>respcmwle</span><span class='op'>)</span>
+<span class='va'>res_jk13</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>respcmmap</span><span class='op'>)</span>
 
 <span class='co'>### GPCM/4-PL mixed model ######</span>
 
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span><span class='op'>)</span>
 
-<span class='no'>THRESx</span> <span class='kw'>&lt;-</span> <span class='no'>THRES</span>
-<span class='no'>THRESx</span>[<span class='fl'>2</span>,<span class='fl'>1</span>:<span class='fl'>3</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='va'>THRESx</span> <span class='op'>&lt;-</span> <span class='va'>THRES</span>
+<span class='va'>THRESx</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='cn'>NA</span>
 
 <span class='co'># for the 4PL item the estimated parameters are submitted, </span>
 <span class='co'># for the GPCM items the lower asymptote = 0 </span>
 <span class='co'># and the upper asymptote = 1.</span>
-<span class='no'>la</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.02</span>,<span class='fl'>0.1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>)
-<span class='no'>ua</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.97</span>,<span class='fl'>0.91</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)
+<span class='va'>la</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.02</span>,<span class='fl'>0.1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>
+<span class='va'>ua</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.97</span>,<span class='fl'>0.91</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>
 
-<span class='no'>awmatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
+<span class='va'>awmatrix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
                      ,<span class='fl'>2</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>
-                     ,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='kw'>byrow</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>5</span>)
+                     ,<span class='fl'>0</span>,<span class='fl'>2</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,byrow<span class='op'>=</span><span class='cn'>TRUE</span>,nrow<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 
 <span class='co'># create model2est</span>
 <span class='co'># this function tries to help finding the appropriate </span>
 <span class='co'># model by inspecting the THRESx.</span>
-<span class='no'>model2est</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='findmodel.html'>findmodel</a></span>(<span class='no'>THRESx</span>)
+<span class='va'>model2est</span> <span class='op'>&lt;-</span> <span class='fu'><a href='findmodel.html'>findmodel</a></span><span class='op'>(</span><span class='va'>THRESx</span><span class='op'>)</span>
 
 
 <span class='co'># MLE estimation</span>
-<span class='no'>respmixed_mle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,
-                       <span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRESx</span>,
-                       <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,
-                       <span class='kw'>lowerA</span> <span class='kw'>=</span> <span class='no'>la</span>,
-                       <span class='kw'>upperA</span><span class='kw'>=</span><span class='no'>ua</span>,
-                       <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mle"</span>,
-                       <span class='kw'>model2est</span><span class='kw'>=</span><span class='no'>model2est</span>)</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
+<span class='va'>respmixed_mle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,
+                       thres <span class='op'>=</span> <span class='va'>THRESx</span>, 
+                       slopes <span class='op'>=</span> <span class='va'>sl</span>,
+                       lowerA <span class='op'>=</span> <span class='va'>la</span>,
+                       upperA<span class='op'>=</span><span class='va'>ua</span>,
+                       type <span class='op'>=</span> <span class='st'>"mle"</span>,
+                       model2est<span class='op'>=</span><span class='va'>model2est</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
 #&gt; type = mle 
 #&gt; Estimation finished!</div><div class='input'><span class='co'># WLE estimation</span>
-<span class='no'>respmixed_wle</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span>(<span class='kw'>respm</span> <span class='kw'>=</span> <span class='no'>awmatrix</span>,
-                       <span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRESx</span>,
-                       <span class='kw'>slopes</span> <span class='kw'>=</span> <span class='no'>sl</span>,
-                       <span class='kw'>lowerA</span> <span class='kw'>=</span> <span class='no'>la</span>,
-                       <span class='kw'>upperA</span><span class='kw'>=</span><span class='no'>ua</span>,
-                       <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"wle"</span>,
-                       <span class='kw'>model2est</span><span class='kw'>=</span><span class='no'>model2est</span>)</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
+<span class='va'>respmixed_wle</span> <span class='op'>&lt;-</span> <span class='fu'><a href='PPall.html'>PPall</a></span><span class='op'>(</span>respm <span class='op'>=</span> <span class='va'>awmatrix</span>,
+                       thres <span class='op'>=</span> <span class='va'>THRESx</span>, 
+                       slopes <span class='op'>=</span> <span class='va'>sl</span>,
+                       lowerA <span class='op'>=</span> <span class='va'>la</span>,
+                       upperA<span class='op'>=</span><span class='va'>ua</span>,
+                       type <span class='op'>=</span> <span class='st'>"wle"</span>,
+                       model2est<span class='op'>=</span><span class='va'>model2est</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: mixed  4PL, GPCM ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'>
 
-<span class='no'>res_jk114</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>respmixed_mle</span>)
-<span class='no'>res_jk115</span> <span class='kw'>&lt;-</span> <span class='fu'>JKpp</span>(<span class='no'>respmixed_wle</span>)</div></pre>
+<span class='va'>res_jk114</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>respmixed_mle</span><span class='op'>)</span>
+<span class='va'>res_jk115</span> <span class='op'>&lt;-</span> <span class='fu'>JKpp</span><span class='op'>(</span><span class='va'>respmixed_wle</span><span class='op'>)</span>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Manuel Reif</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Manuel Reif, Jan Steinfeld.</p>
+  <p>Developed by Jan Steinfeld, Manuel Reif.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

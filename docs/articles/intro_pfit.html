@@ -6,19 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Getting started with Person-Fit in PP • PP</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Getting started with Person-Fit in PP">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="PP">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PP</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3-11</span>
       </span>
     </div>
 
@@ -39,7 +40,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -67,8 +68,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/manuelreif/PP">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/jansteinfeld/PP/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -81,14 +82,15 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+
+      </header><script src="intro_pfit_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Getting started with Person-Fit in PP</h1>
+      <h1 data-toc-skip>Getting started with Person-Fit in PP</h1>
                         <h4 class="author">Jan Steinfeld</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/manuelreif/PP/blob/master/vignettes/intro_pfit.Rmd"><code>vignettes/intro_pfit.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/jansteinfeld/PP/blob/master/vignettes/intro_pfit.Rmd"><code>vignettes/intro_pfit.Rmd</code></a></small>
       <div class="hidden name"><code>intro_pfit.Rmd</code></div>
 
     </div>
@@ -104,171 +106,181 @@
 <h1 class="hasAnchor">
 <a href="#getting-started-with-person-fit-functions" class="anchor"></a>Getting started with Person-Fit functions</h1>
 <p>A brief introduction of all currently implemented person-fit functions will be added soon. Currently the <strong>LZ, LZ</strong>* and also the <strong>Infit-Outfit-Statistics</strong> are implemented. We also added the Infit-Outfit-Functions for the Partial-Credit Model. Meanwhile we are working on plots for a better understanding of the person misfit as well as on inference statistic methods.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">message =</span> <span class="ot">FALSE</span>, <span class="dt">results=</span><span class="st">'hide'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>message <span class="op">=</span> <span class="cn">FALSE</span>, results<span class="op">=</span><span class="st">'hide'</span><span class="op">)</span></code></pre></div>
 <div id="first-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#first-example" class="anchor"></a>First example</h2>
 <p>Now a simple example will be given. First, we will simulate some data for our hands on example:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(PP)</a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/warning">suppressWarnings</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">RNGversion</a></span>(<span class="st">"3.5.0"</span>))</a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1337</span>)</a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co"># simulate some intercepts</span></a>
-<a class="sourceLine" id="cb2-7" title="7">diffpar &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>,<span class="dt">length=</span><span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="co"># simulate some slope parameters</span></a>
-<a class="sourceLine" id="cb2-9" title="9">sl     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">15</span>,<span class="fl">0.5</span>,<span class="fl">1.5</span>),<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb2-10" title="10">la     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">15</span>,<span class="dv">0</span>,<span class="fl">0.25</span>),<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb2-11" title="11">ua     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">15</span>,<span class="fl">0.8</span>,<span class="dv">1</span>),<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb2-12" title="12"></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co"># simulate response matrix (not following any IRT model)</span></a>
-<a class="sourceLine" id="cb2-14" title="14">awm &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">1</span>,<span class="dv">100</span><span class="op">*</span><span class="dv">15</span>,<span class="dt">replace=</span><span class="ot">TRUE</span>),<span class="dt">ncol=</span><span class="dv">15</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jansteinfeld/PP">PP</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">RNGversion</a></span><span class="op">(</span><span class="st">"3.5.0"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1337</span><span class="op">)</span>
+
+<span class="co"># simulate some intercepts</span>
+<span class="va">diffpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">3</span>,length<span class="op">=</span><span class="fl">15</span><span class="op">)</span>
+<span class="co"># simulate some slope parameters</span>
+<span class="va">sl</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">15</span>,<span class="fl">0.5</span>,<span class="fl">1.5</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>
+<span class="va">la</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">15</span>,<span class="fl">0</span>,<span class="fl">0.25</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>
+<span class="va">ua</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">15</span>,<span class="fl">0.8</span>,<span class="fl">1</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>
+
+<span class="co"># simulate response matrix (not following any IRT model)</span>
+<span class="va">awm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>,<span class="fl">100</span><span class="op">*</span><span class="fl">15</span>,replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>,ncol<span class="op">=</span><span class="fl">15</span><span class="op">)</span></code></pre></div>
 <p>We will start with a simple 1PL-Model. First, we have to estimate the person parameters. Here we have to choose an estimation method. It is important, that you can choose <strong>mle, wle or map</strong> only for the LZ and LZ* Index. For the Infit-Outfit statistic we support <strong>mle and wle</strong> estimates.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># MLE</span></a>
-<a class="sourceLine" id="cb3-2" title="2">res1plmle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,<span class="dt">type =</span> <span class="st">"mle"</span>)</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co"># WLE</span></a>
-<a class="sourceLine" id="cb3-4" title="4">res1plwle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,<span class="dt">type =</span> <span class="st">"wle"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># MLE</span>
+<span class="va">res1plmle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,type <span class="op">=</span> <span class="st">"mle"</span><span class="op">)</span>
+<span class="co"># WLE</span>
+<span class="va">res1plwle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span></code></pre></div>
 <p>We also support the 2PL, 3PL and 4PL Model:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="co">## 2PL model #####</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="co"># MLE</span></a>
-<a class="sourceLine" id="cb4-5" title="5">res2plmle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar, <span class="dt">slopes =</span> sl,<span class="dt">type =</span> <span class="st">"mle"</span>)</a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co"># WLE</span></a>
-<a class="sourceLine" id="cb4-7" title="7">res2plwle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar, <span class="dt">slopes =</span> sl,<span class="dt">type =</span> <span class="st">"wle"</span>)</a>
-<a class="sourceLine" id="cb4-8" title="8"></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="co">## 3PL model #####</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="co"># MLE</span></a>
-<a class="sourceLine" id="cb4-13" title="13">res3plmle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,</a>
-<a class="sourceLine" id="cb4-14" title="14">                    <span class="dt">slopes =</span> sl,<span class="dt">lowerA =</span> la,<span class="dt">type =</span> <span class="st">"mle"</span>)</a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="co"># WLE</span></a>
-<a class="sourceLine" id="cb4-16" title="16">res3plwle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,</a>
-<a class="sourceLine" id="cb4-17" title="17">                    <span class="dt">slopes =</span> sl,<span class="dt">lowerA =</span> la,<span class="dt">type =</span> <span class="st">"wle"</span>)</a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-19" title="19"><span class="co">## 4PL model #####</span></a>
-<a class="sourceLine" id="cb4-20" title="20"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb4-21" title="21"><span class="co"># MLE</span></a>
-<a class="sourceLine" id="cb4-22" title="22">res4plmle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,</a>
-<a class="sourceLine" id="cb4-23" title="23">                    <span class="dt">slopes =</span> sl,<span class="dt">lowerA =</span> la,<span class="dt">upperA=</span>ua,<span class="dt">type =</span> <span class="st">"mle"</span>)</a>
-<a class="sourceLine" id="cb4-24" title="24"><span class="co"># WLE</span></a>
-<a class="sourceLine" id="cb4-25" title="25">res4plwle &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PP_4pl.html">PP_4pl</a></span>(<span class="dt">respm =</span> awm,<span class="dt">thres =</span> diffpar,</a>
-<a class="sourceLine" id="cb4-26" title="26">                    <span class="dt">slopes =</span> sl,<span class="dt">lowerA =</span> la,<span class="dt">upperA=</span>ua,<span class="dt">type =</span> <span class="st">"wle"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 2PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co"># MLE</span>
+<span class="va">res2plmle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>, slopes <span class="op">=</span> <span class="va">sl</span>,type <span class="op">=</span> <span class="st">"mle"</span><span class="op">)</span>
+<span class="co"># WLE</span>
+<span class="va">res2plwle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>, slopes <span class="op">=</span> <span class="va">sl</span>,type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span>
+
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 3PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co"># MLE</span>
+<span class="va">res3plmle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,
+                    slopes <span class="op">=</span> <span class="va">sl</span>,lowerA <span class="op">=</span> <span class="va">la</span>,type <span class="op">=</span> <span class="st">"mle"</span><span class="op">)</span>
+<span class="co"># WLE</span>
+<span class="va">res3plwle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,
+                    slopes <span class="op">=</span> <span class="va">sl</span>,lowerA <span class="op">=</span> <span class="va">la</span>,type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 4PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co"># MLE</span>
+<span class="va">res4plmle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,
+                    slopes <span class="op">=</span> <span class="va">sl</span>,lowerA <span class="op">=</span> <span class="va">la</span>,upperA<span class="op">=</span><span class="va">ua</span>,type <span class="op">=</span> <span class="st">"mle"</span><span class="op">)</span>
+<span class="co"># WLE</span>
+<span class="va">res4plwle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">awm</span>,thres <span class="op">=</span> <span class="va">diffpar</span>,
+                    slopes <span class="op">=</span> <span class="va">sl</span>,lowerA <span class="op">=</span> <span class="va">la</span>,upperA<span class="op">=</span><span class="va">ua</span>,type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span></code></pre></div>
 <p>After the estimation of the person parameter we are able to calculate the person fits. At this point you are able to calculate only one kind of personfit as well as all various simultaneously (as shown next).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="co">## 1PL model #####</span></a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="co">## LZ*-Index #####</span></a>
-<a class="sourceLine" id="cb5-5" title="5">pfit1pl_lz &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res1plwle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co">## LZ*-Index combined with Infit-Outfit #####</span></a>
-<a class="sourceLine" id="cb5-7" title="7">pfit1pl_li &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res1plwle,<span class="dt">fitindices=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span>))</a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="co">## 2PL model #####</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="co">## LZ*-Index #####</span></a>
-<a class="sourceLine" id="cb5-12" title="12">pfit2pl_lz &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res2plwle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="co">## LZ*-Index combined with Infit-Outfit #####</span></a>
-<a class="sourceLine" id="cb5-14" title="14">pfit2pl_li &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res2plwle,<span class="dt">fitindices=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span>))</a>
-<a class="sourceLine" id="cb5-15" title="15"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-16" title="16"><span class="co">## 3PL model #####</span></a>
-<a class="sourceLine" id="cb5-17" title="17"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-18" title="18"><span class="co">## LZ*-Index #####</span></a>
-<a class="sourceLine" id="cb5-19" title="19">pfit3pl_lz &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res3plwle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a>
-<a class="sourceLine" id="cb5-20" title="20"><span class="co">## LZ*-Index combined with Infit-Outfit #####</span></a>
-<a class="sourceLine" id="cb5-21" title="21">pfit3pl_li &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res3plwle,<span class="dt">fitindices=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span>))</a>
-<a class="sourceLine" id="cb5-22" title="22"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-23" title="23"><span class="co">## 4PL model #####</span></a>
-<a class="sourceLine" id="cb5-24" title="24"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb5-25" title="25"><span class="co">## LZ*-Index #####</span></a>
-<a class="sourceLine" id="cb5-26" title="26">pfit4pl_lz &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res4plwle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a>
-<a class="sourceLine" id="cb5-27" title="27"><span class="co">## LZ*-Index combined with Infit-Outfit #####</span></a>
-<a class="sourceLine" id="cb5-28" title="28">pfit4pl_li &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res4plwle,<span class="dt">fitindices=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 1PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## LZ*-Index #####</span>
+<span class="va">pfit1pl_lz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res1plwle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span>
+<span class="co">## LZ*-Index combined with Infit-Outfit #####</span>
+<span class="va">pfit1pl_li</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res1plwle</span>,fitindices<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 2PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## LZ*-Index #####</span>
+<span class="va">pfit2pl_lz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res2plwle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span>
+<span class="co">## LZ*-Index combined with Infit-Outfit #####</span>
+<span class="va">pfit2pl_li</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res2plwle</span>,fitindices<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 3PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## LZ*-Index #####</span>
+<span class="va">pfit3pl_lz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res3plwle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span>
+<span class="co">## LZ*-Index combined with Infit-Outfit #####</span>
+<span class="va">pfit3pl_li</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res3plwle</span>,fitindices<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 4PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## LZ*-Index #####</span>
+<span class="va">pfit4pl_lz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res4plwle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span>
+<span class="co">## LZ*-Index combined with Infit-Outfit #####</span>
+<span class="va">pfit4pl_li</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res4plwle</span>,fitindices<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>We can also use different person parameter estimates.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">## 1PL model #####</span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co"># ------------------------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">## LZ*-Index #####</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">## mle ####</span></a>
-<a class="sourceLine" id="cb6-6" title="6">pfit1pl_mle_l &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res1plmle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="co">## wle ####</span></a>
-<a class="sourceLine" id="cb6-8" title="8">pfit1pl_wle_l &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res1plwle,<span class="dt">fitindices=</span><span class="st">"lzstar"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## 1PL model #####</span>
+<span class="co"># ------------------------------------------------------------------------</span>
+<span class="co">## LZ*-Index #####</span>
+<span class="co">## mle ####</span>
+<span class="va">pfit1pl_mle_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res1plmle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span>
+<span class="co">## wle ####</span>
+<span class="va">pfit1pl_wle_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res1plwle</span>,fitindices<span class="op">=</span><span class="st">"lzstar"</span><span class="op">)</span></code></pre></div>
 <p>If desired you can simply plot the results of the person-fit statistics as shown below.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co"># eine Grafik erzeugen</span></a>
-<a class="sourceLine" id="cb7-2" title="2"></a>
-<a class="sourceLine" id="cb7-3" title="3">res.pp &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pfit.html">Pfit</a></span>(<span class="dt">respm=</span>awm,<span class="dt">pp=</span>res1plmle,<span class="dt">fitindices=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lzstar"</span>),<span class="dt">SE=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-4" title="4">x&lt;-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="op">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="dt">length=</span><span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb7-5" title="5">s &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb7-6" title="6">mu &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb7-7" title="7">y &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">/</span>(s<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="dv">2</span><span class="op">*</span>pi))) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(<span class="op">-</span>((x<span class="op">-</span>mu)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>s<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(x,y, <span class="dt">type=</span><span class="st">"l"</span>, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">"blue"</span>, <span class="dt">xlim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="fl">8.5</span>,<span class="fl">8.5</span>),<span class="dt">xlab=</span><span class="st">""</span>, <span class="dt">ylab=</span><span class="st">""</span>)</a>
-<a class="sourceLine" id="cb7-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main=</span><span class="st">"Density plot of lz* Person-Fit"</span>, <span class="dt">xlab=</span><span class="st">"density"</span>, <span class="dt">ylab=</span><span class="st">"score"</span>)</a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/density">density</a></span>(res.pp<span class="op">$</span>lzstar[,<span class="st">"lzstar"</span>], <span class="dt">bw =</span> <span class="fl">0.5</span>), <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb7-11" title="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rug">rug</a></span>(res.pp<span class="op">$</span>lzstar[,<span class="st">"lzstar"</span>],<span class="dt">col=</span><span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># eine Grafik erzeugen</span>
+
+<span class="va">res.pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Pfit.html">Pfit</a></span><span class="op">(</span>respm<span class="op">=</span><span class="va">awm</span>,pp<span class="op">=</span><span class="va">res1plmle</span>,fitindices<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lzstar"</span><span class="op">)</span>,SE<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">x</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>,<span class="fl">4</span>,length<span class="op">=</span><span class="fl">200</span><span class="op">)</span>
+<span class="va">s</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">s</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="va">mu</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, type<span class="op">=</span><span class="st">"l"</span>, lwd<span class="op">=</span><span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8.5</span>,<span class="fl">8.5</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">""</span>, ylab<span class="op">=</span><span class="st">""</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"Density plot of lz* Person-Fit"</span>, xlab<span class="op">=</span><span class="st">"density"</span>, ylab<span class="op">=</span><span class="st">"score"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">res.pp</span><span class="op">$</span><span class="va">lzstar</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>, bw <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/rug.html">rug</a></span><span class="op">(</span><span class="va">res.pp</span><span class="op">$</span><span class="va">lzstar</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_pfit_files/figure-html/example-1-1.png" width="700"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># zweite Grafik erzeugen</span></a>
-<a class="sourceLine" id="cb8-2" title="2">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(res.pp<span class="op">$</span>lzstar)</a>
-<a class="sourceLine" id="cb8-3" title="3">avg &lt;-<span class="st"> </span>res.pp<span class="op">$</span>lzstar[,<span class="st">"lzstar"</span>]</a>
-<a class="sourceLine" id="cb8-4" title="4">sdev &lt;-<span class="st"> </span>res.pp<span class="op">$</span>lzstar[,<span class="st">"lzs_se"</span>]</a>
-<a class="sourceLine" id="cb8-5" title="5"></a>
-<a class="sourceLine" id="cb8-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(avg, x,</a>
-<a class="sourceLine" id="cb8-7" title="7">     <span class="dt">xlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/range">range</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(avg<span class="op">-</span>sdev, avg<span class="op">+</span>sdev)),</a>
-<a class="sourceLine" id="cb8-8" title="8">     <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">ylab=</span><span class="st">"Person"</span>, <span class="dt">xlab=</span><span class="st">"Person-Fit +/- SD"</span>,</a>
-<a class="sourceLine" id="cb8-9" title="9">     <span class="dt">main=</span><span class="st">"Plot of Person-Fit with SE"</span></a>
-<a class="sourceLine" id="cb8-10" title="10">)</a>
-<a class="sourceLine" id="cb8-11" title="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/arrows">arrows</a></span>(avg<span class="op">-</span>sdev, x, avg<span class="op">+</span>sdev, <span class="dt">length=</span><span class="fl">0.05</span>, <span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">code=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb8-12" title="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">v=</span><span class="dv">0</span>,<span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># zweite Grafik erzeugen</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">res.pp</span><span class="op">$</span><span class="va">lzstar</span><span class="op">)</span>
+<span class="va">avg</span> <span class="op">&lt;-</span> <span class="va">res.pp</span><span class="op">$</span><span class="va">lzstar</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>
+<span class="va">sdev</span> <span class="op">&lt;-</span> <span class="va">res.pp</span><span class="op">$</span><span class="va">lzstar</span><span class="op">[</span>,<span class="st">"lzs_se"</span><span class="op">]</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">avg</span>, <span class="va">x</span>,
+     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">avg</span><span class="op">-</span><span class="va">sdev</span>, <span class="va">avg</span><span class="op">+</span><span class="va">sdev</span><span class="op">)</span><span class="op">)</span>,
+     pch<span class="op">=</span><span class="fl">19</span>, ylab<span class="op">=</span><span class="st">"Person"</span>, xlab<span class="op">=</span><span class="st">"Person-Fit +/- SD"</span>,
+     main<span class="op">=</span><span class="st">"Plot of Person-Fit with SE"</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">avg</span><span class="op">-</span><span class="va">sdev</span>, <span class="va">x</span>, <span class="va">avg</span><span class="op">+</span><span class="va">sdev</span>, length<span class="op">=</span><span class="fl">0.05</span>, angle<span class="op">=</span><span class="fl">90</span>, code<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">0</span>,col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_pfit_files/figure-html/example-1-2.png" width="700"></p>
 </div>
 <div id="real-data-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#real-data-example" class="anchor"></a>Real data example</h2>
 <p>First we have to load the dataset</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pp_amt)</a>
-<a class="sourceLine" id="cb9-2" title="2">betas &lt;-<span class="st"> </span>pp_amt<span class="op">$</span>betas<span class="op">$</span>Itemparameter</a>
-<a class="sourceLine" id="cb9-3" title="3">diffpar &lt;-<span class="st"> </span>pp_amt<span class="op">$</span>Itemparameter</a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="co"># slope parameters</span></a>
-<a class="sourceLine" id="cb9-5" title="5">awm &lt;-<span class="st"> </span>pp_amt<span class="op">$</span>daten_amt[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/grep">grep</a></span>(<span class="st">"i</span><span class="ch">\\</span><span class="st">d{1,3}"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(pp_amt<span class="op">$</span>daten_amt))]</a>
-<a class="sourceLine" id="cb9-6" title="6"></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="co"># estimate ability parameter and personfit</span></a>
-<a class="sourceLine" id="cb9-8" title="8"><span class="co"># the computation of the standard error takes a while, therefore we use only a part of the provided data</span></a>
-<a class="sourceLine" id="cb9-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/warning">suppressWarnings</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">RNGversion</a></span>(<span class="st">"3.5.0"</span>))</a>
-<a class="sourceLine" id="cb9-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1800</span>)</a>
-<a class="sourceLine" id="cb9-11" title="11"><span class="co"># sample items</span></a>
-<a class="sourceLine" id="cb9-12" title="12">sampi &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/order">order</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">ncol</a></span>(awm),<span class="dv">40</span>,<span class="dt">replace =</span> F))</a>
-<a class="sourceLine" id="cb9-13" title="13"><span class="co"># sample persons</span></a>
-<a class="sourceLine" id="cb9-14" title="14">sampp &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/order">order</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(awm),<span class="dv">100</span>,<span class="dt">replace =</span> F))</a>
-<a class="sourceLine" id="cb9-15" title="15">awm.samp &lt;-<span class="st"> </span>awm[sampp,sampi]</a>
-<a class="sourceLine" id="cb9-16" title="16"><span class="co"># apply(awm.samp, 2, function(x)!all(is.na(x)))</span></a>
-<a class="sourceLine" id="cb9-17" title="17">awm.samp &lt;-<span class="st"> </span>awm.samp[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/apply">apply</a></span>(awm.samp, <span class="dv">1</span>, <span class="cf">function</span>(x)<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/all">all</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(x))),] <span class="co">#only persons with no NA</span></a>
-<a class="sourceLine" id="cb9-18" title="18">out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/PPass.html">PPass</a></span>(<span class="dt">respdf =</span> awm.samp,<span class="dt">thres =</span> betas[sampi], <span class="dt">items=</span><span class="st">"all"</span>,<span class="dt">type =</span> <span class="st">"wle"</span>,</a>
-<a class="sourceLine" id="cb9-19" title="19">             <span class="dt">mod=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1PL"</span>), <span class="dt">fitindices=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lz"</span>,<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span>),<span class="dt">SE=</span><span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb9-20" title="20"></a>
-<a class="sourceLine" id="cb9-21" title="21"><span class="co"># first example of illustration</span></a>
-<a class="sourceLine" id="cb9-22" title="22">lim &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">abs</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>(out<span class="op">$</span>estimate),<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(out<span class="op">$</span>estimate))))</a>
-<a class="sourceLine" id="cb9-23" title="23">x &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="op">-</span>lim,lim,<span class="dt">length=</span><span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb9-24" title="24">s  &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb9-25" title="25">mu &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb9-26" title="26">y &lt;-<span class="st"> </span>(<span class="dv">1</span><span class="op">/</span>(s<span class="op">*</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/MathFun">sqrt</a></span>(<span class="dv">2</span><span class="op">*</span>pi))) <span class="op">*</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Log">exp</a></span>(<span class="op">-</span>((x<span class="op">-</span>mu)<span class="op">^</span><span class="dv">2</span>)<span class="op">/</span>(<span class="dv">2</span><span class="op">*</span>s<span class="op">^</span><span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb9-27" title="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(x,y, <span class="dt">type=</span><span class="st">"l"</span>, <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">col =</span> <span class="st">"blue"</span>, <span class="dt">xlim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span>lim,lim),<span class="dt">xlab=</span><span class="st">""</span>, <span class="dt">ylab=</span><span class="st">""</span>)</a>
-<a class="sourceLine" id="cb9-28" title="28"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/title">title</a></span>(<span class="dt">main=</span><span class="st">"Density plot of lz* Person-Fit"</span>, <span class="dt">xlab=</span><span class="st">"density"</span>, <span class="dt">ylab=</span><span class="st">"score"</span>)</a>
-<a class="sourceLine" id="cb9-29" title="29"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/density">density</a></span>(out[,<span class="st">"lzstar"</span>], <span class="dt">bw =</span> <span class="fl">0.5</span>), <span class="dt">lwd =</span> <span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb9-30" title="30"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rug">rug</a></span>(out[,<span class="st">"lzstar"</span>],<span class="dt">col=</span><span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">pp_amt</span><span class="op">)</span>
+<span class="va">betas</span> <span class="op">&lt;-</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">betas</span><span class="op">$</span><span class="va">Itemparameter</span>
+<span class="va">diffpar</span> <span class="op">&lt;-</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">Itemparameter</span>
+<span class="co"># slope parameters</span>
+<span class="va">awm</span> <span class="op">&lt;-</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">daten_amt</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"i\\d{1,3}"</span>,<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">pp_amt</span><span class="op">$</span><span class="va">daten_amt</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
+
+<span class="co"># estimate ability parameter and personfit</span>
+<span class="co"># the computation of the standard error takes a while, therefore we use only a part of the provided data</span>
+<span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">RNGversion</a></span><span class="op">(</span><span class="st">"3.5.0"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1800</span><span class="op">)</span>
+<span class="co"># sample items</span>
+<span class="va">sampi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">awm</span><span class="op">)</span>,<span class="fl">40</span>,replace <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># sample persons</span>
+<span class="va">sampp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">awm</span><span class="op">)</span>,<span class="fl">100</span>,replace <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span>
+<span class="va">awm.samp</span> <span class="op">&lt;-</span> <span class="va">awm</span><span class="op">[</span><span class="va">sampp</span>,<span class="va">sampi</span><span class="op">]</span>
+<span class="co"># apply(awm.samp, 2, function(x)!all(is.na(x)))</span>
+<span class="va">awm.samp</span> <span class="op">&lt;-</span> <span class="va">awm.samp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">awm.samp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span> <span class="co">#only persons with no NA</span>
+<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span>respdf <span class="op">=</span> <span class="va">awm.samp</span>,thres <span class="op">=</span> <span class="va">betas</span><span class="op">[</span><span class="va">sampi</span><span class="op">]</span>, items<span class="op">=</span><span class="st">"all"</span>,type <span class="op">=</span> <span class="st">"wle"</span>,
+             mod<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1PL"</span><span class="op">)</span>, fitindices<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lz"</span>,<span class="st">"lzstar"</span>,<span class="st">"infit"</span>,<span class="st">"outfit"</span><span class="op">)</span>,SE<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="co"># first example of illustration</span>
+<span class="va">lim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">estimate</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="va">lim</span>,<span class="va">lim</span>,length<span class="op">=</span><span class="fl">200</span><span class="op">)</span>
+<span class="va">s</span>  <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">s</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">pi</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="va">mu</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="va">s</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, type<span class="op">=</span><span class="st">"l"</span>, lwd<span class="op">=</span><span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">lim</span>,<span class="va">lim</span><span class="op">)</span>,xlab<span class="op">=</span><span class="st">""</span>, ylab<span class="op">=</span><span class="st">""</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span>main<span class="op">=</span><span class="st">"Density plot of lz* Person-Fit"</span>, xlab<span class="op">=</span><span class="st">"density"</span>, ylab<span class="op">=</span><span class="st">"score"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">out</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>, bw <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/rug.html">rug</a></span><span class="op">(</span><span class="va">out</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>,col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_pfit_files/figure-html/example-2-1.png" width="700"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co"># second example of illustration</span></a>
-<a class="sourceLine" id="cb10-2" title="2">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(out)</a>
-<a class="sourceLine" id="cb10-3" title="3">avg &lt;-<span class="st"> </span>out[,<span class="st">"lzstar"</span>]</a>
-<a class="sourceLine" id="cb10-4" title="4">sdev &lt;-<span class="st"> </span>out[,<span class="st">"lzs_se"</span>]</a>
-<a class="sourceLine" id="cb10-5" title="5"></a>
-<a class="sourceLine" id="cb10-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(avg, x,</a>
-<a class="sourceLine" id="cb10-7" title="7">     <span class="dt">yaxt=</span><span class="st">"n"</span>,</a>
-<a class="sourceLine" id="cb10-8" title="8">     <span class="dt">xlim=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/range">range</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(avg<span class="op">-</span>sdev, avg<span class="op">+</span>sdev)),</a>
-<a class="sourceLine" id="cb10-9" title="9">     <span class="dt">pch=</span><span class="dv">19</span>, <span class="dt">ylab=</span><span class="st">"Person"</span>, <span class="dt">xlab=</span><span class="st">"Person-Fit +/- SD"</span>,</a>
-<a class="sourceLine" id="cb10-10" title="10">     <span class="dt">main=</span><span class="st">"Plot of Person-Fit with SE"</span></a>
-<a class="sourceLine" id="cb10-11" title="11">)</a>
-<a class="sourceLine" id="cb10-12" title="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/axis">axis</a></span>(<span class="dt">side=</span><span class="dv">2</span>, <span class="dt">at =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(out)),<span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(out)), <span class="dt">las =</span> <span class="dv">2</span>,<span class="dt">cex.axis=</span><span class="fl">0.66</span>)</a>
-<a class="sourceLine" id="cb10-13" title="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/arrows">arrows</a></span>(avg<span class="op">-</span>sdev, x, avg<span class="op">+</span>sdev, <span class="dt">length=</span><span class="fl">0.05</span>, <span class="dt">angle=</span><span class="dv">90</span>, <span class="dt">code=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb10-14" title="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/abline">abline</a></span>(<span class="dt">v=</span><span class="dv">0</span>,<span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># second example of illustration</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span>
+<span class="va">avg</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">[</span>,<span class="st">"lzstar"</span><span class="op">]</span>
+<span class="va">sdev</span> <span class="op">&lt;-</span> <span class="va">out</span><span class="op">[</span>,<span class="st">"lzs_se"</span><span class="op">]</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">avg</span>, <span class="va">x</span>,
+     yaxt<span class="op">=</span><span class="st">"n"</span>,
+     xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">avg</span><span class="op">-</span><span class="va">sdev</span>, <span class="va">avg</span><span class="op">+</span><span class="va">sdev</span><span class="op">)</span><span class="op">)</span>,
+     pch<span class="op">=</span><span class="fl">19</span>, ylab<span class="op">=</span><span class="st">"Person"</span>, xlab<span class="op">=</span><span class="st">"Person-Fit +/- SD"</span>,
+     main<span class="op">=</span><span class="st">"Plot of Person-Fit with SE"</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span>side<span class="op">=</span><span class="fl">2</span>, at <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span>,labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span>, las <span class="op">=</span> <span class="fl">2</span>,cex.axis<span class="op">=</span><span class="fl">0.66</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/arrows.html">arrows</a></span><span class="op">(</span><span class="va">avg</span><span class="op">-</span><span class="va">sdev</span>, <span class="va">x</span>, <span class="va">avg</span><span class="op">+</span><span class="va">sdev</span>, length<span class="op">=</span><span class="fl">0.05</span>, angle<span class="op">=</span><span class="fl">90</span>, code<span class="op">=</span><span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>v<span class="op">=</span><span class="fl">0</span>,col <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_pfit_files/figure-html/example-2-2.png" width="700"></p>
 <p><strong>Interpretation of some selected person-fit statistics.</strong></p>
 <p>In the second example we used the provided real dataset of the ‘Adaptive Matrices Test’. Theses data where collected at the Unitersity of Vienna, Fakulty of Psychology, Division of Psychological Assessment and Applied Psychometrics. In the second plot we used only a subset of the provided data, because the computation of the standard error (here we used a jackknife (Efron &amp; Stein, 1981)) takes a while. Magis, Raîche &amp; Béland (2012) and also Armstrong, Stoumbos, Kung and Shi (2007) provide useful information for the inrepretation of the lz (Drasgow, Levine &amp; Williams, 1985) and lz* (Snijders, 2001) person-fit index. The interpretation of the lz-values is very simple. The smaller (negative) the values, the stronger the indicated misfit. The lz-values ar asymptotically standard normally distributed. Molenaar and Hoijtink (1990) (and others) showed, that the asymptotically standard normal distrubution only holds, if the <span class="math inline">\(\theta\)</span> values are known. To overcome thes problem Snijders (2001) intruduced his lz* person-fit index. The inrepration of this index does not change. In summary Magis, Raîche &amp; Béland (2012) propose if the lz* index is lower than a certain critical value <span class="math inline">\(z_\alpha\)</span>, than this person-fit value indicates a misfit.</p>
@@ -287,36 +299,29 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#getting-started-with-person-fit-functions">Getting started with Person-Fit functions</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#first-example">First example</a></li>
-      <li><a href="#real-data-example">Real data example</a></li>
-      </ul>
-</li>
-      <li><a href="#references">References</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
-  <p>Developed by Manuel Reif, Jan Steinfeld.</p>
+  <p>Developed by Jan Steinfeld, Manuel Reif.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

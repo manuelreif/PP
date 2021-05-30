@@ -472,7 +472,7 @@ NumericVector LOWA, NumericVector UPPA, NumericVector THETA, String wm,
 int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
-
+NumericVector THETAC = Rcpp::clone(THETA);
 NumericMatrix resPP(npers,2);
 int howlong;
 
@@ -482,16 +482,16 @@ if(wm == "wle")
     
   for(int newr = 0; newr < maxsteps; newr++)
     {
-    NumericMatrix reso = L4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETA);
-    THETA = reso(_,5);
+    NumericMatrix reso = L4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC);
+    THETAC = reso(_,5);
     
     NumericVector diffs = reso(_,4);
-    LogicalVector bxy = is_na(THETA);
+    LogicalVector bxy = is_na(THETAC);
     NumericVector diffs1 = diffs[!bxy];
 
     if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
       {
-        resPP(_,0) = THETA;
+        resPP(_,0) = THETAC;
         //resPP(_,1) = pow(1/reso(_,1),0.5); // thank you solaris
         resPP(_,1) = 1/reso(_,1);
         howlong = newr + 1;
@@ -507,16 +507,16 @@ if(wm == "wle")
 
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETA,map,mu,sigma2);
-      THETA = reso(_,3);
+      NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,map,mu,sigma2);
+      THETAC = reso(_,3);
       
       NumericVector diffs = reso(_,2);
-      LogicalVector bxy = is_na(THETA);
+      LogicalVector bxy = is_na(THETAC);
       NumericVector diffs1 = diffs[!bxy];
       
       if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
         {
-          resPP(_,0) = THETA;
+          resPP(_,0) = THETAC;
           resPP(_,1) = 1/reso(_,1)*(-1);
           howlong = newr + 1;
           break;
@@ -529,16 +529,16 @@ if(wm == "wle")
        bool map = TRUE; 
           for(int newr = 0; newr < maxsteps; newr++)
             {
-            NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETA,map,mu,sigma2);
-            THETA = reso(_,3);
+            NumericMatrix reso = L4pl(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,map,mu,sigma2);
+            THETAC = reso(_,3);
             
             NumericVector diffs = reso(_,2);
-            LogicalVector bxy = is_na(THETA);
+            LogicalVector bxy = is_na(THETAC);
             NumericVector diffs1 = diffs[!bxy];
             
             if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
               {
-                resPP(_,0) = THETA;
+                resPP(_,0) = THETAC;
                 resPP(_,1) = 1/reso(_,1)*(-1);
                 howlong = newr + 1;
                 break;
@@ -551,16 +551,16 @@ if(wm == "wle")
             
             for(int newr = 0; newr < maxsteps; newr++)
               {
-              NumericMatrix reso = L4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETA,H);
-              THETA = reso(_,3);
+              NumericMatrix reso = L4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,H);
+              THETAC = reso(_,3);
               
               NumericVector diffs = reso(_,2);
-              LogicalVector bxy = is_na(THETA);
+              LogicalVector bxy = is_na(THETAC);
               NumericVector diffs1 = diffs[!bxy];
               
               if( (is_true(all(abs(diffs1) < exac))) | (newr == (maxsteps-1)))
                 {
-                  resPP(_,0) = THETA;
+                  resPP(_,0) = THETAC;
                   resPP(_,1) = 1/reso(_,1)*(-1);
                   howlong = newr + 1;
                   break;
@@ -1177,7 +1177,7 @@ List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, Numeri
              String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
 int npers = awm.nrow();
-
+NumericVector THETAC = Rcpp::clone(THETA);
 NumericMatrix resPP(npers,2);
 int howlong;
 
@@ -1187,12 +1187,12 @@ if(wm == "wle")
     
   for(int newr = 0; newr < maxsteps; newr++)
     {
-    NumericMatrix reso = L12gpcm_wle(awm,DELTA,ALPHA,THETA);
-    THETA = reso(_,5);
+    NumericMatrix reso = L12gpcm_wle(awm,DELTA,ALPHA,THETAC);
+    THETAC = reso(_,5);
     
     if( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1)))
       {
-        resPP(_,0) = THETA;
+        resPP(_,0) = THETAC;
         resPP(_,1) = 1/reso(_,1);
         howlong = newr;
         break;
@@ -1205,12 +1205,12 @@ if(wm == "wle")
     bool map = FALSE;  
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
-      THETA = reso(_,3);
+      NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETAC,mu,sigma2,map);
+      THETAC = reso(_,3);
       
       if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
         {
-          resPP(_,0) = THETA;
+          resPP(_,0) = THETAC;
           resPP(_,1) = 1/reso(_,1)*(-1);
           howlong = newr;
           break;
@@ -1223,12 +1223,12 @@ if(wm == "wle")
         bool map = TRUE;
           for(int newr = 0; newr < maxsteps; newr++)
             {
-            NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETA,mu,sigma2,map);
-            THETA = reso(_,3);
+            NumericMatrix reso = L12gpcm(awm,DELTA,ALPHA,THETAC,mu,sigma2,map);
+            THETAC = reso(_,3);
             
             if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
               {
-                resPP(_,0) = THETA;
+                resPP(_,0) = THETAC;
                 resPP(_,1) = 1/reso(_,1)*(-1);
                 howlong = newr;
                 break;
@@ -1240,13 +1240,13 @@ if(wm == "wle")
           {  
               for(int newr = 0; newr < maxsteps; newr++)
                 {
-                NumericMatrix reso = L12gpcm_robust(awm,DELTA,ALPHA,THETA,H);
-                THETA = reso(_,3);
+                NumericMatrix reso = L12gpcm_robust(awm,DELTA,ALPHA,THETAC,H);
+                THETAC = reso(_,3);
                 //std::cout << "theta = " << resPP(1,0) <<  std::endl ;
 
                 if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
                   {
-                    resPP(_,0) = THETA;
+                    resPP(_,0) = THETAC;
                     resPP(_,1) = 1/reso(_,1)*(-1);
                     howlong = newr;
                     break;
@@ -1781,24 +1781,27 @@ List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
               NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model,
               String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H) {
 
-int npers = awm.nrow();
+  int npers = awm.nrow();
+  NumericVector THETAC = Rcpp::clone(THETA);
+  NumericMatrix resPP(npers,2);
+  int howlong = 1;
 
-NumericMatrix resPP(npers,2);
-int howlong;
-
-if(wm == "wle")
+  if(wm == "wle")
   {
-    
+
   for(int newr = 0; newr < maxsteps; newr++)
     {
-    NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model);
-    THETA = reso(_,5);
-    
-    if( (is_true(all(abs(reso(_,4)) < exac))) | (newr == (maxsteps-1)))
+    NumericMatrix reso = Lgpcm4pl_wle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model);
+    THETAC = reso(_,5);
+
+   
+    if( (is_true(all(abs(na_omit(reso(_,4))) < exac))) | (newr == (maxsteps-1)) )
       {
-        resPP(_,0) = THETA;
+        
+        
+        resPP(_,0) = THETAC;
         resPP(_,1) = 1/reso(_,1);
-        howlong = newr + 1;
+        howlong += newr;
         break;
       }
   
@@ -1810,14 +1813,14 @@ if(wm == "wle")
     bool map = FALSE;
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, mu, sigma2, map);
-      THETA = reso(_,3);
+      NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, mu, sigma2, map);
+      THETAC = reso(_,3);
       
-      if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
+    if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)) )
         {
-          resPP(_,0) = THETA;
+          resPP(_,0) = THETAC;
           resPP(_,1) = 1/reso(_,1)*(-1);
-          howlong = newr + 1;
+          howlong += newr;
           break;
         }
     
@@ -1829,14 +1832,14 @@ if(wm == "wle")
         
           for(int newr = 0; newr < maxsteps; newr++)
             {
-            NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, mu, sigma2, map);
-            THETA = reso(_,3);
+            NumericMatrix reso = Lgpcm4pl_mle(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, mu, sigma2, map);
+            THETAC = reso(_,3);
             
-            if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
+            if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)))
               {
-                resPP(_,0) = THETA;
+                resPP(_,0) = THETAC;
                 resPP(_,1) = 1/reso(_,1)*(-1);
-                howlong = newr + 1;
+                howlong += newr;
                 break;
               }
           
@@ -1848,23 +1851,22 @@ if(wm == "wle")
 
     for(int newr = 0; newr < maxsteps; newr++)
       {
-      NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETA,model, H);
-      THETA = reso(_,3);
+      NumericMatrix reso = Lgpcm4pl_robust(awm,DELTA,ALPHA,LOWA,UPPA,THETAC,model, H);
+      THETAC = reso(_,3);
       
-      if( (is_true(all(abs(reso(_,2)) < exac))) | (newr == (maxsteps-1)))
+      if( (is_true(all(abs(na_omit(reso(_,2))) < exac))) | (newr == (maxsteps-1)))
         {
-          resPP(_,0) = THETA;
+          resPP(_,0) = THETAC;
           resPP(_,1) = 1/reso(_,1)*(-1);
-          howlong = newr + 1;
+          howlong += newr;
           break;
         }
     
       }
 
     }
-
-// ----
-return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
+  return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
+  
 
 }
 
@@ -1920,11 +1922,9 @@ for(int no = 0; no < nnodes; no++)
     
 }
 
-
 return Likpernode;
 
 }
-
 
 // --------------------------- simulation ------------------------------------
 
@@ -1933,7 +1933,8 @@ return Likpernode;
 //' 
 //' This function returns a dichotomous matrix of simulated responses under given item and person parameters.
 //' 
-//' 
+//' @useDynLib PP
+//' @importFrom Rcpp evalCpp sourceCpp
 //' 
 //'@param beta A numeric vector which contains the difficulty parameters for each item.
 //'@param alpha A numeric vector, which contains the slope parameters for each item.
@@ -1946,7 +1947,7 @@ return Likpernode;
 //'
 //'@author Manuel Reif
 //'
-//'@export
+//' @export
 // [[Rcpp::export]]
 IntegerMatrix sim_4pl(NumericVector beta, NumericVector alpha,
                       NumericVector lowerA, NumericVector upperA, NumericVector theta) 

@@ -6,9 +6,22 @@
 \alias{summary.ppeo}
 \title{Estimate Person Parameters}
 \usage{
-PPall(respm, thres, slopes, lowerA, upperA, theta_start = NULL,
-  mu = NULL, sigma2 = NULL, type = "wle", model2est,
-  maxsteps = 100, exac = 0.001, H = 1, ctrl = list())
+PPall(
+  respm,
+  thres,
+  slopes,
+  lowerA,
+  upperA,
+  theta_start = NULL,
+  mu = NULL,
+  sigma2 = NULL,
+  type = "wle",
+  model2est,
+  maxsteps = 100,
+  exac = 0.001,
+  H = 1,
+  ctrl = list()
+)
 
 \method{print}{ppeo}(x, ...)
 
@@ -65,7 +78,7 @@ The function returns a list with the estimation results and pretty much everythi
 Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 }
 \details{
-For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item.
+For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item. 
 
 Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 }

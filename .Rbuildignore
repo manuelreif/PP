@@ -33,3 +33,8 @@ BUILD.R
 pkgdown/
 docs/
 /PP.Rcheck
+.tgz
+.zip
+Debugging_CPP.R
+PP-Ex.pdf
+PP-Ex.timings

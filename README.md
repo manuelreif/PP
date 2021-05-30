@@ -3,9 +3,9 @@ PP
 
 [![](http://www.r-pkg.org/badges/version/PP)](http://www.r-pkg.org/pkg/PP)
 [![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/PP)](http://www.r-pkg.org/pkg/PP)
-[![Build Status](https://travis-ci.org/manuelreif/PP.svg?branch=master)](https://travis-ci.org/manuelreif/PP)
+[![Build Status](https://travis-ci.org/jansteinfeld/PP.svg?branch=master)](https://travis-ci.org/github/manuelreif/PP)
 
-### Version 0.6.2 is on cran!
+### Version 0.6.3 is on cran!
 
 
 This R package provides Person Parameter estimation for the 1,2,3,4PL model and the generalized partial credit model. This package will soon be uploaded to cran!
@@ -14,11 +14,12 @@ This R package provides Person Parameter estimation for the 1,2,3,4PL model and 
 To install this package from github, install [devtools](https://github.com/hadley/devtools) first.
 
 ```R
-devtools::install_github("manuelreif/PP", build_vignettes = TRUE)
+devtools::install_github("jansteinfeld/PP", build_vignettes = TRUE)
 ```
 
 ### What's NEW?
-
+* fixed [knitr issue 1864](https://github.com/yihui/knitr/issues/1864) by declared 'rmarkdown' package as a dependency
+* [Jan Steinfeld](https://github.com/jansteinfeld) is now the maintainer of the package, the main feautres and whole idea of the package is from [Manuel Reif](https://github.com/manuelreif)
 * [Jan Steinfeld](https://github.com/jansteinfeld) is now on board! 
 * Jan programmed the great `Pfit()` function, to estimate a bunch of **fit indices**!
 *  Use the brandnew `PPass()` function, to estimate Person Parameters and fit indices in one step!

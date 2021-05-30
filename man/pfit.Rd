@@ -7,8 +7,7 @@
 \usage{
 Pfit(respm, pp, fitindices, SE = FALSE)
 
-\method{Pfit}{gpcm}(respm, pp, fitindices = c("infit", "outfit"),
-  SE = FALSE)
+\method{Pfit}{gpcm}(respm, pp, fitindices = c("infit", "outfit"), SE = FALSE)
 }
 \arguments{
 \item{respm}{numeric response matrix}
@@ -176,6 +175,6 @@ Wright, B. D., & Masters, G. N. (1982). \emph{Rating Scale Analysis. Rasch Measu
 Jan Steinfeld
 }
 \keyword{Infit-Outfit}
-\keyword{LZ-Index,}
+\keyword{LZ-Index}
 \keyword{Person}
-\keyword{fit,}
+\keyword{fit}

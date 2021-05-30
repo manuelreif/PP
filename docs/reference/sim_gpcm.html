@@ -8,21 +8,29 @@
 
 <title>Simulate data for the gpcm model — sim_gpcm • PP</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +40,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Simulate data for the gpcm model — sim_gpcm" />
 
+<meta property="og:title" content="Simulate data for the gpcm model — sim_gpcm" />
 <meta property="og:description" content="This function returns an integer matrix of simulated responses under given item and person parameters." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,9 +57,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PP</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3-11</span>
       </span>
     </div>
 
@@ -73,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,11 +108,10 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/manuelreif/PP">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/jansteinfeld/PP/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -114,24 +122,23 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Simulate data for the gpcm model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/manuelreif/PP/blob/master/R/sim_gpcm.R'><code>R/sim_gpcm.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jansteinfeld/PP/blob/master/R/sim_gpcm.R'><code>R/sim_gpcm.R</code></a></small>
     <div class="hidden name"><code>sim_gpcm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This function returns an integer matrix of simulated responses under given item and person parameters.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>sim_gpcm</span>(<span class='no'>thres</span>, <span class='no'>alpha</span>, <span class='no'>theta</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>sim_gpcm</span><span class='op'>(</span><span class='va'>thres</span>, <span class='va'>alpha</span>, <span class='va'>theta</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -148,29 +155,29 @@
       <td><p>A numeric vector which contains person parameters.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='sim_4pl.html'>sim_4pl</a>, <a href='PP_gpcm.html'>PP_gpcm</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>################# simulate GPCM ###############################################</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1750</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1750</span><span class='op'>)</span>
 
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
 <span class='co'># slopes</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.5</span>,<span class='fl'>1</span>,<span class='fl'>1.5</span>,<span class='fl'>1.1</span>,<span class='fl'>1</span>,<span class='fl'>0.98</span><span class='op'>)</span>
 
-<span class='no'>THRESx</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='fl'>0</span>,<span class='no'>THRES</span>)
+<span class='va'>THRESx</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='va'>THRES</span><span class='op'>)</span>
 
-<span class='no'>THETA</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>100</span>)
+<span class='va'>THETA</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span><span class='op'>)</span>
 
-<span class='no'>simdat_gpcm</span> <span class='kw'>&lt;-</span> <span class='fu'>sim_gpcm</span>(<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRESx</span>,<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>theta</span> <span class='kw'>=</span> <span class='no'>THETA</span>)
+<span class='va'>simdat_gpcm</span> <span class='op'>&lt;-</span> <span class='fu'>sim_gpcm</span><span class='op'>(</span>thres <span class='op'>=</span> <span class='va'>THRESx</span>,alpha <span class='op'>=</span> <span class='va'>sl</span>,theta <span class='op'>=</span> <span class='va'>THETA</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>simdat_gpcm</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>simdat_gpcm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
 #&gt; [1,]    2    0    0    0    0    1
 #&gt; [2,]    2    1    0    1    0    0
 #&gt; [3,]    2    0    1    2    1    1
@@ -181,15 +188,17 @@
 <span class='co'>### simulate with a different number of categories</span>
 
 
-<span class='no'>THRES1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='no'>THRESx</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>1.7</span>,<span class='fl'>1</span>))
-<span class='no'>THRES1</span> <span class='co'># last 2 items have +1 category</span></div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6]
+<span class='va'>THRES1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>THRESx</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='fl'>1.7</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>THRES1</span> <span class='co'># last 2 items have +1 category</span>
+</div><div class='output co'>#&gt;       [,1] [,2] [,3] [,4] [,5] [,6]
 #&gt; [1,]  0.00 0.00    0  0.0  0.0  0.0
 #&gt; [2,] -2.00 1.11    1 -1.0  0.5 -0.8
 #&gt; [3,] -1.23 3.48    2 -0.2  1.3  1.5
 #&gt; [4,]    NA   NA   NA   NA  1.7  1.0</div><div class='input'>
-<span class='no'>simdat_gpcm2</span> <span class='kw'>&lt;-</span> <span class='fu'>sim_gpcm</span>(<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRES1</span>,<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>theta</span> <span class='kw'>=</span> <span class='no'>THETA</span>)
+<span class='va'>simdat_gpcm2</span> <span class='op'>&lt;-</span> <span class='fu'>sim_gpcm</span><span class='op'>(</span>thres <span class='op'>=</span> <span class='va'>THRES1</span>,alpha <span class='op'>=</span> <span class='va'>sl</span>,theta <span class='op'>=</span> <span class='va'>THETA</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>simdat_gpcm2</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>simdat_gpcm2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5] [,6]
 #&gt; [1,]    2    0    0    0    0    0
 #&gt; [2,]    1    1    0    2    0    2
 #&gt; [3,]    2    0    0    1    2    2
@@ -197,36 +206,35 @@
 #&gt; [5,]    2    1    1    2    3    3
 #&gt; [6,]    2    0    0    2    0    1</div><div class='input'>
 <span class='co'># check the maximum category</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/apply'>apply</a></span>(<span class='no'>simdat_gpcm2</span>,<span class='fl'>2</span>,<span class='no'>max</span>)</div><div class='output co'>#&gt; [1] 2 2 2 2 3 3</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>simdat_gpcm2</span>,<span class='fl'>2</span>,<span class='va'>max</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2 2 2 2 3 3</div><div class='input'>
 
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
-  <p>Developed by Manuel Reif, Jan Steinfeld.</p>
+  <p>Developed by Jan Steinfeld, Manuel Reif.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

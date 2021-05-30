@@ -4,9 +4,19 @@
 \alias{PP_gpcm}
 \title{Estimate Person Parameters for the GPCM}
 \usage{
-PP_gpcm(respm, thres, slopes, theta_start = NULL, mu = NULL,
-  sigma2 = NULL, type = "wle", maxsteps = 100, exac = 0.001,
-  H = 1, ctrl = list())
+PP_gpcm(
+  respm,
+  thres,
+  slopes,
+  theta_start = NULL,
+  mu = NULL,
+  sigma2 = NULL,
+  type = "wle",
+  maxsteps = 100,
+  exac = 0.001,
+  H = 1,
+  ctrl = list()
+)
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
@@ -44,6 +54,7 @@ Compute person parameters for the GPCM and choose between five common estimation
 }
 \details{
 Please note, that \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
+
 
 The probability choosing the k-th category is as follows:
 
@@ -133,5 +144,5 @@ Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Respon
 Manuel Reif
 }
 \keyword{GPCM}
-\keyword{Parameters,}
+\keyword{Parameters}
 \keyword{Person}

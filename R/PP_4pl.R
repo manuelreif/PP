@@ -59,7 +59,7 @@
 #' @seealso \link{PPass}, \link{PPall}, \link{PP_gpcm}, \link{JKpp}, \link{PV}
 #'
 #' @useDynLib PP, .registration = TRUE
-#' @importFrom Rcpp evalCpp
+#' @importFrom Rcpp evalCpp sourceCpp
 #'
 #' @import utils
 #' @import stats
@@ -89,7 +89,7 @@
 #'
 
 #'@example ./R/.examples_4pl.R
-#'@keywords Person Parameters, 4pl
+#'@keywords Person Parameters 4pl
 #'@rdname PP_4pl
 #'
 

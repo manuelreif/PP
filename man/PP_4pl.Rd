@@ -4,9 +4,21 @@
 \alias{PP_4pl}
 \title{Estimate Person Parameters for the 4-PL model}
 \usage{
-PP_4pl(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
-  theta_start = NULL, mu = NULL, sigma2 = NULL, type = "wle",
-  maxsteps = 40, exac = 0.001, H = 1, ctrl = list())
+PP_4pl(
+  respm,
+  thres,
+  slopes = NULL,
+  lowerA = NULL,
+  upperA = NULL,
+  theta_start = NULL,
+  mu = NULL,
+  sigma2 = NULL,
+  type = "wle",
+  maxsteps = 40,
+  exac = 0.001,
+  H = 1,
+  ctrl = list()
+)
 }
 \arguments{
 \item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
@@ -216,5 +228,5 @@ Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empiric
 Manuel Reif
 }
 \keyword{4pl}
-\keyword{Parameters,}
+\keyword{Parameters}
 \keyword{Person}

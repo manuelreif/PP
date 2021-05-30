@@ -3,7 +3,9 @@
 \name{fourpl_df}
 \alias{fourpl_df}
 \title{Simulated data set}
-\format{A data.frame with 60 rows and 14 columns.}
+\format{
+A data.frame with 60 rows and 14 columns.
+}
 \source{
 simulation
 }

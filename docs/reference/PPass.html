@@ -8,21 +8,29 @@
 
 <title>Person Assessment function — PPass • PP</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/slate/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,10 +40,10 @@
 
   <link href="../extra.css" rel="stylesheet">
   
-<meta property="og:title" content="Person Assessment function — PPass" />
 
+<meta property="og:title" content="Person Assessment function — PPass" />
 <meta property="og:description" content="Estimate Person Paramters and calculate Person Fit in one step to gain resonse pattern assessment. Submit a data.frame which contains item responses, or an fitted model (Rasch Model and Partial Credit Model are supported) of the eRm package." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -49,9 +57,10 @@
 <![endif]-->
 
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -65,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">PP</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.3-11</span>
       </span>
     </div>
 
@@ -73,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -99,11 +108,10 @@
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/manuelreif/PP">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/jansteinfeld/PP/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -114,33 +122,35 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Person Assessment function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/manuelreif/PP/blob/master/R/PPass.R'><code>R/PPass.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/jansteinfeld/PP/blob/master/R/PPass.R'><code>R/PPass.R</code></a></small>
     <div class="hidden name"><code>PPass.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>Estimate Person Paramters and calculate Person Fit in one step to gain resonse pattern assessment. Submit a data.frame which contains item responses, or an fitted model (Rasch Model and Partial Credit Model are supported) of the <code>eRm</code> package.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>PPass</span>(<span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>PPass</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for default</span>
-<span class='fu'>PPass</span>(<span class='no'>respdf</span>, <span class='kw'>items</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>mod</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1PL"</span>, <span class='st'>"2PL"</span>,
-  <span class='st'>"3PL"</span>, <span class='st'>"4PL"</span>, <span class='st'>"PCM"</span>, <span class='st'>"GPCM"</span>, <span class='st'>"MIXED"</span>), <span class='kw'>fitindices</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lz"</span>, <span class='st'>"lzstar"</span>,
-  <span class='st'>"infit"</span>, <span class='st'>"outfit"</span>), <span class='no'>...</span>)
+<span class='fu'>PPass</span><span class='op'>(</span>
+  <span class='va'>respdf</span>,
+  items <span class='op'>=</span> <span class='st'>"all"</span>,
+  mod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1PL"</span>, <span class='st'>"2PL"</span>, <span class='st'>"3PL"</span>, <span class='st'>"4PL"</span>, <span class='st'>"PCM"</span>, <span class='st'>"GPCM"</span>, <span class='st'>"MIXED"</span><span class='op'>)</span>,
+  fitindices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lz"</span>, <span class='st'>"lzstar"</span>, <span class='st'>"infit"</span>, <span class='st'>"outfit"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for Rm</span>
-<span class='fu'>PPass</span>(<span class='no'>RMobj</span>, <span class='kw'>fitindices</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lz"</span>, <span class='st'>"lzstar"</span>, <span class='st'>"infit"</span>,
-  <span class='st'>"outfit"</span>), <span class='no'>...</span>)</pre>
-    
+<span class='fu'>PPass</span><span class='op'>(</span><span class='va'>RMobj</span>, fitindices <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lz"</span>, <span class='st'>"lzstar"</span>, <span class='st'>"infit"</span>, <span class='st'>"outfit"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -165,11 +175,11 @@
       <td><p>A fitted Rasch Model (<code>RM()</code>) object which stems from the <code>eRm</code> package.</p></td>
     </tr>
     <tr>
-      <th>&#8230;</th>
+      <th>...</th>
       <td><p>Submit arguments to the underlying functions: <code>PP_4pl</code>, <code>PP_gpcm</code> and <code>PPall</code> (see documentation files) for person parameter estimation.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The original data.frame and</p>
@@ -178,33 +188,35 @@
 <li><p>Person Fit Indices you chose (1 or more)</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>PPass fuses Person Parameter estimation and Person Fit computation into a single function.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='PP_4pl.html'>PP_4pl</a>, <a href='PP_gpcm.html'>PP_gpcm</a>, <a href='PPall.html'>PPall</a>, <a href='pfit.html'>Pfit</a></p></div>
-    
+    <div class='dont-index'><p><a href='PP_4pl.html'>PP_4pl</a>, <a href='PP_gpcm.html'>PP_gpcm</a>, <a href='PPall.html'>PPall</a>, <a href='Pfit.html'>Pfit</a></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Manuel Reif, Jan Steinfeld</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>eRm</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>eRm</span><span class='op'>)</span>
 <span class='co'>### real data ##########</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>pp_amt</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>pp_amt</span><span class='op'>)</span>
 
-<span class='no'>d</span> <span class='kw'>&lt;-</span> <span class='no'>pp_amt</span>$<span class='no'>daten_amt</span>
+<span class='va'>d</span> <span class='op'>&lt;-</span> <span class='va'>pp_amt</span><span class='op'>$</span><span class='va'>daten_amt</span>
 
-<span class='no'>rd_res</span> <span class='kw'>&lt;-</span> <span class='fu'>PPass</span>(<span class='kw'>respdf</span> <span class='kw'>=</span> <span class='no'>d</span>,
-                <span class='kw'>items</span> <span class='kw'>=</span> <span class='fl'>8</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>ncol</a></span>(<span class='no'>d</span>),
-                <span class='kw'>mod</span><span class='kw'>=</span><span class='st'>"1PL"</span>,
-                <span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>pp_amt</span>$<span class='no'>betas</span>[,<span class='fl'>2</span>],
-                <span class='kw'>fitindices</span> <span class='kw'>=</span> <span class='st'>"lz"</span>)</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>rd_res</span> <span class='op'>&lt;-</span> <span class='fu'>PPass</span><span class='op'>(</span>respdf <span class='op'>=</span> <span class='va'>d</span>, 
+                items <span class='op'>=</span> <span class='fl'>8</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span><span class='op'>(</span><span class='va'>d</span><span class='op'>)</span>,
+                mod<span class='op'>=</span><span class='st'>"1PL"</span>,
+                thres <span class='op'>=</span> <span class='va'>pp_amt</span><span class='op'>$</span><span class='va'>betas</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>]</span>, 
+                fitindices <span class='op'>=</span> <span class='st'>"lz"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>rd_res</span>)</div><div class='output co'>#&gt;    estimate        SE        lz   lz_unst
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>rd_res</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    estimate        SE        lz   lz_unst
 #&gt; 1 1.4098572 0.4177670 -0.631024 -0.613445
 #&gt; 2 0.3515596 0.3728684  1.229632 -0.627897
 #&gt; 3 1.0745004 0.3741313  1.097723 -0.627596
@@ -213,100 +225,96 @@
 #&gt; 6 0.9457363 0.4184999  0.573956 -0.615722</div><div class='input'>
 
 <span class='co'>## ========== RM - eRm </span>
-<span class='no'>my_data</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>eRm</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/eRm/topics/sim.rasch'>sim.rasch</a></span>(<span class='fl'>200</span>, <span class='fl'>12</span>)
-<span class='no'>my_rm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>eRm</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/eRm/topics/RM'>RM</a></span>(<span class='no'>my_data</span>)
+<span class='va'>my_data</span> <span class='op'>&lt;-</span> <span class='fu'>eRm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/eRm/man/sim.rasch.html'>sim.rasch</a></span><span class='op'>(</span><span class='fl'>200</span>, <span class='fl'>12</span><span class='op'>)</span>
+<span class='va'>my_rm</span> <span class='op'>&lt;-</span> <span class='fu'>eRm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/eRm/man/RM.html'>RM</a></span><span class='op'>(</span><span class='va'>my_data</span><span class='op'>)</span>
 
-<span class='no'>res_pp1</span> <span class='kw'>&lt;-</span> <span class='fu'>PPass</span>(<span class='no'>my_rm</span>)</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>res_pp1</span> <span class='op'>&lt;-</span> <span class='fu'>PPass</span><span class='op'>(</span><span class='va'>my_rm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'>
 
 <span class='co'>## ========== PCM - eRm</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>2751</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>2751</span><span class='op'>)</span>
 
-<span class='no'>THRES</span>  <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>2</span>,-<span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
-                   ,<span class='fl'>2</span>,-<span class='fl'>1</span>,-<span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,-<span class='fl'>0.8</span>,<span class='fl'>1.5</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)
-<span class='no'>THRES</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='no'>THRES</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>0.2</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>,<span class='fl'>NA</span>))
+<span class='va'>THRES</span>  <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1.23</span>,<span class='fl'>1.11</span>,<span class='fl'>3.48</span>,<span class='fl'>1</span>
+                   ,<span class='fl'>2</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>0.2</span>,<span class='fl'>0.5</span>,<span class='fl'>1.3</span>,<span class='op'>-</span><span class='fl'>0.8</span>,<span class='fl'>1.5</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>THRES</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>THRES</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.2</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span>,<span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='no'>sl</span>          <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>,<span class='fl'>6</span>)
-<span class='no'>THRESx</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>rbind</a></span>(<span class='fl'>0</span>,<span class='no'>THRES</span>)
-<span class='no'>THETA</span>       <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>200</span>)
-<span class='no'>simdat_gpcm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sim_gpcm.html'>sim_gpcm</a></span>(<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>THRESx</span>,<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='no'>sl</span>,<span class='kw'>theta</span> <span class='kw'>=</span> <span class='no'>THETA</span>)
+<span class='va'>sl</span>          <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>
+<span class='va'>THRESx</span>      <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='va'>THRES</span><span class='op'>)</span>
+<span class='va'>THETA</span>       <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>200</span><span class='op'>)</span>
+<span class='va'>simdat_gpcm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sim_gpcm.html'>sim_gpcm</a></span><span class='op'>(</span>thres <span class='op'>=</span> <span class='va'>THRESx</span>,alpha <span class='op'>=</span> <span class='va'>sl</span>,theta <span class='op'>=</span> <span class='va'>THETA</span><span class='op'>)</span>
 
-<span class='no'>my_pcm</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>eRm</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/eRm/topics/PCM'>PCM</a></span>(<span class='no'>simdat_gpcm</span>)
+<span class='va'>my_pcm</span> <span class='op'>&lt;-</span> <span class='fu'>eRm</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/eRm/man/PCM.html'>PCM</a></span><span class='op'>(</span><span class='va'>simdat_gpcm</span><span class='op'>)</span>
 
-<span class='no'>res_pp2</span> <span class='kw'>&lt;-</span> <span class='fu'>PPass</span>(<span class='no'>my_pcm</span>)</div><div class='output co'>#&gt; Estimating: GPCM ... 
+<span class='va'>res_pp2</span> <span class='op'>&lt;-</span> <span class='fu'>PPass</span><span class='op'>(</span><span class='va'>my_pcm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating: GPCM ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='output co'>#&gt; <span class='warning'>Warning: Only 'infit and outfit' are currently supported. The calculation is executed with infit outfit </span></div><div class='input'>
 <span class='co'>## ==========  1PL model</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Random'>set.seed</a></span>(<span class='fl'>1337</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1337</span><span class='op'>)</span>
 
 <span class='co'># intercepts</span>
-<span class='no'>diffpar</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(-<span class='fl'>3</span>,<span class='fl'>3</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>15</span>)
+<span class='va'>diffpar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>3</span>,<span class='fl'>3</span>,length<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span>
 <span class='co'># slope parameters</span>
-<span class='no'>sl</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>15</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span>),<span class='fl'>2</span>)
-<span class='no'>la</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>15</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span>),<span class='fl'>2</span>)
-<span class='no'>ua</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>15</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span>),<span class='fl'>2</span>)
+<span class='va'>sl</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>15</span>,<span class='fl'>0.5</span>,<span class='fl'>1.5</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>la</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>15</span>,<span class='fl'>0</span>,<span class='fl'>0.25</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>ua</span>     <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>15</span>,<span class='fl'>0.8</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'># response matrix</span>
-<span class='no'>awm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample</a></span>(<span class='fl'>0</span>:<span class='fl'>1</span>,<span class='fl'>100</span>*<span class='fl'>15</span>,<span class='kw'>replace</span><span class='kw'>=</span><span class='fl'>TRUE</span>),<span class='kw'>ncol</span><span class='kw'>=</span><span class='fl'>15</span>)
-<span class='no'>awm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='no'>awm</span>)
+<span class='va'>awm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>1</span>,<span class='fl'>100</span><span class='op'>*</span><span class='fl'>15</span>,replace<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>,ncol<span class='op'>=</span><span class='fl'>15</span><span class='op'>)</span>
+<span class='va'>awm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='va'>awm</span><span class='op'>)</span>
 <span class='co'># estimate person parameter</span>
 
 <span class='co'># estimate person parameter and person fit</span>
-<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>PPass</span>(<span class='kw'>respdf</span> <span class='kw'>=</span> <span class='no'>awm</span>,<span class='kw'>thres</span> <span class='kw'>=</span> <span class='no'>diffpar</span>, <span class='kw'>items</span><span class='kw'>=</span><span class='st'>"all"</span>,
-             <span class='kw'>mod</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1PL"</span>), <span class='kw'>fitindices</span><span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"lz"</span>,<span class='st'>"lzstar"</span>,<span class='st'>"infit"</span>,<span class='st'>"outfit"</span>))</div><div class='output co'>#&gt; Estimating:  1pl model ... 
+<span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>PPass</span><span class='op'>(</span>respdf <span class='op'>=</span> <span class='va'>awm</span>,thres <span class='op'>=</span> <span class='va'>diffpar</span>, items<span class='op'>=</span><span class='st'>"all"</span>,
+             mod<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1PL"</span><span class='op'>)</span>, fitindices<span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lz"</span>,<span class='st'>"lzstar"</span>,<span class='st'>"infit"</span>,<span class='st'>"outfit"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Estimating:  1pl model ... 
 #&gt; type = wle 
 #&gt; Estimation finished!</div><div class='input'>
 <span class='co'># show first rows</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>out</span>)</div><div class='output co'>#&gt;     estimate        SE        lz   lz_unst    lzstar    infit     in_t in_chisq
-#&gt; 1 -0.2283002 0.6819765 -6.409070 -1.327819 -6.414996 3.139671 3.958653   76.751
-#&gt; 2 -0.6878210 0.6874864 -7.163429 -1.411064 -7.228344 3.295823 4.169337  107.918
-#&gt; 3  0.2283002 0.6819765 -6.201196 -1.299247 -6.206937 2.979662 3.749448   86.037
-#&gt; 4 -0.6878210 0.6874864 -5.478936 -1.182492 -5.529163 2.793206 3.507021   84.946
-#&gt; 5 -0.6878210 0.6874864 -6.531744 -1.325349 -6.591151 3.007458 3.798334  107.702
-#&gt; 6  1.1569232 0.6998949 -1.811795 -0.662741 -1.872497 1.789309 1.902399   22.509
-#&gt;   in_df in_pv   outfit     ou_t ou_chisq ou_df ou_pv
-#&gt; 1    14 0.000 5.116709 3.676194   76.751    14 0.000
-#&gt; 2    14 0.000 7.194532 4.169166  107.918    14 0.000
-#&gt; 3    14 0.000 5.735802 3.996835   86.037    14 0.000
-#&gt; 4    14 0.000 5.663040 3.543487   84.946    14 0.000
-#&gt; 5    14 0.000 7.180157 4.163728  107.702    14 0.000
-#&gt; 6    14 0.069 1.500628 0.789110   22.509    14 0.069</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>out</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     estimate        SE        lz   lz_unst    lzstar    infit     in_t in_chisq
+#&gt; 1  0.2283002 0.6819765 -3.083081 -0.870676 -3.086058 2.020659 2.305126   47.064
+#&gt; 2  0.2283002 0.6819765 -5.785447 -1.242104 -5.790820 2.966794 3.732302   70.659
+#&gt; 3 -0.6878210 0.6874864 -5.900059 -1.239635 -5.953959 2.886533 3.635684   80.964
+#&gt; 4 -2.1690639 0.7630686 -6.072526 -1.122556 -7.131986 2.506919 2.974178  227.247
+#&gt; 5 -1.1569232 0.6998950 -2.673938 -0.777026 -2.759479 1.761801 1.850323   60.601
+#&gt; 6  0.2283002 0.6819765 -6.824819 -1.384962 -6.831113 3.295854 4.156107   85.261
+#&gt;   in_df in_pv    outfit     ou_t ou_chisq ou_df ou_pv
+#&gt; 1    14     0  3.137599 2.433293   47.064    14     0
+#&gt; 2    14     0  4.710578 3.451529   70.659    14     0
+#&gt; 3    14     0  5.397579 3.423889   80.964    14     0
+#&gt; 4    14     0 15.149777 3.515269  227.247    14     0
+#&gt; 5    14     0  4.040039 2.329902   60.601    14     0
+#&gt; 6    14     0  5.684096 3.970965   85.261    14     0</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Manuel Reif, Jan Steinfeld</p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
-  <p>Developed by Manuel Reif, Jan Steinfeld.</p>
+  <p>Developed by Jan Steinfeld, Manuel Reif.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

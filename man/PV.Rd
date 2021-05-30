@@ -11,14 +11,11 @@
 \usage{
 PV(estobj, ...)
 
-\method{PV}{fourpl}(estobj, npv = 10, approx = TRUE, thinning = 6,
-  burnin = 10, mult = 2, ...)
+\method{PV}{fourpl}(estobj, npv = 10, approx = TRUE, thinning = 6, burnin = 10, mult = 2, ...)
 
-\method{PV}{gpcm}(estobj, npv = 10, approx = TRUE, thinning = 6,
-  burnin = 10, mult = 2, ...)
+\method{PV}{gpcm}(estobj, npv = 10, approx = TRUE, thinning = 6, burnin = 10, mult = 2, ...)
 
-\method{PV}{gpcm4pl}(estobj, npv = 10, approx = TRUE, thinning = 6,
-  burnin = 10, mult = 2, ...)
+\method{PV}{gpcm4pl}(estobj, npv = 10, approx = TRUE, thinning = 6, burnin = 10, mult = 2, ...)
 
 \method{print}{pv}(x, ...)
 

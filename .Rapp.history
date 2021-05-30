@@ -1,1015 +1,659 @@
-p <- ggplot(daten_agg,aes(x=Year,color=Method,group=Method)) +#
-  geom_step(aes(y = cumsum),direction="vh",size=1.5) +#
-  guides(fill=guide_legend(title="Method")) +#
-  scale_color_grey() +#
-  ylab("cumulative frequency") +#
-  theme_bw() +#
-  theme(panel.border = element_blank(),#
-        panel.grid.major = element_blank(),#
-        panel.grid.minor = element_blank(),#
-        axis.line = element_line(colour = "black")#
-        )
-path <- "/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Review_Language Testing Literature/"#
-ggsave(p,file=paste0(path,"journal.png"),width = 10,height = 2)#
-ggsave(p,file=paste0(path,"journal.pdf",width = 10,height = 2)
-path <- "/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Review_Language Testing Literature/"
-paste0(path,"journal.png")
-path <- "/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Review_Language Testing Literature/"#
-ggsave(p,file=paste0(path,"journal.png"),width = 10,height = 2)#
-ggsave(p,file=paste0(path,"journal.pdf",width = 10,height = 2)
-ggsave(p,file=paste0(path,"journal.png"),width = 10,height = 2)
-ggsave(p,file=paste0(path,"journal.pdf"),width = 10,height = 2)
-p
-levels(daten_agg$Method)
-p
-daten_agg$Method <- factor(daten_agg$Method,levels=c("MFRM", "other", "G-Theory"))
-levels(daten_agg$Method )
-p <- ggplot(daten_agg,aes(x=Year,color=Method,group=Method)) +#
-  geom_step(aes(y = cumsum),direction="vh",size=1.5) +#
-  guides(fill=guide_legend(title="Method")) +#
-  scale_color_grey() +#
-  ylab("cumulative frequency") +#
-  theme_bw() +#
-  theme(panel.border = element_blank(),#
-        panel.grid.major = element_blank(),#
-        panel.grid.minor = element_blank(),#
-        axis.line = element_line(colour = "black")#
-        )#
+maxSolved_stage_i
+g012[[nai]][[1]]
+g012[[nai]][[1]][min_nai:max_nai]
+nai <- 4
+min_nai <- minSolved_stage_i[[nai]] + 1#
+        max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]
+go_i
+g0_i
+g012[[nai]][[1]]
+items_i[[nai]]
+items_i
+par_n <- c(desmat %*% par)#
+       par_i <- lapply(items_l, FUN = function(x){#
+          lapply(x,FUN = function(y){#
+            as.numeric(par_n[y])#
+          })#
+        })#
+      oj_i <- lapply(par_i, function(x) lapply(x, function(y) rep(1,length(y))))#
+      out <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+      g012 <- mapply(FUN = tmt:::esf_mst_sum_vector, parlist = par_i,#
+                     ojlist = oj_i, order = 2, minSolved = minSolved_i, maxSolved = maxSolved_i,#
+                     minSolved_design = minSolved_stage_i, maxSolved_design = maxSolved_stage_i, SIMPLIFY = FALSE)#
+      ## loop over observed NA patterns      #
+      for(nai in 1:nrow(mstdesign)) {#
+        max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- minSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]#
+        i_i <- ncol(y_i[[nai]])#
+        g1dg0 <- g1_i/g0_i#
+        hessian <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+        for (ii in seq_len(i_i)){#
+         # if(length(unlist(items_l[[nai]]))>0){#
+            hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }else{#
+         #  hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }#
+        }#
+        out <- out + hessian#
+      }
+head(out)
+tail(out)
+maxSolved_stage_i
+items_i
+par_i
+minSolved_i
+maxSolved_i
+items_i
+nai <- 1
+par_n <- c(desmat %*% par)#
+       par_i <- lapply(items_l, FUN = function(x){#
+          lapply(x,FUN = function(y){#
+            as.numeric(par_n[y])#
+          })#
+        })#
+      oj_i <- lapply(par_i, function(x) lapply(x, function(y) rep(1,length(y))))#
+      out <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)#
+      g012 <- mapply(FUN = tmt:::esf_mst_sum_vector, parlist = par_i,#
+                     ojlist = oj_i, order = 2, minSolved = minSolved_i, maxSolved = maxSolved_i,#
+                     minSolved_design = minSolved_stage_i, maxSolved_design = maxSolved_stage_i, SIMPLIFY = FALSE)
+max_nai <- maxSolved_stage_i[[nai]] + 1#
+        min_nai <- minSolved_stage_i[[nai]] + 1#
+        min_nai <- tail(min_nai,n=1)#
+        max_nai <- tail(max_nai,n=1)#
+        g0_i <- g012[[nai]][[1]][min_nai:max_nai]#
+        g1_i <- g012[[nai]][[2]][min_nai:max_nai,]#
+        g2_i <- g012[[nai]][[3]][min_nai:max_nai,,]#
+        rf_ii <- rf_i[[nai]][min_nai:max_nai]#
+        i_i <- ncol(y_i[[nai]])#
+        g1dg0 <- g1_i/g0_i#
+        hessian <- matrix(0, nrow = length(par)+1, ncol = length(par)+1)
+ii <- 1
+(rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+hessian[items_i[[nai]][ii],items_i[[nai]]]
+items_i[[nai]]
+hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))
+hessian
+items_i
+for (ii in seq_len(i_i)){#
+         # if(length(unlist(items_l[[nai]]))>0){#
+            hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }else{#
+         #  hessian[items_i[[nai]][ii],items_i[[nai]]] <- (rf_ii %*% (g2_i[,ii,]/g0_i - (g1_i[,ii]/g0_i) * g1dg0))#
+         # }#
+        }
+hessian
+tmt:::esf_mst_sum_vector
+par_test <- list(log(c(1/1,1/2,1/3)),log(c(1/1,1/2,1/3,1/4)))#
 #
-path <- "C:/Users/steinfeldj/Eigene_DATEN/___TMP_SERVER/Review_Language Testing Literature/"#
-path <- "/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Review_Language Testing Literature/"#
-ggsave(p,file=paste0(path,"journal.png"),width = 10,height = 2)#
-ggsave(p,file=paste0(path,"journal.pdf"),width = 10,height = 2)
-daten <- xlsx::read.xlsx("/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Review_Language Testing Literature/Review_Langauge-Testing.xlsx",sheetIndex = 1)
-daten <- xlsx::read.xlsx("/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Abbildungen/Review_Language Testing Literature/Review_Language Testing Literature/Review_Langauge-Testing.xlsx",sheetIndex = 1)
-daten <- xlsx::read.xlsx("/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Abbildungen/Review_Language Testing Literature/Review_Langauge-Testing.xlsx",sheetIndex = 1)
-daten <- daten[daten$Year>2006&daten$Year<2018,] # damit es für beide Journals die gleiche Ausgangsbasis gibt#
-table(daten$Method_agg)#
-library(ggplot2)#
-daten$Year <- as.factor(daten$Year)
-daten_agg <- as.data.frame(table(daten$Year,daten$Method_agg))#
-daten_agg$CumSum <- unlist(tapply(X=daten_agg$Freq,daten_agg$Var2,cumsum))#
-colnames(daten_agg) <- c("Year","Method","Freq","cumsum")#
-#
-daten_agg$Method <- factor(daten_agg$Method,levels=c("MFRM", "other", "G-Theory"))#
-#
-# ggplot(daten_agg,aes(x=Year,y=cumsum,color=Method,group=Method)) +#
-#   geom_line()#
-#
-p <- ggplot(daten_agg,aes(x=Year,color=Method,group=Method)) +#
-  geom_step(aes(y = cumsum,linetype=Method),direction="vh",size=1.0) +#
-  guides(fill=guide_legend(title="Methods")) +#
-  scale_color_grey() +#
-  ylab("cumulative frequency") +#
-  theme_bw() +#
-  theme(panel.border = element_blank(),#
-        panel.grid.major = element_blank(),#
-        panel.grid.minor = element_blank(),#
-        axis.line = element_line(colour = "black")#
-        )#
-p
-path <- "/Users/jansteinfeld/CloudStation/Publikation_Präsentation_Poster/Papiere/2017_PTAM-MR/Abbildungen/Review_Language Testing Literature/"#
-ggsave(p,file=paste0(path,"IRMHR_Figure_2.png"),width = 10,height = 2)#
-ggsave(p,file=paste0(path,"IRMHR_Figure_2.pdf"),width = 10,height = 2)
-save.image("IRMHR_Figure_2.RData")
-getwd()
-theta=rnorm(m,0,1)#
-delta=runif(n,-1,1)#
-# simulate data and compute sufficient statistics#
-x=matrix(NA,m,n)#
-for (i in 1:n) x[,i]=1*(rlogis(m,0,1)<=(theta-delta[i]))#
-sufI=colSums(x)#
-sufP=rowSums(x)#
-score=sapply(0:n,function(p)sum(sufP==p))
-n=30#
-m=100000#
-theta=rnorm(m,0,1)#
-delta=runif(n,-1,1)#
-# simulate data and compute sufficient statistics#
-x=matrix(NA,m,n)#
-for (i in 1:n) x[,i]=1*(rlogis(m,0,1)<=(theta-delta[i]))#
-sufI=colSums(x)#
-sufP=rowSums(x)#
-score=sapply(0:n,function(p)sum(sufP==p))
-elsym<-function(b)#
-{#
- N=length(b)#
- g=matrix(0,N+1)#
- g[1]=1#
- g[2]=b[1]#
- for (j in 2:N)#
- {#
-  for (s in (j+1):2)#
-  {#
-   g[s]=g[s]+g[s-1]*b[j]#
-  }#
-}#
-return(g) #
-}
-n=30#
-m=100000#
-theta=rnorm(m,0,1)#
-delta=runif(n,-1,1)#
-# simulate data and compute sufficient statistics#
-x=matrix(NA,m,n)#
-for (i in 1:n) x[,i]=1*(rlogis(m,0,1)<=(theta-delta[i]))#
-sufI=colSums(x)#
-sufP=rowSums(x)#
-score=sapply(0:n,function(p)sum(sufP==p))#
-# auxiliary routines used in MCMC algorithm#
-elsym<-function(b)#
-{#
- N=length(b)#
- g=matrix(0,N+1)#
- g[1]=1#
- g[2]=b[1]#
- for (j in 2:N)#
- {#
-  for (s in (j+1):2)#
-  {#
-   g[s]=g[s]+g[s-1]*b[j]#
-  }#
-}#
-return(g) #
-}#
-c.item<-function(b,lambda)#
-{#
- N=length(b)#
- g=elsym(b)#
- num=0#
- denom=g[1]*lambda[1]#
- for (s in 2:(N+1))#
- {#
-  num=num+g[s-1]*lambda[s]#
-  denom=denom+g[s]*lambda[s]#
- }#
- return(num/denom)#
-}#
-c.score<-function(b,lambda,t)#
-{#
- N=length(b)#
- g=elsym(b)#
- num=g[t]#
- denom=0#
- for (s in 1:(N+1))#
- {#
-  if (s!=t) denom=denom+g[s]*lambda[s]#
-}#
- return(num/denom)#
-}#
-# MCMC algorithm#
-b=runif(n,0,1)#
-lambda=runif(n=1,0,1)#
-B=b#
-Lambda=lambda#
-for (iter in 1:100)#
-{#
- # items#
- for (i in 1:n)#
- {#
-  y=rbeta(1,sufI[i]+1,m-sufI[i]-1)#
-  c=c.item(b[-i],lambda)#
-  b[i]=(1/c)*(y/(1-y))#
- }#
- # scores#
- for (s in 1:(n+1))#
- {#
-  y=rbeta(1,score[s]+1,m-score[s]-1)#
-  c=c.score(b,lambda,s)#
-  lambda[s]=(1/c)*(y/(1-y))#
- }#
- # impose identifying restrictions#
- lambda=lambda*b[1]ˆ(0:n)#
- b=b/b[1]#
- lambda=lambda/lambda[1]#
- B=cbind(B,b)#
- Lambda=cbind(Lambda,lambda)#
- plot(delta-mean(delta),-log(b)-mean(-log(b)))#
- abline(0,1)#
-}
-b
-c.score(b,lambda,s)
-b
-lambda
-elsym(b)
-elsym(c(1,1,1,1))
-elsym(c(1,1,1,1,1,1,1,1,1,1,1))
-elsym(c(1,1,1,1))
-N=length(b)#
- g=matrix(0,N+1)
-g[1]=1#
- g[2]=b[1]
-g
-N=length(b)#
- g=matrix(0,N+1)
-g
-g[1]=1#
- g[2]=b[1]
-j
-N=length(b)#
- g=matrix(0,N+1)#
- g[1]=1#
- g[2]=b[1]#
- for (j in 2:N)#
- {#
-  for (s in (j+1):2)#
-  {#
-   g[s]=g[s]+g[s-1]*b[j]#
-  }#
-}
-j
-(j+1):2
-log(0.5/0.5)
-log(1/0.5)
-log(1/0)
-log(0.9/0.1)
-string <- c("Steinfeld-Punter Fritz Jan Joachim Manuel Takuya")
-grep("\\s", string)
-string
-substring(string)
-substring("\\s",string)
-substring("\s",string)
-substring(" ",string)
-strsplit(string,"\\s+")
-strsplit(string,"\\s+")[[1]]
-strsplit(string,"\\s")[[1]]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^ ]$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^ ]++$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?<=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?![^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?<=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?<![^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, '(?=[^ ]+$)', perl=TRUE)[[1]][1]
-strsplit(string, '(?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, '  (?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (??=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+ ?=[^ ]+$)', perl=TRUE)[[1]]
-strsplit(string, ' (?=[^ ]+$)', perl=TRUE)[[1]]
-library(st)
-library(library(stringi))
-library(stringi)
-?stringi
-stri_extract_last_words(string)
-stri_count_words(string)
-stri_extract_last_words(string)
-stri_extract_all_words(string)
-strsplit(string,"\\s")
-strsplit(string,"\\s")[[1]]
-extract_words <- function(x,n = 2){ #
-	laenge <- length(strsplit(string,"\\s")[[1]])#
-	out <- paste(strsplit(string,"\\s")[[1]][1 : laenge-n])#
-	return(out)#
-#
-}
-extract_words(string,2)
-string
-laenge <- length(strsplit(string,"\\s")[[1]])
-laenge
-paste(strsplit(string,"\\s")[[1]][1 : laenge-n])
-paste(strsplit(string,"\\s")[[1]])
-laenge-n
-n <- 2
-laenge-n
-paste(strsplit(string,"\\s")[[1]][1 : laenge-n])
-strsplit(string,"\\s")[[1]][1 : laenge-n]
-strsplit(string,"\\s")[[1]][1 : 4]
-strsplit(string,"\\s")[[1]][1 : (laenge-n)]
-extract_words <- function(x,n = 2){ #
-	laenge <- length(strsplit(string,"\\s")[[1]])#
-	out <- paste(strsplit(string,"\\s")[[1]][1 : (laenge-n)])#
-	return(out)#
-#
-}
-extract_words(string)
-strsplit(string,"\\s")[[1]][1 : (laenge-n)]
-paste0(strsplit(string,"\\s")[[1]][1 : (laenge-n),collapse=""]
-)
-paste0(strsplit(string,"\\s")[[1]][1 : (laenge-n)],collapse="")
-paste0(strsplit(string,"\\s")[[1]][1 : (laenge-n)],collapse=" ")
-extract_words <- function(x,n = 2){ #
-	laenge <- length(strsplit(string,"\\s")[[1]])#
-	out <- paste(strsplit(string,"\\s")[[1]][1 : (laenge-n)],collapse=" ")#
-	return(out)#
-#
-}
-extract_words(string,n)
-extract_words(string,3)
-extract_words(string,1)
-extract_words(string,0)
-string
-installed.packages('fftwtools', dep = TRUE)#
-#
-install.packages("ggimage")#
-install.packages("ggforce")#
-install.packages("hexSticker")#
-install.packages("sysfonts")#
-install.packages("showtext")#
-install.packages("ggimage")#
-#
-if (!require("devtools")) install.packages("devtools")#
-devtools::install_github("nrkoehler/streetsofle",force=TRUE)#
-library(hexSticker)#
-library(ggplot2)#
-library(streetsofle)#
-library(sysfonts)#
-library(showtext)#
-library(ggimage)#
-save_sticker <- function(filename, sticker=last_plot()) {#
-  ggsave(sticker, width = 43.9, height = 50.8,#
-         filename = filename,#
-         bg = 'transparent',#
-         units = "mm",dpi=450)#
-}
-p.1 <- ggplot(aes(x = lon, y = lat), data = shape.ortsteile) +#
-  theme_map_le() +#
-  coord_quickmap() +#
-  geom_polygon(aes(x = lon, y = lat, group = group), #
-               fill = NA, #
-               size = 1, #
-               color = "#FFCB00") +#
-  geom_polygon(aes(x = lon, y = lat, group = group),#
-               color = "#FFCB00", #
-               size = 1, #
-               fill = NA, #
-               data = shape.bezirke) #
-p.1 <- sticker(p.1,#
-               package="streetsofle", #
-               s_x = 1, # horizontal position of subplot#
-               s_y = 1.1, # vertical position of subplot#
-               s_width = 1.4, # width of subplot#
-               s_height = 1.4, # height of subplot#
-               p_x = 1, # horizontal position of font#
-               p_y = .43, # vertical position of font#
-               p_size = 6, # font size#
-               p_color = "#FFCB00", # font colour#
-               h_size = 3, # hexagon border size#
-               h_fill = "#004CFF", # hexagon fill colour#
-               h_color = "#FFCB00") # hexagon border colour
-library(ggplot2)
-p_size=15; s_x=0.05; s_y=.075; h_size=2; h_fill="#7EA71B"; h_color="#4a630e"; s_width=0.75;package="Post-Test-Analyse"#
-p_x=1; p_y=1.4;p_color="#FFFFFF"; p_family="serif"#
-#
-url = "https:\\\\psychometrie.bmb.gv.at";  u_x=1; u_y=0.08; u_color="black"; u_family="Aller_Rg"; u_size=3.5 #
-#
-d <- data.frame(x=1, y=.80, image="/Users/jansteinfeld/CloudStation/Hexsticker/startaPTA.png")#
-#
-hex <- hexagon(size=h_size, fill=h_fill, color=h_color) #
-sticker <- hex + geom_image(aes_(x=~x, y=~y, image=~image), d, size=s_width) #
-sticker <- sticker + geom_pkgname(package, p_x, p_y, p_color, p_family, p_size)#
-#
-sticker <- sticker + geom_url(url, x=u_x, y = u_y, color = u_color, family = u_family, size=u_size) #
-pp <- sticker +  theme(#
-  rect = element_rect(fill = "transparent") # bg of the panel#
-)#
-pp#
-save_sticker("/Users/jansteinfeld/CloudStation/HexstickerPTA_Sticker.pdf")
-save_sticker("/Users/jansteinfeld/CloudStation/Hexsticker/PTA_Sticker.pdf")
-# LICRE erstellen#
-##########################
-p_size=10; s_x=0.05; s_y=.075; h_size=2; h_fill="#fbb900"; h_color="#b58501"; s_width=0.75;package="Limesurvey-Creation [licre]"#
-p_x=1; p_y=1.4;p_color="#FFFFFF"; p_family="serif"#
-#
-url = "https:\\\\psychometrie.bmb.gv.at";  u_x=1; u_y=0.08; u_color="black"; u_family="Aller_Rg"; u_size=3.5 #
-#
-d <- data.frame(x=1, y=.80, image="\\\\sv2profilew7\\folder\\steinfeldj\\Desktop\\limes.png")#
-#
-hex <- hexagon(size=h_size, fill=h_fill, color=h_color) #
-sticker <- hex + geom_image(aes_(x=~x, y=~y, image=~image), d, size=s_width) #
-sticker <- sticker + geom_pkgname(package, p_x, p_y, p_color, p_family, p_size)#
-#
-sticker <- sticker + geom_url(url, x=u_x, y = u_y, color = u_color, family = u_family, size=u_size) #
-pp <- sticker +  theme(#
-  rect = element_rect(fill = "transparent") # bg of the panel#
-)#
-pp#
-save_sticker("licre_Sticker.png")#
-# LICRE erstellen#
-##########################
-p_size=10; s_x=0.05; s_y=.075; h_size=2; h_fill="#fbb900"; h_color="#b58501"; s_width=0.75;package="Limesurvey-Creation [licre]"#
-p_x=1; p_y=1.4;p_color="#FFFFFF"; p_family="serif"#
-#
-url = "https:\\\\psychometrie.bmb.gv.at";  u_x=1; u_y=0.08; u_color="black"; u_family="Aller_Rg"; u_size=3.5 #
-#
-d <- data.frame(x=1, y=.80, image="/Users/jansteinfeld/CloudStation/Hexsticker/imes.png")#
-#
-hex <- hexagon(size=h_size, fill=h_fill, color=h_color) #
-sticker <- hex + geom_image(aes_(x=~x, y=~y, image=~image), d, size=s_width) #
-sticker <- sticker + geom_pkgname(package, p_x, p_y, p_color, p_family, p_size)#
-#
-sticker <- sticker + geom_url(url, x=u_x, y = u_y, color = u_color, family = u_family, size=u_size) #
-pp <- sticker +  theme(#
-  rect = element_rect(fill = "transparent") # bg of the panel#
-)#
-pp#
-save_sticker("/Users/jansteinfeld/CloudStation/Hexsticker/licre_Sticker.pdf")#
-# SRDP erstellen#
-##########################
-p_size=15; s_x=0.05; s_y=.075; h_size=2; h_fill="#b9c1cd"; h_color="#506482"; s_width=0.85;package="Feldtestungen [srdp]"#
-p_x=1; p_y=1.4;p_color="#FFFFFF"; p_family="serif"#
-#
-url = "https:\\\\psychometrie.bmb.gv.at";  u_x=1; u_y=0.08; u_color="black"; u_family="Aller_Rg"; u_size=3.5 #
-#
-d <- data.frame(x=1, y=.80, image="/Users/jansteinfeld/CloudStation/Hexsticker/SRDP-Logo.png")#
-#
-hex <- hexagon(size=h_size, fill=h_fill, color=h_color) #
-sticker <- hex + geom_image(aes_(x=~x, y=~y, image=~image), d, size=s_width) #
-sticker <- sticker + geom_pkgname(package, p_x, p_y, p_color, p_family, p_size)#
-#
-sticker <- sticker + geom_url(url, x=u_x, y = u_y, color = u_color, family = u_family, size=u_size) #
-pp <- sticker +  theme(#
-  rect = element_rect(fill = "transparent") # bg of the panel#
-)#
-pp#
-save_sticker("/Users/jansteinfeld/CloudStation/Hexsticker/srdp_Sticker.pdf")
-# LICRE erstellen#
-##########################
-p_size=10; s_x=0.05; s_y=.075; h_size=2; h_fill="#fbb900"; h_color="#b58501"; s_width=0.75;package="Limesurvey-Creation [licre]"#
-p_x=1; p_y=1.4;p_color="#FFFFFF"; p_family="serif"#
-#
-url = "https:\\\\psychometrie.bmb.gv.at";  u_x=1; u_y=0.08; u_color="black"; u_family="Aller_Rg"; u_size=3.5 #
-#
-d <- data.frame(x=1, y=.80, image="/Users/jansteinfeld/CloudStation/Hexsticker/limes.png")#
-#
-hex <- hexagon(size=h_size, fill=h_fill, color=h_color) #
-sticker <- hex + geom_image(aes_(x=~x, y=~y, image=~image), d, size=s_width) #
-sticker <- sticker + geom_pkgname(package, p_x, p_y, p_color, p_family, p_size)#
-#
-sticker <- sticker + geom_url(url, x=u_x, y = u_y, color = u_color, family = u_family, size=u_size) #
-pp <- sticker +  theme(#
-  rect = element_rect(fill = "transparent") # bg of the panel#
-)#
-pp#
-save_sticker("/Users/jansteinfeld/CloudStation/Hexsticker/licre_Sticker.pdf")
-library(PP)
-vignette()
-vignette("ppass_par_and_fit")
-vignette("intro_pfit")
-library(PP)
-?PPall
-reg <- ""^(\\s*\\d+=[^;=]+;){1,}\\s*\\d+=[^;=]+$"
-reg <- "^(\\s*\\d+=[^;=]+;){1,}\\s*\\d+=[^;=]+$"
-test  <- "das1234asldkj"
-grep(reg,test)
-?PP
-library(PP)
-?PP
-vignette("PP_pfit")
-vignette()
-m <- 3; rmax <- 7; rcum <- c(3,5,7)#
-eps_position <- c(0,2,4)#
-eps <- c(2,1,2,1,2,1)#
-maxSolved <- c(3, 3, 3)#
-gamma0 <- rep(0, m * rmax)#
-minSolved <- c(0, 2, 0)#
-maxSolved <- c(2, 2, 2)#
-gamma0[1:rcum[1]] <- c(1,eps[1:eps_position[2]])#
-# Hier muss nun dafür gesorgt werden, dass die jeweiligen epsi eingetragen werden, die in jedem Block die minimale LH bilden#
-for (b in 1:m) {#
-  rmax_s = rmax * (b - 1) + 1 #+ sum(minSolved[1:b])#
-  rmax_b = b*rmax#
-  for (k in rmax_s:rmax_b) {#
-    if ((k < rcum[1]) & minSolved[1] != 0) {#
-      gamma0[k] = 0#
-    } else if ((k %% rmax) == 1) {#
-      if (sum(minSolved) != 0) {#
-        gamma0[k + sum(minSolved[1:b])] = prod(eps[eps_position[minSolved > 0] + minSolved[minSolved > 0]])#
-      } else {#
-        gamma0[k] = 1.0#
-      }#
-    }#
-  }#
-}#
-gamma0
-eps <- c(2,1,2,1,2,1)#
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(2, 2, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0#
-gamma0[(1 + 2*rmax):length(gamma0)]
-rcum
-m <- 3; rmax <- 7; rcum <- c(3,5,7)#
-eps_position <- c(0,2,4)#
-eps <- c(2,1,2,1,2,1)#
-maxSolved <- c(3, 3, 3)#
-gamma0 <- rep(0, m * rmax)#
-minSolved <- c(0, 2, 0)#
-maxSolved <- c(2, 2, 2)#
-gamma0[1:rcum[1]] <- c(1,eps[1:eps_position[2]])#
-# Hier muss nun dafür gesorgt werden, dass die jeweiligen epsi eingetragen werden, die in jedem Block die minimale LH bilden#
-for (b in 1:m) {#
-  rmax_s = rmax * (b - 1) + 1 #+ sum(minSolved[1:b])#
-  rmax_b = b*rmax#
-  for (k in rmax_s:rmax_b) {#
-    if ((k < rcum[1]) & minSolved[1] != 0) {#
-      gamma0[k] = 0#
-    } else if ((k %% rmax) == 1) {#
-      if (sum(minSolved) != 0) {#
-        gamma0[k + sum(minSolved[1:b])] = prod(eps[eps_position[minSolved > 0] + minSolved[minSolved > 0]])#
-      } else {#
-        gamma0[k] = 1.0#
-      }#
-    }#
-  }#
-}#
-gamma0
-eps <- c(2,1,2,1,2,1)#
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(2, 2, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0#
-gamma0[(1 + 2*rmax):length(gamma0)]
-gamma0 <- rep(0,m*rmax); gamma0[c(10,17)] <- 1; gamma0[3] <- c(1); minSolved <- c(2, 0, 0); gamma0#
-gamma0 <- rep(0,m*rmax); gamma0[c(10,17)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 2, 0); gamma0#
-gamma0 <- rep(0,m*rmax); gamma0[c(8,17)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 2); gamma0#
-gamma0 <- rep(0,m*rmax); gamma0[c(10,19)] <- 1; minSolved <- c(0, 2, 2); gamma0[1:3] <- c(1,2,1); gamma0#
-gamma0 <- rep(0,m*rmax); gamma0[c( 9,18)] <- 2; minSolved <- c(0, 1, 2); gamma0[1:3] <- c(1,2,1); gamma0
-gamma0 <- rep(0,m*rmax); gamma0[c(10,17)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 2, 0); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0#
-gamma0[(1 + 2*rmax):length(gamma0)]
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(1, 2, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(2, 1, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(2, 2, 1); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:3] <- c(1,2,1); minSolved <- c(0, 0, 0); maxSolved <- c(1, 2, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0
-gamma0 <- rep(0,m*rmax); gamma0[c(8,15)] <- 1; gamma0[1:2] <- c(1,2); minSolved <- c(0, 0, 0); maxSolved <- c(1, 2, 2); gamma0
-output <- TRUE#
-for (i in 2:m) {#
-  if (output) cat(rep(1:7,3),"\n")#
-  if (output) cat(gamma0,"\n")#
-  if (output) cat("i:",i," ")#
-  ncol = (i - 1) * rmax#
-  ocol = (i - 2) * rmax#
-  if (output) cat("\nncol:",ncol)#
-  if (output) cat("\nocol:",ocol,"\n")#
-  for (r in 2:rcum[i]) {#
-    if (output) cat("r:",r," ")#
-      if (minSolved[i] == 0) {#
-        if (output) cat("70:gamma0[r + ncol] = gamma0[r + ocol]:",gamma0[r + ncol] ,"=", gamma0[r + ocol],"\n")#
-        gamma0[r + ncol] = gamma0[r + ocol]#
-      }#
-      for (k in 1:(min(maxSolved[i], r - 1))) {#
-        if (output) cat("k:",k," ")#
-        if (((r - (k + 1) + ocol) <= 0) & max(minSolved) == 0 ) {#
-          if (output) cat("76:gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]:",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", eps[eps_position[i] + k],"\n")#
-          gamma0[r + ncol] = gamma0[r + ncol] + eps[eps_position[i] + k]#
-        } else {#
-          if (minSolved[i] == 0) {#
-            if (output) cat("80:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol ] * eps[eps_position[i] + k];",gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-            gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-            } else if (r > sum(minSolved[2:i]) + 1) {#
-              if (k < minSolved[i]) {#
-              if (output) cat("84:gamma0[r + ncol] = gamma0[r + ncol]", gamma0[r + ncol] ,"=", gamma0[r + ncol],"\n")#
-              gamma0[r + ncol] = gamma0[r + ncol]#
-              } else {#
-                if (output) cat("87:gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]", gamma0[r + ncol] ,"=", gamma0[r + ncol] ,"+", gamma0[r - (k) + ocol] ,"*", eps[eps_position[i] + k],"\n")#
-                gamma0[r + ncol] = gamma0[r + ncol] + gamma0[r - (k) + ocol] * eps[eps_position[i] + k]#
-                }#
-             }#
-          }#
-      }#
-  }#
-}#
-#
-gamma0
-updateR()
-install.packages("updateR")
-library(devtools)
-install_github('andreacirilloac/updateR')
-library(updateR)
-updateR(admin_password = 'neede')
-find.package()
-?updateR
-library(updateR)
-?updateR
-updateR(admin_password = 'neede')
-updateR(admin_password = 'need')
+parlist = par_test#
+ojlist = lapply(par_test,function(x) rep(1,length(x)))#
+order = 2#
+minSolved = rep(0,length(par_test))#
+maxSolved = lengths(par_test)#
+minSolved_design = rep(0,length(par_test))#
+maxSolved_design = cumsum(lengths(par_test))#
+probs = rep(1,sum(lengths(par_test)+length(par_test)))
+tmt_g012 <- esf_mst_sum_vector(#
+    parlist = parlist,#
+    ojlist = ojlist, #
+    order = order, #
+    minSolved = minSolved, #
+    maxSolved = maxSolved,#
+    minSolved_design = minSolved_design, #
+    maxSolved_design = maxSolved_design)#
+psychotools_g012 <- psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")#
+round(abs(tmt_g012[[3]][,,1] - psychotools_g012[[3]][,,1]),4)
+tmt_g012 <- tmt:::esf_mst_sum_vector(#
+    parlist = parlist,#
+    ojlist = ojlist, #
+    order = order, #
+    minSolved = minSolved, #
+    maxSolved = maxSolved,#
+    minSolved_design = minSolved_design, #
+    maxSolved_design = maxSolved_design)#
+psychotools_g012 <- psychotools::elementary_symmetric_functions(unlist(parlist), order = 2, diff = "sum" == "diff")#
+round(abs(tmt_g012[[3]][,,1] - psychotools_g012[[3]][,,1]),4)
+ls()
+mstdesign
+head(fit$hessian)
+head(ahessian(fit$par))
+fit$hessian - ahessian(fit$par)
+round(fit$hessian - ahessian(fit$par),4)
+round(fit$hessian - ahessian(fit$par),6)
+sqrt(diag(desmat %*% solve(fit$hessian) %*% t( desmat )))
+sqrt(diag(desmat %*% solve(ahessian(fit$par)) %*% t( desmat )))
+install.packages("sirt")
 library(sirt)
-library(immer)
-find.packages()
-finde.packages()
-find.package()
-list.files("/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-diese <- list.files("/Library/Frameworks/R.framework/Versions/3.4/Resources/library")
-install.packages(diese,dependencies=TRUE)
-install.packages("pdftools")
-pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-pdftools::pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-daten <- pdftools::pdf_text("~/CloudStation/__PAPA/Hasslbrook/Unterlagen/Finanzen/Lütten_Lieferscheine_aufbereitet_beschnitten_geschwärzt_geschwärzt_geschwärzt.pdf")
-head(daten)
-text2 <- strsplit(daten, "\n")
-text2
-text2[[1]]
-text2[[1]][[1]]
-strsplit(text2[[1]][[1]],"\t")
-strsplit(text2[[1]][[1]],"\\t")
-strsplit(text2[[1]][[1]],"\\s")
-install.packages("dexterMST")
-db = create_mst_project(":memory:")
-library(dexterMST)
-db = create_mst_project(":memory:")
-db
-add_scoring_rules_mst(db, scoring_rules)
-routing_rules = mst_rules(#
-  easy = Mod_1[0:5] --+ Mod_2, #
-  hard = Mod_1[6:10] --+ Mod_3)
-create_mst_test(db,#
-                test_design = design,#
-                routing_rules = routing_rules,#
-                test_id = 'ZwitserMaris')
-add_booklet_mst(db, bk1, test_id = 'ZwitserMaris', booklet_id = 'easy')
-?fit_enorm_mst
-routing_rules
-fit_enorm_mst
-library(dexterMST)#
-library(dplyr)#
-# start a project#
-db = create_mst_project(":memory:")#
-#
-# define dummy item scoring rules (i.e. response==score)#
-scoring_rules = data.frame(item_id = rep(sprintf("item%02.0f",1:50), each=2),#
-                            response = rep(0:1,times=50),#
-                            item_score = rep(0:1,times=50))#
-#
-add_scoring_rules_mst(db, scoring_rules)#
-#
-# define routing rules#
-routing_rules = mst_rules(#
-  easy = Mod_1[0:5] --+ Mod_2, #
-  hard = Mod_1[6:10] --+ Mod_3)#
-#
-# define a module design (i.e., specifify which items belong to which modules)#
-design = data.frame(module_id = rep(c('Mod_2','Mod_1','Mod_3'), times=c(20,10,20)),#
-                   item_id = paste0("item",sprintf("%02.0f",1:50)),#
-                   item_position = c(1:20,1:10,1:20))#
-#
-# create/define an mst test#
-create_mst_test(db,#
-                test_design = design,#
-                routing_rules = routing_rules,#
-                test_id = 'ZwitserMaris')
-sim_RM = function(theta,delta)#
-{#
-  nP=length(theta)#
-  dat=matrix(0,nP,length(delta))#
-  for (i in 1:length(delta)) dat[,i]=1*(rlogis(nP,0,1)<=(theta-delta[i]))#
-  return(dat)#
-}#
-a = rep(1,50)#
-delta = c(runif(20,-2.3,0),runif(10,-0.6,2),runif(20,1.2,2.4)) # M2, M1, M3#
-b=exp(-delta)#
-c = rep(0,50)#
-nP = 10000#
-# simulate theta from a mixture of two normals#
-grp = sample(2, nP, replace = TRUE, prob = c(.6,.4))#
-theta = rnorm(nP, mean = c(0,1)[grp], sd = c(1.5,0.5)[grp])#
-#
-data = data.frame(sim_RM(theta, delta))#
-colnames(data) = sprintf("item%02.0f",1:50)#
-#
-# add person id to the data#
-data$person_id = 1:nrow(data)#
-#
-# extract two booklets from the complete data, based on the sum score on the first module#
-bk1 = data[rowSums(data[,21:30])<=5,] %>% select(person_id, item01:item30)#
-bk2 = data[rowSums(data[,21:30])>5,] %>% select(person_id, item21:item30, item31:item50)#
-#
-# add response data to the project#
-add_booklet_mst(db, bk1, test_id = 'ZwitserMaris', booklet_id = 'easy')#
-add_booklet_mst(db, bk2, test_id = 'ZwitserMaris', booklet_id = 'hard')#
-# IRT, extended nominal response model#
-f = fit_enorm_mst(db)#
-#
-head(f)#
-item_id	item_score	delta	beta	se_b#
-item01	1	-1.9458047	-2.5723980	0.0385977#
-item02	1	0.1697511	-0.4568422	0.0298956#
-item03	1	-1.9278217	-2.5544150	0.0384445#
-item04	1	0.2018686	-0.4247248	0.0298913#
-item05	1	0.1164153	-0.5101780	0.0299112#
-item06	1	-2.0222084	-2.6488017	0.0392681#
-# ability estimates per person#
-rsp_data = get_responses_mst(db)#
-abl = ability(rsp_data, parms = f)#
-head(abl)
-db
-fit_enorm_mst(db)
-coef(9)
-coef()
-fit_enorm_mst
-db
-data
-head(data)
-fit_enorm_mst(db)
-?fit_enorm_mst()
-library(ggpubr)
-install.packages("ggpubr")
-library(ggpubr)
-read.csv2("~/CloudStation/Publikation_Präsentation_Poster/Präsentation/2018-09_DGPS/Analysen/Daten/dgps_mldif_ma_matura__2018-09-15_1600__PROC2.csv")
-daten <- read.csv2("~/CloudStation/Publikation_Präsentation_Poster/Präsentation/2018-09_DGPS/Analysen/Daten/dgps_mldif_ma_matura__2018-09-15_1600__PROC2.csv")
-head(daten)
-nrow(daten)
-length(unique(daten$skz))
-length(unique(paste0(daten$skz,daten$klasse))
+citatoin(sirt)
+citation("sirt")
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
 )
-library(Rcpp)
-evalCpp( "1+1")
-Error in sourceCpp(code = code, env = env, rebuild = rebuild, cacheDir = cacheDir,  : #
-  Error 1 occurred building shared library.
-evalCpp("1+1",showOutput=1,rebuild=1)
-sessionInfo()
-evalCpp("1+1",showOutput=1,rebuild=1)
-library(Rcpp)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1,-std=c++0x)
-evalCpp("1+1",showOutput=1,rebuild=1,std=c++0x)
-getwd()
-setwd("/Users/jansteinfeld/CloudStation/GIT/pp_dev")
-Rcpp::sourceCpp('src/helper_func.cpp')
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
+#
+  # define routing criteria#
+  r1 = c(0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.25,0.2,0.15,0.1)#
+  r2 = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.75,0.8,0.85,0.9)#
+#
+  # define path#
+  p1 := B2(r1) + B1#
+  p2 := B2(r2) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
+#
+data_gen <- function(x,mstdesign,items,persons){#
+    out <- list()#
+    mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }#
+    for(i in seq(x)){#
+        cat("\r",paste0("Durchgang: "), formatC(i,flag=0,width=nchar(x)))#
+        flush.console()#
+        theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)#
+        out[[i]] <- tmt_sim(mstdesign, items = items, persons = theta)#
+    }#
+    out#
+}
+m02_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 5000)#
+saveRDS(m02_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m02_generalizedMST_2020.rds")
+rm(m02_generalizedMST_2020);gc();gc()#
+# m03 =  2,000#
+m03_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 2000)#
+saveRDS(m03_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m03_generalizedMST_2020.rds")#
+rm(m03_generalizedMST_2020);gc();gc()#
+# m04 =  1,000#
+m04_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 1000)#
+saveRDS(m04_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m04_generalizedMST_2020.rds")#
+rm(m04_generalizedMST_2020);gc();gc()#
+# m05 =    500#
+m05_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 500)#
+saveRDS(m05_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m05_generalizedMST_2020.rds")#
+rm(m05_generalizedMST_2020);gc();gc()#
+# m06 =    250#
+m06_generalizedMST_2020 <- data_gen(x = 1000,#
+                mstdesign = mstdesign,#
+                items = items,#
+                persons = 250)#
+saveRDS(m06_generalizedMST_2020,file = "/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2019_generalized_MST/Simulation/data/m06_generalizedMST_2020.rds")#
+rm(m06_generalizedMST_2020);gc();gc()
+solvemat <- function(nr, nc){#
+	set.seed(2907)#
+	m1 <- matrix(runif(nr*nc), nrow = nr, ncol = nc)#
+	m2 <- t(m1)%*%m1#
+	m3 <- solve(m2)#
+}#
+system.time(replicate(2, solvemat(10000, 5000)))
+?system.time
+install.packages("benchmarkme")
+res = benchmark_std(runs = 1)
+library(benchmarkme)
+res = benchmark_std(runs = 1)
+plot(res)
+get_ram()
+get_cpu()
+get_byte_compiler()
+et_platform_info()
+get_platform_info()
+library(tmt)
+esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3)), #
+  minSolved = c(1,1),#
+  minSolved_design = c(1,2),#
+  maxSolved = c(3,3),#
+  maxSolved_design = c(3,6),#
+  order = 2)
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3)), #
+  minSolved = c(1,1),#
+  minSolved_design = c(1,2),#
+  maxSolved = c(3,3),#
+  maxSolved_design = c(3,6),#
+  order = 2)
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3),rep(1,3)), #
+  minSolved = c(1,0,1),#
+  minSolved_design = c(1,1,2),#
+  maxSolved = c(3,3,3),#
+  maxSolved_design = c(3,6,9),#
+  order = 1)[[2]]
+tmt:::esf_mst_sum_vector(#
+  parlist = list(rep(log(1),3),rep(log(1),3),rep(log(1),3)), #
+  ojlist = list(rep(1,3),rep(1,3),rep(1,3)), #
+  minSolved = c(1,0,1),#
+  minSolved_design = c(1,1,2),#
+  maxSolved = c(3,3,3),#
+  maxSolved_design = c(3,6,9),#
+  order = 1)
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
+)
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
+#
+  # define path#
+  p1 := B2(0, 5) + B1#
+  p2 := B2(6,10) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
+#
+dat <- tmt_sim(mstdesign, items = items, persons = 10000, seed = 1111)#
+saveRDS(dat,file="dat_tmp.rds")#
+tmt_rm(dat, optimization="nlminb")#
+tmt_rm(dat, optimization="nlminb")$betapar#
+tmt_rm(dat, optimization="optim")$betapar
+switch(.Platform$OS.type,#
+  "windows" = {devtools::load_all("P:/Documents/Eigene_DATEN/private_Projekte/tmt_dev");#
+              },#
+  "unix" =    {devtools::load_all("/Users/jansteinfeld/SynologyDrive/GIT/tmt_dev/");#
+              }#
+)
+mstdesign <- "#
+  B1 =~ paste0('i',1:20)#
+  B2 =~ paste0('i',21:30)#
+  B3 =~ paste0('i',31:50)#
+#
+  # define path#
+  p1 := B2(0, 5) + B1#
+  p2 := B2(6,10) + B3#
+"#
+items <- c( seq(-2,-1,length.out = 20),#
+            seq(-1,1,length.out = 10),#
+            seq(1,2,length.out = 20)#
+            )#
+names(items) <- paste0("i",1:50)#
+#
+dat <- tmt_sim(mstdesign, items = items, persons = 10000, seed = 1111)#
+saveRDS(dat,file="dat_tmp.rds")#
+tmt_rm(dat, optimization="nlminb")#
+tmt_rm(dat, optimization="nlminb")$betapar#
+tmt_rm(dat, optimization="optim")$betapar
+tmt_rm(dat, optimization="nlminb")$se.beta#
+tmt_rm(dat, optimization="optim")$se.beta
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+n = 1000
+d = 0.3
+pi = 1
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+pi = 0.1
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+pi = 0.3
+y1 <- stats::rnorm(n, 0, 1)#
+		y2 <- stats::rnorm(n, d, 1)#
+		y1 <- (1 - pi) * y1
+plot(density(y1))
+y1
+?base::scale
+tinytex::pdflatex("~/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2020_distributions_MST/MST_distributions.tex")
+log(-0.5)
+log(0.5)
+exp(-0.5)
+exp(0.5)
+# your code goes here#
+library(OPDOE)#
+#
+size.t.test(#
+delta       = 10,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.8,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+install.packages("OPDOE")
+# your code goes here#
+library(OPDOE)#
+#
+size.t.test(#
+delta       = 10,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.8,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+# your code goes here#
+library(OPDOE)#
+#
+size.t.test(#
+delta       = 6.67,        # Einheiten der Daten (mu1 - mu2)#
+sd          = 10,#
+sig.level   = 0.05,           #
+power       = 0.95,           # power = 1-beta#
+type        = "two.sample",#
+alternative = "one.sided"#
+)
+citation(dexterMST)
+citation("dexterMST")
+citation("tmt")
+1/(2^2/3)
+1/(2^2/3)*2^2/3
+2*2^1/2
+2*2^(1/2)
+2*2^(1/2) / 1^(1/2)
+1/(2^(2/3))
+1/(2^(2/3))*2^(2/3)
+2*sqrt(2/1)
+3+(12/1)
+175
+1/5
+3/5
+?rnorm
+Metrics::bias
+?Metrics::bias
+install.packages("SimDesign")
+SimDesign::RMSE
+actual <- c(1.1, 1.9, 3.0, 4.4, 5.0, 5.6) #
+predicted <- c(0.9, 1.8, 2.5, 4.5, 5.0, 6.2) #
+Metrics::bias(actual, predicted)
+SimDesign::bias
+SimDesign::bias()
+SimDesign::bias(estimate=predicted,parameter=)
+SimDesign::bias(estimate=predicted,parameter=actual)
+actual <- c(1.1, 1.9, 3.0, 4.4, 5.0, 5.6) #
+predicted <- c(0.9, 1.8, 2.5, 4.5, 5.0, 6.2) #
+Metrics::bias(actual, predicted)
+==rmse
+??rmse
+install.packages(c(‚tidyverse‘))
+install.packages(c(‘tidyverse‘))
+install.packages(c(“tidyverse“))
+# library#
+require(foreign)#
+require(eRm)#
+require(psych)#
+require(TAM)
+dat <- read.spss("~/SynologyDrive/Lehre/Workshop/Test_und_Fragebogenkonstruktion/Daten/Daten_Workshop/IntelligenceWichertEtal2012.sav",to.data.frame=T)#
+colnames(dat)#
+head(dat)#
+# Fälle ausschließen, die kein einziges Item beantwortet haben#
+dat.1 <- subset(dat,rowSums(is.na(dat[,5:40]))<36)
+head(dat)
+describe(dat.1[,5:40])
+rasch.m1 <- RM(dat.1[,5:39],se=T)
+summary(rasch.m1)
+layout(1:2)#
+plot(1:35,colMeans(dat.1[,5:39]),pch=19,#
+     xlab="Items 1-35",ylab="Itemmittelwerte",#
+     main="Itemmittelwerte")#
+plot(1:35,-1*rasch.m1$betapar,pch=19,#
+     xlab="Items 1-35",ylab="Itemschwierigkeiten",#
+     main="Itemschweirigkeitsparameter (Rasch)")
+ls()
+LRtest(rasch.m1)
+installr::updateR()
+install.packages("installr")
+remotes::install_github('talgalili/installr')
+devtools::install_github("AndreaCirilloAC/updateR")
+updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR(auto = TRUE, .Rprofile = NULL,admin_password="need")
+?updateR
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+admin_password <- "need"
+updateR::updateR(auto = TRUE, .Rprofile = NULL)
+updateR::updateR
+admin_password <- "need"
+username <- system("whoami", intern = TRUE)
+command <- paste0("echo '", admin_password, "' | sudo -S -l")
+command
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")#
+    latest <- latest_r_version()
+library(updateR)
+out <- system(command, intern = TRUE)
+need
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")
+installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()
+library(tidyverse)
+needed_packages <- installed.packages() %>% as.data.frame() %>% #
+        select(Package) %>% as.vector()#
+    needed_packages <- paste(unlist(needed_packages))#
+    save(needed_packages, file = "/tmp/needed_packages.RData")#
+    latest <- latest_r_version()
+latest <- updateR::latest_r_version()
+latest_r_version
+installing <- list_packages()
+latest <- updateR:::latest_r_version()
+updateR:::check_compactability(status = latest)#
+    installing <- updateR:::list_packages()#
+    folderpath <- sprintf("/Users/%s/Downloads/", system2("whoami", #
+        stdout = TRUE))#
+    pkgfile <- regmatches(latest$url, regexpr("R.*$", latest$url))#
+    fullpath <- sprintf("%s%s", folderpath, pkgfile)
+latest <- updateR:::latest_r_version()
+updateR:::check_compactability(status = latest)#
+    installing <- updateR:::list_packages()#
+    folderpath <- sprintf("/Users/%s/Downloads/", system2("whoami", #
+        stdout = TRUE))#
+    pkgfile <- regmatches(latest$url, regexpr("R.*$", latest$url))#
+    fullpath <- sprintf("%s%s", folderpath, pkgfile)
+download.file(latest$url, fullpath)
+message(paste0("Installing R-", latest$latest, "...please wait"))#
+    command <- paste0("echo '", admin_password, "' | sudo -S installer -pkg ", #
+        "'", fullpath, "'", " -target /")#
+    system(command, ignore.stdout = TRUE)
+need
+arg <- paste0("--check-signature ", fullpath)
+arg
+latest
+needed_packages
+updateR:::restore_packages(status = latest)#
+r
+load(file = "/tmp/needed_packages.RData")
+ls()
+?install.packages
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4)
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4,ask=FALSE)
+options(install.packages.compile.from.source = "always")#
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4,verbose=TRUE)
+options(install.packages.compile.from.source = "always")#
+install.packages(needed_packages,dependencies=TRUE,quiet=TRUE,Ncpus=4)
+library(tidyverse)
+library(sirt)
+update.packages(ask=FALSE)
+library(sirt)
+library(tmt)
+library(TAM)
+library(PP)
+?stats::fitted
+# muss nun die Itemparameter (nicht scaled) überprüfen#
+all_identical <- function(x) {#
+  if (length(x) == 1L) {#
+    warning("'x' has a length of only 1")#
+    return(TRUE)#
+  } else if (length(x) == 0L) {#
+    warning("'x' has a length of 0")#
+    return(logical(0))#
+  } else {#
+    TF <- vapply(1:(length(x)-1),#
+                 function(n) identical(x[[n]], x[[n+1]]),#
+                 logical(1))#
+    if (all(TF)) TRUE else FALSE#
+  }#
+}
+dateneinlesen <- function(path){#
+	datenliste <- list.files(path, recursive = TRUE, pattern = ".out",full.names=TRUE)#
+	out <- list()#
+# Namen bestimmen#
+#
+	for(n in datenliste){#
+		cat("\r Datensatz: ",n)#
+		flush.console()#
+		out_tmp <- readRDS(n)#
+		nam <- gsub("/","-",n)#
+    nam <- gsub("__dat_itpar.out","",nam)#
+		out[[nam]] <- out_tmp#
+	}#
+	return(out)#
+}
+dat <- dateneinlesen("/Users/jansteinfeld/SynologyDrive/Publikation_Präsentation_Poster/Papiere/2020_distributions_MST/daten/singlestage")
+length(dat)
+apply(dat[[1]],2,all_identical)
+i <- 1
+lapply(dat[[i]],FUN = function(x){#
+		apply(x,2,all_identical)#
+	})
+out <- list()#
+for(i in seq_along(dat)){#
+	out[[i]] <- lapply(dat[[i]],FUN = function(x){#
+		apply(x,2,all_identical)#
+	})#
+}
+cat("Check für Bedingung: ",i,"\r")
+nichtschaetzbar <- function(x) unlist(.mapply(function(...) which(c(...)==TRUE), x, NULL))#
+nichtschaetzbar(out2[[5]])#
+out_ne <- lapply(out,nichtschaetzbar)#
+#
+which(lengths(out_ne) < 1000 & lengths(out_ne) > 0)
+which(lengths(out_ne) < 1000 & lengths(out_ne) > 0)
+out_ne
+dat[[1]][[1]]
+round(rowSums(dat[[1]][[1]]),4)
+round(colSums(dat[[1]][[1]]),4)
+size_n.one_way.model_1(alpha = 0.05, beta = 0.2, delta =0.67, a = 4,cases = "maximin")
+library(opdoe)
+install.packages("opdoe")
+library(OPDOE)
+size_n.one_way.model_1(alpha = 0.05, beta = 0.2, delta =0.67, a = 4,cases = "maximin")
+install.packages("OPDOE", repos = "https://packagemanager.rstudio.com/cran/latest")
+chi_dist <- function(n,df) {#
+		X <- rchisq(n, df)#
+		out <- c(base::scale(X))#
+    return(out)#
+	}
+?scale
+set.seed(1111)
+test1 <- chi_dist(1000,1)
+set.seed(1111)
+test2 <- rchisq(1000,1)
+mean(test1)
+mean(test2)
+?scale
+sd(Test1)
+sd(test1)
+sd(test2)
+sd(scale(test2,scale=FALSE))
+sd(scale(test2,scale=TRUE))
+mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }#
+    for(i in seq(x)){#
+        cat("\r",paste0("Durchgang: "), formatC(i,flag=0,width=nchar(x)))#
+        flush.console()#
+        theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+mvNormal <- function(n,m1,sd1,m2,sd2){#
+        y1 <- stats::rnorm(n, m1, sd1)#
+		y2 <- stats::rnorm(n, m2, sd2)#
+		w <- stats::rbinom(n, 1, (2/3))#
+		# out <- c(y1[w==1],y2[w==0])#
+        out <- w * y1 + (1-w) * y2 #
+		return(out)	#
+    }
+theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+persons =1000
+theta <- mvNormal(n = persons,#
+                        m1 = -1.5, #
+                        sd1 = 0.5,#
+                        m2 = 1,#
+                        sd2 = 1)
+mean(theta)
+sd(theta)
+library(sirt)
 Sys.getenv()
-evalCpp("1+1",showOutput=1,rebuild=1,std=c++0x)
-library(Rcpp)
-evalCpp("1+1",showOutput=1,rebuild=1,std=c++0x)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1)
-install.packages("Rcpp",dependencies=T)
-install.packages("Rcpp",dependencies=T)
-evalCpp("1+1",showOutput=1,rebuild=1)
-evalCpp("1+1",showOutput=1,rebuild=1)
+Sys.getenv
+.Internal(Sys.getenv(character(), "")
+.Internal(Sys.getenv())
+.Internal(Sys.getenv(),"")
+.Internal(Sys.getenv(character(), "")
+)
+.Internal(Sys.getenv(character(), ""))
+PP::sim_4pl
+setwd("/Users/jansteinfeld/SynologyDrive/GIT/PP")
+Rcpp::compileAttributes()
+pkgbuild::compile_dll()
+roxygen2::roxygenise()
+roxygen2::roxygenise()
+getwd()
+devtools::build()

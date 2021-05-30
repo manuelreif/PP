@@ -54,3 +54,9 @@ Checks_PP.zip
 Build.R
 packagename_init.c
 PP.Rcheck
+*.DS_Store
+*.history
+/doc/
+/Meta/
+*.tgz
+Debugging_CPP.R

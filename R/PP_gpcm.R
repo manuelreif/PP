@@ -60,7 +60,7 @@
 #'
 
 #'@example ./R/.examples_gpcm.R
-#'@keywords Person Parameters, GPCM
+#'@keywords Person Parameters GPCM
 #'@rdname PP_gpcm
 #'
 
