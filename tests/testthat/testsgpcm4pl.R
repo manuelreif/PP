@@ -1,5 +1,4 @@
 
-context("GPCM&4PL model")
 
 # some threshold parameters
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
@@ -35,21 +34,21 @@ awm2[3,1] <- 3
 
 #t
 test_that("errors - warnings misspelling and length #1",{
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,type = "aaa",model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,type = "aaa",model2est=model2est))
   
-  expect_that(PPall(respm = awm,thres = THRESx[,-1], slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm,thres = THRESx[,-1], slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl[-1],lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl[-1],lowerA=la,upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la[-1],upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la[-1],upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua[-1],model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua[-1],model2est=model2est))
   
-  expect_that(PPall(respm = awm[,-1],thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm[,-1],thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua,model2est=model2est), throws_error())
+  expect_error(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
   
-  expect_that(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est, type="robust"), gives_warning())
+  expect_warning(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est, type="robust"))
 })

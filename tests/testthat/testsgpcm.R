@@ -1,4 +1,3 @@
-context("GPCM")
 
 
 THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
@@ -17,13 +16,13 @@ THRESna  <- THRES
 THRESna[,1] <- NA
 
 test_that("errors and warnings are thrown in the gpcm when necessary",{
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust"),gives_warning())
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "A"),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES[,-1], slopes = sl),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl[-1]),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix,thres = THRESna, slopes = sl),throws_error())
-  expect_that(PP_gpcm(respm = awmatrix_2,thres = THRES, slopes = sl),throws_error())
-  #expect_that(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,theta_start = 2),throws_error())
+  expect_warning(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "robust"))
+  expect_error(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,type = "A"))
+  expect_error(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl))
+  expect_error(PP_gpcm(respm = awmatrix[,-1],thres = THRES[,-1], slopes = sl))
+  expect_error(PP_gpcm(respm = awmatrix[,-1],thres = THRES, slopes = sl[-1]))
+  expect_error(PP_gpcm(respm = awmatrix,thres = THRESna, slopes = sl))
+  expect_error(PP_gpcm(respm = awmatrix_2,thres = THRES, slopes = sl))
+  #expect_error(PP_gpcm(respm = awmatrix,thres = THRES, slopes = sl,theta_start = 2))
 })
 

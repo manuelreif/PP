@@ -1,7 +1,7 @@
 Package: PP
 Type: Package
 Title: Person Parameter Estimation
-Version: 0.6.4-1
+Version: 0.6.4-1.9000
 Date: 2026-04-21
 Authors@R: c(
         person(given = "Jan", 
@@ -35,7 +35,7 @@ VignetteBuilder: knitr
 Depends: R (>= 3.0)
 Encoding: UTF-8
 Suggests: 
-    testthat, 
+    testthat (>= 3.0.0), 
     roxygen2, 
     knitr, 
     eRm, 
@@ -47,3 +47,4 @@ Imports:
 LinkingTo: Rcpp
 RoxygenNote: 7.3.3
 NeedsCompilation: yes
+Config/testthat/edition: 3
