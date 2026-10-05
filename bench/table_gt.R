@@ -45,7 +45,7 @@ rel <- dt[order(durchlauf), .(abw = paste(format(100 * (sekunden / median(sekund
                                                  scientific = FALSE, trim = TRUE), collapse = " ")),
           by = szenario]
 tbl <- merge(tbl, rel, by = "szenario", sort = FALSE)
-tbl <- tbl[, .(gruppe, zeile, szenario, mittel, sd, median, iqr, min, max, vk, abw, ziel, faktor_ziel)]
+tbl <- tbl[, .(gruppe, zeile, szenario, mittel, sd, median, iqr, min, max, vk, abw)]
 
 # --- header and notes ----------------------------------------------------
 
@@ -80,21 +80,14 @@ tab <- gt(tbl, rowname_col = "zeile", groupname_col = "gruppe", process_md = TRU
   cols_merge_range(col_begin = min, col_end = max, sep = "–") |>
   fmt_number(columns = c(mittel, sd, median, iqr, min, max), n_sigfig = 3) |>
   fmt_percent(columns = vk, decimals = 1) |>
-  fmt_number(columns = ziel, n_sigfig = 1, pattern = "< {x}") |>
-  fmt_number(columns = faktor_ziel, decimals = 0, pattern = "{x}×") |>
   cols_label(
     mittel = "Mittelwert", sd = "SD", median = "Median", iqr = "IQR", min = "Min–Max",
-    vk = "VK", ziel = "Zielzeit", faktor_ziel = "Faktor"
+    vk = "VK"
   ) |>
   tab_spanner("Laufzeit in Sekunden", columns = c(mittel, sd, median, iqr, min)) |>
   tab_spanner("Streuung", columns = c(vk, verteilung)) |>
-  tab_spanner("Ziel nach dem Umbau", columns = c(ziel, faktor_ziel)) |>
-  cols_align("right", columns = c(mittel, sd, median, iqr, min, vk, ziel, faktor_ziel)) |>
+  cols_align("right", columns = c(mittel, sd, median, iqr, min, vk)) |>
   cols_align("center", columns = verteilung) |>
-  data_color(
-    columns = faktor_ziel,
-    fn = function(x) scales::col_numeric(c("#FFF7ED", "#FDBA74"), domain = log10(range(x)))(log10(x))
-  ) |>
   tab_footnote(
     "Variationskoeffizient: Standardabweichung geteilt durch den Mittelwert.",
     locations = cells_column_labels(vk)
@@ -102,10 +95,6 @@ tab <- gt(tbl, rowname_col = "zeile", groupname_col = "gruppe", process_md = TRU
   tab_footnote(
     "Boxplot der Einzelläufe als Abweichung vom Median der Zeile in Prozent, alle Zeilen auf derselben Skala.",
     locations = cells_column_labels(verteilung)
-  ) |>
-  tab_footnote(
-    "Mittelwert geteilt durch die Zielzeit: um diesen Faktor muss das Szenario schneller werden.",
-    locations = cells_column_labels(faktor_ziel)
   ) |>
   tab_footnote(
     md("Eine einzige Person pendelt im Newton-Verfahren. Weil der alte Code erst abbricht, wenn alle Personen konvergiert sind, rechnen alle 40 Teilstichproben bis `maxsteps = 500`."),
