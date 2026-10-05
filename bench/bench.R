@@ -45,8 +45,15 @@ bench_schema <- c("
     cpu_sekunden  DOUBLE,
     ziel_sekunden DOUBLE,
     zeitpunkt     TIMESTAMP,
+    nr_aufrufe    INTEGER,
+    iterationen   INTEGER,
+    iter_max      INTEGER,
     PRIMARY KEY (messung_id, szenario, durchlauf)
-  )")
+  )",
+  # databases created before the iteration columns existed
+  "ALTER TABLE durchlaeufe ADD COLUMN IF NOT EXISTS nr_aufrufe INTEGER",
+  "ALTER TABLE durchlaeufe ADD COLUMN IF NOT EXISTS iterationen INTEGER",
+  "ALTER TABLE durchlaeufe ADD COLUMN IF NOT EXISTS iter_max INTEGER")
 
 # Swallow the cat() output and warnings of the old code.
 quietly <- function(expr) {
@@ -55,9 +62,33 @@ quietly <- function(expr) {
   invisible(out)
 }
 
+# Newton-Raphson iterations. PP_4pl, PP_gpcm and JKpp call the NR drivers from
+# R, so a trace on the drivers sees every call, including the 40 inside JKpp,
+# which drops nsteps. NR_GPCM reports one sweep less than it runs
+# (howlong = newr instead of newr + 1), so the log adds the offset back and
+# holds the sweeps actually done.
+nr_drivers <- c(NR_4PL = 0L, NR_GPCM = 1L, NR_mixed = 0L)
+nr_log <- new.env()
+nr_log$steps <- integer(0)
+
+nr_trace <- function() {
+  ns <- asNamespace("PP")
+  for (f in intersect(names(nr_drivers), ls(ns))) {
+    exit <- bquote(assign("steps", c(get("steps", envir = .(nr_log)),
+                                     as.integer(returnValue()$nsteps) + .(nr_drivers[[f]])),
+                          envir = .(nr_log)))
+    suppressMessages(trace(f, exit = exit, where = ns, print = FALSE))
+  }
+}
+
 time_run <- function(sc, d, s) {
+  nr_log$steps <- integer(0)
   t <- system.time(quietly(sc$run(d, s)), gcFirst = TRUE)
-  c(sekunden = t[["elapsed"]], cpu_sekunden = t[["user.self"]] + t[["sys.self"]])
+  st <- nr_log$steps
+  list(sekunden = t[["elapsed"]], cpu_sekunden = t[["user.self"]] + t[["sys.self"]],
+       nr_aufrufe = length(st),
+       iterationen = if (length(st)) sum(st) else NA_integer_,
+       iter_max = if (length(st)) max(st) else NA_integer_)
 }
 
 git <- function(...) {
@@ -116,6 +147,7 @@ set.seed(20261005)
 orders <- lapply(seq_len(args$runs), function(r) sample(ids))
 
 suppressPackageStartupMessages(library(PP))
+nr_trace()
 d <- bench_data()
 setups <- lapply(bench_scenarios[ids], function(sc) if (is.null(sc$setup)) NULL else quietly(sc$setup(d)))
 
@@ -136,8 +168,9 @@ for (r in seq_len(args$runs)) {
     tm <- time_run(sc, d, setups[[id]])
     data.table(messung_id = messung_id, szenario = id, funktion = sc$funktion, methode = sc$methode,
                modell = sc$modell, n_personen = as.integer(sc$n_personen), n_items = as.integer(sc$n_items),
-               durchlauf = r, position = pos, sekunden = tm[["sekunden"]],
-               cpu_sekunden = tm[["cpu_sekunden"]], ziel_sekunden = sc$ziel, zeitpunkt = Sys.time())
+               durchlauf = r, position = pos, sekunden = tm$sekunden,
+               cpu_sekunden = tm$cpu_sekunden, ziel_sekunden = sc$ziel, zeitpunkt = Sys.time(),
+               nr_aufrufe = tm$nr_aufrufe, iterationen = tm$iterationen, iter_max = tm$iter_max)
   }))
   db_append_runs(args$db, rows)
   elapsed <- as.numeric(difftime(Sys.time(), t_start, units = "secs"))

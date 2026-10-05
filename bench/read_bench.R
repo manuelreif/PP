@@ -7,7 +7,8 @@
 #
 # Tables (created by bench/bench.R):
 #   messungen    one row per measurement session (label, git sha, machine, ...)
-#   durchlaeufe  one row per timed run (szenario, funktion, durchlauf, sekunden, ...)
+#   durchlaeufe  one row per timed run (szenario, funktion, durchlauf, sekunden,
+#                Newton-Raphson calls and iterations, ...)
 
 suppressPackageStartupMessages(library(data.table))
 
@@ -63,9 +64,13 @@ bench_read <- function(db = bench_db_default, label = NULL) {
   dt[]
 }
 
-# Per measurement and scenario: location, spread, target factor, and the
-# single run times in run order (as text, for gt nanoplots).
+# Per measurement and scenario: location, spread, target factor, Newton-Raphson
+# iterations, and the single run times in run order (as text, for gt
+# nanoplots). iter_spanne is the range of the iteration count over the runs
+# (0: the same in every run); all iteration fields are NA for measurements
+# taken before they were recorded.
 bench_summary <- function(dt) {
+  if (!"iterationen" %in% names(dt)) dt <- copy(dt)[, c("nr_aufrufe", "iterationen", "iter_max") := NA_integer_]
   dt[order(messung_id, durchlauf), .(
     n           = .N,
     mittel      = mean(sekunden),
@@ -80,7 +85,11 @@ bench_summary <- function(dt) {
     cpu_mittel  = mean(cpu_sekunden),
     ziel        = ziel_sekunden[1],
     faktor_ziel = mean(sekunden) / ziel_sekunden[1],
-    werte       = paste(format(sekunden, digits = 6, scientific = FALSE, trim = TRUE), collapse = " ")
+    nr_aufrufe  = nr_aufrufe[1],
+    iterationen = as.integer(median(iterationen)),
+    iter_spanne = max(iterationen) - min(iterationen),
+    iter_max    = max(iter_max),
+    werte      = paste(format(sekunden, digits = 6, scientific = FALSE, trim = TRUE), collapse = " ")
   ), by = .(messung_id, label, szenario, funktion, methode, modell, n_personen, n_items)]
 }
 

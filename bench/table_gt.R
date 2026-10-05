@@ -18,13 +18,17 @@ m <- dt[1]
 
 # --- rows, groups, order -------------------------------------------------
 
+fmt_int <- function(x) formatC(x, big.mark = ".", decimal.mark = ",", format = "d")
+
+# one group per function and model; the templates take model, persons, items
 gruppen <- data.table(
-  funktion = c("PP_4pl", "PP_gpcm", "JKpp", "PV", "sim_gpcm"),
-  vorlage = c("`PP_4pl()` · 3PL, %s Personen × %s Items",
-              "`PP_gpcm()` · GPCM, %s Personen × %s Items, 5 Kategorien",
-              "`JKpp()` · 3PL, %s Personen × %s Items, WLE-Objekt",
-              "`PV()` · 3PL, %s Personen × %s Items, EAP-Objekt",
-              "`sim_gpcm()` · GPCM, %s Personen × %s Items, 5 Kategorien")
+  funktion = c("PP_4pl", "PP_4pl", "PP_4pl", "PP_gpcm", "JKpp", "PV", "sim_gpcm"),
+  modell = c("1PL", "2PL", "3PL", "GPCM", "3PL", "3PL", "GPCM"),
+  vorlage = c(rep("`PP_4pl()` · %s, %s Personen × %s Items", 3),
+              "`PP_gpcm()` · %s, %s Personen × %s Items, 5 Kategorien",
+              "`JKpp()` · %s, %s Personen × %s Items, WLE-Objekt",
+              "`PV()` · %s, %s Personen × %s Items, EAP-Objekt",
+              "`sim_gpcm()` · %s, %s Personen × %s Items, 5 Kategorien")
 )
 gruppen[, g_ord := .I]
 zeilen <- data.table(
@@ -32,12 +36,21 @@ zeilen <- data.table(
   zeile = c("Jackknife (40 Teilstichproben)", "10 Plausible Values (MH)", "Simulation")
 )
 
-tbl <- merge(s, gruppen, by = "funktion")
+tbl <- merge(s, gruppen, by = c("funktion", "modell"))
 tbl <- merge(tbl, zeilen, by = "szenario", all.x = TRUE)
 tbl[is.na(zeile), zeile := methode]
-tbl[, gruppe := sprintf(vorlage, formatC(n_personen, big.mark = ".", decimal.mark = ",", format = "d"), n_items)]
+tbl[, gruppe := sprintf(vorlage, modell, fmt_int(n_personen), n_items)]
 tbl[, m_ord := match(methode, c("MLE", "WLE", "MAP", "EAP"))]
 setorder(tbl, g_ord, m_ord)
+
+# Newton-Raphson iterations: one call ("40"), several calls ("40 × 500", or
+# the mean per call if they differ), none (EAP, PV, simulation: NA -> "–")
+tbl[, iter := fcase(
+  is.na(nr_aufrufe) | nr_aufrufe == 0L, NA_character_,
+  nr_aufrufe == 1L, fmt_int(iterationen),
+  iterationen == nr_aufrufe * iter_max, sprintf("%s × %s", nr_aufrufe, fmt_int(iter_max)),
+  default = sprintf("%s × Ø %s", nr_aufrufe, fmt_int(round(iterationen / nr_aufrufe)))
+)]
 
 # gt draws all boxplot nanoplots on one common scale, so each run enters as
 # its percent deviation from the scenario median: comparable across rows.
@@ -45,7 +58,7 @@ rel <- dt[order(durchlauf), .(abw = paste(format(100 * (sekunden / median(sekund
                                                  scientific = FALSE, trim = TRUE), collapse = " ")),
           by = szenario]
 tbl <- merge(tbl, rel, by = "szenario", sort = FALSE)
-tbl <- tbl[, .(gruppe, zeile, szenario, mittel, sd, median, iqr, min, max, vk, abw)]
+tbl <- tbl[, .(gruppe, zeile, szenario, iter, mittel, sd, median, iqr, min, max, vk, abw)]
 
 # --- header and notes ----------------------------------------------------
 
@@ -80,14 +93,19 @@ tab <- gt(tbl, rowname_col = "zeile", groupname_col = "gruppe", process_md = TRU
   cols_merge_range(col_begin = min, col_end = max, sep = "–") |>
   fmt_number(columns = c(mittel, sd, median, iqr, min, max), n_sigfig = 3) |>
   fmt_percent(columns = vk, decimals = 1) |>
+  sub_missing(columns = iter, missing_text = "–") |>
   cols_label(
-    mittel = "Mittelwert", sd = "SD", median = "Median", iqr = "IQR", min = "Min–Max",
-    vk = "VK"
+    iter = "Iterationen", mittel = "Mittelwert", sd = "SD", median = "Median", iqr = "IQR",
+    min = "Min–Max", vk = "VK"
   ) |>
   tab_spanner("Laufzeit in Sekunden", columns = c(mittel, sd, median, iqr, min)) |>
   tab_spanner("Streuung", columns = c(vk, verteilung)) |>
-  cols_align("right", columns = c(mittel, sd, median, iqr, min, vk)) |>
+  cols_align("right", columns = c(iter, mittel, sd, median, iqr, min, vk)) |>
   cols_align("center", columns = verteilung) |>
+  tab_footnote(
+    md("Newton-Raphson-Durchläufe. Der alte Code rechnet für alle Personen weiter, bis die letzte konvergiert ist oder `maxsteps` erreicht ist (40 bei `PP_4pl()`, 500 bei `JKpp()`). EAP, Plausible Values und Simulation iterieren nicht. Gezählt sind die ausgeführten Durchläufe; `PP_gpcm()` meldet in `nsteps` einen weniger."),
+    locations = cells_column_labels(iter)
+  ) |>
   tab_footnote(
     "Variationskoeffizient: Standardabweichung geteilt durch den Mittelwert.",
     locations = cells_column_labels(vk)
