@@ -3,9 +3,9 @@
 # The response data are simulated in plain R, independent of PP's own
 # simulators, so every PP version is timed on exactly the same matrices.
 # Only the public API is called, with arguments that survive the refactoring.
-# Targets are single-threaded goals in seconds.
+# Targets (ziel) are single-threaded goals in seconds after the refactoring.
 #
-# Used by bench/bench.R and bench/compare.R; run those from the package root.
+# Used by bench/bench.R; run it from the package root.
 
 # --- data ----------------------------------------------------------------
 
@@ -57,100 +57,35 @@ fit_gpcm <- function(d, type) {
   PP_gpcm(d$Xg, d$thres_g, slopes = d$ag, type = type)
 }
 
+# The metadata fields are written to every row of the durchlaeufe table.
 # setup() runs once and is not timed; run(d, s) gets its result as s.
+scenario <- function(funktion, methode, modell, n_personen, n_items, ziel, run, setup = NULL) {
+  list(funktion = funktion, methode = methode, modell = modell,
+       n_personen = n_personen, n_items = n_items, ziel = ziel,
+       run = run, setup = setup)
+}
+
 bench_scenarios <- list(
-  "3pl_mle"  = list(size = "N = 5000, I = 40", target = 0.05,
-                    run = function(d, s) fit_3pl(d, "mle")),
-  "3pl_wle"  = list(size = "N = 5000, I = 40", target = 0.05,
-                    run = function(d, s) fit_3pl(d, "wle")),
-  "3pl_map"  = list(size = "N = 5000, I = 40", target = 0.05,
-                    run = function(d, s) fit_3pl(d, "map")),
-  "3pl_eap"  = list(size = "N = 5000, I = 40", target = 0.03,
-                    run = function(d, s) fit_3pl(d, "eap")),
-  "gpcm_mle" = list(size = "N = 2000, I = 20, K = 5", target = 0.02,
-                    run = function(d, s) fit_gpcm(d, "mle")),
-  "gpcm_wle" = list(size = "N = 2000, I = 20, K = 5", target = 0.02,
-                    run = function(d, s) fit_gpcm(d, "wle")),
-  "gpcm_eap" = list(size = "N = 2000, I = 20, K = 5", target = 0.02,
-                    run = function(d, s) fit_gpcm(d, "eap")),
-  "jk_wle"   = list(size = "N = 500, I = 40", target = 0.1,
-                    setup = function(d) fit_3pl(d, "wle", rows = 1:500),
-                    run = function(d, s) JKpp(s)),
-  "pv"       = list(size = "N = 300, I = 40, npv = 10", target = 0.01,
-                    setup = function(d) fit_3pl(d, "eap", rows = 1:300),
-                    run = function(d, s) { set.seed(42); PV(s, npv = 10, approx = FALSE) }),
-  "sim_gpcm" = list(size = "N = 2000, I = 20, K = 5", target = 0.01,
-                    run = function(d, s) { set.seed(42); sim_gpcm(d$thres_g, d$ag, d$thg) })
+  "3pl_mle"  = scenario("PP_4pl", "MLE", "3PL", 5000, 40, 0.05,
+                        function(d, s) fit_3pl(d, "mle")),
+  "3pl_wle"  = scenario("PP_4pl", "WLE", "3PL", 5000, 40, 0.05,
+                        function(d, s) fit_3pl(d, "wle")),
+  "3pl_map"  = scenario("PP_4pl", "MAP", "3PL", 5000, 40, 0.05,
+                        function(d, s) fit_3pl(d, "map")),
+  "3pl_eap"  = scenario("PP_4pl", "EAP", "3PL", 5000, 40, 0.03,
+                        function(d, s) fit_3pl(d, "eap")),
+  "gpcm_mle" = scenario("PP_gpcm", "MLE", "GPCM", 2000, 20, 0.02,
+                        function(d, s) fit_gpcm(d, "mle")),
+  "gpcm_wle" = scenario("PP_gpcm", "WLE", "GPCM", 2000, 20, 0.02,
+                        function(d, s) fit_gpcm(d, "wle")),
+  "gpcm_eap" = scenario("PP_gpcm", "EAP", "GPCM", 2000, 20, 0.02,
+                        function(d, s) fit_gpcm(d, "eap")),
+  "jk_wle"   = scenario("JKpp", "WLE", "3PL", 500, 40, 0.1,
+                        setup = function(d) fit_3pl(d, "wle", rows = 1:500),
+                        run = function(d, s) JKpp(s)),
+  "pv"       = scenario("PV", "EAP", "3PL", 300, 40, 0.01,
+                        setup = function(d) fit_3pl(d, "eap", rows = 1:300),
+                        run = function(d, s) { set.seed(42); PV(s, npv = 10, approx = FALSE) }),
+  "sim_gpcm" = scenario("sim_gpcm", NA_character_, "GPCM", 2000, 20, 0.01,
+                        function(d, s) { set.seed(42); sim_gpcm(d$thres_g, d$ag, d$thg) })
 )
-
-# --- timing --------------------------------------------------------------
-
-# Swallow the cat() output and warnings of the old code.
-quietly <- function(expr) {
-  out <- NULL
-  utils::capture.output(out <- suppressMessages(suppressWarnings(expr)))
-  invisible(out)
-}
-
-# A run slower than `slow` seconds is timed once: its warm-up run is the
-# measurement, warm-up effects do not matter at that scale.
-time_scenario <- function(sc, d, reps, slow = 10) {
-  s <- if (is.null(sc$setup)) NULL else quietly(sc$setup(d))
-  run_once <- function() system.time(quietly(sc$run(d, s)), gcFirst = TRUE)[["elapsed"]]
-  t <- run_once()
-  if (t <= slow) t <- vapply(seq_len(reps), function(i) run_once(), numeric(1))
-  c(median = stats::median(t), min = min(t), reps = length(t))
-}
-
-bench_meta <- function() {
-  git <- function(...) {
-    tryCatch(suppressWarnings(system2("git", c(...), stdout = TRUE, stderr = FALSE)),
-             error = function(e) character(0))
-  }
-  sha <- git("rev-parse", "--short", "HEAD")
-  dirty <- length(git("status", "--porcelain", "--", "R", "src", "DESCRIPTION")) > 0
-  cpu <- tryCatch(grep("^model name", readLines("/proc/cpuinfo"), value = TRUE)[1],
-                  error = function(e) NA_character_, warning = function(w) NA_character_)
-  list(pp_version = as.character(utils::packageVersion("PP")),
-       git = if (length(sha)) paste0(sha, if (dirty) "-dirty") else NA_character_,
-       r = R.version.string,
-       cpu = sub("^model name\\s*:\\s*", "", cpu),
-       date = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"))
-}
-
-run_bench <- function(only = NULL, reps = 5) {
-  suppressPackageStartupMessages(library(PP))
-  d <- bench_data()
-  ids <- names(bench_scenarios)
-  if (!is.null(only)) ids <- grep(only, ids, value = TRUE)
-  rows <- lapply(ids, function(id) {
-    sc <- bench_scenarios[[id]]
-    message(sprintf("%-9s ...", id))
-    tm <- time_scenario(sc, d, reps)
-    data.frame(scenario = id, size = sc$size, median = tm[["median"]],
-               min = tm[["min"]], reps = tm[["reps"]], target = sc$target)
-  })
-  res <- do.call(rbind, rows)
-  attr(res, "meta") <- bench_meta()
-  res
-}
-
-# --- command line --------------------------------------------------------
-
-# Parses --key=value and --flag arguments.
-bench_args <- function(args = commandArgs(trailingOnly = TRUE)) {
-  get <- function(key, default = NULL) {
-    hit <- grep(paste0("^--", key, "(=|$)"), args, value = TRUE)
-    if (!length(hit)) return(default)
-    val <- sub(paste0("^--", key, "=?"), "", hit[1])
-    if (nzchar(val)) val else TRUE
-  }
-  list(reps = as.integer(get("reps", 5)), only = get("only"), out = get("out"),
-       baseline = get("baseline", "bench/baseline.rds"), current = get("current"),
-       md = isTRUE(get("md", FALSE)))
-}
-
-print_meta <- function(res, label) {
-  m <- attr(res, "meta")
-  cat(sprintf("%-9s PP %s @ %s, %s, %s, %s\n", label, m$pp_version, m$git, m$r, m$cpu, m$date))
-}

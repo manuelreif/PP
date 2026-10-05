@@ -60,3 +60,5 @@ PP.Rcheck
 /Meta/
 *.tgz
 Debugging_CPP.R
+bench/output/
+*.duckdb.wal
