@@ -62,3 +62,4 @@ PP.Rcheck
 Debugging_CPP.R
 bench/output/
 *.duckdb.wal
+blog/output/
