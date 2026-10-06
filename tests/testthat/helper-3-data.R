@@ -141,10 +141,11 @@ set_extreme <- list(items = items_4pl(20, c(-40, 0, 0.5, 1, 40)),
                                  1, 0, 0, 0, 0), 2, byrow = TRUE),
                     kind = "4pl")
 
-# Long test (C3): 600 2PL items, 5 persons
+# Long test (C3): 1100 Rasch items close to the persons, so the likelihood
+# (about 0.5^1100) underflows when computed as a product
 set_long <- local({
-  items <- items_4pl(rep_len(c(0.8, 1, 1.2, 1.5), 600), seq(-3, 3, length.out = 600))
-  list(items = items, X = sim_resp(c(-1.5, -0.5, 0, 0.7, 1.8), items, 401), kind = "4pl")
+  items <- items_4pl(1, seq(-0.5, 0.5, length.out = 1100))
+  list(items = items, X = sim_resp(c(-1, -0.3, 0, 0.4, 1), items, 401), kind = "4pl")
 })
 
 # Two GPCM items with 12 categories (A12): patterns (1, 11) and (11, 1) give
