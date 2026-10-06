@@ -10,8 +10,9 @@
 #   falsch     more than that
 #   abbruch    the call fails with an error
 #   fehlt      not offered by this PP version (not run)
-# The problem IDs in `ids_bekannt` are only shown for cells that are not ok;
-# a deviating cell without an ID is flagged as "neu?".
+# Known causes of deviating cells are in `ids_bekannt`. The tables show the
+# cause in words; a deviating cell without a known cause is reported on the
+# console (ids = "neu?").
 
 source("blog/gemeinsam.R")
 lade_test_helfer()
@@ -302,44 +303,64 @@ zelle("sonder", fall, "Schätzer", "theta", function() {
             ref_estimates(set_gpcm12$X, set_gpcm12$items, "wle")[, 1], tol_theta)
 })
 
-# --- known problem IDs per cell ---------------------------------------------
+# --- known causes per cell --------------------------------------------------
 
+# Known causes of deviating cells. `ids` (problem IDs) stay internal; the
+# tables show `grund` as a footnote at the column label ("spalte"), the row
+# label ("zeile") or the cell itself ("zelle").
+grund_jk_se <- "Falsche Jackknife-Formel: Der Standardfehler ist um den Faktor L − 1 zu klein."
 ids_bekannt <- rbindlist(list(
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = "MAP", mass = "se", ids = "A7"),
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = "Robust", mass = "se", ids = "B2"),
+  data.table(tabelle = "schaetzer", zeile = "*", spalte = "MAP", mass = "se", ids = "A7", ort = "spalte",
+             grund = "Die Formel lässt den Prior weg, der Standardfehler ist zu groß."),
+  data.table(tabelle = "schaetzer", zeile = "*", spalte = "Robust", mass = "se", ids = "B2", ort = "spalte",
+             grund = "Die Formel lässt die Huber-Gewichte weg, der Standardfehler ist zu klein."),
   # no finite estimate (NaN) or oscillation; the SE is then wrong as well
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = c("MLE", "WLE", "Robust"), mass = "theta", ids = "A8"),
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = c("MLE", "WLE"), mass = "se", ids = "A8"),
-  data.table(tabelle = "folge", zeile = "JKpp: JK-Standardfehler (WLE)", spalte = "*", mass = "*", ids = "A1"),
-  data.table(tabelle = "folge", zeile = "JKpp: JK-Schätzer (EAP)", spalte = "gemischt", mass = "*", ids = "A3"),
-  data.table(tabelle = "folge", zeile = "PV: Ziehung aus dem Posterior", spalte = "*", mass = "*", ids = "A4"),
-  data.table(tabelle = "folge", zeile = "Pfit: Infit/Outfit", spalte = "GPCM", mass = "*", ids = "A10"),
+  data.table(tabelle = "schaetzer", zeile = "*", spalte = c("MLE", "WLE", "Robust", "MLE", "WLE"),
+             mass = c("theta", "theta", "theta", "se", "se"), ids = "A8", ort = "zelle",
+             grund = "Bei einzelnen Personen mit extremem Score pendelt das Newton-Verfahren oder liefert NaN, ohne Warnung."),
+  data.table(tabelle = "folge", zeile = "JKpp: JK-Standardfehler (WLE)", spalte = "*", mass = "*", ids = "A1",
+             ort = "zeile", grund = grund_jk_se),
+  data.table(tabelle = "folge", zeile = "JKpp: JK-Schätzer (EAP)", spalte = "gemischt", mass = "*", ids = "A3",
+             ort = "zelle", grund = "Bricht für gemischte Tests mit EAP ab."),
+  data.table(tabelle = "folge", zeile = "PV: Ziehung aus dem Posterior", spalte = "*", mass = "*", ids = "A4",
+             ort = "zeile", grund = "Der Sampler streut breiter als der Posterior."),
+  data.table(tabelle = "folge", zeile = "Pfit: Infit/Outfit", spalte = "GPCM", mass = "*", ids = "A10",
+             ort = "zelle", grund = "Rechnet mit Slope 1 statt mit den Slopes der Items."),
   data.table(tabelle = "folge", zeile = c("Pfit: lz", "Pfit: lz*", "Pfit: Infit/Outfit"),
-             spalte = "gemischt", mass = "*", ids = "G6"),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = "JKpp", mass = "*", ids = "A13"),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = "PV", mass = "*", ids = "A4"),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = "Pfit", mass = "*", ids = "A9"),
-  data.table(tabelle = "sonder", zeile = "Person ohne Antworten", spalte = "*", mass = "*", ids = "A5"),
-  data.table(tabelle = "sonder", zeile = "Ein Prior für alle (μ = 0,5, σ² = 2)", spalte = "*", mass = "*", ids = "A6"),
-  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = "PV", mass = "*", ids = "A4"),
-  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = "Pfit", mass = "*", ids = "A6"),
-  data.table(tabelle = "sonder", zeile = "Duplikat vorne mit killdupli", spalte = "Schätzer", mass = "*", ids = "A5"),
-  data.table(tabelle = "sonder", zeile = "Duplikat vorne mit killdupli", spalte = "JKpp", mass = "*", ids = "A2"),
-  data.table(tabelle = "sonder", zeile = "Extremes Item (b = ±40, Slope 20)", spalte = "*", mass = "*", ids = "C1"),
-  data.table(tabelle = "sonder", zeile = "3PL am Rateniveau (Bench-Daten)", spalte = "*", mass = "*", ids = "A8"),
-  data.table(tabelle = "sonder", zeile = "Sehr langer Test (1100 Items)", spalte = "*", mass = "*", ids = "C3"),
-  data.table(tabelle = "sonder", zeile = "Kategorien ≥ 10 mit killdupli", spalte = "*", mass = "*", ids = "A12")
+             spalte = "gemischt", mass = "*", ids = "G6", ort = "zelle",
+             grund = "Für gemischte Tests gibt es keine Fit-Funktion."),
+  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = c("JKpp", "PV", "Pfit"),
+             mass = "*", ids = c("A13", "A4", "A9"), ort = "zeile",
+             grund = "Der Jackknife zählt auch nicht bearbeitete Items mit, PV brechen ab, lz* ist falsch."),
+  data.table(tabelle = "sonder", zeile = "Person ohne Antworten", spalte = "*", mass = "*", ids = "A5", ort = "zeile",
+             grund = "Sie bekommt +Inf statt NA, die nächste Person erbt einen NaN-Startwert."),
+  data.table(tabelle = "sonder", zeile = "Ein Prior für alle (μ = 0,5, σ² = 2)", spalte = "*", mass = "*", ids = "A6",
+             ort = "zeile", grund = "Der einzelne Wert gilt nicht für alle Personen: Gelesen wird über das Vektorende hinaus, die Ergebnisse sind meist NaN."),
+  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = c("PV", "Pfit"), mass = "*",
+             ids = c("A4", "A6"), ort = "zeile",
+             grund = "PV ignorieren den Prior, die Jackknife-SE von lz nimmt die Priors falscher Personen."),
+  data.table(tabelle = "sonder", zeile = "Duplikat vorne mit killdupli", spalte = c("Schätzer", "JKpp"), mass = "*",
+             ids = c("A5", "A2"), ort = "zeile",
+             grund = "Priors und Jackknife-Ergebnisse landen bei falschen Personen."),
+  data.table(tabelle = "sonder", zeile = "Extremes Item (b = ±40, Slope 20)", spalte = "*", mass = "*", ids = "C1",
+             ort = "zeile", grund = "Überlauf in exp(): Alle Schätzungen werden NaN."),
+  data.table(tabelle = "sonder", zeile = "3PL am Rateniveau (Bench-Daten)", spalte = "*", mass = "*", ids = "A8",
+             ort = "zeile", grund = "Ohne endlichen Schätzer gibt es NaN, sonst pendelt das Newton-Verfahren."),
+  data.table(tabelle = "sonder", zeile = "Sehr langer Test (1100 Items)", spalte = "*", mass = "*", ids = "C3",
+             ort = "zeile", grund = "Die Likelihood wird als Produkt gerechnet und läuft gegen 0 (NaN); die übrigen Werte sind ungenau, weil das Gitter mit 60 Knoten zu grob ist."),
+  data.table(tabelle = "sonder", zeile = "Kategorien ≥ 10 mit killdupli", spalte = "*", mass = "*", ids = "A12",
+             ort = "zeile", grund = "Verschiedene Antwortmuster wie (1, 11) und (11, 1) werden als Duplikat zusammengelegt.")
 ))
 
 st <- rbindlist(zellen)
-st[, ids := NA_character_]
+st[, c("ids", "ort", "grund") := NA_character_]
 for (i in seq_len(nrow(ids_bekannt))) {
   k <- ids_bekannt[i]
   hit <- st$tabelle == k$tabelle & (k$zeile == "*" | st$zeile == k$zeile) &
     (k$spalte == "*" | st$spalte == k$spalte) & (k$mass == "*" | st$mass == k$mass)
-  st[hit, ids := k$ids]
+  st[hit, c("ids", "ort", "grund") := .(k$ids, k$ort, k$grund)]
 }
-st[status == "ok", ids := NA_character_]
+st[status == "ok", c("ids", "ort", "grund") := NA_character_]
 st[status %in% c("teilweise", "falsch", "abbruch") & is.na(ids), ids := "neu?"]
 st[, `:=`(label = args$label, code = code_stand(), zeitpunkt = Sys.time())]
 

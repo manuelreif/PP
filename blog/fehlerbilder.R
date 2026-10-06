@@ -1,10 +1,10 @@
 # Three pictures of bugs in PP 0.6.4-1: oscillating Newton (A8), jackknife
-# SE (A1) and plausible values (A4).
+# SE (A1) and plausible values (A4). The problem IDs are not shown.
 #
 #   Rscript blog/fehlerbilder.R [--label=block1]
 #
 # Reads blog/output/fehlerbilder_<label>.rds (blog/fehlerbilder_daten.R) and
-# writes fehler_a8, fehler_a1 and fehler_a4 (_<label>.png/.svg).
+# writes fehler_newton, fehler_jackknife and fehler_pv (_<label>.png/.svg).
 
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -48,13 +48,13 @@ p_kurve <- ggplot(a8$kurve, aes(theta, f)) +
 
 p8 <- (p_pfad | p_kurve) +
   plot_annotation(
-    title = "Das Newton-Verfahren pendelt (A8)",
+    title = "Das Newton-Verfahren pendelt",
     subtitle = sprintf("%s · PP springt zwischen %s und kommt nie an der Lösung an",
                        a8$beschreibung, paste(zahl_de(sort(zyklus)), collapse = ", ")),
     caption = paste("Orange: Ergebnisse von PP 0.6.4-1, schwarz: Referenz (Nullstelle der Warm-Gleichung per uniroot).", stand),
     theme = theme_blog()
   )
-speichere_plot(p8, sprintf("fehler_a8_%s", args$label), width = 10, height = 4.4)
+speichere_plot(p8, sprintf("fehler_newton_%s", args$label), width = 10, height = 4.4)
 
 # --- A1: jackknife SE --------------------------------------------------------
 
@@ -77,7 +77,7 @@ p1 <- ggplot(a1, aes(se_korrekt, se_pp, colour = testsatz)) +
   scale_shape_manual(values = c("übrige Personen" = 16, "Extremscore" = 2), name = NULL) +
   coord_cartesian(xlim = lim, ylim = lim) +
   labs(
-    title = "Jackknife-Standardfehler um den Faktor L − 1 zu klein (A1)",
+    title = "Jackknife-Standardfehler um den Faktor L − 1 zu klein",
     subtitle = "JK-SE von PP gegen den Lehrbuch-Jackknife, WLE, eine Person je Punkt",
     x = "JK-SE korrekt (Referenz)", y = "JK-SE von PP 0.6.4-1",
     caption = paste("L = Zahl der Items. PP kombiniert die Leave-one-out-Schätzer mit der Formel für Pseudowerte.",
@@ -85,7 +85,7 @@ p1 <- ggplot(a1, aes(se_korrekt, se_pp, colour = testsatz)) +
                     "dort weicht der Fehler anders ab.", stand, sep = "\n")
   ) +
   theme_blog()
-speichere_plot(p1, sprintf("fehler_a1_%s", args$label), width = 8, height = 6.4)
+speichere_plot(p1, sprintf("fehler_jackknife_%s", args$label), width = 8, height = 6.4)
 
 # --- A4: plausible values ------------------------------------------------------
 
@@ -111,7 +111,7 @@ p4 <- ggplot(a4$draws, aes(theta)) +
   facet_wrap(~ fall, ncol = 1, labeller = as_labeller(facette)) +
   coord_cartesian(xlim = c(-4, 2.5)) +
   labs(
-    title = "Plausible Values: zu breit und ohne Prior (A4)",
+    title = "Plausible Values: zu breit und ohne Prior",
     subtitle = sprintf("%s · Histogramm: PV von PP 0.6.4-1", a4$beschreibung),
     x = "θ", y = "Dichte",
     caption = paste("Oben 40.000 Draws: der MH-Sampler speichert nur angenommene Sprünge und streut zu breit.",
@@ -119,4 +119,4 @@ p4 <- ggplot(a4$draws, aes(theta)) +
                     stand, sep = "\n")
   ) +
   theme_blog()
-speichere_plot(p4, sprintf("fehler_a4_%s", args$label), width = 8, height = 7)
+speichere_plot(p4, sprintf("fehler_pv_%s", args$label), width = 8, height = 7)

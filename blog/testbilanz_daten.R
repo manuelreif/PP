@@ -34,7 +34,7 @@ bereiche <- data.table(
             "tests4pl.R", "testsgpcm.R", "testsgpcm4pl.R", "testsjk.R"),
   bereich = c("Referenzen (Selbsttest)", "Schätzer: mle, wle, map, robust", "EAP",
               "Plausible Values", "Jackknife", "Personenfit", "Eingaben und Defaults",
-              "Simulation", "PPass", rep("Alte Tests (vor Block 1)", 4)),
+              "Simulation", "PPass", rep("Alte Tests", 4)),
   ord = c(1:9, rep(10L, 4))
 )
 tests <- merge(tests, bereiche, by = "datei", all.x = TRUE, sort = FALSE)
