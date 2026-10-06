@@ -122,7 +122,9 @@ ref_estimate <- function(x, items, type, mu = 0, s2 = 1, H = 1, range = c(-10, 1
     stop("ref_estimate: estimating equation has several roots (", type, ", x = ",
          paste(x, collapse = ""), ")")
   }
-  stats::uniroot(f, g[c(ch, ch + 1)], tol = 1e-10)$root
+  # tol 1e-8: the numerical derivatives limit the accuracy to about 1e-9 anyway
+  stats::uniroot(f, g[c(ch, ch + 1)], f.lower = fg[ch], f.upper = fg[ch + 1],
+                 tol = 1e-8)$root
 }
 
 # Standard error at theta
