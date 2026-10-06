@@ -66,12 +66,13 @@ pp_fit <- function(set, type, X = set$X, ...) {
                   upperA = p$upperA, model2est = p$model2est, type = type, ...)))
 }
 
-# Responses with an adaptive-test-like NA pattern: each person answers between
-# lo and hi of the items
-make_na <- function(X, seed, lo, hi) {
+# Responses with an adaptive-test-like NA pattern: each person answers a random
+# half to all but one of the items
+make_na <- function(X, seed) {
   set.seed(seed)
+  k <- ncol(X)
   for (i in seq_len(nrow(X))) {
-    keep <- sample(ncol(X), sample(lo:hi, 1))
+    keep <- sample(k, sample(ceiling(k / 2):(k - 1), 1))
     X[i, -keep] <- NA
   }
   X

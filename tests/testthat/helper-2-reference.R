@@ -26,7 +26,9 @@ ref_catprob <- function(item, theta) {
     # eta_k = sum_{m <= k} a (theta - delta_m) = a k theta - a sum_{m <= k} delta_m
     eta <- item$a * (outer(theta, 0:(K - 1)) -
                        rep(c(0, cumsum(item$delta)), each = length(theta)))
-    p <- exp(eta - apply(eta, 1, max))
+    m <- eta[, 1]
+    for (k in seq_len(K)[-1]) m <- pmax(m, eta[, k])
+    p <- exp(eta - m)
     p / rowSums(p)
   }
 }
