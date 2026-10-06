@@ -45,6 +45,6 @@ Suggests:
 Imports: 
     Rcpp (>= 0.11.2)
 LinkingTo: Rcpp
-RoxygenNote: 7.3.3
 NeedsCompilation: yes
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0

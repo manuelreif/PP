@@ -7,7 +7,6 @@ using namespace Rcpp;
 
 // P FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericVector P_4pl(NumericVector delta, double alpha, double theta, double la, double ua) {
 // resp kann man eigenltich weglassen
 // hier wird nur die Wahrscheinlichkeit berechnet zu loesen
@@ -35,7 +34,6 @@ return PP1I;
 
 // P FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericVector P_4pl4wle(NumericVector delta, double alpha, double theta, double la, double ua) {
 // resp kann man eigenltich weglassen
 // hier wird nur die Wahrscheinlichkeit berechnet zu loesen
@@ -94,7 +92,6 @@ return PP1I;
 
 
 
-// [[Rcpp::export]]
 double r_huber_4pl(NumericVector delta, double alpha,
                           double theta, double la, double ua, double H) {
 
@@ -128,7 +125,6 @@ return HU;
 
 // LIKELIHOOD - L1, L2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericMatrix L4pl(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
                    NumericVector LOWA, NumericVector UPPA, NumericVector THETA, bool map, 
                    NumericVector mu, NumericVector sigma2) {
@@ -255,7 +251,6 @@ return l1l2M;
 
 // LIKELIHOOD - L1, L2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericMatrix L4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
                 NumericVector LOWA, NumericVector UPPA, NumericVector THETA) {
 
@@ -364,7 +359,6 @@ return l1l2M;
 
 
 
-// [[Rcpp::export]]
 NumericMatrix L4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
                           NumericVector LOWA, NumericVector UPPA,
                           NumericVector THETA, double H) {
@@ -619,7 +613,6 @@ return P;
 
 
 
-// [[Rcpp::export]]
 double r_huber_gpcm(NumericVector delta, double alpha,
                            double theta, double H) {
 
@@ -665,7 +658,6 @@ return HU;
 
 // P FUNCTION L1, L2 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericMatrix L12gpcm(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
                       NumericVector THETA, NumericVector mu, NumericVector sigma2, bool map) {
 // awm = antwortmatrix
@@ -811,7 +803,6 @@ return l1l2M;
 
 // CORRECTION TERM FUNCTION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericVector Pcorr1_gpcm(NumericVector delta, double alpha, double theta) {
 
 int nthres = delta.size();
@@ -907,7 +898,6 @@ return corrts;
 
 // P FUNCTION L1, L2 --->>>  WLE  <<<<---- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// [[Rcpp::export]]
 NumericMatrix L12gpcm_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
                           NumericVector THETA) {
 // awm = antwortmatrix
@@ -1052,7 +1042,6 @@ return l1l2M;
 
 
 
-// [[Rcpp::export]]
 NumericMatrix L12gpcm_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, 
                       NumericVector THETA, double H) {
 // awm = antwortmatrix
@@ -1267,7 +1256,6 @@ return List::create(_["resPP"] = resPP, _["nsteps"] = howlong);
 // GPCM - 4PL mixed - MLE**************************************************
 
 
-// [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_mle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
                            NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model, NumericVector mu, NumericVector sigma2, bool map) {
@@ -1443,7 +1431,6 @@ return l1l2M;
 
 
 
-// [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_wle(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
                            NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model)
@@ -1618,7 +1605,6 @@ return l1l2M;
 
 // GPCM - 4PL mixed - ROBUST*************************************************
 
-// [[Rcpp::export]]
 NumericMatrix Lgpcm4pl_robust(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA,
                            NumericVector LOWA, NumericVector UPPA, NumericVector THETA, 
                            CharacterVector model, double H) {
@@ -1932,10 +1918,7 @@ return Likpernode;
 //' Simulate data for 1/2/3/4-pl model
 //' 
 //' This function returns a dichotomous matrix of simulated responses under given item and person parameters.
-//' 
-//' @useDynLib PP
-//' @importFrom Rcpp evalCpp sourceCpp
-//' 
+//'
 //'@param beta A numeric vector which contains the difficulty parameters for each item.
 //'@param alpha A numeric vector, which contains the slope parameters for each item.
 //'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.

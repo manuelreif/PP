@@ -59,7 +59,7 @@
 #' @seealso \link{PPass}, \link{PPall}, \link{PP_gpcm}, \link{JKpp}, \link{PV}
 #'
 #' @useDynLib PP, .registration = TRUE
-#' @importFrom Rcpp evalCpp sourceCpp
+#' @importFrom Rcpp evalCpp
 #'
 #' @import utils
 #' @import stats
