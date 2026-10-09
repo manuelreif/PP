@@ -170,7 +170,6 @@ test_that("A12: killdupli does not merge (1, 11) and (11, 1)", {
 })
 
 test_that("A6: a scalar prior is recycled to all persons", {
-  skip_known("A6", 2)
   s <- set_2pl
   n <- nrow(s$X)
   for (ty in c("map", "eap")) {
