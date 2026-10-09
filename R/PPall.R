@@ -7,17 +7,17 @@
 #' 
 #'Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 #' 
-#'@param respm An integer matrix, which contains the examinees responses. A persons x items matrix is expected.
+#'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
-#'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. 
-#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0.
-#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1.
+#'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
+#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.
+#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.
 #'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
-#'@param mu A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
-#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
+#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 0 for each person.
+#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 1 for each person.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.
 #'
-#'@param model2est A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}.
+#'@param model2est A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}. A \code{"4PL"} item must have exactly two categories in \code{thres}. If \code{NULL} (default), \code{\link{findmodel}(thres)} is used.
 #'
 #'@param maxsteps The maximum number of steps the NR algorithm will take. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
@@ -65,8 +65,8 @@
 #'@example ./R/.examples.R
 #'@rdname PPall
 #'
-PPall <- function(respm, thres, slopes, lowerA, upperA, theta_start=NULL,
-                  mu = NULL, sigma2 = NULL, type="wle", model2est,
+PPall <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL, theta_start=NULL,
+                  mu = NULL, sigma2 = NULL, type="wle", model2est = NULL,
                   maxsteps=100, exac=0.001, H=1, ctrl=list())
 {
 ### 
@@ -76,87 +76,23 @@ attr(call,"version") <- packageVersion("PP")
 ###
 
 
-## --------- user controls
-cont <- list(killdupli=FALSE,skipcheck=FALSE)
-
-user_ctrlI <- match(names(ctrl),names(cont))
-if(any(is.na(user_ctrlI)))
-  {
-    notex <- names(ctrl)[is.na(user_ctrlI)]
-    warning("The following options in ctrl do not exist: ", paste(notex,collapse=", "))
-    ctrl       <- ctrl[!is.na(user_ctrlI)]
-    user_ctrlI <- user_ctrlI[!is.na(user_ctrlI)]
-  }
-
-cont[user_ctrlI] <- ctrl
-
-
-######## take care of the threshold matrix
-
-if(is.matrix(thres))
-  {
-  #iimm <- nrow(thres) == 1
-  
-  if(any(thres[1,] != 0))
-    {
-    thres <- rbind(0,thres)
-    }
-  
-  # compute the maximal score per item
-   maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
-  # are there any items with more than 2 categories?
-   #allebigger <- any(maxsc > 1)
-  }
-
-  ## starting values
-if(is.null(theta_start))
-  {
-  thresv <- apply(thres[2,,drop=FALSE],2, function(tr) mean(tr,na.rm=TRUE))
-  theta_start <- apply(respm, 1, function(st)
-    {
-    mean(thresv[!is.na(st)])  
-    })
-  } else if(length(theta_start) == 1)
-      {
-      theta_start <- rep(theta_start, nrow(respm))  
-      }
-  
-
-
-## ----------------------
-
-
-# check for errors and warnings etc  --------------
-
-## --------- check user inputs
-if(!cont$skipcheck) # to save time e.g. when running simulations
-{
-  ## --------- check user inputs
-  checkINP(respm, thres, slopes, theta_start, lowerA, upperA, type)
-  # -----------------------------------------------------  
-}
-
-model2est <- match.arg(model2est,c("GPCM","4PL"),several.ok = TRUE)
-if(length(model2est) < ncol(respm)) stop("Check the properties for the submitted model2est vector!\n")
-
-
-
-# in case map is chosen and no mu and/or sigma2 is/are submitted.
-if( (any(is.null(mu)) | any(is.null(sigma2))))
-  {
-  if(any(is.null(mu))) 
-    {
-    mu <- rep(0,nrow(respm))
-    if(type == "map") warning("all mu's are set to 0! \n")
-    }
-  
-  if(any(is.null(sigma2))) 
-    {
-      sigma2 <- rep(1,nrow(respm))
-      if(type == "map") warning("all sigma2's are set to 1! \n")
-    }
-  
-  }
+## --------- check and normalise all inputs
+prep <- pp_prepare(respm, thres, slopes = slopes, lowerA = lowerA, upperA = upperA,
+                   model2est = model2est, mu = mu, sigma2 = sigma2,
+                   theta_start = theta_start, type = type, maxsteps = maxsteps,
+                   exac = exac, H = H, ctrl = ctrl, family = "mixed")
+respm <- prep$X
+thres <- prep$thres
+maxsc <- prep$maxsc
+slopes <- prep$slopes
+lowerA <- prep$lowerA
+upperA <- prep$upperA
+model2est <- prep$model2est
+mu <- prep$mu
+sigma2 <- prep$sigma2
+theta_start <- prep$start
+type <- prep$type
+cont <- prep$ctrl
 
 ## ----------------------
 
@@ -166,7 +102,7 @@ if( (any(is.null(mu)) | any(is.null(sigma2))))
 if(type=="mle" | type=="robust")
   {
     resPPx <- ansol(respm,maxsc)  
-    respm <- respm[!is.na(resPPx[,2]),]
+    respm <- respm[!is.na(resPPx[,2]),,drop=FALSE]
   }
 
 
@@ -184,9 +120,7 @@ if(cont$killdupli)
 # ----- estimation procedure -------------# 
 
     
-     if(any(lowerA[model2est == "GPCM"] != 0)) warning("At least for one item with #categories > 1, there is an lower asymptote != 0 submitted. This will be ignored.\n")
 
-     if(any(upperA[model2est == "GPCM"] != 1)) warning("At least for one item with #categories > 1, there is an upper asymptote != 1 submitted. This will be ignored.\n")
        
 modelcat <- paste(unique(model2est),collapse=", ")
 

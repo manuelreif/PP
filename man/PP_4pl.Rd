@@ -21,21 +21,21 @@ PP_4pl(
 )
 }
 \arguments{
-\item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
+\item{respm}{An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.}
 
 \item{thres}{A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!}
 
-\item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
+\item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.}
 
-\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.}
+\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.}
 
-\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item.}
+\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.}
 
 \item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 0 for each person.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 1 for each person.}
 
 \item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.}
 

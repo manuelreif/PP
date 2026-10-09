@@ -15,12 +15,12 @@
 #'The model simplifies to the Partial Credit Model by setting \eqn{\alpha_{i} = 1, \forall i}.
 #'
 #' 
-#'@param respm An integer matrix, which contains the examinees responses. A persons x items matrix is expected.
+#'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
-#'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.
+#'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
 #'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
-#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.
-#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP  or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.
+#'@param mu A numeric vector of location parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 0 for each person.
+#'@param sigma2 A numeric vector of variance parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 1 for each person.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.
 #'@param maxsteps The maximum number of steps the NR Algorithm will take. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? Default is 0.001.
@@ -67,7 +67,7 @@
 
 
 
-PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
+PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
                     mu = NULL, sigma2 = NULL, type="wle", maxsteps=100, exac=0.001,H=1,ctrl=list())
 {
   
@@ -77,74 +77,19 @@ PP_gpcm <- function(respm, thres, slopes, theta_start=NULL,
   attr(call,"version") <- packageVersion("PP")
   ###
   
-  
-  ## --------- user controls
-  cont <- list(killdupli=FALSE,skipcheck=FALSE)
-  
-  user_ctrlI <- match(names(ctrl),names(cont))
-  if(any(is.na(user_ctrlI)))
-  {
-    notex <- names(ctrl)[is.na(user_ctrlI)]
-    warning("The following options in ctrl do not exist: ", paste(notex,collapse=", "))
-    ctrl       <- ctrl[!is.na(user_ctrlI)]
-    user_ctrlI <- user_ctrlI[!is.na(user_ctrlI)]
-  }
-  
-  cont[user_ctrlI] <- ctrl
-  
-
-
-  
-
-## --------- threshold matrix
-
-# If the user did not add a row with zeroes only
-  if(any(thres[1,] != 0))
-    {
-      thres <- rbind(0,thres)
-    }
-  
-  # compute the maximal score per item
-  maxsc <- apply(thres,2,function(x)(length(x) - sum(is.na(x)))-1)
-  
-  
-  ## starting values
-if(is.null(theta_start))
-  {
-  thresv <- apply(thres[2,,drop=FALSE],2, function(tr) mean(tr,na.rm=TRUE))
-  theta_start <- apply(respm, 1, function(st)
-    {
-    mean(thresv[!is.na(st)])  
-    })
-  } else if(length(theta_start) == 1)
-      {
-      theta_start <- rep(theta_start, nrow(respm))  
-      }
-  
-
-if(!cont$skipcheck) # to save time e.g. when running simulations
-{
-## --------- check user inputs
-checkINP(respm, thres, slopes, theta_start, lowerA=NULL, upperA=NULL, type)
-# -----------------------------------------------------  
-}
-
-# in case map is chosen and no mu and/or sigma2 is/are submitted.
-if( (any(is.null(mu)) | any(is.null(sigma2))))
-{
-  if(any(is.null(mu))) 
-  {
-    mu <- rep(0,nrow(respm))
-    if(type %in% c("map","eap")) warning("all mu's are set to 0! \n")
-  }
-  
-  if(any(is.null(sigma2))) 
-  {
-    sigma2 <- rep(1,nrow(respm))
-    if(type %in% c("map","eap")) warning("all sigma2's are set to 1! \n")
-  }
-  
-}
+  ## --------- check and normalise all inputs
+  prep <- pp_prepare(respm, thres, slopes = slopes, mu = mu, sigma2 = sigma2,
+                     theta_start = theta_start, type = type, maxsteps = maxsteps,
+                     exac = exac, H = H, ctrl = ctrl, family = "gpcm")
+  respm <- prep$X
+  thres <- prep$thres
+  maxsc <- prep$maxsc
+  slopes <- prep$slopes
+  mu <- prep$mu
+  sigma2 <- prep$sigma2
+  theta_start <- prep$start
+  type <- prep$type
+  cont <- prep$ctrl
 
   
   

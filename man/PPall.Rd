@@ -9,14 +9,14 @@
 PPall(
   respm,
   thres,
-  slopes,
-  lowerA,
-  upperA,
+  slopes = NULL,
+  lowerA = NULL,
+  upperA = NULL,
   theta_start = NULL,
   mu = NULL,
   sigma2 = NULL,
   type = "wle",
-  model2est,
+  model2est = NULL,
   maxsteps = 100,
   exac = 0.001,
   H = 1,
@@ -28,25 +28,25 @@ PPall(
 \method{summary}{ppeo}(object, nrowmax = 15, ...)
 }
 \arguments{
-\item{respm}{An integer matrix, which contains the examinees responses. A persons x items matrix is expected.}
+\item{respm}{An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.}
 
 \item{thres}{A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
 
-\item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected.}
+\item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.}
 
-\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0.}
+\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.}
 
-\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1.}
+\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.}
 
 \item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
-\item{mu}{A numeric vector of location parameters for each person in case of MAP estimation. If nothing is submitted this is set to 0 for each person for MAP estimation.}
+\item{mu}{A numeric vector of location parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 0 for each person.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. If nothing is submitted this is set to 1 for each person for MAP estimation.}
+\item{sigma2}{A numeric vector of variance parameters for each person in case of MAP or EAP estimation. A single value is used for all persons. If nothing is submitted this is set to 1 for each person.}
 
 \item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
-\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}.}
+\item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}. A \code{"4PL"} item must have exactly two categories in \code{thres}. If \code{NULL} (default), \code{\link{findmodel}(thres)} is used.}
 
 \item{maxsteps}{The maximum number of steps the NR algorithm will take. Default = 100.}
 
