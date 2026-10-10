@@ -21,6 +21,21 @@ blau <- "#0969DA"
 stand <- sprintf("Stand: %s.", gsub("`", "", d$code))
 exac_de <- zahl_de(d$exac, 3)
 
+# 10^-k with superscript digits
+hoch <- function(e) chartr("0123456789-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻", as.character(e))
+hoch10 <- function(v) {
+  e <- round(log10(v))
+  ifelse(e == 0, "1", paste0("10", hoch(e)))
+}
+# v as m · 10^e with a one-digit mantissa
+zehner <- function(v) {
+  e <- floor(log10(v))
+  m <- round(v / 10^e)
+  e <- e + (m == 10)
+  m <- ifelse(m == 10, 1, m)
+  sprintf("%d · 10%s", as.integer(m), hoch(e))
+}
+
 # --- newton_gesichert ----------------------------------------------------
 
 pe <- d$pendel
@@ -37,6 +52,7 @@ alt[, f := f_an(theta)]
 neu <- pe$neu
 # after convergence the new estimator stays at its last value
 neu_k <- function(kk) neu[k == min(kk, n_neu)]
+ende <- abs(neu[k == n_neu, theta] - w)
 
 grund <- function(titel) {
   ggplot(kurve, aes(theta, f)) +
@@ -98,11 +114,10 @@ bild <- function(kk) {
     neu[k <= min(kk, n_neu), .(k, abstand = abs(theta - w), verfahren = "neu")]
   )
   p_abst <- ggplot(abst, aes(k, abstand, colour = verfahren)) +
-    geom_hline(yintercept = d$exac, colour = grau, linetype = "22", linewidth = 0.3) +
-    annotate("text", x = K, y = d$exac, label = sprintf("exac = %s", exac_de), hjust = 1,
-             vjust = -0.5, size = 3, colour = grau, family = "Open Sans") +
     geom_line(linewidth = 0.5) +
     geom_point(size = 1.6) +
+    (if (kk >= n_neu) annotate("text", x = n_neu, y = ende, label = sprintf("Ergebnis: %s", zehner(ende)),
+                               hjust = 0.7, vjust = 1.8, size = 3, colour = blau, family = "Open Sans")) +
     scale_colour_manual(values = c("PP 0.6.4-1" = akzent, "neu" = blau), name = NULL,
                         limits = c("PP 0.6.4-1", "neu")) +
     scale_y_log10(labels = function(v) formatC(v, format = "g", decimal.mark = ",")) +
@@ -120,7 +135,8 @@ bild <- function(kk) {
                          pe$beschreibung),
       caption = paste(
         "Ein Newton-Schritt wird nur genommen, wenn er im Intervall bleibt und höchstens halb so lang ist wie der vorletzte, sonst wird das Intervall halbiert.",
-        sprintf("Jeder Schritt verkleinert das Intervall. Schluss ist, wenn sich θ um weniger als exac = %s ändert. Schwarzer Punkt: Lösung (Referenz per uniroot). Die y-Achse ist um null gestreckt.", exac_de),
+        sprintf("Jeder Schritt verkleinert das Intervall. Schluss ist, wenn ein Schritt kürzer als exac = %s ist: exac begrenzt die Länge des letzten Schritts, nicht den Abstand zur Lösung.", exac_de),
+        "Schwarzer Punkt: Lösung (Referenz per uniroot). Die y-Achse der beiden linken Felder ist um null gestreckt.",
         stand, sep = "\n"),
       theme = theme_blog()
     )
@@ -192,25 +208,26 @@ speichere_plot(p_s, sprintf("newton_schritte_%s", args$label), width = 9, height
 
 # --- newton_konvergenz -----------------------------------------------------
 
-# 10^-k with superscript digits
-hoch10 <- function(v) {
-  e <- round(log10(v))
-  hoch <- chartr("0123456789-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻", as.character(e))
-  ifelse(e == 0, "1", paste0("10", hoch))
-}
 ko <- d$konvergenz
 boden <- 1e-16
 ko[, abstand := pmax(fehler, boden)]
 ko[, fall := sprintf("%s %s", modell, methode)]
 med <- ko[, .(abstand = median(abstand)), by = .(fall, k)]
+sp <- copy(d$stopp)
+sp[, `:=`(abstand = pmax(fehler, boden), fall = sprintf("%s %s", modell, methode))]
+sp_med <- sp[, .(median = median(fehler), max = max(fehler)), by = fall]
+sp_med[, text := sprintf("Ergebnis mit exac = %s:\nMedian %s, max. %s", exac_de, zehner(median),
+                         zehner(max))]
 
 p_k <- ggplot(ko, aes(k, abstand)) +
   geom_line(aes(group = person), colour = blau, alpha = 0.08, linewidth = 0.3) +
   geom_line(data = med, colour = dunkel, linewidth = 0.9) +
   geom_point(data = med, colour = dunkel, size = 1.6) +
-  geom_hline(yintercept = d$exac, colour = akzent, linetype = "22", linewidth = 0.5) +
-  annotate("text", x = 12, y = d$exac, label = sprintf("exac = %s", exac_de), hjust = 1,
-           vjust = -0.5, size = 3.1, colour = akzent, family = "Open Sans") +
+  # shifted a little sideways, so the persons with the same k stay visible
+  geom_point(data = sp, colour = akzent, alpha = 0.45, size = 1.1,
+             position = position_jitter(width = 0.15, height = 0, seed = 1)) +
+  geom_text(data = sp_med, aes(x = 12, y = 1, label = text), hjust = 1, vjust = 1, size = 3,
+            colour = akzent, family = "Open Sans", lineheight = 0.95) +
   annotate("text", x = 12, y = boden, label = "Rechengenauigkeit erreicht", hjust = 1,
            vjust = 1.8, size = 3.1, colour = grau, family = "Open Sans") +
   scale_y_log10(breaks = 10^c(0, -3, -6, -9, -12, -15), labels = hoch10) +
@@ -219,11 +236,13 @@ p_k <- ggplot(ko, aes(k, abstand)) +
   facet_wrap(~ fall, nrow = 1) +
   labs(
     title = "Wie schnell der Abstand zur Lösung schrumpft",
-    subtitle = "Je Person eine Linie (300 Personen), schwarz: Median · bei 2PL MLE verdoppelt sich die Zahl richtiger Stellen pro Schritt",
+    subtitle = "Je Person eine Linie (300 Personen), schwarz: Median, orange: wo der Lauf mit dem Standardwert exac = 0,001 endet",
     x = "Schritt k", y = "|θₖ − θ*|",
     caption = paste(
+      "exac begrenzt die Länge des letzten Schritts, nicht den Abstand zur Lösung.",
+      "Der letzte Schritt wird noch ausgeführt, deshalb liegt das Ergebnis weit näher an der Lösung.",
       "Der Schritt teilt durch die Testinformation I(θ), nicht durch die exakte Ableitung der Schätzgleichung (Fisher-Scoring).",
-      "Nur bei MLE im 1PL/2PL sind beide gleich, dann ist es das echte Newton-Verfahren mit quadratischer Konvergenz.",
+      "Nur bei MLE im 1PL/2PL sind beide gleich, dann ist es das echte Newton-Verfahren: Die Zahl richtiger Stellen verdoppelt sich pro Schritt.",
       "Sonst gewinnt es etwa anderthalb Stellen pro Schritt. θ* = Ergebnis mit exac = 10⁻¹², Personen mit Extremscore oder Lösung am Rand sind weggelassen.",
       stand, sep = "\n")
   ) +

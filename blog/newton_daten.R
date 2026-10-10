@@ -9,6 +9,8 @@
 #   schritte   number of steps of every person in the benchmark data, plus the
 #              steps PP 0.6.4-1 gave every person (baseline benchmark)
 #   konvergenz |theta_k - theta*| after k steps for 300 persons
+#   stopp      the same persons with the default exac: number of steps and the
+#              distance of the returned estimate to theta*
 #
 # The estimator is deterministic, so pp_estimate_cpp() with maxsteps = k
 # returns its k-th iterate.
@@ -98,24 +100,32 @@ alt_schritte[, szenario := NULL]
 set.seed(7)
 rows <- sample(nrow(d$X2), 300)
 konv_faelle <- list(list("2PL", d$X2, it2), list("3PL", d$X3, it3))
-konvergenz <- rbindlist(lapply(konv_faelle, function(fa) {
+konv <- lapply(konv_faelle, function(fa) {
   X <- fa[[2]][rows, ]
-  rbindlist(lapply(c("mle", "wle"), function(ty) {
+  lapply(c("mle", "wle"), function(ty) {
     star <- iterate(X, fa[[3]], ty, 200, exac = 1e-12)
     ok <- star$status == 1
-    rbindlist(lapply(0:12, function(k) {
+    pfad <- rbindlist(lapply(0:12, function(k) {
       th <- iterate(X, fa[[3]], ty, k, exac = 1e-12)$theta
       data.table(modell = fa[[1]], methode = toupper(ty), person = which(ok), k = k,
                  fehler = abs(th - star$theta)[ok])
     }))
-  }))
-}))
+    # where the run with the default exac stops and how close its result is
+    def <- iterate(X, fa[[3]], ty, 100)
+    stopp <- data.table(modell = fa[[1]], methode = toupper(ty), person = which(ok),
+                        k = def$nsteps[ok], fehler = abs(def$theta - star$theta)[ok])
+    list(pfad = pfad, stopp = stopp)
+  })
+})
+konv <- unlist(konv, recursive = FALSE)
+konvergenz <- rbindlist(lapply(konv, `[[`, "pfad"))
+stopp <- rbindlist(lapply(konv, `[[`, "stopp"))
 
 ordner <- file.path(blog_out, "newton_konvergenz")
 dir.create(ordner, showWarnings = FALSE, recursive = TRUE)
 out <- file.path(ordner, sprintf("newton_%s.rds", args$label))
 saveRDS(list(pendel = pendel, schritte = schritte, alt_schritte = alt_schritte,
-             konvergenz = konvergenz, exac = 0.001, code = code_stand(), zeitpunkt = Sys.time()),
+             konvergenz = konvergenz, stopp = stopp, exac = 0.001, code = code_stand(), zeitpunkt = Sys.time()),
         out)
 message("gespeichert: ", out)
 
@@ -130,3 +140,5 @@ print(dcast(schritte[status == "ok", .(median = median(nsteps)), by = .(modell, 
 print(schritte[, .N, by = .(modell, methode, status)][status != "ok"])
 print(konvergenz[, .(median = median(fehler)), by = .(modell, methode, k)][k <= 5] |>
         dcast(modell + methode ~ k, value.var = "median"))
+print(stopp[, .(schritte = as.numeric(median(k)), median = median(fehler), max = max(fehler),
+                ueber_exac = sum(fehler > 0.001)), by = .(modell, methode)])
