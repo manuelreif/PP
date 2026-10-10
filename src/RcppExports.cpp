@@ -114,9 +114,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pp_huber_cpp
+NumericMatrix pp_huber_cpp(List bank, NumericVector theta, double H);
+RcppExport SEXP _PP_pp_huber_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP HSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< double >::type H(HSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_huber_cpp(bank, theta, H));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pp_kernel_time_cpp
-double pp_kernel_time_cpp(List bank, NumericVector theta, IntegerMatrix X, int reps);
-RcppExport SEXP _PP_pp_kernel_time_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP XSEXP, SEXP repsSEXP) {
+double pp_kernel_time_cpp(List bank, NumericVector theta, IntegerMatrix X, int reps, bool ll);
+RcppExport SEXP _PP_pp_kernel_time_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP XSEXP, SEXP repsSEXP, SEXP llSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -124,7 +137,29 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
     Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
-    rcpp_result_gen = Rcpp::wrap(pp_kernel_time_cpp(bank, theta, X, reps));
+    Rcpp::traits::input_parameter< bool >::type ll(llSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_kernel_time_cpp(bank, theta, X, reps, ll));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pp_estimate_cpp
+List pp_estimate_cpp(List bank, IntegerMatrix X, std::string method, NumericVector mu, NumericVector sigma2, double H, NumericVector start, NumericVector range, double exac, int maxsteps, int skip_item);
+RcppExport SEXP _PP_pp_estimate_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP methodSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP, SEXP startSEXP, SEXP rangeSEXP, SEXP exacSEXP, SEXP maxstepsSEXP, SEXP skip_itemSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
+    Rcpp::traits::input_parameter< double >::type H(HSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type start(startSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type range(rangeSEXP);
+    Rcpp::traits::input_parameter< double >::type exac(exacSEXP);
+    Rcpp::traits::input_parameter< int >::type maxsteps(maxstepsSEXP);
+    Rcpp::traits::input_parameter< int >::type skip_item(skip_itemSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_estimate_cpp(bank, X, method, mu, sigma2, H, start, range, exac, maxsteps, skip_item));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -160,7 +195,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PP_Likgpcm", (DL_FUNC) &_PP_Likgpcm, 4},
     {"_PP_pp_item_eval_cpp", (DL_FUNC) &_PP_pp_item_eval_cpp, 3},
     {"_PP_pp_catprob_cpp", (DL_FUNC) &_PP_pp_catprob_cpp, 2},
-    {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 4},
+    {"_PP_pp_huber_cpp", (DL_FUNC) &_PP_pp_huber_cpp, 3},
+    {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 5},
+    {"_PP_pp_estimate_cpp", (DL_FUNC) &_PP_pp_estimate_cpp, 11},
     {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
     {"_PP_ansol", (DL_FUNC) &_PP_ansol, 2},
     {NULL, NULL, 0}

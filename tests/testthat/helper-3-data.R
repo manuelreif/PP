@@ -66,6 +66,14 @@ pp_fit <- function(set, type, X = set$X, ...) {
                   upperA = p$upperA, model2est = p$model2est, type = type, ...)))
 }
 
+# Item bank of a list of reference items, built by PP's input layer; for the
+# tests of the C++ hooks (test-kernel.R, test-core.R)
+kernel_bank <- function(items) {
+  p <- items_to_pp(items)
+  PP:::prepare_items(PP:::normalize_thres(p$thres), p$slopes, p$lowerA, p$upperA,
+                     p$model2est, "mixed")$bank
+}
+
 # Responses with an adaptive-test-like NA pattern: each person answers a random
 # half to all but one of the items
 make_na <- function(X, seed) {

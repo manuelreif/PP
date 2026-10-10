@@ -143,12 +143,12 @@ ref_se <- function(theta, x, items, type, mu = 0, s2 = 1, H = 1) {
 }
 
 # Estimates and SEs for a response matrix (n x 2, like PP's resPP)
-ref_estimates <- function(X, items, type, mu = 0, s2 = 1, H = 1) {
+ref_estimates <- function(X, items, type, mu = 0, s2 = 1, H = 1, range = c(-10, 10)) {
   n <- nrow(X)
   mu <- rep_len(mu, n)
   s2 <- rep_len(s2, n)
   t(vapply(seq_len(n), function(i) {
-    th <- ref_estimate(X[i, ], items, type, mu[i], s2[i], H)
+    th <- ref_estimate(X[i, ], items, type, mu[i], s2[i], H, range)
     c(estimate = th, SE = ref_se(th, X[i, ], items, type, mu[i], s2[i], H))
   }, c(estimate = 0, SE = 0)))
 }

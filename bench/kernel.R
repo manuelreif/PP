@@ -1,5 +1,6 @@
 # Microbenchmark of the C++ item kernel (src/items.h): nanoseconds per item
-# evaluation (ll, score, info and J of one person-item pair).
+# evaluation (ll, score, info and J of one person-item pair), with ll and
+# without it (as the person estimator calls the kernel).
 #
 #   Rscript bench/kernel.R [--evals=1e7] [--rounds=5]
 #
@@ -40,12 +41,16 @@ cases <- list(
   "GPCM K = 12, 2000 x 20" = gpcm_case(2000, 20, 12)
 )
 
-cat(sprintf("%-24s %10s %12s\n", "Fall", "ns/Ausw.", "Auswertungen"))
+ns_per_eval <- function(cs, reps, ll) {
+  PP:::pp_kernel_time_cpp(cs$bank, cs$theta, cs$X, 1L, ll)         # warm-up
+  t <- replicate(rounds, system.time(PP:::pp_kernel_time_cpp(cs$bank, cs$theta, cs$X, reps, ll))[["elapsed"]])
+  1e9 * median(t) / (reps * length(cs$X))
+}
+
+cat(sprintf("%-24s %10s %10s %12s\n", "Fall", "mit ll", "ohne ll", "Auswertungen"))
 for (nm in names(cases)) {
   cs <- cases[[nm]]
-  pairs <- length(cs$X)
-  reps <- max(1L, as.integer(round(n_evals / pairs)))
-  PP:::pp_kernel_time_cpp(cs$bank, cs$theta, cs$X, 1L)             # warm-up
-  t <- replicate(rounds, system.time(PP:::pp_kernel_time_cpp(cs$bank, cs$theta, cs$X, reps))[["elapsed"]])
-  cat(sprintf("%-24s %10.1f %12.0f\n", nm, 1e9 * median(t) / (reps * pairs), reps * pairs))
+  reps <- max(1L, as.integer(round(n_evals / length(cs$X))))
+  cat(sprintf("%-24s %10.1f %10.1f %12.0f\n", nm, ns_per_eval(cs, reps, TRUE),
+              ns_per_eval(cs, reps, FALSE), reps * length(cs$X)))
 }

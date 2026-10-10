@@ -63,6 +63,9 @@ inline ItemBank make_bank(const Rcpp::List& b) {
 // 4PL: P = c + s p, Q = (1 - d) + s q with p = plogis(z), q = plogis(-z), s = d - c.
 // Q is never computed as 1 - P. With P' = a s p q and P'' = a (q - p) P':
 //   score = (x - P) P' / (P Q), info = P'^2 / (P Q), J = P' P'' / (P Q).
+// LL = false skips the log-likelihood (ll = 0); the person estimator only
+// needs score, info and J. (eval_item passes LL on to the 4PL only.)
+template <bool LL = true>
 inline ItemEval eval_4pl(double a, double b, double c, double d, int x, double theta) {
   const double z0  = a * (theta - b);
   const double z   = std::min(700.0, std::max(-700.0, z0));  // p and q stay > 0
@@ -79,6 +82,8 @@ inline ItemEval eval_4pl(double a, double b, double c, double d, int x, double t
   r.info  = a * a * s * s * p * q * rp * rq;
   r.score = x ? a * s * q * rp : -a * s * p * rq;
   r.J     = a * (q - p) * r.info;
+  r.ll    = 0.0;
+  if (!LL) return r;
   // Without an asymptote, log P = log s + log p with log p = min(z0, 0) - log1p(e)
   // (log q likewise), from the unclamped z0, so ll stays exact in the tails
   const double ls = s == 1.0 ? 0.0 : std::log(s);
@@ -89,7 +94,9 @@ inline ItemEval eval_4pl(double a, double b, double c, double d, int x, double t
 
 // GPCM in O(K): eta_0 = 0, eta_k = eta_{k-1} + a (theta - delta_k), category
 // probabilities by log-sum-exp. score = a (x - E), info = a^2 Var, J = a^3 mu_3
-// (moments of the item score). buf needs room for K doubles.
+// (moments of the item score). buf needs room for K doubles. ll is always
+// computed: next to the K exp() calls its one log() costs little, and a
+// variant without it measured slower.
 inline ItemEval eval_gpcm(double a, const double* delta, int K, int x, double theta, double* buf) {
   double eta = 0.0, m = 0.0;
   buf[0] = 0.0;
@@ -118,10 +125,21 @@ inline ItemEval eval_gpcm(double a, const double* delta, int K, int x, double th
 }
 
 // Item j of the bank at (x, theta); buf needs room for bank.kmax doubles
+template <bool LL = true>
 inline ItemEval eval_item(const ItemBank& bank, int j, int x, double theta, double* buf) {
   const double* thr = &bank.thr[bank.off[j]];
-  if (bank.model[j] == 0) return eval_4pl(bank.a[j], thr[0], bank.c[j], bank.d[j], x, theta);
+  if (bank.model[j] == 0) return eval_4pl<LL>(bank.a[j], thr[0], bank.c[j], bank.d[j], x, theta);
   return eval_gpcm(bank.a[j], thr, bank.ncat[j], x, theta, buf);
+}
+
+// Huber weight of the residual r = a (theta - hub_loc): 1 for |r| <= H, else H / |r|
+inline double huber_w(double r, double H) {
+  const double ar = std::fabs(r);
+  return ar <= H ? 1.0 : H / ar;
+}
+
+inline double huber_item(const ItemBank& bank, int j, double theta, double H) {
+  return huber_w(bank.a[j] * (theta - bank.hub_loc[j]), H);
 }
 
 // All ncat[j] category probabilities of item j at theta, written to p

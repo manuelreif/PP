@@ -2,13 +2,6 @@
 # pp_item_eval_cpp() and pp_catprob_cpp(): ll, score, info, J and the category
 # probabilities against the plain-R references, also in the far tails.
 
-# Item bank of a list of reference items, built by PP's input layer
-kernel_bank <- function(items) {
-  p <- items_to_pp(items)
-  PP:::prepare_items(PP:::normalize_thres(p$thres), p$slopes, p$lowerA, p$upperA,
-                     p$model2est, "mixed")$bank
-}
-
 # Kernel results for every item at every theta, with response x for all items
 # (NA where item j has no category x)
 kernel_eval <- function(bank, theta, x) {
