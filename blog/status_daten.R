@@ -310,14 +310,6 @@ zelle("sonder", fall, "Schätzer", "theta", function() {
 # label ("zeile") or the cell itself ("zelle").
 grund_jk_se <- "Falsche Jackknife-Formel: Der Standardfehler ist um den Faktor L − 1 zu klein."
 ids_bekannt <- rbindlist(list(
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = "MAP", mass = "se", ids = "A7", ort = "spalte",
-             grund = "Die Formel lässt den Prior weg, der Standardfehler ist zu groß."),
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = "Robust", mass = "se", ids = "B2", ort = "spalte",
-             grund = "Die Formel lässt die Huber-Gewichte weg, der Standardfehler ist zu klein."),
-  # no finite estimate (NaN) or oscillation; the SE is then wrong as well
-  data.table(tabelle = "schaetzer", zeile = "*", spalte = c("MLE", "WLE", "Robust", "MLE", "WLE"),
-             mass = c("theta", "theta", "theta", "se", "se"), ids = "A8", ort = "zelle",
-             grund = "Bei einzelnen Personen mit extremem Score pendelt das Newton-Verfahren oder liefert NaN, ohne Warnung."),
   data.table(tabelle = "folge", zeile = "JKpp: JK-Standardfehler (WLE)", spalte = "*", mass = "*", ids = "A1",
              ort = "zeile", grund = grund_jk_se),
   data.table(tabelle = "folge", zeile = "JKpp: JK-Schätzer (EAP)", spalte = "gemischt", mass = "*", ids = "A3",
@@ -332,22 +324,11 @@ ids_bekannt <- rbindlist(list(
   data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = c("JKpp", "PV", "Pfit"),
              mass = "*", ids = c("A13", "A4", "A9"), ort = "zeile",
              grund = "Der Jackknife zählt auch nicht bearbeitete Items mit, PV brechen ab, lz* ist falsch."),
-  data.table(tabelle = "sonder", zeile = "Person ohne Antworten", spalte = "*", mass = "*", ids = "A5", ort = "zeile",
-             grund = "Sie bekommt +Inf statt NA, die nächste Person erbt einen NaN-Startwert."),
   data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = c("PV", "Pfit"), mass = "*",
              ids = c("A4", "A6"), ort = "zeile",
              grund = "PV ignorieren den Prior, die Jackknife-SE von lz rechnet mit der Standardabweichung des Priors statt mit seiner Varianz."),
-  data.table(tabelle = "sonder", zeile = "Duplikat vorne mit killdupli", spalte = c("Schätzer", "JKpp"), mass = "*",
-             ids = c("A5", "A2"), ort = "zeile",
-             grund = "Priors und Jackknife-Ergebnisse landen bei falschen Personen."),
-  data.table(tabelle = "sonder", zeile = "Extremes Item (b = ±40, Slope 20)", spalte = "*", mass = "*", ids = "C1",
-             ort = "zeile", grund = "Überlauf in exp(): Alle Schätzungen werden NaN."),
-  data.table(tabelle = "sonder", zeile = "3PL am Rateniveau (Bench-Daten)", spalte = "*", mass = "*", ids = "A8",
-             ort = "zeile", grund = "Ohne endlichen Schätzer gibt es NaN, sonst pendelt das Newton-Verfahren."),
   data.table(tabelle = "sonder", zeile = "Sehr langer Test (1100 Items)", spalte = "*", mass = "*", ids = "C3",
-             ort = "zeile", grund = "Die Likelihood wird als Produkt gerechnet und läuft gegen 0 (NaN); die übrigen Werte sind ungenau, weil das Gitter mit 60 Knoten zu grob ist."),
-  data.table(tabelle = "sonder", zeile = "Kategorien ≥ 10 mit killdupli", spalte = "*", mass = "*", ids = "A12",
-             ort = "zeile", grund = "Verschiedene Antwortmuster wie (1, 11) und (11, 1) werden als Duplikat zusammengelegt.")
+             ort = "zeile", grund = "Die Likelihood wird als Produkt gerechnet und läuft gegen 0 (NaN); die übrigen Werte sind ungenau, weil das Gitter mit 60 Knoten zu grob ist.")
 ))
 
 st <- rbindlist(zellen)
