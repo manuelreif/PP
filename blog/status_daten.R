@@ -314,21 +314,17 @@ ids_bekannt <- rbindlist(list(
              ort = "zeile", grund = grund_jk_se),
   data.table(tabelle = "folge", zeile = "JKpp: JK-Schätzer (EAP)", spalte = "gemischt", mass = "*", ids = "A3",
              ort = "zelle", grund = "Bricht für gemischte Tests mit EAP ab."),
-  data.table(tabelle = "folge", zeile = "PV: Ziehung aus dem Posterior", spalte = "*", mass = "*", ids = "A4",
-             ort = "zeile", grund = "Der Sampler streut breiter als der Posterior."),
   data.table(tabelle = "folge", zeile = "Pfit: Infit/Outfit", spalte = "GPCM", mass = "*", ids = "A10",
              ort = "zelle", grund = "Rechnet mit Slope 1 statt mit den Slopes der Items."),
   data.table(tabelle = "folge", zeile = c("Pfit: lz", "Pfit: lz*", "Pfit: Infit/Outfit"),
              spalte = "gemischt", mass = "*", ids = "G6", ort = "zelle",
              grund = "Für gemischte Tests gibt es keine Fit-Funktion."),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = c("JKpp", "PV", "Pfit"),
-             mass = "*", ids = c("A13", "A4", "A9"), ort = "zeile",
-             grund = "Der Jackknife zählt auch nicht bearbeitete Items mit, PV brechen ab, lz* ist falsch."),
-  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = c("PV", "Pfit"), mass = "*",
-             ids = c("A4", "A6"), ort = "zeile",
-             grund = "PV ignorieren den Prior, die Jackknife-SE von lz rechnet mit der Standardabweichung des Priors statt mit seiner Varianz."),
-  data.table(tabelle = "sonder", zeile = "Sehr langer Test (1100 Items)", spalte = "*", mass = "*", ids = "C3",
-             ort = "zeile", grund = "Die Likelihood wird als Produkt gerechnet und läuft gegen 0 (NaN); die übrigen Werte sind ungenau, weil das Gitter mit 60 Knoten zu grob ist.")
+  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = c("JKpp", "Pfit"),
+             mass = "*", ids = c("A13", "A9"), ort = "zeile",
+             grund = "Der Jackknife zählt auch nicht bearbeitete Items mit, lz* ist falsch."),
+  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = "Pfit", mass = "*",
+             ids = "A6", ort = "zeile",
+             grund = "Die Jackknife-SE von lz rechnet mit der Standardabweichung des Priors statt mit seiner Varianz.")
 ))
 
 st <- rbindlist(zellen)
