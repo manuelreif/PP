@@ -215,6 +215,8 @@ ko[, fall := sprintf("%s %s", modell, methode)]
 med <- ko[, .(abstand = median(abstand)), by = .(fall, k)]
 sp <- copy(d$stopp)
 sp[, `:=`(abstand = pmax(fehler, boden), fall = sprintf("%s %s", modell, methode))]
+# stop points counted per step and decade of the distance
+sp_n <- sp[, .N, by = .(fall, k, abstand = 10^round(log10(abstand)))]
 sp_med <- sp[, .(median = median(fehler), max = max(fehler)), by = fall]
 sp_med[, text := sprintf("Ergebnis mit exac = %s:\nMedian %s, max. %s", exac_de, zehner(median),
                          zehner(max))]
@@ -223,9 +225,8 @@ p_k <- ggplot(ko, aes(k, abstand)) +
   geom_line(aes(group = person), colour = blau, alpha = 0.08, linewidth = 0.3) +
   geom_line(data = med, colour = dunkel, linewidth = 0.9) +
   geom_point(data = med, colour = dunkel, size = 1.6) +
-  # shifted a little sideways, so the persons with the same k stay visible
-  geom_point(data = sp, colour = akzent, alpha = 0.45, size = 1.1,
-             position = position_jitter(width = 0.15, height = 0, seed = 1)) +
+  geom_point(data = sp_n, aes(size = N), shape = 1, colour = akzent, stroke = 0.7) +
+  scale_size_area(max_size = 7, breaks = c(1, 10, 50, 100), name = "Personen am Ende") +
   geom_text(data = sp_med, aes(x = 12, y = 1, label = text), hjust = 1, vjust = 1, size = 3,
             colour = akzent, family = "Open Sans", lineheight = 0.95) +
   annotate("text", x = 12, y = boden, label = "Rechengenauigkeit erreicht", hjust = 1,
@@ -239,6 +240,7 @@ p_k <- ggplot(ko, aes(k, abstand)) +
     subtitle = "Je Person eine Linie (300 Personen), schwarz: Median, orange: wo der Lauf mit dem Standardwert exac = 0,001 endet",
     x = "Schritt k", y = "|θₖ − θ*|",
     caption = paste(
+      "Ein Kreis fasst die Personen mit gleicher Schrittzahl und gleicher Größenordnung des Abstands zusammen, seine Fläche entspricht ihrer Zahl.",
       "exac begrenzt die Länge des letzten Schritts, nicht den Abstand zur Lösung.",
       "Der letzte Schritt wird noch ausgeführt, deshalb liegt das Ergebnis weit näher an der Lösung.",
       "Der Schritt teilt durch die Testinformation I(θ), nicht durch die exakte Ableitung der Schätzgleichung (Fisher-Scoring).",
@@ -247,4 +249,4 @@ p_k <- ggplot(ko, aes(k, abstand)) +
       stand, sep = "\n")
   ) +
   theme_blog()
-speichere_plot(p_k, sprintf("newton_konvergenz_%s", args$label), width = 10, height = 4.8, dir = ordner)
+speichere_plot(p_k, sprintf("newton_konvergenz_%s", args$label), width = 10, height = 5.8, dir = ordner)
