@@ -32,20 +32,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// P_gpcm
-double P_gpcm(NumericVector delta, double alpha, double theta, int resp);
-RcppExport SEXP _PP_P_gpcm(SEXP deltaSEXP, SEXP alphaSEXP, SEXP thetaSEXP, SEXP respSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type delta(deltaSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type theta(thetaSEXP);
-    Rcpp::traits::input_parameter< int >::type resp(respSEXP);
-    rcpp_result_gen = Rcpp::wrap(P_gpcm(delta, alpha, theta, resp));
-    return rcpp_result_gen;
-END_RCPP
-}
 // NR_GPCM
 List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
 RcppExport SEXP _PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
@@ -103,18 +89,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// sim_4pl
-IntegerMatrix sim_4pl(NumericVector beta, NumericVector alpha, NumericVector lowerA, NumericVector upperA, NumericVector theta);
-RcppExport SEXP _PP_sim_4pl(SEXP betaSEXP, SEXP alphaSEXP, SEXP lowerASEXP, SEXP upperASEXP, SEXP thetaSEXP) {
+// pp_item_eval_cpp
+List pp_item_eval_cpp(List bank, NumericVector theta, IntegerMatrix X);
+RcppExport SEXP _PP_pp_item_eval_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP XSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type beta(betaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type lowerA(lowerASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type upperA(upperASEXP);
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
-    rcpp_result_gen = Rcpp::wrap(sim_4pl(beta, alpha, lowerA, upperA, theta));
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_item_eval_cpp(bank, theta, X));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pp_catprob_cpp
+NumericMatrix pp_catprob_cpp(List bank, NumericVector theta);
+RcppExport SEXP _PP_pp_catprob_cpp(SEXP bankSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_catprob_cpp(bank, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pp_kernel_time_cpp
+double pp_kernel_time_cpp(List bank, NumericVector theta, IntegerMatrix X, int reps);
+RcppExport SEXP _PP_pp_kernel_time_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP XSEXP, SEXP repsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< int >::type reps(repsSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_kernel_time_cpp(bank, theta, X, reps));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pp_sim_cpp
+IntegerMatrix pp_sim_cpp(List bank, NumericVector theta);
+RcppExport SEXP _PP_pp_sim_cpp(SEXP bankSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_sim_cpp(bank, theta));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -133,11 +155,13 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_PP_NR_4PL", (DL_FUNC) &_PP_NR_4PL, 12},
-    {"_PP_P_gpcm", (DL_FUNC) &_PP_P_gpcm, 4},
     {"_PP_NR_GPCM", (DL_FUNC) &_PP_NR_GPCM, 10},
     {"_PP_NR_mixed", (DL_FUNC) &_PP_NR_mixed, 13},
     {"_PP_Likgpcm", (DL_FUNC) &_PP_Likgpcm, 4},
-    {"_PP_sim_4pl", (DL_FUNC) &_PP_sim_4pl, 5},
+    {"_PP_pp_item_eval_cpp", (DL_FUNC) &_PP_pp_item_eval_cpp, 3},
+    {"_PP_pp_catprob_cpp", (DL_FUNC) &_PP_pp_catprob_cpp, 2},
+    {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 4},
+    {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
     {"_PP_ansol", (DL_FUNC) &_PP_ansol, 2},
     {NULL, NULL, 0}
 };

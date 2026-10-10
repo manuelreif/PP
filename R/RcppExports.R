@@ -5,10 +5,6 @@ NR_4PL <- function(awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu,
     .Call(`_PP_NR_4PL`, awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu, sigma2, H)
 }
 
-P_gpcm <- function(delta, alpha, theta, resp) {
-    .Call(`_PP_P_gpcm`, delta, alpha, theta, resp)
-}
-
 NR_GPCM <- function(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H) {
     .Call(`_PP_NR_GPCM`, awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H)
 }
@@ -21,24 +17,20 @@ Likgpcm <- function(awv, DELTA, ALPHA, nodes) {
     .Call(`_PP_Likgpcm`, awv, DELTA, ALPHA, nodes)
 }
 
-#' Simulate data for 1/2/3/4-pl model
-#' 
-#' This function returns a dichotomous matrix of simulated responses under given item and person parameters.
-#'
-#'@param beta A numeric vector which contains the difficulty parameters for each item.
-#'@param alpha A numeric vector, which contains the slope parameters for each item.
-#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item.
-#'@param upperA numeric vector, which contains the upper asymptote parameters for each item.
-#'@param theta A numeric vector which contains person parameters.
-#'
-#'@seealso \link{sim_gpcm}, \link{PP_4pl}
-#'@example ./R/.examples_sim.R
-#'
-#'@author Manuel Reif
-#'
-#' @export
-sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
-    .Call(`_PP_sim_4pl`, beta, alpha, lowerA, upperA, theta)
+pp_item_eval_cpp <- function(bank, theta, X) {
+    .Call(`_PP_pp_item_eval_cpp`, bank, theta, X)
+}
+
+pp_catprob_cpp <- function(bank, theta) {
+    .Call(`_PP_pp_catprob_cpp`, bank, theta)
+}
+
+pp_kernel_time_cpp <- function(bank, theta, X, reps) {
+    .Call(`_PP_pp_kernel_time_cpp`, bank, theta, X, reps)
+}
+
+pp_sim_cpp <- function(bank, theta) {
+    .Call(`_PP_pp_sim_cpp`, bank, theta)
 }
 
 ansol <- function(awm, maxsc) {

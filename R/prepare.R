@@ -180,54 +180,7 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
   }
   storage.mode(respm) <- "integer"
 
-  ## model per item
-  if (family == "mixed") {
-    if (is.null(model2est)) {
-      model2est <- findmodel(thres)
-    }
-    model2est <- unname(as.character(model2est))
-    if (length(model2est) != nitem) {
-      stop("'model2est' must have one entry per item (", nitem, "), not ",
-           length(model2est), ".", call. = FALSE)
-    }
-    bad <- !model2est %in% c("4PL", "GPCM")
-    if (any(bad)) {
-      stop("'model2est' must contain only \"4PL\" or \"GPCM\" (invalid: ",
-           paste0("\"", unique(model2est[bad]), "\"", collapse = ", "), ").", call. = FALSE)
-    }
-    is4pl <- model2est == "4PL"
-  } else {
-    is4pl <- rep(family == "4pl", nitem)
-  }
-  if (any(is4pl & maxsc != 1)) {
-    stop("Item(s) ", paste(which(is4pl & maxsc != 1), collapse = ", "),
-         if (family == "4pl") " have more than one threshold in 'thres'; use PP_gpcm() or PPall() for polytomous items."
-         else " are 4PL items in 'model2est' but have more than two categories in 'thres'.",
-         call. = FALSE)
-  }
-
-  ## item parameters
-  if (is.null(slopes)) slopes <- 1
-  slopes <- recycle_arg(slopes, nitem, "slopes", "items")
-  if (anyNA(slopes) || any(!is.finite(slopes)) || any(slopes <= 0)) {
-    stop("'slopes' must be positive and finite.", call. = FALSE)
-  }
-  if (family != "gpcm") {
-    if (is.null(lowerA)) lowerA <- 0
-    if (is.null(upperA)) upperA <- 1
-    lowerA <- recycle_arg(lowerA, nitem, "lowerA", "items")
-    upperA <- recycle_arg(upperA, nitem, "upperA", "items")
-    if (anyNA(lowerA) || anyNA(upperA)) stop("'lowerA' and 'upperA' must not be NA.", call. = FALSE)
-    bad <- is4pl & !(lowerA >= 0 & lowerA < upperA & upperA <= 1)
-    if (any(bad)) {
-      stop("0 <= lowerA < upperA <= 1 is violated for item(s) ",
-           paste(which(bad), collapse = ", "), ".", call. = FALSE)
-    }
-    if (family == "mixed") {
-      if (any(lowerA[!is4pl] != 0)) warning("At least for one item with #categories > 1, there is an lower asymptote != 0 submitted. This will be ignored.\n")
-      if (any(upperA[!is4pl] != 1)) warning("At least for one item with #categories > 1, there is an upper asymptote != 1 submitted. This will be ignored.\n")
-    }
-  }
+  items <- prepare_items(nt, slopes, lowerA, upperA, model2est, family)
 
   ## person vectors
   if (is.null(mu)) {
@@ -257,10 +210,76 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
   }
 
   list(X = respm, thres = thres, maxsc = maxsc,
-       slopes = slopes, lowerA = lowerA, upperA = upperA,
-       model2est = if (family == "mixed") model2est,
+       slopes = items$slopes, lowerA = items$lowerA, upperA = items$upperA,
+       model2est = items$model2est,
        mu = mu, sigma2 = sigma2, start = theta_start,
        type = type, maxsteps = maxsteps, exac = exac, H = H, ctrl = cont,
+       bank = items$bank)
+}
+
+
+# Check and normalise the item parameters. nt is the result of
+# normalize_thres(); family as in pp_prepare(). Shared by pp_prepare() and the
+# simulators; slope_name is the name of the slope argument in error messages.
+# Returns the recycled slopes/lowerA/upperA (lowerA/upperA stay as passed for
+# "gpcm"), model2est (only for "mixed"), is4pl and the item bank.
+prepare_items <- function(nt, slopes, lowerA, upperA, model2est, family,
+                          slope_name = "slopes") {
+  thres <- nt$thres
+  maxsc <- nt$maxsc
+  nitem <- ncol(thres)
+
+  ## model per item
+  if (family == "mixed") {
+    if (is.null(model2est)) {
+      model2est <- findmodel(thres)
+    }
+    model2est <- unname(as.character(model2est))
+    if (length(model2est) != nitem) {
+      stop("'model2est' must have one entry per item (", nitem, "), not ",
+           length(model2est), ".", call. = FALSE)
+    }
+    bad <- !model2est %in% c("4PL", "GPCM")
+    if (any(bad)) {
+      stop("'model2est' must contain only \"4PL\" or \"GPCM\" (invalid: ",
+           paste0("\"", unique(model2est[bad]), "\"", collapse = ", "), ").", call. = FALSE)
+    }
+    is4pl <- model2est == "4PL"
+  } else {
+    is4pl <- rep(family == "4pl", nitem)
+  }
+  if (any(is4pl & maxsc != 1)) {
+    stop("Item(s) ", paste(which(is4pl & maxsc != 1), collapse = ", "),
+         if (family == "4pl") " have more than one threshold in 'thres'; use PP_gpcm() or PPall() for polytomous items."
+         else " are 4PL items in 'model2est' but have more than two categories in 'thres'.",
+         call. = FALSE)
+  }
+
+  ## item parameters
+  if (is.null(slopes)) slopes <- 1
+  slopes <- recycle_arg(slopes, nitem, slope_name, "items")
+  if (anyNA(slopes) || any(!is.finite(slopes)) || any(slopes <= 0)) {
+    stop("'", slope_name, "' must be positive and finite.", call. = FALSE)
+  }
+  if (family != "gpcm") {
+    if (is.null(lowerA)) lowerA <- 0
+    if (is.null(upperA)) upperA <- 1
+    lowerA <- recycle_arg(lowerA, nitem, "lowerA", "items")
+    upperA <- recycle_arg(upperA, nitem, "upperA", "items")
+    if (anyNA(lowerA) || anyNA(upperA)) stop("'lowerA' and 'upperA' must not be NA.", call. = FALSE)
+    bad <- is4pl & !(lowerA >= 0 & lowerA < upperA & upperA <= 1)
+    if (any(bad)) {
+      stop("0 <= lowerA < upperA <= 1 is violated for item(s) ",
+           paste(which(bad), collapse = ", "), ".", call. = FALSE)
+    }
+    if (family == "mixed") {
+      if (any(lowerA[!is4pl] != 0)) warning("At least for one item with #categories > 1, there is an lower asymptote != 0 submitted. This will be ignored.\n")
+      if (any(upperA[!is4pl] != 1)) warning("At least for one item with #categories > 1, there is an upper asymptote != 1 submitted. This will be ignored.\n")
+    }
+  }
+
+  list(slopes = slopes, lowerA = lowerA, upperA = upperA,
+       model2est = if (family == "mixed") model2est, is4pl = is4pl,
        bank = make_bank_r(thres, maxsc, slopes,
                           if (family == "gpcm") 0 else lowerA,
                           if (family == "gpcm") 1 else upperA, is4pl))
