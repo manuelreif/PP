@@ -63,3 +63,4 @@ Debugging_CPP.R
 bench/output/
 *.duckdb.wal
 blog/output/
+blog/posterior/output/
