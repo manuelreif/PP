@@ -31,11 +31,11 @@ tests[, block := as.integer(sub("^.* - fixed in block ", "", skip))]
 bereiche <- data.table(
   datei = c("test-reference.R", "test-estimate.R", "test-eap.R", "test-pv.R", "test-jackknife.R",
             "test-pfit.R", "test-input.R", "test-prepare.R", "test-sim.R", "test-ppass.R",
-            "tests4pl.R", "testsgpcm.R", "testsgpcm4pl.R", "testsjk.R"),
+            "test-kernel.R", "tests4pl.R", "testsgpcm.R", "testsgpcm4pl.R", "testsjk.R"),
   bereich = c("Referenzen (Selbsttest)", "Schätzer: mle, wle, map, robust", "EAP",
               "Plausible Values", "Jackknife", "Personenfit", "Eingaben und Defaults", "Eingaben und Defaults",
-              "Simulation", "PPass", rep("Alte Tests", 4)),
-  ord = c(1:7, 7:9, rep(10L, 4))
+              "Simulation", "PPass", "Item-Kernel (Numerik)", rep("Alte Tests", 4)),
+  ord = c(1:7, 7:9, 1.5, rep(10, 4))
 )
 tests <- merge(tests, bereiche, by = "datei", all.x = TRUE, sort = FALSE)
 tests[, `:=`(label = args$label, code = code_stand(), zeitpunkt = Sys.time())]
