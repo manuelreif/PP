@@ -56,7 +56,6 @@ test_that("A1: the JK standard error matches the textbook formula", {
 })
 
 test_that("A2: killdupli with a duplicate in front gives the same jackknife", {
-  skip_known("A2", 6)
   s <- set_2pl
   X <- rbind(s$X[1, ], s$X[1:8, ])
   a <- jk_quiet(pp_fit(s, "wle", X = X, ctrl = list(killdupli = TRUE)))

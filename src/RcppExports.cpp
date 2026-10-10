@@ -175,18 +175,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ansol
-NumericMatrix ansol(IntegerMatrix awm, IntegerVector maxsc);
-RcppExport SEXP _PP_ansol(SEXP awmSEXP, SEXP maxscSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type maxsc(maxscSEXP);
-    rcpp_result_gen = Rcpp::wrap(ansol(awm, maxsc));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_PP_NR_4PL", (DL_FUNC) &_PP_NR_4PL, 12},
@@ -199,7 +187,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 5},
     {"_PP_pp_estimate_cpp", (DL_FUNC) &_PP_pp_estimate_cpp, 11},
     {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
-    {"_PP_ansol", (DL_FUNC) &_PP_ansol, 2},
     {NULL, NULL, 0}
 };
 

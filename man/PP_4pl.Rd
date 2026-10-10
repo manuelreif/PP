@@ -14,10 +14,12 @@ PP_4pl(
   mu = NULL,
   sigma2 = NULL,
   type = "wle",
-  maxsteps = 40,
+  maxsteps = 100,
   exac = 0.001,
   H = 1,
-  ctrl = list()
+  ctrl = list(),
+  range = c(-6, 6),
+  verbose = FALSE
 )
 }
 \arguments{
@@ -39,9 +41,9 @@ PP_4pl(
 
 \item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases.}
 
-\item{maxsteps}{The maximum number of steps the NR Algorithm will take. Default = 100.}
+\item{maxsteps}{The maximum number of Newton steps per person. Default = 100.}
 
-\item{exac}{How accurate are the estimates supposed to be? Default is 0.001.}
+\item{exac}{How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.}
 
 \item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
@@ -52,9 +54,29 @@ PP_4pl(
 \item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 
 }}
+
+\item{range}{The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.}
+
+\item{verbose}{If \code{TRUE}, a message names the model and the estimation type. Default \code{FALSE}.}
 }
 \value{
-The function returns a list with the estimation results and pretty much everything which has been submitted to fit the model. The estimation results can be found in \code{OBJ$resPP}. The core result is a number_of_persons x 2 matrix, which contains the ability estimate and the SE for each submitted person.
+An object of class \code{ppeo} (and \code{fourpl}, \code{gpcm} or \code{gpcm4pl}), a list with
+\describe{
+\item{\code{estimates}}{A data.frame with one row per person (row names from \code{respm}): \code{estimate}, \code{SE}, \code{nsteps} (Newton steps of the person; 0 for eap) and \code{status}, a factor with the levels
+\itemize{
+\item \code{"ok"}: converged inside \code{range},
+\item \code{"extreme"}: mle or robust estimate of a person with all answers in the lowest or highest category, the estimate is \code{-Inf} or \code{Inf} and the SE \code{NA},
+\item \code{"boundary"}: the estimating equation has no root inside \code{range}, the estimate is the bound,
+\item \code{"no_response"}: the person answered no item, estimate and SE are \code{NA} (eap: prior mean and SD),
+\item \code{"not_converged"}: no convergence within \code{maxsteps}.
+}
+A warning reports persons with status \code{"boundary"} or \code{"not_converged"}.}
+\item{\code{type}, \code{call}}{The estimation type and the call.}
+\item{\code{model}}{The checked and prepared inputs.}
+\item{\code{resPP}}{The result in the layout of earlier versions: \code{resPP$resPP} is the persons x 2 matrix of estimates and SEs, \code{resPP$nsteps} the largest number of steps.}
+\item{\code{ipar}}{The inputs in the layout of earlier versions; used internally by \code{JKpp}, \code{PV} and \code{Pfit}.}
+}
+Use \code{coef()} for the estimates and \code{as.data.frame()} for the table.
 }
 \description{
 Compute Person Parameters for the 1/2/3/4-PL model and choose between five common estimation techniques: ML, WL, MAP, EAP and a robust estimation. All item parameters are treated as fixed.

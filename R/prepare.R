@@ -127,6 +127,7 @@ pp_types <- c("mle", "wle", "map", "eap", "robust")
 pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
                        model2est = NULL, mu = NULL, sigma2 = NULL, theta_start = NULL,
                        type = "wle", maxsteps = 100, exac = 0.001, H = 1, ctrl = list(),
+                       range = c(-6, 6), verbose = FALSE,
                        family = c("4pl", "gpcm", "mixed")) {
   family <- match.arg(family)
 
@@ -149,6 +150,10 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
   check_scalar(maxsteps, "maxsteps", whole = TRUE)
   check_scalar(exac, "exac")
   check_scalar(H, "H")
+  if (!is.numeric(range) || length(range) != 2 || any(!is.finite(range)) || range[1] >= range[2]) {
+    stop("'range' must be c(lower, upper) with finite lower < upper.", call. = FALSE)
+  }
+  if (!isTRUE(verbose) && !isFALSE(verbose)) stop("'verbose' must be TRUE or FALSE.", call. = FALSE)
 
   ## responses
   if (is.data.frame(respm)) respm <- as.matrix(respm)
@@ -182,15 +187,9 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
 
   items <- prepare_items(nt, slopes, lowerA, upperA, model2est, family)
 
-  ## person vectors
-  if (is.null(mu)) {
-    mu <- rep(0, N)
-    if (type %in% c("map", "eap")) warning("all mu's are set to 0! \n")
-  }
-  if (is.null(sigma2)) {
-    sigma2 <- rep(1, N)
-    if (type %in% c("map", "eap")) warning("all sigma2's are set to 1! \n")
-  }
+  ## person vectors; the standard normal prior is the documented default
+  if (is.null(mu)) mu <- 0
+  if (is.null(sigma2)) sigma2 <- 1
   mu <- recycle_arg(mu, N, "mu", "persons")
   sigma2 <- recycle_arg(sigma2, N, "sigma2", "persons")
   if (anyNA(mu) || any(!is.finite(mu))) stop("'mu' must be finite.", call. = FALSE)
@@ -198,10 +197,10 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
     stop("'sigma2' must be positive and finite.", call. = FALSE)
   }
 
-  ## starting values: mean difficulty of the answered items
+  ## starting values; NA lets the estimator start at the logit of the
+  ## relative score
   if (is.null(theta_start)) {
-    thresv <- thres[2, ]
-    theta_start <- apply(respm, 1, function(st) mean(thresv[!is.na(st)]))
+    theta_start <- rep(NA_real_, N)
   } else {
     theta_start <- recycle_arg(theta_start, N, "theta_start", "persons")
     if (anyNA(theta_start) || any(!is.finite(theta_start))) {
@@ -213,8 +212,8 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
        slopes = items$slopes, lowerA = items$lowerA, upperA = items$upperA,
        model2est = items$model2est,
        mu = mu, sigma2 = sigma2, start = theta_start,
-       type = type, maxsteps = maxsteps, exac = exac, H = H, ctrl = cont,
-       bank = items$bank)
+       type = type, maxsteps = maxsteps, exac = exac, H = H, range = as.numeric(range),
+       verbose = verbose, ctrl = cont, family = family, bank = items$bank)
 }
 
 

@@ -41,7 +41,3 @@ pp_sim_cpp <- function(bank, theta) {
     .Call(`_PP_pp_sim_cpp`, bank, theta)
 }
 
-ansol <- function(awm, maxsc) {
-    .Call(`_PP_ansol`, awm, maxsc)
-}
-

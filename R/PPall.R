@@ -19,8 +19,8 @@
 #'
 #'@param model2est A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}. A \code{"4PL"} item must have exactly two categories in \code{thres}. If \code{NULL} (default), \code{\link{findmodel}(thres)} is used.
 #'
-#'@param maxsteps The maximum number of steps the NR algorithm will take. Default = 100.
-#'@param exac How accurate are the estimates supposed to be? Default is 0.001.
+#'@param maxsteps The maximum number of Newton steps per person. Default = 100.
+#'@param exac How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
 #'@param ctrl More controls:
 #'
@@ -30,6 +30,8 @@
 #'\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 #'
 #'}
+#'@param range The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.
+#'@param verbose If \code{TRUE}, a message names the model and the estimation type. Default \code{FALSE}.
 #'
 #'@template resulttemplate
 #'
@@ -67,143 +69,17 @@
 #'
 PPall <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL, theta_start=NULL,
                   mu = NULL, sigma2 = NULL, type="wle", model2est = NULL,
-                  maxsteps=100, exac=0.001, H=1, ctrl=list())
+                  maxsteps=100, exac=0.001, H=1, ctrl=list(), range = c(-6, 6), verbose = FALSE)
 {
-### 
-call <- match.call()  
-attr(call, "date") <- date() 
-attr(call,"version") <- packageVersion("PP")
-###
+  call <- match.call()
+  attr(call, "date") <- date()
+  attr(call, "version") <- packageVersion("PP")
 
-
-## --------- check and normalise all inputs
-prep <- pp_prepare(respm, thres, slopes = slopes, lowerA = lowerA, upperA = upperA,
-                   model2est = model2est, mu = mu, sigma2 = sigma2,
-                   theta_start = theta_start, type = type, maxsteps = maxsteps,
-                   exac = exac, H = H, ctrl = ctrl, family = "mixed")
-respm <- prep$X
-thres <- prep$thres
-maxsc <- prep$maxsc
-slopes <- prep$slopes
-lowerA <- prep$lowerA
-upperA <- prep$upperA
-model2est <- prep$model2est
-mu <- prep$mu
-sigma2 <- prep$sigma2
-theta_start <- prep$start
-type <- prep$type
-cont <- prep$ctrl
-
-## ----------------------
-
-
-
-# ----- MLE: Inf and NA ---------------#
-if(type=="mle" | type=="robust")
-  {
-    resPPx <- ansol(respm,maxsc)  
-    respm <- respm[!is.na(resPPx[,2]),,drop=FALSE]
-  }
-
-
-
-# ----- remove duplicated -------------# 
-
-if(cont$killdupli)
-  {
-  # this vector contains the indices, to recreate the large matrix in the end of the estimation
-  dupvec <- make_dup(respm)
-  respm <- respm[dupvec$ndpat,,drop=FALSE]
-  }
-
-
-# ----- estimation procedure -------------# 
-
-    
-
-       
-modelcat <- paste(unique(model2est),collapse=", ")
-
-cat("Estimating: mixed ",modelcat, "... \n")
-cat("type =",type,"\n")
-
-
-
-if(type %in% c("mle","wle","map"))
-  {
-    # ----- estimation procedure -------------# 
-    
-    resPP <-  NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA = lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H)
-    
-    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
-    
-  } else if(type == "robust")
-  {
-    warning("Robust estimation for GPCM is still very experimental! \n")
-    
-    resPP <- NR_mixed(respm,DELTA = thres,ALPHA = slopes, LOWA= lowerA, UPPA = upperA, THETA = theta_start,model=model2est, wm=type,maxsteps,exac,mu,sigma2,H=H) 
-    
-    resPP$resPP[,2] <- sqrt(resPP$resPP[,2])
-    
-  } else if(type == "eap")
-    {
-      resPP <- list()
-      resPP$resPP <- eap_mixed(respm, thres, slopes, lowerA=lowerA,
-                               upperA=upperA, mu = mu, sigma2 = sigma2, model2est=model2est)
-      resPP$nsteps <- 0    
-    }
-
-
-  
-
-### result preperation --------------------------
-
-if(cont$killdupli)
-  {
-   resPP$resPP <- resPP$resPP[dupvec$posvec,]
-  }
-
-if(type=="mle" | type=="robust")
-  {
-   resPPx[!is.na(resPPx[,2]),] <- resPP$resPP
-   resPP$resPP <- resPPx
-  }
-
-## ---------------------------------------------
-
-colnames(resPP$resPP) <- c("estimate","SE")
-
-ipar <- list(respm=respm,thres=thres,slopes=slopes,lowerA=lowerA,
-             upperA=upperA,theta_start=theta_start,mu=mu,sigma2=sigma2,
-             cont=cont,model2est=model2est,H=H)
-
-
-if(cont$killdupli)
-  {
-    ipar$dupvec <- dupvec 
-  }
-
-
-## ---------------------------------------------
-cat("Estimation finished!\n")
-rescall <- list(resPP=resPP,call=call,type=type,ipar=ipar)
-class(rescall) <- c("gpcm4pl","ppeo")
-
-  
-
-
-return(rescall)
+  prep <- pp_prepare(respm, thres, slopes = slopes, lowerA = lowerA, upperA = upperA,
+                     model2est = model2est, mu = mu, sigma2 = sigma2,
+                     theta_start = theta_start, type = type, maxsteps = maxsteps,
+                     exac = exac, H = H, ctrl = ctrl, range = range, verbose = verbose,
+                     family = "mixed")
+  pp_estimate(prep, call, "gpcm4pl",
+              paste("mixed", paste(unique(prep$model2est), collapse = ", ")))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

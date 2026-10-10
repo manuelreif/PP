@@ -47,21 +47,27 @@ expect_close <- function(actual, expected, tol = 1e-3) {
 }
 
 # Run a PP call without its cat() output and without the warnings PP gives in
-# the documented standard case (default prior, robust GPCM). All other warnings
-# stay visible.
-pp_noise <- c("all mu's are set to 0", "all sigma2's are set to 1",
-              "Robust estimation for GPCM is still very experimental")
+# expected cases: robust GPCM, and persons whose estimate is set to the bound of
+# 'range' (the test sets contain such persons on purpose; test-object.R checks
+# this warning). All other warnings stay visible.
+pp_noise <- c("Robust estimation for GPCM is still very experimental",
+              "person(s) without a solution inside 'range'")
 
 pp_quiet <- function(expr) {
   out <- NULL
   utils::capture.output(
     out <- withCallingHandlers(expr, warning = function(w) {
-      if (any(startsWith(conditionMessage(w), pp_noise))) invokeRestart("muffleWarning")
+      if (any(vapply(pp_noise, grepl, TRUE, x = conditionMessage(w), fixed = TRUE))) {
+        invokeRestart("muffleWarning")
+      }
     })
   )
   out
 }
 
-# Estimates and SEs (n x 2 matrix) of a PP result. The only place to change
-# when the result object gets $estimates (block 4).
-est <- function(obj) obj$resPP$resPP
+# Estimates and SEs (n x 2 matrix with the row names of respm) of a PP result
+est <- function(obj) {
+  m <- as.matrix(obj$estimates[, c("estimate", "SE")])
+  if (is.null(rownames(obj$model$X))) rownames(m) <- NULL
+  m
+}
