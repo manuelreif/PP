@@ -133,11 +133,7 @@ bild <- function(kk) {
       title = "Das gesicherte Newton-Verfahren kommt an",
       subtitle = sprintf("%s · links das alte Verfahren, das zwischen drei Werten pendelt, in der Mitte das neue mit seinem Suchintervall (blau)",
                          pe$beschreibung),
-      caption = paste(
-        "Ein Newton-Schritt wird nur genommen, wenn er im Intervall bleibt und höchstens halb so lang ist wie der vorletzte, sonst wird das Intervall halbiert.",
-        sprintf("Jeder Schritt verkleinert das Intervall. Schluss ist, wenn ein Schritt kürzer als exac = %s ist: exac begrenzt die Länge des letzten Schritts, nicht den Abstand zur Lösung.", exac_de),
-        "Schwarzer Punkt: Lösung (Referenz per uniroot). Die y-Achse der beiden linken Felder ist um null gestreckt.",
-        stand, sep = "\n"),
+      caption = stand,
       theme = theme_blog()
     )
 }
@@ -173,7 +169,6 @@ median_s <- st[status == "ok", .(median = median(nsteps), max = max(nsteps)), by
 methoden <- c("MLE", "WLE", "MAP")
 for (dt in list(anteile, alt_s, median_s)) dt[, methode := factor(methode, levels = methoden)]
 
-ohne <- st[, mean(status != "ok")]
 p_s <- ggplot(anteile, aes(nsteps, anteil)) +
   geom_col(width = 0.8, fill = blau) +
   # the longest persons are too few for a visible bar
@@ -193,14 +188,7 @@ p_s <- ggplot(anteile, aes(nsteps, anteil)) +
     subtitle = sprintf("Anteil der Personen je Zahl der Schritte · die meisten sind nach %s Schritten fertig",
                        paste(sort(unique(median_s$median)), collapse = " bis ")),
     x = "Schritte bis zur Konvergenz", y = "Anteil der Personen",
-    caption = paste(
-      "1PL bis 3PL: 5000 Personen × 40 Items, GPCM: 2000 Personen × 20 Items (simuliert), exac = 0,001.",
-      "Blaues Dreieck: die Person mit den meisten Schritten.",
-      sprintf("Personen mit Extremscore oder Lösung am Rand (insgesamt %s %%) brauchen keinen Schritt und fehlen hier.",
-              zahl_de(100 * ohne, 1)),
-      "Orange: PP 0.6.4-1 iterierte alle Personen gemeinsam, jede Person bekam so viele Schritte wie die langsamste.",
-      "Bei 3PL MLE/WLE brach es nach 40 Schritten (maxsteps) ab, ohne zu konvergieren. GPCM MAP wurde damals nicht gemessen.",
-      stand, sep = "\n")
+    caption = stand
   ) +
   theme_blog() +
   theme(panel.spacing = unit(0.8, "lines"))
@@ -239,14 +227,7 @@ p_k <- ggplot(ko, aes(k, abstand)) +
     title = "Wie schnell der Abstand zur Lösung schrumpft",
     subtitle = "Je Person eine Linie (300 Personen), schwarz: Median, orange: wo der Lauf mit dem Standardwert exac = 0,001 endet",
     x = "Schritt k", y = "|θₖ − θ*|",
-    caption = paste(
-      "Ein Kreis fasst die Personen mit gleicher Schrittzahl und gleicher Größenordnung des Abstands zusammen, seine Fläche entspricht ihrer Zahl.",
-      "exac begrenzt die Länge des letzten Schritts, nicht den Abstand zur Lösung.",
-      "Der letzte Schritt wird noch ausgeführt, deshalb liegt das Ergebnis weit näher an der Lösung.",
-      "Der Schritt teilt durch die Testinformation I(θ), nicht durch die exakte Ableitung der Schätzgleichung (Fisher-Scoring).",
-      "Nur bei MLE im 1PL/2PL sind beide gleich, dann ist es das echte Newton-Verfahren: Die Zahl richtiger Stellen verdoppelt sich pro Schritt.",
-      "Sonst gewinnt es etwa anderthalb Stellen pro Schritt. θ* = Ergebnis mit exac = 10⁻¹², Personen mit Extremscore oder Lösung am Rand sind weggelassen.",
-      stand, sep = "\n")
+    caption = stand
   ) +
   theme_blog()
 speichere_plot(p_k, sprintf("newton_konvergenz_%s", args$label), width = 10, height = 5.8, dir = ordner)
