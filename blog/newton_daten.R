@@ -2,7 +2,7 @@
 #
 #   Rscript blog/newton_daten.R [--label=block4]
 #
-# Writes blog/output/newton_<label>.rds, a list with
+# Writes blog/output/newton_konvergenz/newton_<label>.rds, a list with
 #   pendel     the oscillating 3PL person of fehler_newton (score 0, WLE): the
 #              iterates of PP 0.6.4-1 (from fehlerbilder_block1.rds) and of the
 #              new estimator with their bracket, the curve f(theta) and the root
@@ -111,7 +111,9 @@ konvergenz <- rbindlist(lapply(konv_faelle, function(fa) {
   }))
 }))
 
-out <- file.path(blog_out, sprintf("newton_%s.rds", args$label))
+ordner <- file.path(blog_out, "newton_konvergenz")
+dir.create(ordner, showWarnings = FALSE, recursive = TRUE)
+out <- file.path(ordner, sprintf("newton_%s.rds", args$label))
 saveRDS(list(pendel = pendel, schritte = schritte, alt_schritte = alt_schritte,
              konvergenz = konvergenz, exac = 0.001, code = code_stand(), zeitpunkt = Sys.time()),
         out)

@@ -102,12 +102,12 @@ theme_blog <- function(base_size = 12) {
     )
 }
 
-# Saves a ggplot as PNG and SVG under blog/output/
-speichere_plot <- function(p, name, width = 8, height = 5) {
-  dir.create(blog_out, showWarnings = FALSE, recursive = TRUE)
-  png_file <- file.path(blog_out, paste0(name, ".png"))
+# Saves a ggplot as PNG and SVG under blog/output/ (or the folder dir)
+speichere_plot <- function(p, name, width = 8, height = 5, dir = blog_out) {
+  dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+  png_file <- file.path(dir, paste0(name, ".png"))
   ggplot2::ggsave(png_file, p, width = width, height = height, dpi = 200, bg = "white")
-  ggplot2::ggsave(file.path(blog_out, paste0(name, ".svg")), p, width = width, height = height,
+  ggplot2::ggsave(file.path(dir, paste0(name, ".svg")), p, width = width, height = height,
                   device = svglite::svglite, bg = "white")
   message("gespeichert: ", png_file, " (+ .svg)")
 }

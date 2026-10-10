@@ -6,7 +6,7 @@
 #
 #   Rscript blog/newton.R [--label=block4]
 #
-# Reads blog/output/newton_<label>.rds (blog/newton_daten.R).
+# Reads and writes in blog/output/newton_konvergenz/ (data: blog/newton_daten.R).
 
 suppressPackageStartupMessages({
   library(ggplot2)
@@ -14,7 +14,8 @@ suppressPackageStartupMessages({
 })
 source("blog/gemeinsam.R")
 args <- blog_args()
-d <- readRDS(file.path(blog_out, sprintf("newton_%s.rds", args$label)))
+ordner <- file.path(blog_out, "newton_konvergenz")
+d <- readRDS(file.path(ordner, sprintf("newton_%s.rds", args$label)))
 dunkel <- "#1F2328"
 blau <- "#0969DA"
 stand <- sprintf("Stand: %s.", gsub("`", "", d$code))
@@ -136,10 +137,11 @@ for (k in 0:K) {
 # 0.9 s per step, the start and the last frame stand longer
 anim <- magick::image_read(frames[c(1, 1, seq_along(frames), rep(length(frames), 4))])
 anim <- magick::image_animate(anim, delay = 90, optimize = TRUE)
-gif <- file.path(blog_out, sprintf("newton_gesichert_%s.gif", args$label))
+gif <- file.path(ordner, sprintf("newton_gesichert_%s.gif", args$label))
 magick::image_write(anim, gif)
 message("gespeichert: ", gif, " (", round(file.size(gif) / 1e6, 2), " MB, ", length(frames), " Schritte)")
-speichere_plot(bild(K), sprintf("newton_gesichert_%s", args$label), width = breite_in, height = hoehe_in)
+speichere_plot(bild(K), sprintf("newton_gesichert_%s", args$label), width = breite_in, height = hoehe_in,
+               dir = ordner)
 
 # --- newton_schritte -------------------------------------------------------
 
@@ -186,7 +188,7 @@ p_s <- ggplot(anteile, aes(nsteps, anteil)) +
   ) +
   theme_blog() +
   theme(panel.spacing = unit(0.8, "lines"))
-speichere_plot(p_s, sprintf("newton_schritte_%s", args$label), width = 9, height = 8)
+speichere_plot(p_s, sprintf("newton_schritte_%s", args$label), width = 9, height = 8, dir = ordner)
 
 # --- newton_konvergenz -----------------------------------------------------
 
@@ -226,4 +228,4 @@ p_k <- ggplot(ko, aes(k, abstand)) +
       stand, sep = "\n")
   ) +
   theme_blog()
-speichere_plot(p_k, sprintf("newton_konvergenz_%s", args$label), width = 10, height = 4.8)
+speichere_plot(p_k, sprintf("newton_konvergenz_%s", args$label), width = 10, height = 4.8, dir = ordner)
