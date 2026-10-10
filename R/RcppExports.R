@@ -25,6 +25,10 @@ pp_catprob_cpp <- function(bank, theta) {
     .Call(`_PP_pp_catprob_cpp`, bank, theta)
 }
 
+pp_logcatprob_cpp <- function(bank, theta) {
+    .Call(`_PP_pp_logcatprob_cpp`, bank, theta)
+}
+
 pp_huber_cpp <- function(bank, theta, H) {
     .Call(`_PP_pp_huber_cpp`, bank, theta, H)
 }
@@ -35,6 +39,10 @@ pp_kernel_time_cpp <- function(bank, theta, X, reps, ll = TRUE) {
 
 pp_estimate_cpp <- function(bank, X, method, mu, sigma2, H, start, range, exac, maxsteps, skip_item = 0L) {
     .Call(`_PP_pp_estimate_cpp`, bank, X, method, mu, sigma2, H, start, range, exac, maxsteps, skip_item)
+}
+
+pp_posterior_cpp <- function(bank, X, mu, sigma2, npv = 0L, max_table = 16777216.0) {
+    .Call(`_PP_pp_posterior_cpp`, bank, X, mu, sigma2, npv, max_table)
 }
 
 pp_sim_cpp <- function(bank, theta) {

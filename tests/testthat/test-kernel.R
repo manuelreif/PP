@@ -44,6 +44,27 @@ test_that("the category probabilities match ref_catprob and sum to 1", {
   expect_close(t(rowsum(t(P), item_of)), matrix(1, length(theta_grid), length(ncat)), tol = 1e-12)
 })
 
+test_that("the log category probabilities match the kernel ll, also in the far tails", {
+  items <- c(kernel_items, list(item_4pl(1, 0), item_4pl(1, 0, 0.2, 0.9)))
+  bank <- kernel_bank(items)
+  ncat <- vapply(items, ref_ncat, 1L)
+  item_of <- rep(seq_along(ncat), ncat)
+  cat_of <- sequence(ncat) - 1L
+  for (th in list(theta_grid, c(-800, -50, 50, 800))) {
+    lp <- PP:::pp_logcatprob_cpp(bank, th)
+    expect_identical(dim(lp), c(length(th), sum(ncat)))
+    expect_true(all(is.finite(lp)))
+    # the same value as the ll of the kernel for each category
+    for (x in 0:(max(ncat) - 1)) {
+      r <- kernel_eval(bank, th, x)
+      cols <- which(cat_of == x)
+      expect_identical(lp[, cols], r$ll[, item_of[cols]])
+    }
+  }
+  expect_close(exp(PP:::pp_logcatprob_cpp(bank, theta_grid)), PP:::pp_catprob_cpp(bank, theta_grid),
+               tol = 1e-12)
+})
+
 test_that("an item gives the same values alone and inside a mixed bank", {
   items <- list(set_gpcm12$items[[1]], item_4pl(1.3, 0.4, 0.25, 0.9),
                 item_gpcm(0.8, c(-1, 0.5)), item_4pl(1, -0.7))

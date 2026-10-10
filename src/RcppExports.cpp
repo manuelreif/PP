@@ -114,6 +114,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pp_logcatprob_cpp
+NumericMatrix pp_logcatprob_cpp(List bank, NumericVector theta);
+RcppExport SEXP _PP_pp_logcatprob_cpp(SEXP bankSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_logcatprob_cpp(bank, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pp_huber_cpp
 NumericMatrix pp_huber_cpp(List bank, NumericVector theta, double H);
 RcppExport SEXP _PP_pp_huber_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP HSEXP) {
@@ -163,6 +175,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pp_posterior_cpp
+List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVector sigma2, int npv, double max_table);
+RcppExport SEXP _PP_pp_posterior_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP npvSEXP, SEXP max_tableSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
+    Rcpp::traits::input_parameter< int >::type npv(npvSEXP);
+    Rcpp::traits::input_parameter< double >::type max_table(max_tableSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_posterior_cpp(bank, X, mu, sigma2, npv, max_table));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pp_sim_cpp
 IntegerMatrix pp_sim_cpp(List bank, NumericVector theta);
 RcppExport SEXP _PP_pp_sim_cpp(SEXP bankSEXP, SEXP thetaSEXP) {
@@ -183,9 +211,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PP_Likgpcm", (DL_FUNC) &_PP_Likgpcm, 4},
     {"_PP_pp_item_eval_cpp", (DL_FUNC) &_PP_pp_item_eval_cpp, 3},
     {"_PP_pp_catprob_cpp", (DL_FUNC) &_PP_pp_catprob_cpp, 2},
+    {"_PP_pp_logcatprob_cpp", (DL_FUNC) &_PP_pp_logcatprob_cpp, 2},
     {"_PP_pp_huber_cpp", (DL_FUNC) &_PP_pp_huber_cpp, 3},
     {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 5},
     {"_PP_pp_estimate_cpp", (DL_FUNC) &_PP_pp_estimate_cpp, 11},
+    {"_PP_pp_posterior_cpp", (DL_FUNC) &_PP_pp_posterior_cpp, 6},
     {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
     {NULL, NULL, 0}
 };

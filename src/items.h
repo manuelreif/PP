@@ -60,6 +60,17 @@ inline ItemBank make_bank(const Rcpp::List& b) {
   return bank;
 }
 
+// log P (x = 1) or log Q (x = 0) of a 4PL item, from z0 = a (theta - b)
+// unclamped, e = exp(-|z|) of the clamped z and P, Q, s as in eval_4pl.
+// Without an asymptote, log P = log s + log p with log p = min(z0, 0) -
+// log1p(e) (log q likewise), so the log-likelihood stays exact in the tails.
+inline double log_pq_4pl(int x, double z0, double e, double c, double d, double s,
+                         double P, double Q) {
+  const double ls = s == 1.0 ? 0.0 : std::log(s);
+  if (x) return c == 0.0 ? ls + std::min(z0, 0.0) - std::log1p(e) : std::log(P);
+  return d == 1.0 ? ls + std::min(-z0, 0.0) - std::log1p(e) : std::log(Q);
+}
+
 // 4PL: P = c + s p, Q = (1 - d) + s q with p = plogis(z), q = plogis(-z), s = d - c.
 // Q is never computed as 1 - P. With P' = a s p q and P'' = a (q - p) P':
 //   score = (x - P) P' / (P Q), info = P'^2 / (P Q), J = P' P'' / (P Q).
@@ -83,12 +94,7 @@ inline ItemEval eval_4pl(double a, double b, double c, double d, int x, double t
   r.score = x ? a * s * q * rp : -a * s * p * rq;
   r.J     = a * (q - p) * r.info;
   r.ll    = 0.0;
-  if (!LL) return r;
-  // Without an asymptote, log P = log s + log p with log p = min(z0, 0) - log1p(e)
-  // (log q likewise), from the unclamped z0, so ll stays exact in the tails
-  const double ls = s == 1.0 ? 0.0 : std::log(s);
-  if (x) r.ll = c == 0.0 ? ls + std::min(z0, 0.0) - std::log1p(e)  : std::log(P);
-  else   r.ll = d == 1.0 ? ls + std::min(-z0, 0.0) - std::log1p(e) : std::log(Q);
+  if (LL) r.ll = log_pq_4pl(x, z0, e, c, d, s, P, Q);
   return r;
 }
 
@@ -167,6 +173,37 @@ inline void cat_probs(const ItemBank& bank, int j, double theta, double* p) {
   double sum = 0.0;
   for (int k = 0; k < K; ++k) { p[k] = std::exp(p[k] - m); sum += p[k]; }
   for (int k = 0; k < K; ++k) p[k] /= sum;
+}
+
+// All ncat[j] log category probabilities of item j at theta, written to lp;
+// exact in the tails (4PL as in eval_4pl, GPCM by log-sum-exp)
+inline void log_cat_probs(const ItemBank& bank, int j, double theta, double* lp) {
+  const double a = bank.a[j];
+  const double* thr = &bank.thr[bank.off[j]];
+  if (bank.model[j] == 0) {
+    const double z0 = a * (theta - thr[0]);
+    const double z  = std::min(700.0, std::max(-700.0, z0));
+    const double e  = std::exp(-std::fabs(z));
+    const double hi = 1.0 / (1.0 + e), lo = e * hi;
+    const double c = bank.c[j], d = bank.d[j], s = d - c;
+    const double P = c + s * (z >= 0 ? hi : lo);
+    const double Q = (1.0 - d) + s * (z >= 0 ? lo : hi);
+    lp[0] = log_pq_4pl(0, z0, e, c, d, s, P, Q);
+    lp[1] = log_pq_4pl(1, z0, e, c, d, s, P, Q);
+    return;
+  }
+  const int K = bank.ncat[j];
+  double eta = 0.0, m = 0.0;
+  lp[0] = 0.0;
+  for (int k = 1; k < K; ++k) {
+    eta += a * (theta - thr[k - 1]);
+    lp[k] = eta;
+    m = std::max(m, eta);
+  }
+  double sum = 0.0;
+  for (int k = 0; k < K; ++k) sum += std::exp(lp[k] - m);
+  const double ls = std::log(sum);
+  for (int k = 0; k < K; ++k) lp[k] = lp[k] - m - ls;   // as the ll of eval_gpcm
 }
 
 #endif

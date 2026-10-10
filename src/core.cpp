@@ -50,6 +50,25 @@ NumericMatrix pp_catprob_cpp(List bank, NumericVector theta) {
   return out;
 }
 
+// Log category probabilities, in the layout of pp_catprob_cpp()
+// [[Rcpp::export]]
+NumericMatrix pp_logcatprob_cpp(List bank, NumericVector theta) {
+  const ItemBank b = make_bank(bank);
+  const int N = theta.size();
+  int ntot = 0;
+  for (int j = 0; j < b.n; ++j) ntot += b.ncat[j];
+  NumericMatrix out(N, ntot);
+  std::vector<double> lp(b.kmax);
+  for (int i = 0; i < N; ++i) {
+    int col = 0;
+    for (int j = 0; j < b.n; ++j) {
+      log_cat_probs(b, j, theta[i], lp.data());
+      for (int k = 0; k < b.ncat[j]; ++k) out(i, col++) = lp[k];
+    }
+  }
+  return out;
+}
+
 template <bool LL>
 double kernel_time(List bank, NumericVector theta, IntegerMatrix X, int reps) {
   const ItemBank b = make_bank(bank);
@@ -151,6 +170,23 @@ struct Person {
   }
 };
 
+// The responses person by person (row-major copy of X), checked once. Item
+// skip (0-based, -1 = none) is set to NA, as in a jackknife subsample.
+static std::vector<int> response_rows(const ItemBank& b, const IntegerMatrix& X, int skip) {
+  const int N = X.nrow(), J = X.ncol();
+  std::vector<int> xr(static_cast<size_t>(N) * J);
+  for (int j = 0; j < J; ++j) {
+    for (int i = 0; i < N; ++i) {
+      const int v = X(i, j);
+      if (v != NA_INTEGER && (v < 0 || v >= b.ncat[j])) {
+        stop("response %d of person %d to item %d is not a category of the item", v, i + 1, j + 1);
+      }
+      xr[static_cast<size_t>(i) * J + j] = (j == skip) ? NA_INTEGER : v;
+    }
+  }
+  return xr;
+}
+
 // Safeguarded Newton (Fisher scoring) on the bracket [lo, hi] with f(lo) > 0 >
 // f(hi), as in rtsafe: a scoring step is taken only if it stays inside the
 // bracket and is at most half as long as the step before last; otherwise the
@@ -216,19 +252,7 @@ List pp_estimate_cpp(List bank, IntegerMatrix X, std::string method, NumericVect
   else if (method == "map") m = M_MAP;
   else if (method == "robust") m = M_ROBUST;
   else stop("unknown method '%s'", method);
-  const int skip = skip_item - 1;
-
-  // responses person by person (row-major copy), checked once
-  std::vector<int> xr(static_cast<size_t>(N) * J);
-  for (int j = 0; j < J; ++j) {
-    for (int i = 0; i < N; ++i) {
-      const int v = X(i, j);
-      if (v != NA_INTEGER && (v < 0 || v >= b.ncat[j])) {
-        stop("response %d of person %d to item %d is not a category of the item", v, i + 1, j + 1);
-      }
-      xr[static_cast<size_t>(i) * J + j] = (j == skip) ? NA_INTEGER : v;
-    }
-  }
+  const std::vector<int> xr = response_rows(b, X, skip_item - 1);
   const double* pmu = REAL(mu);
   const double* ps2 = REAL(sigma2);
   const double* pst = REAL(start);
@@ -288,4 +312,244 @@ List pp_estimate_cpp(List bank, IntegerMatrix X, std::string method, NumericVect
   }
   return List::create(_["theta"] = theta_out, _["se"] = se_out,
                       _["nsteps"] = nsteps_out, _["status"] = status_out);
+}
+
+// --- posterior on a grid: EAP, posterior SD and plausible values ----------
+
+// Grid constants (step 5 of the guide). Stage 1 is one grid for all persons:
+// the prior means +- GRID_SPAN prior SDs with GRID_H times the smallest prior
+// SD between the nodes. A person goes to stage 2 if the posterior SD is below
+// STAGE2_SD node distances (the uniform jitter of the PV draws would then add
+// more than 1/192 of the variance) or if an end node has a weight above EDGE_W
+// (posterior mass beyond the grid). Stage 2 uses a window of +- WIN Laplace
+// SDs around the posterior mode with WIN_NODES nodes or more.
+static const double GRID_H = 0.05, GRID_SPAN = 6.0, STAGE2_SD = 4.0, EDGE_W = 1e-9, WIN = 10.0;
+static const int GRID_QMIN = 61, GRID_QMAX = 2001, WIN_NODES = 201;
+
+// log P_jk on the nodes g_q = lo + q h (q = 0 .. Q-1), stored as
+// tab[(cum[j] + k) * Q + q]: the sum over the items of a person runs over
+// contiguous rows
+struct LogTable {
+  double lo, h;
+  int Q;
+  std::vector<int> cum;        // number of categories of the items before item j
+  std::vector<double> tab;
+};
+
+static LogTable make_table(const ItemBank& b, double lo, double h, int Q) {
+  LogTable t;
+  t.lo = lo; t.h = h; t.Q = Q;
+  t.cum.resize(b.n);
+  int tot = 0;
+  for (int j = 0; j < b.n; ++j) { t.cum[j] = tot; tot += b.ncat[j]; }
+  t.tab.resize(static_cast<size_t>(tot) * Q);
+  std::vector<double> lp(b.kmax);
+  for (int q = 0; q < Q; ++q) {
+    const double g = lo + q * h;
+    for (int j = 0; j < b.n; ++j) {
+      log_cat_probs(b, j, g, lp.data());
+      for (int k = 0; k < b.ncat[j]; ++k) t.tab[static_cast<size_t>(t.cum[j] + k) * Q + q] = lp[k];
+    }
+  }
+  return t;
+}
+
+// The posterior of one person on n equally spaced nodes g0 + q h
+struct Post { double mean, sd, edge; };
+
+// On input w holds the log-likelihood on the nodes. Adds the log prior
+// N(mu, s2), normalises by log-sum-exp and returns mean, SD and the larger end
+// weight; w then holds the normalised weights.
+static Post normalise(double* w, int n, double g0, double h, double mu, double s2) {
+  double mx = R_NegInf;
+  for (int q = 0; q < n; ++q) {
+    const double d = g0 + q * h - mu;
+    w[q] -= d * d / (2.0 * s2);
+    mx = std::max(mx, w[q]);
+  }
+  double sum = 0.0;
+  for (int q = 0; q < n; ++q) { w[q] = std::exp(w[q] - mx); sum += w[q]; }
+  double m = 0.0;
+  for (int q = 0; q < n; ++q) { w[q] /= sum; m += w[q] * (g0 + q * h); }
+  double v = 0.0;
+  for (int q = 0; q < n; ++q) { const double d = g0 + q * h - m; v += w[q] * d * d; }
+  const Post r = {m, std::sqrt(v), std::max(w[0], w[n - 1])};
+  return r;
+}
+
+// Posterior on the nodes q0 .. q0 + n - 1 of a table
+static Post post_table(const LogTable& t, const Person& p, int q0, int n, double* w) {
+  std::fill(w, w + n, 0.0);
+  for (int k = 0; k < p.nobs; ++k) {
+    const int j = p.items[k];
+    const double* row = &t.tab[static_cast<size_t>(t.cum[j] + p.x[j]) * t.Q + q0];
+    for (int q = 0; q < n; ++q) w[q] += row[q];
+  }
+  return normalise(w, n, t.lo + q0 * t.h, t.h, p.mu, p.s2);
+}
+
+// Posterior on n nodes from g0, with the item kernel instead of a table
+static Post post_direct(const Person& p, double g0, double h, int n, double* w) {
+  for (int q = 0; q < n; ++q) {
+    const double g = g0 + q * h;
+    double ll = 0.0;
+    for (int k = 0; k < p.nobs; ++k) {
+      const int j = p.items[k];
+      ll += eval_item<true>(p.b, j, p.x[j], g, p.buf).ll;
+    }
+    w[q] = ll;
+  }
+  return normalise(w, n, g0, h, p.mu, p.s2);
+}
+
+// npv draws from the discretised posterior: a node by its weight (inverse
+// CDF), then uniformly within its cell. out is the person's row of an N x npv
+// matrix (stride N).
+static void draw_pv(const double* w, int n, double g0, double h, int npv, double* out, int N) {
+  for (int d = 0; d < npv; ++d) {
+    const double u = unif_rand();
+    double c = 0.0;
+    int q = 0;
+    for (; q < n - 1; ++q) {
+      c += w[q];
+      if (u < c) break;
+    }
+    out[static_cast<size_t>(d) * N] = g0 + (q + unif_rand() - 0.5) * h;
+  }
+}
+
+// EAP and posterior SD of each person on a grid in two stages (see the
+// constants above); npv > 0 also draws npv plausible values per person. X
+// holds the responses (NA = not answered), mu/sigma2 the normal prior of each
+// person. Returns eap, psd, stage (1 or 2) and draws (N x npv). The draws are
+// made for the stage-1 persons first, then for the stage-2 persons, so they
+// are reproducible with set.seed(). max_table (number of doubles) limits the
+// stage-2 table; above it the windows are evaluated with the kernel directly
+// (a parameter only so the tests can reach this path).
+// [[Rcpp::export]]
+List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVector sigma2,
+                      int npv = 0, double max_table = 16777216.0) {
+  const ItemBank b = make_bank(bank);
+  const int N = X.nrow(), J = X.ncol();
+  if (J != b.n) stop("X must have one column per item");
+  if (mu.size() != N || sigma2.size() != N) stop("mu and sigma2 must have one entry per person");
+  if (npv < 0) stop("npv must be >= 0");
+  for (int i = 0; i < N; ++i) {
+    if (!R_finite(mu[i]) || !R_finite(sigma2[i]) || !(sigma2[i] > 0)) {
+      stop("mu must be finite and sigma2 finite and > 0 (person %d)", i + 1);
+    }
+  }
+  const std::vector<int> xr = response_rows(b, X, -1);
+
+  NumericVector eap(N), psd(N);
+  IntegerVector stage(N);
+  NumericMatrix draws(N, npv);
+  List out = List::create(_["eap"] = eap, _["psd"] = psd, _["stage"] = stage, _["draws"] = draws);
+  if (N == 0) return out;
+  double* pd = REAL(draws);
+  int ncat_all = 0;
+  for (int j = 0; j < J; ++j) ncat_all += b.ncat[j];
+
+  std::vector<double> buf(b.kmax);
+  std::vector<int> items(J);
+  // person i with its answered items (in items) and its prior; method MAP for
+  // the posterior mode in stage 2
+  auto person = [&](int i) {
+    const int* x = &xr[static_cast<size_t>(i) * J];
+    int nobs = 0;
+    for (int j = 0; j < J; ++j) if (x[j] != NA_INTEGER) items[nobs++] = j;
+    const Person p = {b, x, items.data(), nobs, M_MAP, mu[i], sigma2[i], 0.0, buf.data()};
+    return p;
+  };
+
+  // stage 1: one grid for all persons
+  double lo = R_PosInf, hi = R_NegInf, smin = R_PosInf;
+  for (int i = 0; i < N; ++i) {
+    const double s = std::sqrt(sigma2[i]);
+    lo = std::min(lo, mu[i] - GRID_SPAN * s);
+    hi = std::max(hi, mu[i] + GRID_SPAN * s);
+    smin = std::min(smin, s);
+  }
+  const double qd = std::ceil((hi - lo) / (GRID_H * smin)) + 1.0;
+  const int Q = static_cast<int>(std::min<double>(GRID_QMAX, std::max<double>(GRID_QMIN, qd)));
+  const double h = (hi - lo) / (Q - 1);
+  const LogTable t1 = make_table(b, lo, h, Q);
+
+  std::vector<double> w(std::max(Q, GRID_QMAX + 2));
+  std::vector<int> flagged;
+  std::vector<double> guess;
+  for (int i = 0; i < N; ++i) {
+    const Person p = person(i);
+    const Post r = post_table(t1, p, 0, Q, w.data());
+    if (r.sd >= STAGE2_SD * h && !(r.edge > EDGE_W)) {
+      eap[i] = r.mean; psd[i] = r.sd; stage[i] = 1;
+      if (npv > 0) draw_pv(w.data(), Q, lo, h, npv, pd + i, N);
+    } else {
+      flagged.push_back(i);
+      guess.push_back(r.mean);
+    }
+  }
+  const int nf = flagged.size();
+  if (nf == 0) return out;
+
+  // stage 2: centre = posterior mode (root of the MAP equation, bracket
+  // widened until it changes sign), scale = Laplace SD 1/sqrt(I + 1/sigma2)
+  std::vector<double> cen(nf), sc(nf);
+  for (int f = 0; f < nf; ++f) {
+    const Person p = person(flagged[f]);
+    double a = lo, c = hi, fa, fc, D;
+    p.eval(a, fa, D);
+    for (int r = 0; !(fa > 0.0) && r < 60; ++r) { a -= c - a; p.eval(a, fa, D); }
+    p.eval(c, fc, D);
+    for (int r = 0; !(fc < 0.0) && r < 60; ++r) { c += c - a; p.eval(c, fc, D); }
+    double t = std::min(c, std::max(a, guess[f]));
+    bool conv;
+    safe_newton(p, t, a, c, 1e-10, 500, conv);
+    cen[f] = t;
+    sc[f] = p.se(t);
+  }
+  // one fine table over all windows with a tenth of the smallest scale
+  // between the nodes, if it fits into max_table
+  double lo2 = R_PosInf, hi2 = R_NegInf, smin2 = R_PosInf;
+  for (int f = 0; f < nf; ++f) {
+    lo2 = std::min(lo2, cen[f] - WIN * sc[f]);
+    hi2 = std::max(hi2, cen[f] + WIN * sc[f]);
+    smin2 = std::min(smin2, sc[f]);
+  }
+  const double h2 = 2.0 * WIN * smin2 / (WIN_NODES - 1);
+  const double q2d = std::ceil((hi2 - lo2) / h2) + 1.0;
+  const bool use_table = q2d * ncat_all <= max_table;
+  LogTable t2;
+  if (use_table) t2 = make_table(b, lo2, h2, static_cast<int>(q2d));
+
+  for (int f = 0; f < nf; ++f) {
+    const int i = flagged[f];
+    const Person p = person(i);
+    const double half = WIN * sc[f];
+    const double nodes = std::ceil(2.0 * half / h2) + 1.0;
+    double g0, hw;
+    int n;
+    Post r;
+    if (use_table && nodes <= GRID_QMAX) {
+      const int q0 = std::max(0, static_cast<int>(std::floor((cen[f] - half - lo2) / h2)));
+      n = std::min(static_cast<int>(nodes) + 1, t2.Q - q0);
+      g0 = lo2 + q0 * h2; hw = h2;
+      r = post_table(t2, p, q0, n, w.data());
+    } else {
+      n = WIN_NODES; hw = 2.0 * half / (n - 1); g0 = cen[f] - half;
+      r = post_direct(p, g0, hw, n, w.data());
+    }
+    // a window that cuts off posterior mass is widened, same node distance
+    double wide = half;
+    for (int k = 0; r.edge > EDGE_W && k < 5; ++k) {
+      wide *= 2.0;
+      n = static_cast<int>(std::ceil(2.0 * wide / hw)) + 1;
+      if (static_cast<int>(w.size()) < n) w.resize(n);
+      g0 = r.mean - wide;
+      r = post_direct(p, g0, hw, n, w.data());
+    }
+    eap[i] = r.mean; psd[i] = r.sd; stage[i] = 2;
+    if (npv > 0) draw_pv(w.data(), n, g0, hw, npv, pd + i, N);
+  }
+  return out;
 }
