@@ -64,3 +64,4 @@ bench/output/
 *.duckdb.wal
 blog/output/
 blog/posterior/output/
+blog/JK/output/
