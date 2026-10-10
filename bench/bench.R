@@ -62,20 +62,27 @@ quietly <- function(expr) {
   invisible(out)
 }
 
-# Newton-Raphson iterations. PP_4pl, PP_gpcm and JKpp call the NR drivers from
-# R, so a trace on the drivers sees every call, including the 40 inside JKpp,
-# which drops nsteps. NR_GPCM reports one sweep less than it runs
-# (howlong = newr instead of newr + 1), so the log adds the offset back and
-# holds the sweeps actually done.
-nr_drivers <- c(NR_4PL = 0L, NR_GPCM = 1L, NR_mixed = 0L)
+# Newton-Raphson iterations, logged per call by a trace() on the drivers.
+# The old drivers NR_4PL/NR_GPCM/NR_mixed iterate all persons together; JKpp
+# still calls them from R (40 calls per run), and they return the global number
+# of sweeps. NR_GPCM reports one sweep less than it runs (howlong = newr instead
+# of newr + 1), so the log adds the offset back and holds the sweeps actually
+# done. The person estimator pp_estimate_cpp (PP_4pl, PP_gpcm and PPall since
+# block 4) iterates each person on its own; the log holds the largest number of
+# steps of a person in the call, which is comparable to the global sweeps.
+nr_drivers <- list(
+  NR_4PL = quote(as.integer(returnValue()$nsteps)),
+  NR_GPCM = quote(as.integer(returnValue()$nsteps) + 1L),
+  NR_mixed = quote(as.integer(returnValue()$nsteps)),
+  pp_estimate_cpp = quote(max(0L, returnValue()$nsteps))
+)
 nr_log <- new.env()
 nr_log$steps <- integer(0)
 
 nr_trace <- function() {
   ns <- asNamespace("PP")
   for (f in intersect(names(nr_drivers), ls(ns))) {
-    exit <- bquote(assign("steps", c(get("steps", envir = .(nr_log)),
-                                     as.integer(returnValue()$nsteps) + .(nr_drivers[[f]])),
+    exit <- bquote(assign("steps", c(get("steps", envir = .(nr_log)), .(nr_drivers[[f]])),
                           envir = .(nr_log)))
     suppressMessages(trace(f, exit = exit, where = ns, print = FALSE))
   }
