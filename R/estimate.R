@@ -29,8 +29,10 @@ pp_estimate <- function(prep, call, cls, label) {
   Xu <- X[first, , drop = FALSE]
 
   if (type == "eap") {
-    res <- eap_old(prep, Xu, first)
-    res$status <- ifelse(rowSums(!is.na(Xu)) == 0, 4L, 1L)
+    # posterior mean and SD on the grid; persons without answers get the prior
+    post <- pp_posterior_cpp(prep$bank, Xu, prep$mu[first], prep$sigma2[first])
+    res <- list(theta = post$eap, se = post$psd, nsteps = integer(nrow(Xu)),
+                status = ifelse(rowSums(!is.na(Xu)) == 0, 4L, 1L))
   } else {
     res <- pp_estimate_cpp(prep$bank, Xu, type, prep$mu[first], prep$sigma2[first], prep$H,
                            prep$start[first], prep$range, prep$exac, prep$maxsteps)
@@ -51,21 +53,6 @@ pp_estimate <- function(prep, call, cls, label) {
   }
 
   new_ppeo(prep, res$theta, res$se, res$nsteps, status, call, cls)
-}
-
-# EAP with the quadrature code of 0.6.4 (R/eap.R), until block 5 replaces it.
-# Persons without answers get the prior mean and SD.
-eap_old <- function(prep, Xu, first) {
-  mu <- prep$mu[first]
-  sigma2 <- prep$sigma2[first]
-  r <- switch(prep$family,
-    "4pl" = eap_4pl(Xu, prep$thres, prep$slopes, lowerA = prep$lowerA, upperA = prep$upperA,
-                    mu = mu, sigma2 = sigma2),
-    gpcm  = eap_gpcm(Xu, prep$thres, prep$slopes, mu = mu, sigma2 = sigma2),
-    mixed = eap_mixed(Xu, prep$thres, prep$slopes, lowerA = prep$lowerA, upperA = prep$upperA,
-                      mu = mu, sigma2 = sigma2, model2est = prep$model2est))
-  r <- matrix(r, ncol = 2)
-  list(theta = r[, 1], se = r[, 2], nsteps = integer(nrow(Xu)))
 }
 
 # The result object (class c(cls, "ppeo")):
