@@ -1,0 +1,62 @@
+#' Draw Plausible values
+#'
+#' This function draws \code{npv} plausible values for each person from their posterior density.
+#'
+#' The posterior of each person combines the likelihood of the answered items with the normal prior \code{N(mu, sigma2)} of the person, as given to \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} (default \code{N(0, 1)}). It is computed on a grid of ability values, the same as for \code{type = "eap"}: one grid for all persons, and a finer grid around the posterior mode for persons whose posterior is very narrow or lies outside the range of the prior. The estimation type of \code{estobj} does not matter, the plausible values always come from the posterior. Missing responses are skipped; a person without any response gets draws from the prior.
+#'
+#' With \code{approx = FALSE} each value is drawn from the posterior on the grid: a grid point is chosen with its posterior probability, then the value is drawn uniformly within its cell. The draws are independent. With \code{approx = TRUE} (default) the draws come from the normal distribution with the posterior mean and the posterior SD of the person (the EAP estimate and its SE).
+#'
+#' Up to version 0.6.4 \code{approx = FALSE} used a Metropolis-Hastings algorithm and \code{approx = TRUE} drew from the normal distribution around the estimate of \code{estobj} with its SE. The arguments \code{thinning}, \code{burnin} and \code{mult} of the sampler are no longer used.
+#'
+#' @param estobj An object which originates from using \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}, with any estimation type.
+#' @param npv The number of plausible values per person - default is 10.
+#' @param approx If \code{TRUE} (default), the plausible values are drawn from a normal approximation of the posterior. If \code{FALSE}, they are drawn from the posterior itself.
+#' @param ... Not used. \code{thinning}, \code{burnin} and \code{mult} of version 0.6.4 give a warning and are ignored.
+#'
+#' @return An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row per person (row names from \code{respm}) and \code{npv} columns, and \code{call}.
+#'
+#'@references Mislevy, R. J. (1991). Randomization-based inference about latent variables from complex samples. Psychometrika, 56(2), 177-196.
+#'
+#'Von Davier, M., Gonzalez, E., & Mislevy, R. (2009). What are plausible values and why are they useful. IERI monograph series, 2, 9-36.
+#'
+#' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{PPall}, \link{JKpp}
+#'
+#' @rdname PV
+#' @example ./R/.example_pv.R
+#' @export
+#' @author Manuel Reif
+PV <- function(estobj, ...) UseMethod("PV")
+
+
+#' @rdname PV
+#' @export
+PV.ppeo <- function(estobj, npv = 10, approx = TRUE, ...) {
+  call <- match.call()
+  attr(call, "date") <- date()
+  attr(call, "version") <- packageVersion("PP")
+
+  old <- intersect(names(list(...)), c("thinning", "burnin", "mult"))
+  if (length(old)) {
+    warning("'", paste(old, collapse = "', '"), "' no longer used: plausible values are drawn ",
+            "from the posterior on a grid, without a Metropolis-Hastings sampler.", call. = FALSE)
+  }
+  if (!is.numeric(npv) || length(npv) != 1 || is.na(npv) || npv < 1 || npv != round(npv)) {
+    stop("'npv' must be a positive whole number.", call. = FALSE)
+  }
+  if (!is.logical(approx) || length(approx) != 1 || is.na(approx)) {
+    stop("'approx' must be TRUE or FALSE.", call. = FALSE)
+  }
+  npv <- as.integer(npv)
+
+  m <- estobj$model
+  N <- nrow(m$X)
+  if (approx) {
+    post <- pp_posterior_cpp(m$bank, m$X, m$mu, m$sigma2)
+    draws <- matrix(stats::rnorm(N * npv, rep(post$eap, each = npv), rep(post$psd, each = npv)),
+                    N, npv, byrow = TRUE)
+  } else {
+    draws <- pp_posterior_cpp(m$bank, m$X, m$mu, m$sigma2, npv)$draws
+  }
+  dimnames(draws) <- list(rownames(m$X), paste0("PV", seq_len(npv)))
+  structure(list(pvdraws = draws, call = call), class = "pv")
+}

@@ -1,6 +1,6 @@
 # The result object of PP_4pl, PP_gpcm and PPall: $estimates with status, the
 # alias $resPP, the transition field $ipar, the methods, the warning for
-# persons at the bound, and the old JKpp/PV/Pfit on the new object.
+# persons at the bound, and PV and the old JKpp/Pfit on the new object.
 
 test_that("the object has estimates with status, model, type, call and the alias", {
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
@@ -116,7 +116,7 @@ test_that("print, summary, coef and as.data.frame work", {
   expect_identical(as.data.frame(o), o$estimates)
 })
 
-test_that("the old JKpp, PV and Pfit run on the new object", {
+test_that("PV and the old JKpp and Pfit run on the new object", {
   jk <- function(o) pp_quiet(JKpp(o))
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
     for (ty in c("mle", "wle", "map", "eap")) {
@@ -129,11 +129,10 @@ test_that("the old JKpp, PV and Pfit run on the new object", {
         na <- is.na(o$estimates$SE)
         expect_identical(unname(j$resjk[na, 1]), o$estimates$estimate[na])
       }
-      # the old PV draws NA for persons without an SE (B4, block 5)
-      if (ty != "mle") {
-        set.seed(1)
-        expect_identical(dim(pp_quiet(PV(o, npv = 3, approx = TRUE))$pvdraws), c(nrow(s$X), 3L))
-      }
+      set.seed(1)
+      pv <- PV(o, npv = 3, approx = TRUE)$pvdraws
+      expect_identical(dim(pv), c(nrow(s$X), 3L))
+      expect_false(anyNA(pv))
     }
   }
   o <- pp_fit(set_2pl, "wle")
