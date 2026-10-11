@@ -161,11 +161,14 @@ for (sp in names(spalten2)) {
 
   # simulation: frequencies vs. model probabilities, |z| < 4 per item and category
   zelle("folge", "Simulation", sp, "sim", function() {
-    if (s$kind == "mixed") return(NULL)
+    has_mixed <- exists("sim_mixed", envir = asNamespace("PP"), inherits = FALSE)
+    if (s$kind == "mixed" && !has_mixed) return(NULL)
     p <- items_to_pp(s$items)
     theta <- rep(c(-1, 0, 1), length.out = 3000)
     set.seed(33)
-    Xs <- if (dich) sim_4pl(p$b, p$slopes, p$lowerA, p$upperA, theta) else
+    Xs <- if (s$kind == "mixed") {
+      PP::sim_mixed(p$thres, p$slopes, p$lowerA, p$upperA, p$model2est, theta)
+    } else if (dich) sim_4pl(p$b, p$slopes, p$lowerA, p$upperA, theta) else
       sim_gpcm(p$thres, p$slopes, theta)
     z <- unlist(lapply(seq_along(s$items), function(j) {
       P <- ref_catprob(s$items[[j]], theta)

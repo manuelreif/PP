@@ -66,7 +66,7 @@ zeilen <- rbindlist(lapply(modelle, function(m) {
                       wle_geschaetzt = sum(wle$status == "ok"),
                       auffaellig = sum(abs(wle$lzstar) > qnorm(0.975), na.rm = TRUE))
   if (!is.null(pt)) {
-    i <- match(rownames(res), rownames(pt))
+    i <- match(rownames(o$X), rownames(pt))
     sel <- res$status == "ok" & !pt[i, "Interpolated"]
     zeile[, `:=`(verglichen = sum(sel), max_theta = max(abs(res$estimate - pt[i, 1])[sel]),
                  max_se = max(abs(res$SE - pt[i, 2])[sel]))]
