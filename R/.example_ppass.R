@@ -1,63 +1,59 @@
+## ========== data with item parameters
 
-library(eRm)
-### real data ##########
+set.seed(1337)
+# difficulties and slopes of 15 items
+diffpar <- seq(-3, 3, length = 15)
+sl <- round(runif(15, 0.5, 1.5), 2)
+# responses of 200 persons, plus an id and a group variable
+awm <- sim_4pl(beta = diffpar, alpha = sl, lowerA = rep(0, 15), upperA = rep(1, 15),
+               theta = rnorm(200))
+dat <- data.frame(id = 1:200, group = rep(c("a", "b"), 100), awm)
+
+# 2PL, WLE estimates and all person fit indices; id and group are kept
+res <- PPass(dat, items = 3:17, mod = "2PL", thres = diffpar, slopes = sl)
+res
+summary(res)
+
+# a plain data.frame for further use
+head(as.data.frame(res))
+
+# jackknife directly from the result
+jk <- JKpp(res)
+
+
+## ========== real data (adaptive test, 1PL)
 
 data(pp_amt)
-
 d <- pp_amt$daten_amt
-
-rd_res <- PPass(respdf = d, 
-                items = 8:ncol(d),
-                mod="1PL",
-                thres = pp_amt$betas[,2], 
+rd_res <- PPass(d, items = 8:ncol(d), mod = "1PL", thres = pp_amt$betas[, 2],
                 fitindices = "lz")
-
 head(rd_res)
 
 
-## ========== RM - eRm 
-my_data <- eRm::sim.rasch(200, 12)
-my_rm <- eRm::RM(my_data)
+## ========== models fitted with eRm
 
-res_pp1 <- PPass(my_rm)
+if (requireNamespace("eRm", quietly = TRUE)) {
 
+  # Rasch model
+  my_rm <- eRm::RM(eRm::raschdat1)
+  res_rm <- PPass(my_rm)
+  summary(res_rm)
 
-## ========== PCM - eRm
+  # the maximum likelihood estimates equal eRm::person.parameter()
+  res_mle <- PPass(my_rm, type = "mle", fitindices = "lzstar")
 
-set.seed(2751)
+  # partial credit model
+  set.seed(2751)
+  thres <- rbind(0, matrix(c(-2, -1, 0.5, -1.2, 0.3, NA, -0.5, 1, NA, 0, 1.5, 2), 3))
+  simdat <- sim_gpcm(thres = thres, alpha = rep(1, 4), theta = rnorm(300))
+  res_pcm <- PPass(eRm::PCM(simdat))
 
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
-THRES <- rbind(THRES,c(-0.2,NA,NA,NA,NA,NA))
+  # linear partial credit model with two time points and two groups
+  simdat2 <- sim_gpcm(thres = thres, alpha = rep(1, 4), theta = rnorm(300, 0.5))
+  my_lpcm <- eRm::LPCM(cbind(simdat, simdat2), mpoints = 2, groupvec = rep(1:2, 150))
+  res_lpcm <- PPass(my_lpcm)
+  head(res_lpcm)
 
-sl          <- rep(1,6)
-THRESx      <- rbind(0,THRES)
-THETA       <- rnorm(200)
-simdat_gpcm <- sim_gpcm(thres = THRESx,alpha = sl,theta = THETA)
-
-my_pcm <- eRm::PCM(simdat_gpcm)
-
-res_pp2 <- PPass(my_pcm)
-
-## ==========  1PL model
-
-set.seed(1337)
-
-# intercepts
-diffpar <- seq(-3,3,length=15)
-# slope parameters
-sl     <- round(runif(15,0.5,1.5),2)
-la     <- round(runif(15,0,0.25),2)
-ua     <- round(runif(15,0.8,1),2)
-
-# response matrix
-awm <- matrix(sample(0:1,100*15,replace=TRUE),ncol=15)
-awm <- as.data.frame(awm)
-# estimate person parameter
-
-# estimate person parameter and person fit
-out <- PPass(respdf = awm,thres = diffpar, items="all",
-             mod=c("1PL"), fitindices= c("lz","lzstar","infit","outfit"))
-
-# show first rows
-head(out)
+  # plausible values need an EAP or MAP estimate
+  pv <- PV(PPass(my_rm, type = "map"))
+}

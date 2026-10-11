@@ -216,22 +216,32 @@ print.PPfit <- function(x, digits = 4, ...) {
 #' @param alpha Significance level: persons with \eqn{|z| > z_{1-\alpha/2}} (lz, lz*, \code{in_t}, \code{ou_t}) are counted as flagged.
 #' @export
 summary.PPfit <- function(object, alpha = 0.05, digits = 4, ...) {
-  check_scalar(alpha, "alpha")
-  if (!(alpha > 0 && alpha < 1)) stop("'alpha' must be between 0 and 1.", call. = FALSE)
+  check_alpha(alpha)
   z <- stats::qnorm(1 - alpha / 2)
   cols <- list(lz = "lz", lzstar = "lzstar", infit = c("infit", "in_t"), outfit = c("outfit", "ou_t"))
-  zcols <- c("lz", "lzstar", "in_t", "ou_t")
-  res <- do.call(rbind, lapply(names(object), function(ix) {
-    do.call(rbind, lapply(cols[[ix]], function(sp) {
-      v <- object[[ix]][, sp]
-      v <- v[is.finite(v)]
-      data.frame(statistic = sp, n = length(v), mean = mean(v), sd = stats::sd(v),
-                 min = if (length(v)) min(v) else NA, max = if (length(v)) max(v) else NA,
-                 flagged = if (sp %in% zcols) sum(abs(v) > z) else NA_integer_)
-    }))
-  }))
+  vals <- unlist(lapply(names(object), function(ix) {
+    lapply(stats::setNames(nm = cols[[ix]]), function(sp) object[[ix]][, sp])
+  }), recursive = FALSE)
+  res <- fit_table(vals, z)
   cat("Person fit at the", attr(object, "type"), "estimates,", nrow(object[[1]]), "persons\n")
   cat("flagged: |z| >", format(z, digits = 3), "(alpha =", alpha, ")\n\n")
   print(res, digits = digits, row.names = FALSE, ...)
   invisible(res)
+}
+
+check_alpha <- function(alpha) {
+  check_scalar(alpha, "alpha")
+  if (!(alpha > 0 && alpha < 1)) stop("'alpha' must be between 0 and 1.", call. = FALSE)
+}
+
+# Summary table of fit statistics (a named list of vectors); the z statistics
+# lz, lzstar, in_t and ou_t count the persons with |z| above the critical value z
+fit_table <- function(vals, z) {
+  do.call(rbind, lapply(names(vals), function(sp) {
+    v <- vals[[sp]]
+    v <- v[is.finite(v)]
+    data.frame(statistic = sp, n = length(v), mean = mean(v), sd = stats::sd(v),
+               min = if (length(v)) min(v) else NA, max = if (length(v)) max(v) else NA,
+               flagged = if (sp %in% c("lz", "lzstar", "in_t", "ou_t")) sum(abs(v) > z) else NA_integer_)
+  }))
 }
