@@ -308,20 +308,15 @@ zelle("sonder", fall, "Schätzer", "theta", function() {
 # Known causes of deviating cells. `ids` (problem IDs) stay internal; the
 # tables show `grund` as a footnote at the column label ("spalte"), the row
 # label ("zeile") or the cell itself ("zelle").
-grund_jk_se <- "Falsche Jackknife-Formel: Der Standardfehler ist um den Faktor L − 1 zu klein."
 ids_bekannt <- rbindlist(list(
-  data.table(tabelle = "folge", zeile = "JKpp: JK-Standardfehler (WLE)", spalte = "*", mass = "*", ids = "A1",
-             ort = "zeile", grund = grund_jk_se),
-  data.table(tabelle = "folge", zeile = "JKpp: JK-Schätzer (EAP)", spalte = "gemischt", mass = "*", ids = "A3",
-             ort = "zelle", grund = "Bricht für gemischte Tests mit EAP ab."),
   data.table(tabelle = "folge", zeile = "Pfit: Infit/Outfit", spalte = "GPCM", mass = "*", ids = "A10",
              ort = "zelle", grund = "Rechnet mit Slope 1 statt mit den Slopes der Items."),
   data.table(tabelle = "folge", zeile = c("Pfit: lz", "Pfit: lz*", "Pfit: Infit/Outfit"),
              spalte = "gemischt", mass = "*", ids = "G6", ort = "zelle",
              grund = "Für gemischte Tests gibt es keine Fit-Funktion."),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = c("JKpp", "Pfit"),
-             mass = "*", ids = c("A13", "A9"), ort = "zeile",
-             grund = "Der Jackknife zählt auch nicht bearbeitete Items mit, lz* ist falsch."),
+  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = "Pfit",
+             mass = "*", ids = "A9", ort = "zeile",
+             grund = "lz* ist bei fehlenden Antworten falsch."),
   data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = "Pfit", mass = "*",
              ids = "A6", ort = "zeile",
              grund = "Die Jackknife-SE von lz rechnet mit der Standardabweichung des Priors statt mit seiner Varianz.")
