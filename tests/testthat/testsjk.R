@@ -33,7 +33,8 @@ res1plmap <- suppressWarnings(PP_4pl(respm = awm,thres = diffpar, slopes = rep(1
 
 
 
-res_jk1 <- JKpp(res1plmle)
+# row 11 has one wrong answer: without it the mle does not exist (warning)
+expect_warning(res_jk1 <- JKpp(res1plmle), "left out of the jackknife")
 res_jk2 <- JKpp(res1plwle)
 res_jk3 <- JKpp(res1plmap)
 

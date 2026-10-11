@@ -179,22 +179,50 @@ ref_eap <- function(X, items, mu = 0, s2 = 1) {
 
 # Textbook jackknife over the L answered items of one person: leave-one-out
 # estimates theta_(-j), pseudovalues ps_j = L theta - (L - 1) theta_(-j),
-# estimate = mean (or median) of ps, SE = sqrt(sum (ps - mean ps)^2 / (L (L - 1))).
-# loo has one entry per item, NA for items the person did not answer.
-ref_jackknife <- function(x, items, type, mu = 0, s2 = 1, H = 1, cmeth = "mean") {
+# estimate = mean, median or AMT of ps, SE = sqrt(sum (ps - mean ps)^2 / (m (m - 1)))
+# over the m pseudovalues. A leave-one-out estimate that is not finite or not
+# inside range has no solution there and is left out (excluded); estimate and
+# SE are NA if theta itself has none or fewer than 2 pseudovalues remain (no
+# jackknife runs, nothing is excluded, if theta has none or L < 2). loo
+# has one entry per item (the raw values, also the excluded ones), NA for items
+# the person did not answer.
+ref_jackknife <- function(x, items, type, mu = 0, s2 = 1, H = 1, cmeth = "mean",
+                          range = c(-6, 6)) {
   fit <- function(xx) {
     if (type == "eap") ref_posterior(xx, items, mu, s2)$mean
     else ref_estimate(xx, items, type, mu, s2, H)
   }
+  inside <- function(t) is.finite(t) & t > range[1] & t < range[2]
   obs <- which(!is.na(x))
   L <- length(obs)
   theta <- fit(x)
   loo <- rep(NA_real_, length(x))
   loo[obs] <- vapply(obs, function(j) { xx <- x; xx[j] <- NA; fit(xx) }, 0)
-  ps <- L * theta - (L - 1) * loo[obs]
-  list(estimate = if (cmeth == "median") stats::median(ps) else mean(ps),
-       se = sqrt(sum((ps - mean(ps))^2) / (L * (L - 1))),
-       theta = theta, loo = loo)
+  ok <- obs[inside(loo[obs])]
+  ps <- L * theta - (L - 1) * loo[ok]
+  m <- length(ps)
+  est <- se <- NA_real_
+  if (inside(theta) && m >= 2) {
+    est <- switch(cmeth, mean = mean(ps), median = stats::median(ps), AMT = ref_amt(ps))
+    se <- sqrt(sum((ps - mean(ps))^2) / (m * (m - 1)))
+  }
+  list(estimate = est, se = se, theta = theta, loo = loo,
+       excluded = if (inside(theta) && L >= 2) L - m else 0)
+}
+
+# Andrews' sine M-estimate (AMT) as the minimum of sum(rho((x - T) / (c s)))
+# with rho(u) = 1 - cos(u) for |u| <= pi, else 2 (its derivative is the sine
+# psi), s the median absolute deviation from the median. The minimum is
+# searched within c s pi of the median.
+ref_amt <- function(x, c = 2.1) {
+  m <- stats::median(x)
+  s <- stats::median(abs(x - m))
+  if (s == 0) return(m)
+  rho <- function(t) {
+    u <- (x - t) / (c * s)
+    sum(ifelse(abs(u) <= pi, 1 - cos(u), 2))
+  }
+  stats::optimize(rho, m + c(-1, 1) * c * s * pi, tol = 1e-12)$minimum
 }
 
 # --- person fit (theta is given, usually PP's own estimate) ----------------

@@ -1,6 +1,6 @@
 # The result object of PP_4pl, PP_gpcm and PPall: $estimates with status, the
 # alias $resPP, the transition field $ipar, the methods, the warning for
-# persons at the bound, and PV and the old JKpp/Pfit on the new object.
+# persons at the bound, and PV, JKpp and the old Pfit on the new object.
 
 test_that("the object has estimates with status, model, type, call and the alias", {
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
@@ -116,19 +116,18 @@ test_that("print, summary, coef and as.data.frame work", {
   expect_identical(as.data.frame(o), o$estimates)
 })
 
-test_that("PV and the old JKpp and Pfit run on the new object", {
-  jk <- function(o) pp_quiet(JKpp(o))
+test_that("PV, JKpp and the old Pfit run on the new object", {
+  jk <- function(o) pp_quiet(suppressWarnings(JKpp(o)))
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
     for (ty in c("mle", "wle", "map", "eap")) {
       o <- pp_fit(s, ty)
-      # the mixed EAP jackknife crashes in the old code (A3, block 6)
-      if (!(s$kind == "mixed" && ty == "eap")) {
-        j <- jk(o)
-        expect_identical(dim(j$resjk), c(nrow(s$X), 2L))
-        # rows without an SE (extreme mle) stay as in the estimate
-        na <- is.na(o$estimates$SE)
-        expect_identical(unname(j$resjk[na, 1]), o$estimates$estimate[na])
-      }
+      j <- jk(o)
+      expect_identical(dim(j$resjk), c(nrow(s$X), 2L))
+      # rows without a solution (extreme mle) have no jackknife
+      na <- o$estimates$status != "ok"
+      expect_true(all(is.na(j$resjk[na, ])))
+      expect_identical(as.character(j$estimates$status[na]), as.character(o$estimates$status[na]))
+      expect_false(anyNA(j$resjk[!na, ]))
       # PV needs a prior (B6): mle and wle objects have none
       if (ty %in% c("mle", "wle")) {
         expect_true(all(is.na(o$model$mu)) && all(is.na(o$ipar$sigma2)))

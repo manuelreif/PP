@@ -146,3 +146,16 @@ respmixed_wle <- PPall(respm = awmatrix,
 
 res_jk114 <- JKpp(respmixed_mle)
 res_jk115 <- JKpp(respmixed_wle)
+
+# EAP estimation, with the whole matrix of leave-one-out estimates
+respmixed_eap <- PPall(respm = awmatrix,
+                       thres = THRESx,
+                       slopes = sl,
+                       lowerA = la,
+                       upperA=ua,
+                       type = "eap",
+                       model2est=model2est)
+
+res_jk116 <- JKpp(respmixed_eap, fullmat = TRUE)
+res_jk116$estimates
+res_jk116$jk_mat

@@ -25,7 +25,13 @@ summary.jk <-
     cat("\n Call:",deparse(object$call),"\n- job started @",attr(object$call,"date"),"\n\n")  
     
     cat("Estimation type: Jackknife --> ",object$type,"\n\n")
-    
+    cat("Centering method:", object$cmeth, "\n")
+    cat("Status:\n")
+    print(table(object$estimates$status))
+    nx <- sum(object$estimates$excluded > 0)
+    if (nx > 0) cat(nx, "person(s) with excluded leave-one-out samples\n")
+    cat("\n")
+
     
     cat("-------------------------------------\n")
     

@@ -123,6 +123,18 @@ test_that("leaving out an unanswered item changes nothing in the jackknife", {
   expect_true(all(is.na(jk$loo[c(3, 7)])))
 })
 
+test_that("AMT is the median for symmetric data and ignores a far outlier", {
+  x <- c(-2.1, -1, -0.4, 0.3, 0.9, 1.6, 2.7)
+  xs <- c(x, 2 * stats::median(x) - x)
+  expect_close(ref_amt(xs), stats::median(xs), 1e-6)
+  # the outlier is beyond 2.1 * pi * MAD of the median: no weight
+  y <- c(-1.2, -0.5, -0.3, 0.1, 0.2, 0.6, 1.1)
+  s <- stats::median(abs(y - stats::median(y)))
+  out <- stats::median(y) + 2.1 * pi * s * 3
+  expect_close(ref_amt(c(y, out)), ref_amt(c(y, out + 50)), 1e-6)
+  expect_close(ref_amt(c(1, 1, 1, 5)), 1, 0)
+})
+
 test_that("fit statistics match a hand calculation for two 2PL items", {
   items <- items_4pl(c(1, 2), c(0, 1))
   x <- c(1L, 0L)
