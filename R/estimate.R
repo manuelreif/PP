@@ -38,8 +38,8 @@
 #' \deqn{w(r_i) =  1 \rightarrow if\, |r_i| \leq H}
 #' \deqn{w(r_i) = H/|r| \rightarrow if\, |r_i| > H}
 #' 
-#'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
-#'@param thres A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}! 
+#'@param respm An integer matrix (or a data.frame), which contains the responses of the examinees. A persons x items matrix is expected. Missing responses are \code{NA}.
+#'@param thres A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. A matrix with one column per item is also accepted; its first row of zeros (as in \code{\link{PP_gpcm}}) is optional.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
 #'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.
 #'@param upperA numeric vector, which contains the upper asymptote parameters for each item. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.
@@ -52,7 +52,7 @@
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011). 
 #'@param ctrl more controls:
 #'\itemize{
-#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
 #'\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 #'
@@ -161,7 +161,7 @@ PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_st
 #'The model simplifies to the Partial Credit Model by setting \eqn{\alpha_{i} = 1, \forall i}.
 #'
 #' 
-#'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
+#'@param respm An integer matrix (or a data.frame), which contains the responses of the examinees. A persons x items matrix is expected. Missing responses are \code{NA}.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
 #'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
@@ -173,7 +173,7 @@ PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_st
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
 #'@param ctrl more controls
 #'\itemize{
-#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
 #'\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 #'}
@@ -251,7 +251,7 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #' 
 #'Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 #' 
-#'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
+#'@param respm An integer matrix (or a data.frame), which contains the responses of the examinees. A persons x items matrix is expected. Missing responses are \code{NA}.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
 #'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. It applies to the 4PL items only; a value other than 0 for a GPCM item is ignored with a warning. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.
@@ -269,7 +269,7 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #'@param ctrl More controls:
 #'
 #'\itemize{
-#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+#' \item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 #'
 #'\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 #'
@@ -354,7 +354,7 @@ pp_estimate <- function(prep, call, cls, label) {
   type <- prep$type
   if (prep$verbose) message("Estimating: ", label, ", type = ", type)
   if (type == "robust" && prep$family != "4pl") {
-    warning("Robust estimation for GPCM is still very experimental! \n")
+    warning("Robust estimation for GPCM is still very experimental!", call. = FALSE)
   }
 
   ## duplicated response patterns with the same prior and start value are

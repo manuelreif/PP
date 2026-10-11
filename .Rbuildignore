@@ -18,6 +18,9 @@
 ^CLAUDE\.md$
 ^problems\.md$
 ^step-by-step-guide\.md$
+^ideen\.md$
+^ideen_kalibrierung\.md$
+^cran-comments\.md$
 ^PP\.Rcheck$
 \.tar\.gz$
 \.tgz$
@@ -30,3 +33,4 @@
 ^dontgit$
 ^newPfit$
 ^blog$
+^plan\.md$

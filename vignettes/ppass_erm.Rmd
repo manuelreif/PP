@@ -2,9 +2,11 @@
 title: Person assessment with PPass, also for eRm models
 author: Manuel Reif
 output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  html_document:
+    theme:
+      version: 5
+      bootswatch: pulse
+    highlight: tango
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Person assessment with PPass, also for eRm models}
@@ -16,30 +18,31 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 has_erm <- requireNamespace("eRm", quietly = TRUE)
 ```
 
-`PPass()` (**P**erson **P**arameter **ass**essment) estimates the abilities and the person fit in one call and returns both in one table, next to the other variables of the persons. It accepts
+`PPass()` (**P**erson **P**arameter **ass**essment) estimates the abilities, computes the person fit and returns both in one table, together with the other person variables. It accepts
 
 - a data.frame (or matrix) with item responses, together with known item parameters, or
-- a model fitted with the eRm package: the Rasch model, the linear logistic test model, the rating scale and partial credit model and their linear versions, also with several time points and groups.
+- a model fitted with the eRm package: the Rasch model, the linear logistic test model, the rating scale model, the partial credit model and their linear versions, also with several time points and groups.
 
 ## Data with item parameters
 
-`fourpl_df` contains an id, the sex and the responses of 60 persons to 12 items of a 2PL test. `items` names the item columns (positions or names), all other columns are kept as person variables. `mod` chooses the model; the item parameters must fit it.
+`fourpl_df` contains an id, the sex and the responses of 60 persons to 12 items of a 3PL test. `items` names the item columns (positions or names); all other columns are kept as person variables. `mod` chooses the model, and the item parameters must match it.
 
 ```{r ppass}
 library(PP)
 data(fourpl_df)
-res <- PPass(fourpl_df, items = 3:14, mod = "2PL",
-             thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"))
+res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+             thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
+             lowerA = attr(fourpl_df, "lowerA"))
 res
 ```
 
-The default estimate is WLE, the default person fit all of lz, lz\*, infit and outfit. Other estimation arguments of `PP_4pl()`, `PP_gpcm()` and `PPall()` can be passed on, e.g. `type = "mle"` or a prior for `type = "map"`. `summary()` shows the distribution of the estimates, the person fit and the persons flagged by lz\*:
+By default, `PPass()` computes WLE estimates and all four person fit statistics (lz, lz\*, infit and outfit). Other arguments of `PP_4pl()`, `PP_gpcm()` and `PPall()` can be passed on, e.g. `type = "mle"` or a prior for `type = "map"`. `summary()` shows the distribution of the estimates, the person fit and the persons flagged by lz\* (two-sided, as in the summary of `Pfit()`):
 
 ```{r summary}
 s <- summary(res)
 ```
 
-The result is a data.frame. It can be filtered, merged or written to a file like any other; `as.data.frame()` drops the extra information.
+The result is a data.frame. It can be filtered, merged or written to a file like any other data.frame; `as.data.frame()` drops the extra information.
 
 ```{r df}
 res[res$sex == "w" & res$status == "ok", c("id", "estimate", "SE", "lzstar")][1:5, ]
@@ -53,7 +56,7 @@ knitr::kable(head(as.data.frame(res)[, c("id", "sex", "estimate", "SE", "lzstar"
 head(JKpp(res)$estimates)
 ```
 
-For a polytomous test choose `mod = "PCM"` or `"GPCM"`, for a test of dichotomous and polytomous items `mod = "MIXED"`.
+For a polytomous test, choose `mod = "PCM"` or `mod = "GPCM"`; for a test with both dichotomous and polytomous items, choose `mod = "MIXED"`.
 
 ## Models fitted with eRm
 
@@ -61,7 +64,7 @@ For a polytomous test choose `mod = "PCM"` or `"GPCM"`, for a test of dichotomou
 cat("*The eRm package is not installed, so the code of this section is shown without results.*\n")
 ```
 
-eRm estimates item parameters by conditional maximum likelihood; `eRm::person.parameter()` then gives maximum likelihood estimates of the abilities. PPass takes the fitted object and adds WLE, MAP, EAP and robust estimates, the person fit, the jackknife and plausible values.
+eRm estimates item parameters by conditional maximum likelihood; `eRm::person.parameter()` then gives maximum likelihood estimates of the abilities. `PPass()` takes the fitted object and adds WLE, MAP, EAP and robust estimates, the person fit, the jackknife and plausible values.
 
 ```{r rm, eval = has_erm}
 library(eRm)
@@ -70,7 +73,7 @@ res_rm <- PPass(rm1)
 res_rm
 ```
 
-The maximum likelihood estimates equal those of eRm:
+The maximum likelihood estimates are the same as those of eRm:
 
 ```{r rm-mle, eval = has_erm}
 res_mle <- PPass(rm1, type = "mle", fitindices = "lzstar")
@@ -79,7 +82,7 @@ ok <- res_mle$status == "ok"
 max(abs(res_mle$estimate[ok] - pp$theta.table[ok, "Person Parameter"]))
 ```
 
-eRm stores easiness parameters of the item categories; PPass turns them into the thresholds of PP, so the eRm package is not even needed to run `PPass()` on a saved object. Partial credit and rating scale models go to `PP_gpcm()` with all slopes equal to 1:
+eRm stores the parameters of the item categories as easiness parameters. `PPass()` converts them into PP thresholds, so the eRm package is not even needed to run `PPass()` on a saved object. Partial credit and rating scale models are estimated with `PP_gpcm()`, with all slopes equal to 1:
 
 ```{r pcm, eval = has_erm}
 set.seed(2751)
@@ -89,7 +92,7 @@ res_pcm <- PPass(PCM(x), type = "map")
 summary(res_pcm$estimate)
 ```
 
-With several time points (`mpoints`) and groups (`groupvec`), every combination of item, time point and group is a virtual item with its own parameters. A person answers the virtual items of their group and gets one ability over all time points. eRm gives no person parameters for models with group contrasts; PPass does:
+With several time points (`mpoints`) and groups (`groupvec`), every combination of item, time point and group is a virtual item with its own parameters. A person answers the virtual items of their group and gets one ability estimate across all time points. eRm gives no person parameters for models with group contrasts; `PPass()` does:
 
 ```{r lpcm, eval = has_erm}
 x2 <- sim_gpcm(thres = thres, alpha = 1, theta = rnorm(300, 0.5))
@@ -98,7 +101,7 @@ res_lpcm <- PPass(lpcm)
 res_lpcm
 ```
 
-Plausible values need a prior, i.e. an EAP or MAP estimate:
+Plausible values need a prior, so they require an EAP or MAP estimate, such as `res_pcm` above:
 
 ```{r pv, eval = has_erm}
 set.seed(1)

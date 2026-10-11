@@ -9,6 +9,9 @@ findmodel(thres)
 \arguments{
 \item{thres}{A numeric matrix which contains the threshold parameter for each item. NA is allowed - in fact expected!}
 }
+\value{
+A character vector with one entry per item (column of \code{thres}): \code{"4PL"} for items with one threshold, \code{"GPCM"} for items with more.
+}
 \description{
 This is a small helper function which creates a vector template  quick and easily for the \code{PPall()} function. Modify this template as you like.
 }

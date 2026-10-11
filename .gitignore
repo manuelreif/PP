@@ -74,3 +74,6 @@ vignettes/*.R
 vignettes/*.md
 vignettes/figure/
 docs/
+
+# local planning docs
+plan.md

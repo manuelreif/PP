@@ -2,9 +2,11 @@
 title: Person fit with PP
 author: Jan Steinfeld and Manuel Reif
 output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  html_document:
+    theme:
+      version: 5
+      bootswatch: pulse
+    highlight: tango
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Person fit with PP}
@@ -15,17 +17,17 @@ vignette: >
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>", fig.width = 6, fig.height = 4)
 ```
 
-A person fit statistic tells whether the answers of a person fit the model: a person who solves hard items but fails easy ones, who guesses, or who stops working in the middle of a test, gives an unlikely response pattern. `Pfit()` computes four statistics for the estimate of each person:
+A person fit statistic tells whether the answers of a person fit the model: a person who solves hard items but fails easy ones, who guesses, or who stops working in the middle of a test, produces an unlikely response pattern. `Pfit()` computes four statistics at the ability estimate of each person:
 
 - **lz** (Drasgow, Levine & Williams, 1985): the standardized log-likelihood of the response pattern. Negative values indicate misfit. lz is standard normal only if the true ability is known.
-- **lz\*** (Snijders, 2001): lz corrected for the estimated ability, so that it is asymptotically standard normal. PP uses the general form for dichotomous and polytomous items (Sinharay, 2016), with the correction that belongs to the estimation type (MLE, WLE or MAP).
-- **infit** and **outfit** (Wright & Masters, 1990): information-weighted and unweighted mean squares of the standardized residuals, with expectation 1, and their Wilson-Hilferty t transformations `in_t` and `ou_t`. Values above 1 (t > 0) indicate noisy answers, values below 1 answers that are more deterministic than the model expects.
+- **lz\*** (Snijders, 2001): lz corrected for the estimated ability, so that it is asymptotically standard normal. PP uses the general form for dichotomous and polytomous items (Sinharay, 2016), with the correction for the estimation type used (MLE, WLE or MAP).
+- **infit** and **outfit** (Wright & Masters, 1990): information-weighted and unweighted mean squares of the standardized residuals, with an expected value of 1, and their Wilson-Hilferty t transformations `in_t` and `ou_t`. Values above 1 (t > 0) indicate noisy answers; values below 1 indicate answers that are more predictable than the model expects.
 
-All statistics are available for every model in PP (1PL to 4PL, PCM, GPCM and mixed tests), for estimates of type `"mle"`, `"wle"` and `"map"`, and with missing responses: a person is assessed on the items they answered.
+All statistics are available for every model in PP (1PL to 4PL, PCM, GPCM and mixed tests) and for estimates of type `"mle"`, `"wle"` and `"map"`. Missing responses are allowed; each person is assessed on the items they answered.
 
 ## An example
 
-We simulate a 3PL test of 20 items and 300 persons. 15 of the persons answer at random, a typical source of misfit.
+We simulate a 3PL test of 20 items and 300 persons. Fifteen of them answer at random, a typical source of misfit.
 
 ```{r data}
 library(PP)
@@ -37,7 +39,7 @@ x  <- sim_4pl(beta = b, alpha = sl, lowerA = la, upperA = 1, theta = rnorm(300))
 x[1:15, ] <- matrix(rbinom(15 * 20, 1, 0.5), 15)     # random answers
 ```
 
-The person fit needs the estimates first. `Pfit()` takes the responses from the estimation object.
+Person fit needs the ability estimates first. `Pfit()` takes the responses from the estimation object.
 
 ```{r pfit}
 res <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, type = "wle")
@@ -51,13 +53,13 @@ head(fit$lzstar)
 head(fit$infit)
 ```
 
-`summary()` gives an overview with the number of persons flagged at the level `alpha` (two-sided, for lz, lz\* and the t values):
+`summary()` gives an overview, including the number of persons flagged at level `alpha` (two-sided, for lz, lz\* and the t values):
 
 ```{r summary}
 s <- summary(fit, alpha = 0.05)
 ```
 
-How many of the random responders does lz\* find? Persons with low lz\* are the candidates:
+Misfit shows up as low values of lz\*, so we use a one-sided test here. How many of the random responders does lz\* find?
 
 ```{r flagged}
 flag <- which(fit$lzstar[, "lzstar"] < qnorm(0.05))
@@ -74,7 +76,7 @@ abline(h = qnorm(0.05), lty = 2)
 
 ## Standard errors of the fit statistics
 
-With `SE = TRUE`, `Pfit()` adds jackknife standard errors of the statistics (columns `lz_se`, `lzs_se`, `in_se`, `ou_se`): every answered item is left out once, the ability is estimated again and the statistic recomputed.
+With `SE = TRUE`, `Pfit()` adds jackknife standard errors of the statistics (columns `lz_se`, `lzs_se`, `in_se`, `ou_se`): every answered item is left out once, the ability is estimated again and the statistic is recomputed.
 
 ```{r se}
 fit_se <- Pfit(pp = res, fitindices = c("lzstar", "outfit"), SE = TRUE)
@@ -95,11 +97,11 @@ fitg <- Pfit(pp = resg)
 summary(fitg)
 ```
 
-Persons without a finite estimate (status `"extreme"` for MLE, or `"boundary"`) get `NA`; with a single answered item lz\* is `NA` as well. `PPass()` computes the estimates and the person fit in one step and returns them as one table (`vignette("ppass_erm")`).
+Persons whose estimate does not have status `"ok"` (for example `"extreme"` with MLE, or `"boundary"`) get `NA`. For persons who answered only one dichotomous item, lz\* is `NA` as well. `PPass()` computes the estimates and the person fit in one step and returns them as one table (`vignette("ppass_erm")`).
 
 ## Interpretation
 
-The lz and lz\* values are interpreted as z values: the smaller (more negative), the stronger the misfit. Persons below a critical value, e.g. `qnorm(0.05)` = −1.64 one-sided, are flagged (Magis, Raîche & Béland, 2012). lz itself is not standard normal when the ability is estimated (Molenaar & Hoijtink, 1990); its variance is too small, so it flags too few persons. lz\* corrects this and should be preferred.
+The lz and lz\* values are interpreted as z values: the smaller (more negative), the stronger the misfit. Persons below a critical value, e.g. `qnorm(0.05)` = −1.64 one-sided, are flagged (Magis, Raîche & Béland, 2012). `summary()` uses a two-sided test, so it also counts persons with very high values, whose answers fit better than expected. lz itself is not standard normal when the ability is estimated (Molenaar & Hoijtink, 1990); its variance is too small, so it flags too few persons. lz\* corrects this and should be preferred.
 
 ## References
 

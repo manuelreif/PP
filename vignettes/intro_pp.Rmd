@@ -2,9 +2,11 @@
 title: Getting started with PP
 author: Manuel Reif
 output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+  html_document:
+    theme:
+      version: 5
+      bootswatch: pulse
+    highlight: tango
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Getting started with PP}
@@ -23,9 +25,9 @@ PP estimates person parameters (abilities) when the item parameters are already 
 
 and you want ability estimates (MLE, WLE, MAP, EAP or a robust estimate), jackknife estimates, plausible values or person fit statistics.
 
-This vignette shows the estimation functions. Person fit is the topic of `vignette("intro_pfit")`, estimation and person fit in one step and models fitted with the eRm package are shown in `vignette("ppass_erm")`.
+This vignette shows the estimation functions. Person fit is the topic of `vignette("intro_pfit")`. Estimation and person fit in one step and models fitted with the eRm package are shown in `vignette("ppass_erm")`.
 
-## A 2PL test
+## A 3PL test
 
 The data set `fourpl_df` contains the responses of 60 persons to 12 items, together with an id and the sex of each person. The item parameters are attributes of the data set.
 
@@ -36,54 +38,58 @@ head(fourpl_df[, 1:7])
 
 diff_par  <- attr(fourpl_df, "diffpar")
 slope_par <- attr(fourpl_df, "slopes")
+low_par   <- attr(fourpl_df, "lowerA")
 items <- as.matrix(fourpl_df[, -(1:2)])
 ```
 
-`PP_4pl()` covers all dichotomous models. The model follows from the parameters you give: only difficulties (`thres`) give the 1PL model, `slopes` add the 2PL model, `lowerA` the 3PL and `upperA` the 4PL model. Here difficulties and slopes are known, so a 2PL model is estimated.
+`PP_4pl()` covers all dichotomous models. Which model is used depends on the item parameters you supply: difficulties (`thres`) alone give the 1PL model, adding `slopes` gives the 2PL model, adding `lowerA` gives the 3PL model, and adding `upperA` as well gives the 4PL model. Here the difficulties, slopes and lower asymptotes are known, so the 3PL model is used.
 
 ```{r mle}
-res_mle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, type = "mle")
+res_mle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par,
+                  type = "mle")
 head(res_mle$estimates, 8)
 ```
 
 The result is a list. Its main part is the data.frame `$estimates` with one row per person, in the order of the response matrix:
 
 - `estimate` and `SE`: the ability estimate and its standard error,
-- `nsteps`: the number of Newton steps the person needed,
-- `status`: `"ok"` if the estimate converged inside `range` (default `c(-6, 6)`); `"extreme"` for persons with all answers right or wrong, who have no finite maximum likelihood estimate; `"boundary"`, `"no_response"` and `"not_converged"` for the remaining cases.
+- `nsteps`: the number of Newton steps needed for this person,
+- `status`: `"ok"` if the estimate converged inside `range` (default `c(-6, 6)`); `"extreme"` for persons with all answers right or wrong, who have no finite maximum likelihood estimate; `"boundary"` if there is no solution inside `range` and the estimate is set to its limit; `"no_response"` for persons without any answer; `"not_converged"` if the estimation did not converge within `maxsteps` steps.
 
 ```{r status}
 summary(res_mle, nrowmax = 5)
 ```
 
-`coef()` returns the estimates as a vector and `as.data.frame()` the table, so the estimates are easily added to the person data:
+Person 35 answered only item 8 correctly, the item with the highest guessing parameter, and all easier items wrong (item 7 is missing). Under the 3PL model the likelihood of this pattern keeps rising as the ability decreases, so there is no maximum inside `range`. The estimate is set to the lower limit, the status is `"boundary"`, and `PP_4pl()` gives a warning.
+
+`coef()` returns the estimates as a vector and `as.data.frame()` the table, so the estimates can easily be added to the person data:
 
 ```{r bind}
 dat <- data.frame(fourpl_df[, 1:2], as.data.frame(res_mle)[, c("estimate", "SE")])
 head(dat)
 ```
 
-Missing responses (`NA`) are allowed; a person is estimated from the items they answered.
+Missing responses (`NA`) are allowed; the ability of a person is estimated from the items they answered.
 
 ## Choosing the estimation type
 
 `type` selects the estimator:
 
 - `"mle"`: maximum likelihood. Persons with all answers in the lowest or highest category get `-Inf`/`Inf`.
-- `"wle"` (default): weighted likelihood (Warm, 1989). Less biased than the MLE and finite for extreme scores.
-- `"map"` and `"eap"`: maximum and mean of the posterior with a normal prior `N(mu, sigma2)` (default `N(0, 1)`), which may differ between persons. The EAP is computed on a grid of ability values, its SE is the posterior standard deviation.
+- `"wle"` (default): weighted likelihood (Warm, 1989). It is less biased than the MLE and finite for extreme scores.
+- `"map"` and `"eap"`: maximum and mean of the posterior with a normal prior `N(mu, sigma2)` (default `N(0, 1)`). The prior may differ between persons. The EAP is computed on a grid of ability values; its SE is the posterior standard deviation.
 - `"robust"`: a Huber-type estimator (Schuster & Yuan, 2011), which downweights unexpected answers to items far from the person's ability.
 
 ```{r types}
-res_wle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par)
-res_eap <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, type = "eap",
-                  mu = ifelse(fourpl_df$sex == "w", 0.2, -0.2), sigma2 = 0.8)
+res_wle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par)
+res_eap <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par,
+                  type = "eap", mu = ifelse(fourpl_df$sex == "w", 0.2, -0.2), sigma2 = 0.8)
 head(cbind(mle = coef(res_mle), wle = coef(res_wle), eap = coef(res_eap)))
 ```
 
 ## Polytomous and mixed tests
 
-`PP_gpcm()` estimates abilities for the generalized partial credit model, with all slopes equal to 1 (the default) for the partial credit model. `thres` has one column per item with its thresholds; items with fewer categories have `NA` below their last threshold. A first row of zeros is optional.
+`PP_gpcm()` estimates abilities for the generalized partial credit model. With all slopes equal to 1 (the default) this is the partial credit model. `thres` has one column per item with its thresholds; items with fewer categories have `NA` below their last threshold. A first row of zeros is optional.
 
 ```{r gpcm}
 thres <- rbind(c(-1.5, -1, -0.5, 0, 0.5),
@@ -96,7 +102,7 @@ res_gpcm <- PP_gpcm(respm = x_gpcm, thres = thres, slopes = slopes, type = "wle"
 head(res_gpcm$estimates)
 ```
 
-For a test with dichotomous and polytomous items, use `PPall()`. Each column of `thres` holds one item: a 4PL item has a single threshold (its difficulty), a GPCM item several. `findmodel()` tells the two apart and is the default for `model2est`. Lower and upper asymptotes apply to the 4PL items only.
+For a test with dichotomous and polytomous items, use `PPall()`. Each column of `thres` holds the thresholds of one item: a 4PL item has a single threshold (its difficulty), a GPCM item has several. `findmodel()` tells the two apart and is the default for `model2est`. Lower and upper asymptotes apply to the 4PL items only.
 
 ```{r mixed}
 thres_mix <- rbind(c(-1, 0, 1, -0.5, 0.3),
@@ -113,7 +119,7 @@ summary(res_mix$estimates$estimate)
 
 ## Jackknife
 
-`JKpp()` leaves out each answered item once, estimates the ability again and combines the pseudovalues to a jackknife estimate and standard error (Wainer & Wright, 1980). `cmeth = "median"` or `"AMT"` (Andrews' sine estimator) give robust versions.
+`JKpp()` leaves out each answered item once, estimates the ability again and combines the pseudovalues into a jackknife estimate and standard error (Wainer & Wright, 1980). `cmeth = "median"` and `cmeth = "AMT"` (Andrews' sine estimator) give robust estimates; the standard error is the same for all three.
 
 ```{r jk}
 jk <- JKpp(res_wle)
@@ -123,7 +129,7 @@ head(JKpp(res_wle, cmeth = "AMT")$estimates)
 
 ## Plausible values
 
-Plausible values are draws from the posterior distribution of each person. They need a prior, so `PV()` takes an estimate of type `"eap"` or `"map"`; the prior of that estimate (here different for women and men) is used.
+Plausible values are draws from the posterior distribution of each person. They need a prior, so `PV()` takes an estimate of type `"eap"` or `"map"` and uses its prior (here different for women and men).
 
 ```{r pv}
 set.seed(1)

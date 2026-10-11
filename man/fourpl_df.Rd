@@ -4,13 +4,19 @@
 \alias{fourpl_df}
 \title{Simulated data set}
 \format{
-A data.frame with 60 rows and 14 columns.
+A data.frame with 60 rows and 14 columns:
+\describe{
+\item{\code{id}}{person id}
+\item{\code{sex}}{sex of the person (\code{"m"} or \code{"w"})}
+\item{\code{Item1}, \ldots, \code{Item12}}{the responses (0 or 1, \code{NA} = not answered)}
+}
+The item parameters are the attributes \code{diffpar} (difficulties), \code{slopes}, \code{lowerA} (lower asymptotes) and \code{upperA} (upper asymptotes, all 1), e.g. \code{attr(fourpl_df, "diffpar")}.
 }
 \source{
 simulation
 }
 \description{
-This dataset contains data simulated with the \code{sim_4pl()} function.
+This dataset contains the responses of 60 persons to 12 items of a 3PL test, simulated with the \code{sim_4pl()} function, together with an id and the sex of each person. The item parameters are stored as attributes.
 }
 \seealso{
 \link{sim_4pl}

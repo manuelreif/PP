@@ -121,6 +121,11 @@ times on 5000 persons × 40 items: 1PL–3PL estimates 0.02 s (before
   "Person assessment with PPass, also for eRm models".
 * Examples are part of the help pages.
 
+## Maintenance
+
+* Manuel Reif is the maintainer again. The repository moved to
+  <https://github.com/manuelreif/PP>.
+
 # PP 0.6.4-1
 
 * Person fit for mixed tests: `lzstar_mixed()`, `Pfit_lzstarmix()`,

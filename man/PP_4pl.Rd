@@ -23,9 +23,9 @@ PP_4pl(
 )
 }
 \arguments{
-\item{respm}{An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.}
+\item{respm}{An integer matrix (or a data.frame), which contains the responses of the examinees. A persons x items matrix is expected. Missing responses are \code{NA}.}
 
-\item{thres}{A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. If a matrix is submitted, the first row must contain only \bold{zeroes}!}
+\item{thres}{A numeric vector or a numeric matrix which contains the threshold parameter (also known as difficulty parameter or beta parameter) for each item. A matrix with one column per item is also accepted; its first row of zeros (as in \code{\link{PP_gpcm}}) is optional.}
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.}
 
@@ -49,7 +49,7 @@ PP_4pl(
 
 \item{ctrl}{more controls:
 \itemize{
-\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 
 \item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 

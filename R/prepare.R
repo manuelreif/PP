@@ -54,6 +54,8 @@ normalize_thres <- function(thres) {
 #'
 #'@param thres A numeric matrix which contains the threshold parameter for each item. NA is allowed - in fact expected!
 #'
+#'@return A character vector with one entry per item (column of \code{thres}): \code{"4PL"} for items with one threshold, \code{"GPCM"} for items with more.
+#'
 #' @seealso \link{PPall}
 #'
 #'@export
@@ -138,7 +140,8 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
   user_ctrlI <- match(names(ctrl), names(cont))
   if (any(is.na(user_ctrlI))) {
     notex <- names(ctrl)[is.na(user_ctrlI)]
-    warning("The following options in ctrl do not exist: ", paste(notex, collapse = ", "))
+    warning("The following options in ctrl do not exist: ", paste(notex, collapse = ", "),
+            call. = FALSE)
     ctrl <- ctrl[!is.na(user_ctrlI)]
     user_ctrlI <- user_ctrlI[!is.na(user_ctrlI)]
   }

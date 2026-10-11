@@ -21,7 +21,7 @@ PP_gpcm(
 )
 }
 \arguments{
-\item{respm}{An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.}
+\item{respm}{An integer matrix (or a data.frame), which contains the responses of the examinees. A persons x items matrix is expected. Missing responses are \code{NA}.}
 
 \item{thres}{A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.}
 
@@ -43,7 +43,7 @@ PP_gpcm(
 
 \item{ctrl}{more controls
 \itemize{
-\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially resonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
+\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
 
 \item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
 }}

@@ -70,7 +70,7 @@ Schuster, C., & Yuan, K. H. (2011). Robust estimation of latent ability in
 item response models. \emph{Journal of Educational and Behavioral
 Statistics}, \bold{36}(6), 720--735.
 
-Snijders, T. B. (2001). Asymptotic null distribution of person fit statistics
+Snijders, T. A. B. (2001). Asymptotic null distribution of person fit statistics
 with estimated person parameter. \emph{Psychometrika}, \bold{66}(3), 331--342.
 
 Wainer, H., & Wright, B. D. (1980). Robust estimation of ability in the Rasch

@@ -20,13 +20,13 @@ Description: Estimation of person parameters (abilities) for the 1, 2, 3
     assumption that the item parameters are known and fixed: maximum
     likelihood, weighted likelihood (Warm, 1989 <doi:10.1007/BF02294627>),
     maximum and expected a posteriori and robust estimation (Schuster and
-    Yuan, 2011 <doi:10.3102/1076998610396890>). Further jackknife estimates
-    (Wainer and Wright, 1980 <doi:10.1007/BF02293910>), plausible values,
-    the person fit statistics lz, lz* (Snijders, 2001
-    <doi:10.1007/BF02294437>), infit and outfit, and simulation of
+    Yuan, 2011 <doi:10.3102/1076998610396890>). Further features are
+    jackknife estimates (Wainer and Wright, 1980 <doi:10.1007/BF02293910>),
+    plausible values, the person fit statistics lz, lz* (Snijders, 2001
+    <doi:10.1007/BF02294437>), infit and outfit, and the simulation of
     response data. Models fitted with the 'eRm' package can be passed on
-    directly. Useful e.g. when items of an item bank are given to a new
-    sample of persons.
+    directly. The package is useful, e.g., when items of an item bank are
+    given to a new sample of persons.
 URL: https://github.com/manuelreif/PP, https://manuelreif.github.io/PP/
 BugReports: https://github.com/manuelreif/PP/issues
 License: GPL-3
@@ -35,7 +35,7 @@ VignetteBuilder: knitr
 Depends: R (>= 4.0)
 Encoding: UTF-8
 Imports:
-    Rcpp (>= 0.11.2),
+    Rcpp (>= 1.0.0),
     stats,
     utils
 LinkingTo: Rcpp
@@ -43,7 +43,7 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    prettydoc,
+    bslib,
     eRm
 NeedsCompilation: yes
 Config/testthat/edition: 3

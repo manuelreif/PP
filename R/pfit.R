@@ -50,7 +50,7 @@
 #'
 #' Karabatsos, G. (2003) Comparing the Aberrant Response Detection Performance of Thirty-Six Person-Fit Statistics. \emph{Applied Measurement In Education}, \bold{16(4)}, 277--298.
 #'
-#' Magis, D., Raiche, G. & Beland, S. (2012) A didactic presentation of Snijders's l[sub]z[/sub] index of person fit with emphasis on response model selection and ability estimation. \emph{Journal of Educational and Behavioral Statistics}, \bold{37(1)}, 57--81.
+#' Magis, D., Raiche, G. & Beland, S. (2012) A didactic presentation of Snijders's lz* index of person fit with emphasis on response model selection and ability estimation. \emph{Journal of Educational and Behavioral Statistics}, \bold{37(1)}, 57--81.
 #'
 #' Meijer, R. R. & Sijtsma, K. (2001) Methodology review: Evaluating person fit. \emph{Applied Psychological Measurement}, \bold{25(2)}, 107--135.
 #'
@@ -60,7 +60,7 @@
 #'
 #' Sinharay, S. (2016). Asymptotically correct standardization of person-fit statistics beyond dichotomous items. \emph{Psychometrika}, \bold{81(4)}, 992--1013.
 #'
-#' Snijders, T. B. (2001) Asymptotic null distribution of person fit statistics with estimated person parameter. \emph{Psychometrika}, \bold{66(3)}, 331--342.
+#' Snijders, T. A. B. (2001) Asymptotic null distribution of person fit statistics with estimated person parameter. \emph{Psychometrika}, \bold{66(3)}, 331--342.
 #'
 #' Wright, B. D. & Masters, G. N. (1990). Computation of OUTFIT and INFIT Statistics.  \emph{Rasch Measurement Transactions}, 3:4, 84-85.
 #'
