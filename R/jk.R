@@ -65,21 +65,9 @@ JKpp.ppeo <- function(estobj, cmeth = "mean", maxsteps = NULL, exac = NULL,
   usable <- full == "ok"
   run <- usable & L >= 2
 
-  ## leave-one-out estimates (persons x items); bad marks the samples
-  ## without a finite estimate
-  if (type == "eap") {
-    loo <- pp_posterior_cpp(m$bank, X, m$mu, m$sigma2, jk = TRUE)$loo
-    loo[!run, ] <- NA
-    bad <- matrix(FALSE, nrow(X), ncol(X))
-  } else {
-    r <- pp_jackknife_cpp(m$bank, X, type, m$mu, m$sigma2, m$H, ifelse(run, theta, NA),
-                          m$range, exac, as.integer(maxsteps))
-    loo <- r$loo
-    bad <- !is.na(r$status) & r$status != 1L
-    loo[bad] <- NA
-  }
-  dimnames(loo) <- dimnames(X)
-  excluded <- rowSums(bad)
+  r <- jk_loo(m, type, theta, run, maxsteps, exac)
+  loo <- r$loo
+  excluded <- rowSums(r$bad)
 
   ## pseudovalues ps = L theta - (L - 1) theta_(-j)
   ps <- L * theta - (L - 1) * loo
@@ -112,6 +100,27 @@ JKpp.ppeo <- function(estobj, cmeth = "mean", maxsteps = NULL, exac = NULL,
 }
 
 jk_status <- c(pp_status, "too_few_items")
+
+# Leave-one-out estimates (persons x items) of the persons in run, for the
+# model m (estobj$model) and the full estimates theta: NA for items not
+# answered, persons not in run and samples without a finite estimate; bad
+# marks those samples. Used by JKpp() and Pfit(SE = TRUE).
+jk_loo <- function(m, type, theta, run, maxsteps, exac) {
+  X <- m$X
+  if (type == "eap") {
+    loo <- pp_posterior_cpp(m$bank, X, m$mu, m$sigma2, jk = TRUE)$loo
+    loo[!run, ] <- NA
+    bad <- matrix(FALSE, nrow(X), ncol(X))
+  } else {
+    r <- pp_jackknife_cpp(m$bank, X, type, m$mu, m$sigma2, m$H, ifelse(run, theta, NA),
+                          m$range, exac, as.integer(maxsteps))
+    loo <- r$loo
+    bad <- !is.na(r$status) & r$status != 1L
+    loo[bad] <- NA
+  }
+  dimnames(loo) <- dimnames(X)
+  list(loo = loo, bad = bad)
+}
 
 # Andrews' sine M-estimate (AMT) of location: T solves
 # sum(psi((x - T) / (c * s))) = 0 with psi(u) = sin(u) for |u| <= pi, else 0,
