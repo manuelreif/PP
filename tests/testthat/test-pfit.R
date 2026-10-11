@@ -94,6 +94,17 @@ test_that("persons without an estimate get NA", {
   expect_true(all(is.na(pf$lz[bd, ])) && all(is.finite(pf$lz[!bd, ])))
 })
 
+test_that("a person with one answered item has lz but no lz* and no p-value", {
+  X <- set_2pl$X[1:3, ]
+  X[2, -5] <- NA
+  pf <- Pfit(pp = pp_fit(set_2pl, "wle", X = X))
+  expect_true(is.finite(pf$lz[2, "lz"]))
+  expect_true(is.na(pf$lzstar[2, "lzstar"]))
+  expect_identical(unname(pf$infit[2, "in_df"]), 0)
+  expect_true(is.na(pf$infit[2, "in_pv"]) && is.na(pf$outfit[2, "ou_pv"]))
+  expect_true(all(is.finite(pf$lzstar[-2, ])))
+})
+
 # --- jackknife SE ---------------------------------------------------------
 
 ref_all4 <- function(items, type, mu = 0, s2 = 1) {

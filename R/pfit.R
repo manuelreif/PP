@@ -12,7 +12,7 @@
 #' \item \bold{lz*} (Snijders, 2001) corrects lz for the estimated \eqn{\theta}: with the item information \eqn{I}, \eqn{c_n = \sum Cov(\log P_i, s_i) / I} (\eqn{s_i} the score of item \eqn{i}) and the term \eqn{r_0} of the estimating equation (mle: 0, wle: \eqn{J / (2I)}, map: \eqn{(\mu - \theta) / \sigma^2}), lz* \eqn{= (l_0 - \sum E \log P_i + c_n r_0) / \sqrt{\sum Var \log P_i - c_n^2 I}}. For dichotomous items this is Snijders' lz*, for polytomous items and mixed tests the generalisation of Sinharay (2016).
 #' }
 #'
-#' Person fit needs an estimate of type \code{"mle"}, \code{"wle"} or \code{"map"}. Persons without an estimate (status other than \code{"ok"} in \code{pp$estimates}, e.g. an extreme score with mle) get \code{NA}.
+#' Person fit needs an estimate of type \code{"mle"}, \code{"wle"} or \code{"map"}. Persons without an estimate (status other than \code{"ok"} in \code{pp$estimates}, e.g. an extreme score with mle) get \code{NA}. With a single answered dichotomous item lz* is not defined (the corrected variance is 0) and the \eqn{\chi^2} p-value has no degree of freedom; both are \code{NA}.
 #'
 #' With \code{SE = TRUE} every statistic gets a jackknife standard error: for each answered item \eqn{j}, \eqn{\theta} is estimated without item \eqn{j} (the leave-one-out estimates of \code{JKpp()}) and the statistic \eqn{f_{(-j)}} is computed on the remaining items. With \eqn{L} answered items and \eqn{m} leave-one-out samples with a finite estimate, \eqn{SE = (L - 1) \sqrt{\sum_j (f_{(-j)} - \bar f)^2 / (m (m - 1))}}, which is \eqn{\sqrt{(L-1)/L \sum_j (f_{(-j)} - \bar f)^2}} when no sample is left out (Efron & Stein, 1981).
 #'
@@ -140,15 +140,19 @@ fit_stats <- function(bank, X, theta, type, mu, sigma2, which) {
                  mle = 0,
                  wle = rs(mo$J) / (2 * I),
                  map = (mu - theta) / sigma2)
+    # tau2 = 0 (up to rounding) when log P is a linear function of the score,
+    # e.g. with one dichotomous item: lz* is not defined
     tau2 <- vll - cn^2 * I
-    out$lzstar <- mat(lzstar = ifelse(tau2 > 0, (W + cn * r0) / sqrt(pmax(tau2, 0)), NA))
+    ok <- tau2 > sqrt(.Machine$double.eps) * vll
+    out$lzstar <- mat(lzstar = ifelse(ok, (W + cn * r0) / sqrt(pmax(tau2, 0)), NA))
   }
   if (any(c("infit", "outfit") %in% which)) {
     Y2 <- (X - mo$E)^2
     chisq <- rs(Y2 / mo$V)
     df <- n - 1
+    # no p-value without a degree of freedom (one answered item)
     pv <- rep(NA_real_, length(n))
-    pv[!none] <- stats::pchisq(chisq[!none], df[!none], lower.tail = FALSE)
+    pv[df >= 1] <- stats::pchisq(chisq[df >= 1], df[df >= 1], lower.tail = FALSE)
   }
   if ("infit" %in% which) {
     sv <- rs(mo$V)
