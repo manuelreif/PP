@@ -65,9 +65,7 @@ With \code{SE = TRUE} every statistic gets a jackknife standard error: for each 
 Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded.
 }
 \examples{
-################# Pfit ###################################################
-
-### dichotomous items ##########
+## dichotomous items
 
 set.seed(1337)
 diffpar <- seq(-3, 3, length = 15)
@@ -90,7 +88,7 @@ awm_na[sample(length(awm), 300)] <- NA
 res3plna <- PP_4pl(respm = awm_na, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
 head(Pfit(pp = res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
 
-### GPCM ##########
+## GPCM
 
 thres <- rbind(0, c(-1, -0.5, 0), c(0.5, 0.8, 1), c(1.5, 2, 2.5))
 slg   <- c(0.8, 1.2, 1)
@@ -98,7 +96,7 @@ respg <- sim_gpcm(thres = thres, alpha = slg, theta = rnorm(50))
 resgwle <- PP_gpcm(respm = respg, thres = thres, slopes = slg, type = "wle")
 summary(Pfit(pp = resgwle))
 
-### GPCM and 4PL mixed ##########
+## GPCM and 4PL mixed
 
 THRESx <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
 THRESx[2, 1:3] <- NA

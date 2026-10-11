@@ -44,6 +44,13 @@ test_that("PV of a long test (narrow posterior) follows the posterior", {
   expect_draws_match(PV(e, npv = 20, approx = FALSE)$pvdraws, ref_posterior(s$X[3, ], s$items))
 })
 
+test_that("print and summary of a pv object", {
+  pv <- PV(pp_fit(set_2pl, "eap"), npv = 3)
+  expect_output(print(pv), "PV3")
+  expect_output(summary(pv), "Plausible values: 3 per person, 20 persons")
+  expect_output(summary(pv, nrowmax = 5), "output truncated")
+})
+
 test_that("PV names the columns, rows are the persons in order", {
   X <- set_2pl$X[1:3, ]
   rownames(X) <- c("a", "b", "c")

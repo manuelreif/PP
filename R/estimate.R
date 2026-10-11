@@ -12,9 +12,9 @@
 #' With this function you can estimate:
 #' \itemize{
 #' \item \bold{1-PL model} (Rasch model) by submitting: the data matrix, item difficulties and \bold{nothing else}, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
-#' \item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
+#' \item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 and 1 respectively.
 #' \item \bold{3-PL model} by submitting anything except the upper asymptote parameters
-#' \item \bold{4-PL model} ---> submit all parameters ...
+#' \item \bold{4-PL model} by submitting all parameters.
 #'}
 #' 
 #' The probability function of the 4-PL model is:
@@ -27,8 +27,6 @@
 #' In the 2-PL model \eqn{\delta_i = 1, \gamma_i = 0, \forall i}.
 #' 
 #' In the 1-PL model \eqn{\delta_i = 1, \gamma_i = 0, \alpha_i = 1, \forall i}.
-#' 
-#' .
 #' 
 #' The \bold{robust} estimation method, applies a Huber-type estimator (Schuster & Yuan, 2011), which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
 #' 
@@ -66,13 +64,6 @@
 #'
 #' @seealso \link{PPass}, \link{PPall}, \link{PP_gpcm}, \link{JKpp}, \link{PV}
 #'
-#' @useDynLib PP, .registration = TRUE
-#' @importFrom Rcpp evalCpp
-#'
-#' @import utils
-#' @import stats
-#' @import graphics
-#'
 #'@export
 #'
 #'@author Manuel Reif
@@ -95,7 +86,39 @@
 #'
 #'Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 #'
-#'@example ./R/.examples_4pl.R
+#'@examples
+#' ## real data: an adaptive intelligence test with known item difficulties (1PL)
+#' data(pp_amt)
+#' d <- as.matrix(pp_amt$daten_amt[, -(1:7)])
+#' res <- PP_4pl(respm = d, thres = pp_amt$betas[, 2], type = "wle")
+#' summary(res)
+#'
+#' ## simulated data: 2PL, 3PL and 4PL
+#' set.seed(1522)
+#' b  <- seq(-3, 3, length = 12)
+#' sl <- round(runif(12, 0.5, 1.5), 2)
+#' la <- round(runif(12, 0, 0.25), 2)
+#' ua <- round(runif(12, 0.8, 1), 2)
+#' x  <- sim_4pl(beta = b, alpha = sl, lowerA = la, upperA = ua, theta = rnorm(50))
+#'
+#' res2pl <- PP_4pl(respm = x, thres = b, slopes = sl, type = "mle")
+#' res3pl <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, type = "wle")
+#' res4pl <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, upperA = ua, type = "map")
+#'
+#' # persons with all answers right (or wrong) have no finite ML estimate
+#' table(res2pl$estimates$status)
+#' head(res3pl$estimates)
+#' coef(res4pl)[1:5]
+#'
+#' ## EAP with person-specific priors
+#' res_eap <- PP_4pl(respm = x, thres = b, slopes = sl, type = "eap",
+#'                   mu = rep(c(-0.5, 0.5), 25), sigma2 = 0.8)
+#'
+#' ## robust estimation: the example of Schuster & Yuan (2011)
+#' AWM <- matrix(0, 7, 7)
+#' diag(AWM) <- 1
+#' coef(PP_4pl(respm = AWM, thres = -3:3, type = "mle"))
+#' coef(PP_4pl(respm = AWM, thres = -3:3, type = "robust"))
 #'@keywords Person Parameters 4pl
 #'@rdname PP_4pl
 #'
@@ -182,7 +205,25 @@ PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_st
 #'
 #'Warm, Thomas A. (1989). Weighted Likelihood Estimation Of Ability In Item Response Theory. Psychometrika, 54, 427-450.
 #'
-#'@example ./R/.examples_gpcm.R
+#'@examples
+#' # six items with three categories: one column of thresholds per item
+#' thres <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
+#' sl <- c(0.5, 1, 1.5, 1.1, 1, 0.98)
+#' set.seed(1750)
+#' x <- sim_gpcm(thres = thres, alpha = sl, theta = rnorm(30))
+#'
+#' # GPCM, weighted likelihood
+#' resgpcm <- PP_gpcm(respm = x, thres = thres, slopes = sl, type = "wle")
+#' summary(resgpcm)
+#'
+#' # partial credit model: all slopes 1 (the default), EAP
+#' respcm <- PP_gpcm(respm = x, thres = thres, type = "eap")
+#' head(respcm$estimates)
+#'
+#' # items with a different number of categories: NA below the last threshold
+#' thres4 <- rbind(thres, c(NA, NA, NA, NA, 1.7, 1))
+#' x4 <- sim_gpcm(thres = thres4, alpha = sl, theta = rnorm(30))
+#' head(PP_gpcm(respm = x4, thres = thres4, slopes = sl, type = "map")$estimates)
 #'@keywords Person Parameters GPCM
 #'@rdname PP_gpcm
 #'
@@ -213,8 +254,8 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #'@param respm An integer matrix (or a data.frame), which contains the examinees responses. A persons x items matrix is expected. Missing responses are \code{NA}.
 #'@param thres A numeric matrix which contains the threshold parameter for each item. If the first row of the matrix is not set to zero (only zeroes in the first row) - then a row-vector with zeroes is added by default.
 #'@param slopes A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.
-#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.
-#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.
+#'@param lowerA A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. It applies to the 4PL items only; a value other than 0 for a GPCM item is ignored with a warning. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.
+#'@param upperA numeric vector, which contains the upper asymptote parameters for each item. It applies to the 4PL items only; a value other than 1 for a GPCM item is ignored with a warning. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.
 #'@param theta_start A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.
 #'@param mu A numeric vector of location parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 0 for each person. MLE, WLE and robust estimation have no prior: a value given there is ignored with a warning, and the result stores \code{NA}.
 #'@param sigma2 A numeric vector of variance parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 1 for each person. MLE, WLE and robust estimation have no prior: a value given there is ignored with a warning, and the result stores \code{NA}.
@@ -266,7 +307,23 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #'
 #'Yen, Y.-C., Ho, R.-G., Liao, W.-W., Chen, L.-J., & Kuo, C.-C. (2012). An empirical evaluation of the slip correction in the four parameter logistic models with computerized adaptive testing. Applied Psychological Measurement, 36, 75-87.
 #'
-#'@example ./R/.examples.R
+#'@examples
+#' # items 1 to 3 are 4PL items (one threshold), items 4 to 6 GPCM items
+#' thres <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
+#' thres[2, 1:3] <- NA
+#' findmodel(thres)
+#' sl <- c(0.5, 1, 1.5, 1.1, 1, 0.98)
+#' la <- c(0.02, 0.1, 0, 0, 0, 0)
+#' ua <- c(0.97, 0.91, 1, 1, 1, 1)
+#' set.seed(1811)
+#' x <- sim_mixed(thres = thres, alpha = sl, lowerA = la, upperA = ua, theta = rnorm(30))
+#'
+#' # model2est defaults to findmodel(thres)
+#' res <- PPall(respm = x, thres = thres, slopes = sl, lowerA = la, upperA = ua, type = "wle")
+#' summary(res)
+#'
+#' res_eap <- PPall(respm = x, thres = thres, slopes = sl, lowerA = la, upperA = ua, type = "eap")
+#' head(res_eap$estimates)
 #'@rdname PPall
 #'
 PPall <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL, theta_start=NULL,

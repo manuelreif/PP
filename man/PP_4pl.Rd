@@ -84,9 +84,9 @@ Compute Person Parameters for the 1/2/3/4-PL model and choose between five commo
 With this function you can estimate:
 \itemize{
 \item \bold{1-PL model} (Rasch model) by submitting: the data matrix, item difficulties and \bold{nothing else}, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
-\item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
+\item \bold{2-PL model} by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 and 1 respectively.
 \item \bold{3-PL model} by submitting anything except the upper asymptote parameters
-\item \bold{4-PL model} ---> submit all parameters ...
+\item \bold{4-PL model} by submitting all parameters.
 }
 
 The probability function of the 4-PL model is:
@@ -100,8 +100,6 @@ In the 2-PL model \eqn{\delta_i = 1, \gamma_i = 0, \forall i}.
 
 In the 1-PL model \eqn{\delta_i = 1, \gamma_i = 0, \alpha_i = 1, \forall i}.
 
-.
-
 The \bold{robust} estimation method, applies a Huber-type estimator (Schuster & Yuan, 2011), which downweights responses to items which provide little information for the ability estimation. First a residuum is estimated and on this basis, the weight for each observation is computed.
 
 residuum:
@@ -113,115 +111,38 @@ weight:
 \deqn{w(r_i) = H/|r| \rightarrow if\, |r_i| > H}
 }
 \examples{
-################# 4 PL #############################################################
-
-### real data ##########
-
+## real data: an adaptive intelligence test with known item difficulties (1PL)
 data(pp_amt)
+d <- as.matrix(pp_amt$daten_amt[, -(1:7)])
+res <- PP_4pl(respm = d, thres = pp_amt$betas[, 2], type = "wle")
+summary(res)
 
-d <- as.matrix(pp_amt$daten_amt[,-(1:7)])
-
-rd_res <- PP_4pl(respm = d, thres = pp_amt$betas[,2], type = "wle")
-summary(rd_res)
-
-rd_res1 <- PP_4pl(respm = d, thres = pp_amt$betas[,2], theta_start = 0,type = "wle")
-summary(rd_res1)
-
-### fake data ##########
-# smaller ... faster
-
+## simulated data: 2PL, 3PL and 4PL
 set.seed(1522)
-# intercepts
-diffpar <- seq(-3,3,length=12)
-# slope parameters
-sl     <- round(runif(12,0.5,1.5),2)
-la     <- round(runif(12,0,0.25),2)
-ua     <- round(runif(12,0.8,1),2)
+b  <- seq(-3, 3, length = 12)
+sl <- round(runif(12, 0.5, 1.5), 2)
+la <- round(runif(12, 0, 0.25), 2)
+ua <- round(runif(12, 0.8, 1), 2)
+x  <- sim_4pl(beta = b, alpha = sl, lowerA = la, upperA = ua, theta = rnorm(50))
 
-# response matrix
-awm <- matrix(sample(0:1,10*12,replace=TRUE),ncol=12)
+res2pl <- PP_4pl(respm = x, thres = b, slopes = sl, type = "mle")
+res3pl <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, type = "wle")
+res4pl <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, upperA = ua, type = "map")
 
+# persons with all answers right (or wrong) have no finite ML estimate
+table(res2pl$estimates$status)
+head(res3pl$estimates)
+coef(res4pl)[1:5]
 
-## 1PL model ##### 
+## EAP with person-specific priors
+res_eap <- PP_4pl(respm = x, thres = b, slopes = sl, type = "eap",
+                  mu = rep(c(-0.5, 0.5), 25), sigma2 = 0.8)
 
-# MLE
-res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
-# WLE
-res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
-# MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
-# EAP estimation
-res1pleap <- PP_4pl(respm = awm,thres = diffpar,type = "eap")
-# robust estimation
-res1plrob <- PP_4pl(respm = awm,thres = diffpar,type = "robust")
-
-# summarize results
-summary(res1plmle)
-summary(res1plwle)
-summary(res1plmap)
-
-
-## 2PL model ##### 
-
-# MLE
-res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-# WLE
-res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
-# MAP estimation
-res2plmap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "map")
-# EAP estimation
-res2pleap <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "eap")
-# robust estimation
-res2plrob <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "robust")
-
-
-## 3PL model ##### 
-
-# MLE
-res3plmle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,type = "mle")
-# WLE
-res3plwle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,type = "wle")
-# MAP estimation
-res3plmap <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,type = "map")
-# EAP estimation
-res3pleap <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la, type = "eap")
-
-
-## 4PL model ##### 
-
-# MLE
-res4plmle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "mle")
-# WLE
-res4plwle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "wle")
-# MAP estimation
-res4plmap <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "map")
-# EAP estimation
-res4pleap <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "eap")
-
-
-## A special on robust estimation:
-# it reproduces the example given in Schuster & Ke-Hai 2011:
-
-diffpar <- c(-3,-2,-1,0,1,2,3)
-
-AWM <- matrix(0,7,7)
+## robust estimation: the example of Schuster & Yuan (2011)
+AWM <- matrix(0, 7, 7)
 diag(AWM) <- 1
-
-res1plmle <- PP_4pl(respm = AWM,thres = diffpar, type = "mle")
-
-summary(res1plmle)
-
-res1plrob <- PP_4pl(respm = AWM,thres = diffpar, type = "robust")
-
-summary(res1plrob)
+coef(PP_4pl(respm = AWM, thres = -3:3, type = "mle"))
+coef(PP_4pl(respm = AWM, thres = -3:3, type = "robust"))
 }
 \references{
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.

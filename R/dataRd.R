@@ -11,14 +11,14 @@ NULL
 #' Adaptive Matrices Test data
 #' 
 #' This dataset contains real data from the 'Adaptive Matrices Test' (AMT), which is a computer-administered test.
-#' This power test assesses logical reasoning as an indicator of general intelligence. The ability to identify regularities and draw logical conclusions is a very good predictor of long-term success at work. The dataset is sparse, because the test tailores a specific set of items for each examinee's ability level. (More information about adaptive testing: \url{https://en.wikipedia.org/wiki/Computerized_adaptive_testing})
+#' This power test assesses logical reasoning as an indicator of general intelligence. The ability to identify regularities and draw logical conclusions is a very good predictor of long-term success at work. The dataset is sparse, because the test tailors a specific set of items for each examinee's ability level. (More information about adaptive testing: \url{https://en.wikipedia.org/wiki/Computerized_adaptive_testing})
 #'
 #' 
-#' The data are provided from the Unitersity of Vienna, Faculty of Psychology, Department of Psychological Assessment.
+#' The data are provided from the University of Vienna, Faculty of Psychology, Department of Psychological Assessment.
 #' Thanks to Schuhfried.
 #' 
-#' @format A list with two data.frames. The first data.frame 'daten_amt' contains 298 columns and 710 rows. Each row contains responses from on examinee. The second data.frame 'betas' contains the difficulty parameter (1PL) (These parameters came with the raw-score extraction.).
-#' @source Division of Psychological Assessment and Applied Psychometrics, Fakulty of Psychology, University of Vienna
+#' @format A list with two data.frames. The first data.frame 'daten_amt' contains 298 columns and 710 rows. Each row contains responses from one examinee. The second data.frame 'betas' contains the difficulty parameter (1PL) (These parameters came with the raw-score extraction.).
+#' @source Division of Psychological Assessment and Applied Psychometrics, Faculty of Psychology, University of Vienna
 #' \itemize{
 #' \item ID: id of person
 #' \item AGE: age in years (with ages below 18 and above 34 are collapsed)

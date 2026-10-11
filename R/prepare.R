@@ -60,7 +60,9 @@ normalize_thres <- function(thres) {
 #'
 #'@author Manuel Reif
 #'
-#'@example ./R/.examples.R
+#'@examples
+#' thres <- rbind(0, c(-1, 0.5, -0.2), c(NA, 1.2, 0.4))
+#' findmodel(thres)
 #'@keywords Person Parameters
 findmodel <- function(thres) {
   maxsc <- normalize_thres(thres)$maxsc

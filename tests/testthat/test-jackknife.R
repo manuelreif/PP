@@ -85,7 +85,7 @@ test_that("summary and print of a jk object run", {
   s <- set_2pl
   jk <- jk_quiet(fit8(s, "wle", s$X[1:5, ]))
   out <- capture.output(summary(jk))
-  expect_true(any(grepl("Centering method: mean", out)))
+  expect_true(any(grepl("centering method: mean", out)))
   expect_output(print(jk))
   expect_null(JKpp(pp_fit(s, "wle", X = s$X[1:5, ]))$jk_mat)
 })

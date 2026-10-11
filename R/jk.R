@@ -22,7 +22,25 @@
 #'
 #' @seealso \link{PP_gpcm}, \link{PP_4pl}, \link{PPall}
 #'
-#'@example ./R/.examples_JK.R
+#'@examples
+#' set.seed(1623)
+#' b  <- seq(-3, 3, length = 12)
+#' sl <- round(runif(12, 0.5, 1.5), 2)
+#' x  <- sim_4pl(beta = b, alpha = sl, lowerA = 0, upperA = 1, theta = rnorm(20, sd = 1.5))
+#'
+#' res <- PP_4pl(respm = x, thres = b, slopes = sl, type = "wle")
+#' jk <- JKpp(res)
+#' summary(jk)
+#' # WLE and jackknife side by side
+#' head(cbind(res$estimates[, c("estimate", "SE")], jk = jk$estimates[, c("estimate", "SE")]))
+#'
+#' # robust centering: the AMT of Wainer & Wright (1980)
+#' head(JKpp(res, cmeth = "AMT")$estimates)
+#'
+#' # partial credit model, EAP
+#' thres <- rbind(0, c(-1, -0.5, 0, 0.4), c(0.5, 0.8, 1, 1.5))
+#' xg <- sim_gpcm(thres = thres, alpha = 1, theta = rnorm(20))
+#' JKpp(PP_gpcm(respm = xg, thres = thres, type = "eap"))
 #'@author Manuel Reif
 JKpp <- function(estobj, ...) UseMethod("JKpp")
 

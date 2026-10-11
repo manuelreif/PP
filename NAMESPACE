@@ -31,8 +31,15 @@ export(findmodel)
 export(sim_4pl)
 export(sim_gpcm)
 export(sim_mixed)
-import(graphics)
-import(stats)
-import(utils)
 importFrom(Rcpp,evalCpp)
+importFrom(stats,
+  median,
+  qnorm,
+  sd,
+  setNames
+)
+importFrom(utils,
+  head,
+  packageVersion
+)
 useDynLib(PP, .registration = TRUE)

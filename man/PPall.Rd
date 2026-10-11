@@ -30,9 +30,9 @@ PPall(
 
 \item{slopes}{A numeric vector, which contains the slope parameters for each item - one parameter per item is expected. A single value is used for all items. If \code{NULL} (default), all slopes are 1.}
 
-\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. In the case of polytomous items, the value must be 0. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.}
+\item{lowerA}{A numeric vector, which contains the lower asymptote parameters (kind of guessing parameter) for each item. It applies to the 4PL items only; a value other than 0 for a GPCM item is ignored with a warning. A single value is used for all items. If \code{NULL} (default), all lower asymptotes are 0.}
 
-\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. In the case of polytomous items, the value must be 1. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.}
+\item{upperA}{numeric vector, which contains the upper asymptote parameters for each item. It applies to the 4PL items only; a value other than 1 for a GPCM item is ignored with a warning. A single value is used for all items. If \code{NULL} (default), all upper asymptotes are 1.}
 
 \item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
@@ -90,64 +90,22 @@ For a test with both: dichotomous and polytomous items which have been scaled un
 Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 }
 \examples{
-################# GPCM  and 4PL mixed #########################################
+# items 1 to 3 are 4PL items (one threshold), items 4 to 6 GPCM items
+thres <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
+thres[2, 1:3] <- NA
+findmodel(thres)
+sl <- c(0.5, 1, 1.5, 1.1, 1, 0.98)
+la <- c(0.02, 0.1, 0, 0, 0, 0)
+ua <- c(0.97, 0.91, 1, 1, 1, 1)
+set.seed(1811)
+x <- sim_mixed(thres = thres, alpha = sl, lowerA = la, upperA = ua, theta = rnorm(30))
 
-# some threshold parameters
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
-# slopes
-sl     <- c(0.5,1,1.5,1.1,1,0.98)
+# model2est defaults to findmodel(thres)
+res <- PPall(respm = x, thres = thres, slopes = sl, lowerA = la, upperA = ua, type = "wle")
+summary(res)
 
-THRESx <- THRES
-THRESx[2,1:3] <- NA
-
-# for the 4PL item the estimated parameters are submitted, 
-# for the GPCM items the lower asymptote = 0 
-# and the upper asymptote = 1.
-la     <- c(0.02,0.1,0,0,0,0)
-ua     <- c(0.97,0.91,1,1,1,1)
-
-awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
-                     ,2,0,0,0,0,0,0,0,0,1
-                     ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
-
-# create model2est
-# this function tries to help finding the appropriate 
-# model by inspecting the THRESx.
-model2est <- findmodel(THRESx)
-
-
-# MLE
-respmixed_mle <- PPall(respm = awmatrix,thres = THRESx, 
-                     slopes = sl,lowerA = la, upperA=ua,type = "mle",
-                     model2est=model2est)
-# WLE
-respmixed_wle <- PPall(respm = awmatrix,thres = THRESx, 
-                    slopes = sl,lowerA = la, upperA=ua,type = "wle",
-                    model2est=model2est)
-# MAP estimation
-respmixed_map <- PPall(respm = awmatrix,thres = THRESx, 
-                    slopes = sl,lowerA = la, upperA=ua, type = "map",
-                    model2est=model2est)
-
-# EAP estimation
-respmixed_eap <- PPall(respm = awmatrix,thres = THRESx, 
-                    slopes = sl,lowerA = la, upperA=ua, type = "eap",
-                    model2est=model2est)
-
-# Robust estimation
-respmixed_rob <- PPall(respm = awmatrix,thres = THRESx, 
-                    slopes = sl,lowerA = la, upperA=ua, type = "robust",
-                    model2est=model2est)
-
-
-# summary to summarize the results
-summary(respmixed_mle)
-summary(respmixed_wle)
-summary(respmixed_map)
-summary(respmixed_eap)
-summary(respmixed_rob)
-
+res_eap <- PPall(respm = x, thres = thres, slopes = sl, lowerA = la, upperA = ua, type = "eap")
+head(res_eap$estimates)
 }
 \references{
 Baker, Frank B., and Kim, Seock-Ho (2004). Item Response Theory - Parameter Estimation Techniques. CRC-Press.

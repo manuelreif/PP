@@ -72,7 +72,7 @@ A data.frame of class \code{ppass} with one row per person: the person variables
 Person fit is computed by \code{Pfit()} and needs an estimate of type \code{"mle"}, \code{"wle"} or \code{"map"}. For \code{type = "eap"} and \code{"robust"} \code{PPass} returns the estimates only, with a message.
 }
 \examples{
-## ========== data with item parameters
+## data with item parameters
 
 set.seed(1337)
 # difficulties and slopes of 15 items
@@ -95,7 +95,7 @@ head(as.data.frame(res))
 jk <- JKpp(res)
 
 
-## ========== real data (adaptive test, 1PL)
+## real data (adaptive test, 1PL)
 
 data(pp_amt)
 d <- pp_amt$daten_amt
@@ -104,7 +104,7 @@ rd_res <- PPass(d, items = 8:ncol(d), mod = "1PL", thres = pp_amt$betas[, 2],
 head(rd_res)
 
 
-## ========== models fitted with eRm
+## models fitted with eRm
 
 if (requireNamespace("eRm", quietly = TRUE)) {
 
