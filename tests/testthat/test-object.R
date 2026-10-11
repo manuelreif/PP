@@ -129,6 +129,12 @@ test_that("PV and the old JKpp and Pfit run on the new object", {
         na <- is.na(o$estimates$SE)
         expect_identical(unname(j$resjk[na, 1]), o$estimates$estimate[na])
       }
+      # PV needs a prior (B6): mle and wle objects have none
+      if (ty %in% c("mle", "wle")) {
+        expect_true(all(is.na(o$model$mu)) && all(is.na(o$ipar$sigma2)))
+        expect_error(PV(o), "prior")
+        next
+      }
       set.seed(1)
       pv <- PV(o, npv = 3, approx = TRUE)$pvdraws
       expect_identical(dim(pv), c(nrow(s$X), 3L))

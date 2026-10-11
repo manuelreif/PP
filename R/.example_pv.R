@@ -11,8 +11,8 @@ sl      <- round(runif(12, 0.5, 1.5), 2)
 awm <- sim_4pl(beta = diffpar, alpha = sl, lowerA = rep(0, 12), upperA = rep(1, 12),
                theta = rnorm(10))
 
-# any estimate will do, the plausible values come from the posterior
-res2pl <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "wle")
+# plausible values need a prior: EAP (or MAP) estimation, here with the default N(0, 1)
+res2pl <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "eap")
 
 # 10 plausible values per person, normal approximation of the posterior
 res_pv <- PV(res2pl)
@@ -21,7 +21,7 @@ summary(res_pv)
 # 200 draws from the posterior itself; their means approximate the EAP
 res_pv2 <- PV(res2pl, npv = 200, approx = FALSE)
 cbind(pv_mean = rowMeans(res_pv2$pvdraws),
-      eap = PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "eap")$estimates$estimate)
+      eap = res2pl$estimates$estimate)
 
 
 ### GPCM model with person-specific priors ######

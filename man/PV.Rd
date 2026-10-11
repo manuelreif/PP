@@ -24,7 +24,7 @@ PV(estobj, ...)
 
 \item{nrowmax}{When printing the matrix of estimates - how many rows should be shown? Default = 15.}
 
-\item{estobj}{An object which originates from using \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()}, with any estimation type.}
+\item{estobj}{An object which originates from using \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with \code{type = "eap"} or \code{type = "map"}.}
 
 \item{npv}{The number of plausible values per person - default is 10.}
 
@@ -37,11 +37,11 @@ An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row 
 This function draws \code{npv} plausible values for each person from their posterior density.
 }
 \details{
-The posterior of each person combines the likelihood of the answered items with the normal prior \code{N(mu, sigma2)} of the person, as given to \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} (default \code{N(0, 1)}). It is computed on a grid of ability values, the same as for \code{type = "eap"}: one grid for all persons, and a finer grid around the posterior mode for persons whose posterior is very narrow or lies outside the range of the prior. The estimation type of \code{estobj} does not matter, the plausible values always come from the posterior. Missing responses are skipped; a person without any response gets draws from the prior.
+Plausible values need a prior, so \code{estobj} must come from an estimation with \code{type = "eap"} or \code{type = "map"}. The posterior of each person combines the likelihood of the answered items with the normal prior \code{N(mu, sigma2)} of the person, as given to \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} (default \code{N(0, 1)}). It is computed on a grid of ability values, the same as for \code{type = "eap"}: one grid for all persons, and a finer grid around the posterior mode for persons whose posterior is very narrow or lies outside the range of the prior. Both types give the same plausible values, since they share the posterior; the point estimate itself is not used. MLE, WLE and robust estimates have no prior, and \code{PV()} stops with an error for them. Missing responses are skipped; a person without any response gets draws from the prior.
 
 With \code{approx = FALSE} each value is drawn from the posterior on the grid: a grid point is chosen with its posterior probability, then the value is drawn uniformly within its cell. The draws are independent. With \code{approx = TRUE} (default) the draws come from the normal distribution with the posterior mean and the posterior SD of the person (the EAP estimate and its SE).
 
-Up to version 0.6.4 \code{approx = FALSE} used a Metropolis-Hastings algorithm and \code{approx = TRUE} drew from the normal distribution around the estimate of \code{estobj} with its SE. The arguments \code{thinning}, \code{burnin} and \code{mult} of the sampler are no longer used.
+Up to version 0.6.4 \code{PV()} accepted any estimation type, \code{approx = FALSE} used a Metropolis-Hastings algorithm and \code{approx = TRUE} drew from the normal distribution around the estimate of \code{estobj} with its SE. For an MLE or WLE estimate this is not a posterior and the plausible values were too widely spread. The arguments \code{thinning}, \code{burnin} and \code{mult} of the sampler are no longer used.
 }
 \examples{
 ################# Plausible values #############################################################
@@ -57,8 +57,8 @@ sl      <- round(runif(12, 0.5, 1.5), 2)
 awm <- sim_4pl(beta = diffpar, alpha = sl, lowerA = rep(0, 12), upperA = rep(1, 12),
                theta = rnorm(10))
 
-# any estimate will do, the plausible values come from the posterior
-res2pl <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "wle")
+# plausible values need a prior: EAP (or MAP) estimation, here with the default N(0, 1)
+res2pl <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "eap")
 
 # 10 plausible values per person, normal approximation of the posterior
 res_pv <- PV(res2pl)
@@ -67,7 +67,7 @@ summary(res_pv)
 # 200 draws from the posterior itself; their means approximate the EAP
 res_pv2 <- PV(res2pl, npv = 200, approx = FALSE)
 cbind(pv_mean = rowMeans(res_pv2$pvdraws),
-      eap = PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "eap")$estimates$estimate)
+      eap = res2pl$estimates$estimate)
 
 
 ### GPCM model with person-specific priors ######

@@ -187,14 +187,28 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
 
   items <- prepare_items(nt, slopes, lowerA, upperA, model2est, family)
 
-  ## person vectors; the standard normal prior is the documented default
-  if (is.null(mu)) mu <- 0
-  if (is.null(sigma2)) sigma2 <- 1
-  mu <- recycle_arg(mu, N, "mu", "persons")
-  sigma2 <- recycle_arg(sigma2, N, "sigma2", "persons")
-  if (anyNA(mu) || any(!is.finite(mu))) stop("'mu' must be finite.", call. = FALSE)
-  if (anyNA(sigma2) || any(!is.finite(sigma2)) || any(sigma2 <= 0)) {
-    stop("'sigma2' must be positive and finite.", call. = FALSE)
+  ## person vectors. Only map and eap have a prior (default N(0, 1)); for
+  ## mle, wle and robust it is NA. A prior given there is checked like any
+  ## person vector and then ignored with a warning; NA (as in $model of such an
+  ## object) is accepted silently.
+  if (type %in% c("map", "eap")) {
+    if (is.null(mu)) mu <- 0
+    if (is.null(sigma2)) sigma2 <- 1
+    mu <- recycle_arg(mu, N, "mu", "persons")
+    sigma2 <- recycle_arg(sigma2, N, "sigma2", "persons")
+    if (anyNA(mu) || any(!is.finite(mu))) stop("'mu' must be finite.", call. = FALSE)
+    if (anyNA(sigma2) || any(!is.finite(sigma2)) || any(sigma2 <= 0)) {
+      stop("'sigma2' must be positive and finite.", call. = FALSE)
+    }
+  } else {
+    given <- c(mu = !is.null(mu) && !all(is.na(recycle_arg(mu, N, "mu", "persons"))),
+               sigma2 = !is.null(sigma2) && !all(is.na(recycle_arg(sigma2, N, "sigma2", "persons"))))
+    if (any(given)) {
+      warning(paste0("'", names(given)[given], "'", collapse = " and "),
+              " (the prior of type = \"map\" and \"eap\") ignored for type = \"", type, "\".",
+              call. = FALSE)
+    }
+    mu <- sigma2 <- rep(NA_real_, N)
   }
 
   ## starting values; NA lets the estimator start at the logit of the

@@ -36,11 +36,11 @@ PPall(
 
 \item{theta_start}{A vector which contains a starting value for each person. If NULL is submitted, the starting values are set automatically. If a scalar is submitted, this start value is used for each person.}
 
-\item{mu}{A numeric vector of location parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 0 for each person.}
+\item{mu}{A numeric vector of location parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 0 for each person. MLE, WLE and robust estimation have no prior: a value given there is ignored with a warning, and the result stores \code{NA}.}
 
-\item{sigma2}{A numeric vector of variance parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 1 for each person.}
+\item{sigma2}{A numeric vector of variance parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 1 for each person. MLE, WLE and robust estimation have no prior: a value given there is ignored with a warning, and the result stores \code{NA}.}
 
-\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases. With \code{"eap"} the estimate is the mean and the SE the standard deviation of the posterior, computed on a grid of ability values (see \link{PV}).}
+\item{type}{Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases. With \code{"eap"} the estimate is the mean and the SE the standard deviation of the posterior, computed on a grid of ability values (see \link{PV}). Plausible values (\code{\link{PV}}) need the prior of \code{"eap"} or \code{"map"}.}
 
 \item{model2est}{A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}. A \code{"4PL"} item must have exactly two categories in \code{thres}. If \code{NULL} (default), \code{\link{findmodel}(thres)} is used.}
 

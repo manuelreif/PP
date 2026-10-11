@@ -47,7 +47,7 @@ test_that("PV of a long test (narrow posterior) follows the posterior", {
 test_that("PV keeps the row names and names the columns", {
   X <- set_2pl$X[1:3, ]
   rownames(X) <- c("a", "b", "c")
-  pv <- PV(pp_fit(set_2pl, "wle", X = X), npv = 2)
+  pv <- PV(pp_fit(set_2pl, "eap", X = X), npv = 2)
   expect_s3_class(pv, "pv")
   expect_identical(dimnames(pv$pvdraws), list(c("a", "b", "c"), c("PV1", "PV2")))
   # one person, one value
@@ -102,9 +102,9 @@ test_that("A4: PV works with missing responses", {
   expect_false(anyNA(draws))
 })
 
-test_that("A4: PV of an mle object with extreme scores keeps the rows of the persons", {
+test_that("A4: PV keeps the rows of persons with extreme scores", {
   s <- set_2pl
-  m <- pp_fit(s, "mle")
+  m <- pp_fit(s, "eap")
   set.seed(16)
   draws <- PV(m, npv = 200, approx = FALSE)$pvdraws
   expect_identical(nrow(draws), nrow(s$X))
@@ -113,10 +113,23 @@ test_that("A4: PV of an mle object with extreme scores keeps the rows of the per
   expect_close(rowMeans(draws), post[, 1], 5 * max(post[, 2]) / sqrt(200))
 })
 
-test_that("B4: approx = TRUE on a WLE object draws from the posterior", {
+test_that("B4: PV on a WLE object is refused instead of drawing from N(WLE, SE^2)", {
+  w <- pp_fit(set_2pl, "wle")
+  expect_error(PV(w, npv = 20, approx = TRUE), "prior")
+})
+
+test_that("B6: PV needs an object with a prior (type eap or map)", {
+  for (s in list(set_2pl, set_gpcm, set_mixed)) {
+    for (ty in c("mle", "wle", "robust")) {
+      expect_error(PV(pp_fit(s, ty), npv = 2), "prior")
+    }
+  }
+})
+
+test_that("B6: PV of a MAP object draws from the posterior with its prior", {
   s <- set_2pl
-  w <- pp_fit(s, "wle", X = replicate_person(s, 3, 1000))
-  set.seed(17)
-  expect_draws_match(PV(w, npv = 20, approx = TRUE)$pvdraws,
-                     ref_posterior(s$X[3, ], s$items))
+  m <- pp_fit(s, "map", X = replicate_person(s, 3, 300), mu = rep(2, 300), sigma2 = rep(1, 300))
+  set.seed(19)
+  expect_draws_match(PV(m, npv = 20, approx = FALSE)$pvdraws,
+                     ref_posterior(s$X[3, ], s$items, mu = 2, s2 = 1))
 })

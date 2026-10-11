@@ -46,14 +46,15 @@ n <- nrow(X2)
 
 test_that("scalars are recycled to items and persons", {
   a <- prep(X2, p2$b, slopes = 1.5, lowerA = 0.1, upperA = 0.9, mu = 0.5, sigma2 = 2,
-            theta_start = 0.2, family = "4pl")
+            theta_start = 0.2, type = "map", family = "4pl")
   b <- prep(X2, p2$b, slopes = rep(1.5, 12), lowerA = rep(0.1, 12), upperA = rep(0.9, 12),
-            mu = rep(0.5, n), sigma2 = rep(2, n), theta_start = rep(0.2, n), family = "4pl")
+            mu = rep(0.5, n), sigma2 = rep(2, n), theta_start = rep(0.2, n), type = "map",
+            family = "4pl")
   expect_identical(a, b)
 })
 
 test_that("defaults: slopes 1, asymptotes 0/1, prior N(0, 1), model2est from thres", {
-  a <- prep(X2, p2$b, family = "4pl")
+  a <- prep(X2, p2$b, type = "map", family = "4pl")
   expect_identical(a$slopes, rep(1, 12))
   expect_identical(a$lowerA, rep(0, 12))
   expect_identical(a$upperA, rep(1, 12))
@@ -144,4 +145,34 @@ test_that("item bank: PP_gpcm items are GPCM items, also with two categories", {
   expect_identical(bank$model, rep(1L, 12))
   expect_identical(bank$c, rep(0, 12))
   expect_identical(bank$d, rep(1, 12))
+})
+
+# --- known bugs -------------------------------------------------------------
+
+test_that("B6: mle, wle and robust have no prior (NA), map and eap N(0, 1)", {
+  for (ty in c("mle", "wle", "robust")) {
+    a <- prep(X2, p2$b, type = ty, family = "4pl")
+    expect_identical(a$mu, rep(NA_real_, n))
+    expect_identical(a$sigma2, rep(NA_real_, n))
+  }
+  for (ty in c("map", "eap")) {
+    a <- prep(X2, p2$b, type = ty, family = "4pl")
+    expect_identical(a$mu, rep(0, n))
+    expect_identical(a$sigma2, rep(1, n))
+  }
+})
+
+test_that("B6: a prior with mle, wle or robust is ignored with a warning", {
+  pr <- function(...) PP:::pp_prepare(X2, p2$b, family = "4pl", ...)
+  for (ty in c("mle", "wle", "robust")) {
+    expect_warning(a <- pr(type = ty, mu = 0.5), "ignored")
+    expect_identical(a$mu, rep(NA_real_, n))
+    expect_warning(a <- pr(type = ty, sigma2 = rep(2, n)), "ignored")
+    expect_identical(a$sigma2, rep(NA_real_, n))
+    # NA, as in $model of such an object, is accepted silently
+    expect_silent(a <- pr(type = ty, mu = rep(NA_real_, n), sigma2 = NA))
+    expect_identical(a$mu, rep(NA_real_, n))
+    # wrong lengths stay errors
+    expect_error(pr(type = ty, mu = rep(0, n - 1)), "mu")
+  }
 })
