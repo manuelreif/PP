@@ -49,13 +49,14 @@ test_that("the 3PL persons with an oscillating Newton get the reference jackknif
 })
 
 test_that("cmeth = 'median' and 'AMT' match the reference", {
-  s <- set_2pl
-  X <- s$X[1:8, ]
-  o <- fit8(s, "wle", X)
-  for (cm in c("median", "AMT")) {
-    jk <- jk_quiet(o, cmeth = cm)
-    expect_identical(jk$cmeth, cm)
-    expect_close(unname(jk$resjk), ref_jk(s$items, X, "wle", cmeth = cm)$est, 1e-4)
+  for (s in list(set_2pl, set_gpcm, set_mixed)) {
+    X <- s$X[1:8, ]
+    o <- fit8(s, "wle", X)
+    for (cm in c("median", "AMT")) {
+      jk <- jk_quiet(o, cmeth = cm)
+      expect_identical(jk$cmeth, cm)
+      expect_close(unname(jk$resjk), ref_jk(s$items, X, "wle", cmeth = cm)$est, 1e-4)
+    }
   }
   expect_error(JKpp(o, cmeth = "mode"), "should be one of")
 })
@@ -97,6 +98,28 @@ test_that("maxsteps and exac come from the estimate unless given", {
   expect_identical(a$jk_mat, b$jk_mat)
   expect_error(JKpp(o, maxsteps = 0), "maxsteps")
   expect_error(JKpp(o, exac = -1), "exac")
+})
+
+test_that("B3: AMT combines right and wrong answers separately (Wainer & Wright, scheme 4)", {
+  s <- set_2pl
+  X <- s$X[1:8, ]
+  o <- fit8(s, "wle", X)
+  jk <- jk_quiet(o, cmeth = "AMT")
+  theta <- o$estimates$estimate
+  L <- rowSums(!is.na(X))
+  for (i in which(jk$estimates$status == "ok")) {
+    obs <- !is.na(X[i, ])
+    ps <- (L[i] * theta[i] - (L[i] - 1) * jk$jk_mat[i, ])[obs]
+    right <- X[i, obs] == 1
+    part <- function(p) if (length(p)) length(p) * ref_amt(p) else 0
+    expected <- (part(ps[right]) + part(ps[!right])) / L[i]
+    expect_close(jk$estimates$estimate[i], expected, 1e-6)
+  }
+  # the pooled AMT of 0.7.0-dev differs
+  pooled <- vapply(1:8, function(i) {
+    PP:::jk_amt(stats::na.omit(L[i] * theta[i] - (L[i] - 1) * jk$jk_mat[i, ]))
+  }, 0)
+  expect_gt(max(abs(pooled - jk$estimates$estimate)), 1e-3)
 })
 
 test_that("jk_amt: median for symmetric data, robust against an outlier", {

@@ -8,7 +8,7 @@
 #'
 #' Up to version 0.6.4 the standard error mixed the leave-one-out estimates with the formula for the pseudovalues and was too small by a factor of about \eqn{L-1}, all items counted as answered, and leave-one-out samples without a finite estimate were dropped silently.
 #'
-#' \bold{AMT-robustified jackknife:} When choosing \code{cmeth = "AMT"}, the pseudovalues are combined by Andrews' sine M-estimator (AMT), one of the winners in the Princeton Robustness Study of 1972: \eqn{T} solves \eqn{\sum_j \psi((ps_j - T)/(2.1 s)) = 0} with \eqn{\psi(u) = \sin(u)} for \eqn{|u| \le \pi} and 0 otherwise, where \eqn{s} is the median absolute deviation of the pseudovalues from their median. Pseudovalues further than \eqn{2.1 \pi s} from \eqn{T} get no weight. To get a better idea how the estimation process works, take a closer look to the paper which is mentioned below (Wainer & Wright, 1980).
+#' \bold{AMT-robustified jackknife:} When choosing \code{cmeth = "AMT"}, the pseudovalues are combined as in scheme 4 of Wainer & Wright (1980): they are split into the pseudovalues of the right and of the wrong answers (polytomous items: answers at or above the expected score at \eqn{\hat\theta} and below it), each group is summarised by Andrews' sine M-estimator (AMT), one of the winners in the Princeton Robustness Study (Andrews et al., 1972), and the two values are averaged with the group sizes as weights. Within a group, \eqn{T} solves \eqn{\sum_j \psi((ps_j - T)/s) = 0} with \eqn{\psi(x) = \sin(x/2.1)} for \eqn{|x| \le 2.1\pi} and 0 otherwise, where \eqn{s} is the median absolute deviation of the group's pseudovalues from their median; pseudovalues further than \eqn{2.1 \pi s} from \eqn{T} get no weight. Up to version 0.6.4 the AMT had a sign error, no scale and maximised the sum of the sines.
 #'
 #' @param estobj An object which originates from using \code{PP_gpcm()}, \code{PP_4pl()} or \code{PPall()}.
 #'
@@ -76,7 +76,10 @@ JKpp.ppeo <- function(estobj, cmeth = "mean", maxsteps = NULL, exac = NULL,
   est <- switch(cmeth,
                 mean = rowMeans(ps, na.rm = TRUE),
                 median = apply(ps, 1, stats::median, na.rm = TRUE),
-                AMT = apply(ps, 1, function(v) jk_amt(v[!is.na(v)])))
+                AMT = {
+                  right <- X >= pp_moments_cpp(m$bank, X, ifelse(run, theta, 0))$E
+                  vapply(seq_len(nrow(ps)), function(i) jk_amt_ww(ps[i, ], right[i, ]), 0)
+                })
   se <- sqrt(rowSums((ps - rowMeans(ps, na.rm = TRUE))^2, na.rm = TRUE) / (nps * (nps - 1)))
   est[status != "ok"] <- NA
   se[status != "ok"] <- NA
@@ -119,6 +122,19 @@ jk_loo <- function(m, type, theta, run, maxsteps, exac) {
   }
   dimnames(loo) <- dimnames(X)
   list(loo = loo, bad = bad)
+}
+
+# AMT-robustified jackknife of Wainer & Wright (1980, scheme 4): the AMT of
+# the pseudovalues of the right answers (right: response >= expected score at
+# the estimate) and of the wrong ones, averaged with the group sizes as weights.
+jk_amt_ww <- function(ps, right) {
+  ok <- !is.na(ps)
+  if (!any(ok)) return(NA_real_)
+  ps <- ps[ok]
+  up <- right[ok]
+  n <- c(sum(up), sum(!up))
+  t <- c(if (n[1]) jk_amt(ps[up]) else 0, if (n[2]) jk_amt(ps[!up]) else 0)
+  sum(n * t) / sum(n)
 }
 
 # Andrews' sine M-estimate (AMT) of location: T solves

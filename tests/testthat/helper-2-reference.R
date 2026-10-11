@@ -203,11 +203,20 @@ ref_jackknife <- function(x, items, type, mu = 0, s2 = 1, H = 1, cmeth = "mean",
   m <- length(ps)
   est <- se <- NA_real_
   if (inside(theta) && m >= 2) {
-    est <- switch(cmeth, mean = mean(ps), median = stats::median(ps), AMT = ref_amt(ps))
+    est <- switch(cmeth, mean = mean(ps), median = stats::median(ps), AMT = ref_amt_ww(ps, x[ok], items[ok], theta))
     se <- sqrt(sum((ps - mean(ps))^2) / (m * (m - 1)))
   }
   list(estimate = est, se = se, theta = theta, loo = loo,
        excluded = if (inside(theta) && L >= 2) L - m else 0)
+}
+
+# AMT-robustified jackknife (Wainer & Wright 1980, scheme 4): the AMT of the
+# pseudovalues of the right answers (response >= expected score at theta) and
+# of the wrong ones, weighted by the counts
+ref_amt_ww <- function(ps, x, items, theta) {
+  right <- x >= vapply(items, function(it) ref_moments(it, theta)[["E"]], 0)
+  parts <- lapply(list(ps[right], ps[!right]), function(p) if (length(p)) length(p) * ref_amt(p) else 0)
+  (parts[[1]] + parts[[2]]) / length(ps)
 }
 
 # Andrews' sine M-estimate (AMT) as the minimum of sum(rho((x - T) / (c s)))
