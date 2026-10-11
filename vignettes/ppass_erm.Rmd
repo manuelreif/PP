@@ -1,12 +1,7 @@
 ---
 title: Person assessment with PPass, also for eRm models
 author: Manuel Reif
-output:
-  html_document:
-    theme:
-      version: 5
-      bootswatch: pulse
-    highlight: tango
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Person assessment with PPass, also for eRm models}

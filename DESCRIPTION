@@ -43,7 +43,6 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
-    bslib,
     eRm
 NeedsCompilation: yes
 Config/testthat/edition: 3

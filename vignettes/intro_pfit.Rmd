@@ -1,12 +1,7 @@
 ---
 title: Person fit with PP
 author: Jan Steinfeld and Manuel Reif
-output:
-  html_document:
-    theme:
-      version: 5
-      bootswatch: pulse
-    highlight: tango
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Person fit with PP}
