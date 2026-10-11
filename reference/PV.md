@@ -138,7 +138,7 @@ summary(res_pv)
 #> PP Version: 0.7.0 
 #> 
 #> Call: PV.ppeo(estobj = res2pl) 
-#> - job started @ Sun Oct 11 15:57:36 2026 
+#> - job started @ Sun Oct 11 16:33:59 2026 
 #> 
 #> Plausible values: 10 per person, 10 persons
 #> Mean 0.07516 | SD 0.9201 (all draws)

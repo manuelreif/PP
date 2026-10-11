@@ -180,7 +180,7 @@ res_mle <- PPass(rm1, type = "mle", fitindices = "lzstar")
 pp <- person.parameter(rm1)
 ok <- res_mle$status == "ok"
 max(abs(res_mle$estimate[ok] - pp$theta.table[ok, "Person Parameter"]))
-#> [1] 2.456019e-05
+#> [1] 2.452897e-05
 ```
 
 eRm stores the parameters of the item categories as easiness parameters.

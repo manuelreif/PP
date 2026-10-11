@@ -89,7 +89,7 @@ summary(res_mle, nrowmax = 5)
 #> PP Version: 0.7.0 
 #> 
 #> Call: PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par,      type = "mle") 
-#> - job started @ Sun Oct 11 15:57:41 2026 
+#> - job started @ Sun Oct 11 16:34:04 2026 
 #> 
 #> Estimation type: mle 
 #> 

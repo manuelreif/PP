@@ -250,7 +250,7 @@ summary(resgpcm)
 #> PP Version: 0.7.0 
 #> 
 #> Call: PP_gpcm(respm = x, thres = thres, slopes = sl, type = "wle") 
-#> - job started @ Sun Oct 11 15:57:33 2026 
+#> - job started @ Sun Oct 11 16:33:56 2026 
 #> 
 #> Estimation type: wle 
 #> 
