@@ -4,8 +4,9 @@
 #
 # Writes blog/PV/output/pv_<label>.rds, a list with
 #   population  3000 persons from N(0, 1), 2PL with 12 items: true theta, WLE,
-#               EAP and one PV per person from PV() on the WLE object, with
-#               PP 0.6.4-1 (default approx = TRUE: N(WLE, SE^2)) and new
+#               EAP and one PV per person: PP 0.6.4-1 on the WLE object
+#               (default approx = TRUE: N(WLE, SE^2)), new on the EAP object
+#               (PV() needs a prior)
 #   gruppen     two groups with different means and person-specific priors
 #               (background model), 2PL with 8 items: true theta and PVs from
 #               the EAP object with approx = FALSE (PP 0.6.4-1: MH sampler,
@@ -23,13 +24,14 @@ ordner <- "blog/PV/output"
 alt <- new.env()
 eval(parse(text = system("git show 6bdbde5:R/PV.R", intern = TRUE)), envir = alt)
 
-# One draw per person from both versions with the same seed. The old PV
-# returns a transposed matrix for npv = 1, so both draw two and keep the first.
-ein_pv <- function(obj, approx, seed) {
+# One draw per person from both versions with the same seed (obj_alt for the
+# old code, obj_neu for the new). The old PV returns a transposed matrix for
+# npv = 1, so both draw two and keep the first.
+ein_pv <- function(obj_alt, obj_neu, approx, seed) {
   set.seed(seed)
-  a <- alt$PV.fourpl(obj, npv = 2, approx = approx)$pvdraws[, 1]
+  a <- alt$PV.fourpl(obj_alt, npv = 2, approx = approx)$pvdraws[, 1]
   set.seed(seed)
-  n <- PP::PV(obj, npv = 2, approx = approx)$pvdraws[, 1]
+  n <- PP::PV(obj_neu, npv = 2, approx = approx)$pvdraws[, 1]
   list(alt = a, neu = n)
 }
 
@@ -44,7 +46,7 @@ X <- sim_resp(theta, items, 52)
 satz <- list(items = items, kind = "4pl")
 wle <- pp_fit(satz, "wle", X = X)
 eap <- pp_fit(satz, "eap", X = X)
-pv <- ein_pv(wle, TRUE, 53)
+pv <- ein_pv(wle, eap, TRUE, 53)
 population <- rbind(
   data.table(groesse = "wahr", theta = theta),
   data.table(groesse = "WLE", theta = wle$estimates$estimate),
@@ -65,7 +67,7 @@ theta_g <- rnorm(2 * n_gr, mu_p, sqrt(s2_p))
 items_g <- items_4pl(c(1.2, 0.9, 1.4, 1, 1.3, 0.8, 1.1, 1.5), round(seq(-1.5, 1.5, length.out = 8), 2))
 Xg <- sim_resp(theta_g, items_g, 55)
 eap_g <- pp_fit(list(items = items_g, kind = "4pl"), "eap", X = Xg, mu = mu_p, sigma2 = s2_p)
-pv_g <- ein_pv(eap_g, FALSE, 56)
+pv_g <- ein_pv(eap_g, eap_g, FALSE, 56)
 gruppen <- list(
   personen = data.table(gruppe = g, theta = theta_g, pv_alt = pv_g$alt, pv_neu = pv_g$neu),
   def = gruppen_def,

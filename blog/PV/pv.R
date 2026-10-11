@@ -1,6 +1,6 @@
 # Pictures of the plausible values on the level of a population:
-#   pv_population  WLE, EAP and PVs (PP 0.6.4-1 and new) against the true
-#                  distribution of a population
+#   pv_population  WLE, EAP and PVs (PP 0.6.4-1 on the WLE object, new on the
+#                  EAP object) against the true distribution of a population
 #   pv_gruppen     two groups with person-specific priors: PVs of the MH
 #                  sampler of PP 0.6.4-1 and of the grid posterior
 #
@@ -23,7 +23,8 @@ stand <- sprintf("Stand: %s.", gsub("`", "", d$code))
 po <- d$population
 sd_wahr <- po[groesse == "wahr", sd(theta)]
 panels <- c("WLE" = "WLE (Punktschätzer)", "EAP" = "EAP (Punktschätzer)",
-            "PV alt" = "PV() auf dem WLE-Objekt, PP 0.6.4-1", "PV neu" = "PV() auf dem WLE-Objekt, neu")
+            "PV alt" = "PP 0.6.4-1: PV() auf dem WLE-Objekt = N(WLE, SE²)",
+            "PV neu" = "neu: PV() auf dem EAP-Objekt, Posterior mit Prior N(0, 1)")
 fuell <- setNames(c(grau, grau, akzent, blau), panels)
 ph <- po[groesse != "wahr"][, panel := factor(panels[groesse], levels = panels)]
 kenn <- ph[, .(sd = sd(theta)), by = panel]
