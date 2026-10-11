@@ -33,6 +33,10 @@ pp_posterior_cpp <- function(bank, X, mu, sigma2, npv = 0L, max_table = 16777216
     .Call(`_PP_pp_posterior_cpp`, bank, X, mu, sigma2, npv, max_table, jk)
 }
 
+pp_moments_cpp <- function(bank, X, theta) {
+    .Call(`_PP_pp_moments_cpp`, bank, X, theta)
+}
+
 pp_sim_cpp <- function(bank, theta) {
     .Call(`_PP_pp_sim_cpp`, bank, theta)
 }

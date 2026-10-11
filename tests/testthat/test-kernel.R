@@ -75,6 +75,54 @@ test_that("an item gives the same values alone and inside a mixed bank", {
   }
 })
 
+test_that("the person fit moments match the references for all item types", {
+  bank <- kernel_bank(kernel_items)
+  ncat <- vapply(kernel_items, ref_ncat, 1L)
+  th <- c(theta_grid, NA, Inf)
+  for (x in 0:(max(ncat) - 1)) {
+    X <- matrix(as.integer(x), length(th), bank$n)
+    X[, ncat <= x] <- NA
+    X[2, 1] <- NA
+    m <- PP:::pp_moments_cpp(bank, X, th)
+    expect_named(m, c("E", "V", "C", "ll", "Ell", "Vll", "Cs", "info", "J"))
+    for (j in which(ncat > x)) {
+      it <- kernel_items[[j]]
+      ok <- setdiff(seq_along(theta_grid), if (j == 1) 2)
+      p <- ref_catprob(it, theta_grid[ok])
+      lp <- log(p)
+      dp <- num_d1(function(t) ref_catprob(it, t), theta_grid[ok])
+      mom <- t(vapply(theta_grid[ok], function(t) ref_moments(it, t), c(E = 0, V = 0, C = 0)))
+      expect_close(m$E[ok, j], mom[, "E"], tol = 1e-12)
+      expect_close(m$V[ok, j], mom[, "V"], tol = 1e-12)
+      expect_close(m$C[ok, j], mom[, "C"], tol = 1e-12)
+      expect_close(m$ll[ok, j], lp[, x + 1], tol = 1e-12)
+      expect_close(m$Ell[ok, j], rowSums(p * lp), tol = 1e-12)
+      expect_close(m$Vll[ok, j], rowSums(p * lp^2) - rowSums(p * lp)^2, tol = 1e-10)
+      expect_close(m$Cs[ok, j], rowSums(dp * lp), tol = 1e-6)
+      expect_close(m$info[ok, j], ref_item_info(it, theta_grid[ok]), tol = 1e-6)
+      expect_close(m$J[ok, j], ref_item_J(it, theta_grid[ok]), tol = 1e-5)
+    }
+    # not answered cells and persons without a finite theta are NA
+    for (q in names(m)) {
+      expect_true(all(is.na(m[[q]][, ncat <= x])))
+      expect_true(all(is.na(m[[q]][length(th) - 0:1, ])))
+      expect_true(is.na(m[[q]][2, 1]))
+    }
+  }
+})
+
+test_that("the person fit moments stay finite in the far tails", {
+  items <- list(item_4pl(1, 0), item_4pl(2, 0, 0.2), item_4pl(1, 0, 0.2, 0.9),
+                item_gpcm(1.5, c(-1, 0, 1)))
+  bank <- kernel_bank(items)
+  th <- c(-800, -50, 50, 800)
+  for (x in 0:1) {
+    m <- PP:::pp_moments_cpp(bank, matrix(as.integer(x), length(th), 4), th)
+    for (q in names(m)) expect_true(all(is.finite(m[[q]])), info = q)
+    expect_true(all(m$V >= 0 & m$Vll >= 0))
+  }
+})
+
 test_that("C1: the 4PL kernel stays finite and exact in the far tails", {
   items <- list(item_4pl(1, 0), item_4pl(2, 0), item_4pl(1, 0, 0.2), item_4pl(1, 0, 0.2, 0.9))
   bank <- kernel_bank(items)

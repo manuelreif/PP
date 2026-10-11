@@ -133,6 +133,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pp_moments_cpp
+List pp_moments_cpp(List bank, IntegerMatrix X, NumericVector theta);
+RcppExport SEXP _PP_pp_moments_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP thetaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_moments_cpp(bank, X, theta));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pp_sim_cpp
 IntegerMatrix pp_sim_cpp(List bank, NumericVector theta);
 RcppExport SEXP _PP_pp_sim_cpp(SEXP bankSEXP, SEXP thetaSEXP) {
@@ -155,6 +168,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PP_pp_estimate_cpp", (DL_FUNC) &_PP_pp_estimate_cpp, 11},
     {"_PP_pp_jackknife_cpp", (DL_FUNC) &_PP_pp_jackknife_cpp, 10},
     {"_PP_pp_posterior_cpp", (DL_FUNC) &_PP_pp_posterior_cpp, 7},
+    {"_PP_pp_moments_cpp", (DL_FUNC) &_PP_pp_moments_cpp, 3},
     {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
     {NULL, NULL, 0}
 };
