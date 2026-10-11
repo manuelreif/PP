@@ -63,18 +63,16 @@ quietly <- function(expr) {
 }
 
 # Newton-Raphson iterations, logged per call by a trace() on the drivers.
-# The old drivers NR_4PL/NR_GPCM/NR_mixed iterate all persons together; JKpp
-# still calls them from R (40 calls per run), and they return the global number
-# of sweeps. NR_GPCM reports one sweep less than it runs (howlong = newr instead
-# of newr + 1), so the log adds the offset back and holds the sweeps actually
-# done. The person estimator pp_estimate_cpp (PP_4pl, PP_gpcm and PPall since
-# block 4) iterates each person on its own; the log holds the largest number of
-# steps of a person in the call, which is comparable to the global sweeps.
+# The person estimator pp_estimate_cpp (PP_4pl, PP_gpcm and PPall since block
+# 4) iterates each person on its own; the log holds the largest number of
+# steps of a person in the call. pp_jackknife_cpp (JKpp since block 6) reports
+# the largest number of steps of a leave-one-out sample. Up to block 5 the old
+# drivers NR_4PL/NR_GPCM/NR_mixed were traced here: they iterated all persons
+# together and returned the global number of sweeps (NR_GPCM one less than it
+# ran, which the log added back), so the old counts in the DB are comparable.
 nr_drivers <- list(
-  NR_4PL = quote(as.integer(returnValue()$nsteps)),
-  NR_GPCM = quote(as.integer(returnValue()$nsteps) + 1L),
-  NR_mixed = quote(as.integer(returnValue()$nsteps)),
-  pp_estimate_cpp = quote(max(0L, returnValue()$nsteps))
+  pp_estimate_cpp = quote(max(0L, returnValue()$nsteps)),
+  pp_jackknife_cpp = quote(as.integer(returnValue()$nsteps))
 )
 nr_log <- new.env()
 nr_log$steps <- integer(0)

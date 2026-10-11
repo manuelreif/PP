@@ -13,8 +13,9 @@
 #            for all persons) and, where PP uses it, of stage 2 (a fine window
 #            around the mode), and the exact posterior curve
 #   eap      the error of the EAP over the test length (Rasch items): the
-#            60-node quadrature of PP 0.6.4-1 (R/eap.R, still in the package
-#            for the old jackknife) and the grid, against the exact posterior
+#            60-node quadrature of PP 0.6.4-1 (R/eap.R and R/quadIT.R of
+#            commit 6bdbde5, read with git show) and the grid, against the
+#            exact posterior
 #
 # Run from the package root against the installed PP.
 
@@ -26,7 +27,9 @@ ordner <- "blog/posterior/output"
 # --- plausible values -------------------------------------------------------
 
 alt <- new.env()
-eval(parse(text = system("git show 6bdbde5:R/PV.R", intern = TRUE)), envir = alt)
+for (f in c("R/PV.R", "R/eap.R", "R/quadIT.R")) {
+  eval(parse(text = system(paste0("git show 6bdbde5:", f), intern = TRUE)), envir = alt)
+}
 
 s <- set_2pl
 x3 <- s$X[3, ]
@@ -134,7 +137,7 @@ eap <- rbindlist(lapply(laengen, function(L) {
   X <- sim_resp(theta_p, items_4pl(1, b), 1000 + L)
   ex <- exakt_rasch(X, b)
   n <- nrow(X)
-  alt_r <- PP:::eap_4pl(X, rbind(0, b), rep(1, L), lowerA = rep(0, L), upperA = rep(1, L),
+  alt_r <- alt$eap_4pl(X, rbind(0, b), rep(1, L), lowerA = rep(0, L), upperA = rep(1, L),
                         mu = rep(0, n), sigma2 = rep(1, n))
   neu_r <- as.matrix(PP_4pl(X, b, type = "eap")$estimates[, c("estimate", "SE")])
   zeile <- function(version, r) {

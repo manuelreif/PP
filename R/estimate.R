@@ -345,9 +345,9 @@ pp_estimate <- function(prep, call, cls, label) {
 #   model      the prepared inputs (pp_prepare())
 #   resPP      list(resPP = n x 2 matrix estimate/SE, nsteps = max(nsteps)),
 #              the result layout of 0.6.4, kept as an alias
-#   ipar       the inputs in the layout of 0.6.4 for JKpp, PV and Pfit until
-#              they are rebuilt; respm holds the persons with an SE (JKpp
-#              selects the same rows)
+#   ipar       the inputs in the layout of 0.6.4 for the old Pfit (and
+#              lzstar_mixed) until block 7 rebuilds them; respm holds the
+#              persons with an SE
 new_ppeo <- function(prep, theta, se, nsteps, status, call, cls) {
   rn <- rownames(prep$X)
   estimates <- data.frame(estimate = theta, SE = se, nsteps = as.integer(nsteps),

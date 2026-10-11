@@ -10,85 +10,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// NR_4PL
-List NR_4PL(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP _PP_NR_4PL(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type LOWA(LOWASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type UPPA(UPPASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP);
-    Rcpp::traits::input_parameter< String >::type wm(wmSEXP);
-    Rcpp::traits::input_parameter< int >::type maxsteps(maxstepsSEXP);
-    Rcpp::traits::input_parameter< double >::type exac(exacSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
-    Rcpp::traits::input_parameter< double >::type H(HSEXP);
-    rcpp_result_gen = Rcpp::wrap(NR_4PL(awm, DELTA, ALPHA, LOWA, UPPA, THETA, wm, maxsteps, exac, mu, sigma2, H));
-    return rcpp_result_gen;
-END_RCPP
-}
-// NR_GPCM
-List NR_GPCM(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector THETA, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP _PP_NR_GPCM(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP THETASEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP);
-    Rcpp::traits::input_parameter< String >::type wm(wmSEXP);
-    Rcpp::traits::input_parameter< int >::type maxsteps(maxstepsSEXP);
-    Rcpp::traits::input_parameter< double >::type exac(exacSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
-    Rcpp::traits::input_parameter< double >::type H(HSEXP);
-    rcpp_result_gen = Rcpp::wrap(NR_GPCM(awm, DELTA, ALPHA, THETA, wm, maxsteps, exac, mu, sigma2, H));
-    return rcpp_result_gen;
-END_RCPP
-}
-// NR_mixed
-List NR_mixed(IntegerMatrix awm, NumericMatrix DELTA, NumericVector ALPHA, NumericVector LOWA, NumericVector UPPA, NumericVector THETA, CharacterVector model, String wm, int maxsteps, double exac, NumericVector mu, NumericVector sigma2, double H);
-RcppExport SEXP _PP_NR_mixed(SEXP awmSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP LOWASEXP, SEXP UPPASEXP, SEXP THETASEXP, SEXP modelSEXP, SEXP wmSEXP, SEXP maxstepsSEXP, SEXP exacSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type awm(awmSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type LOWA(LOWASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type UPPA(UPPASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type THETA(THETASEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type model(modelSEXP);
-    Rcpp::traits::input_parameter< String >::type wm(wmSEXP);
-    Rcpp::traits::input_parameter< int >::type maxsteps(maxstepsSEXP);
-    Rcpp::traits::input_parameter< double >::type exac(exacSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
-    Rcpp::traits::input_parameter< double >::type H(HSEXP);
-    rcpp_result_gen = Rcpp::wrap(NR_mixed(awm, DELTA, ALPHA, LOWA, UPPA, THETA, model, wm, maxsteps, exac, mu, sigma2, H));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Likgpcm
-NumericVector Likgpcm(IntegerVector awv, NumericMatrix DELTA, NumericVector ALPHA, NumericVector nodes);
-RcppExport SEXP _PP_Likgpcm(SEXP awvSEXP, SEXP DELTASEXP, SEXP ALPHASEXP, SEXP nodesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector >::type awv(awvSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type DELTA(DELTASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type ALPHA(ALPHASEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type nodes(nodesSEXP);
-    rcpp_result_gen = Rcpp::wrap(Likgpcm(awv, DELTA, ALPHA, nodes));
-    return rcpp_result_gen;
-END_RCPP
-}
 // pp_item_eval_cpp
 List pp_item_eval_cpp(List bank, NumericVector theta, IntegerMatrix X);
 RcppExport SEXP _PP_pp_item_eval_cpp(SEXP bankSEXP, SEXP thetaSEXP, SEXP XSEXP) {
@@ -226,10 +147,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_PP_NR_4PL", (DL_FUNC) &_PP_NR_4PL, 12},
-    {"_PP_NR_GPCM", (DL_FUNC) &_PP_NR_GPCM, 10},
-    {"_PP_NR_mixed", (DL_FUNC) &_PP_NR_mixed, 13},
-    {"_PP_Likgpcm", (DL_FUNC) &_PP_Likgpcm, 4},
     {"_PP_pp_item_eval_cpp", (DL_FUNC) &_PP_pp_item_eval_cpp, 3},
     {"_PP_pp_catprob_cpp", (DL_FUNC) &_PP_pp_catprob_cpp, 2},
     {"_PP_pp_logcatprob_cpp", (DL_FUNC) &_PP_pp_logcatprob_cpp, 2},
