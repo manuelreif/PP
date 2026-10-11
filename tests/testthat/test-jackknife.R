@@ -67,8 +67,8 @@ test_that("persons without a jackknife get NA and a status", {
   jk <- jk_quiet(fit8(s, "mle", X))
   expect_identical(as.character(jk$estimates$status),
                    c("ok", "ok", "extreme", "no_response", "extreme"))
-  expect_identical(rownames(jk$estimates), rownames(X))
-  expect_identical(rownames(jk$resjk), rownames(X))
+  expect_identical(rownames(jk$estimates), as.character(1:5))
+  expect_null(rownames(jk$resjk))
   expect_true(all(is.na(jk$resjk[3:5, ])))
   # wle: one answered item has an estimate but no jackknife
   jw <- jk_quiet(fit8(s, "wle", X))

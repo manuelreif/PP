@@ -5,10 +5,10 @@
 #'@param x,object An object of class \code{ppeo}.
 #'@param digits Number of significant digits to print.
 #'@param nrowmax When printing the estimates - how many rows should be shown? Default = 15.
-#'@param row.names,optional Ignored; the row names are those of the response matrix.
+#'@param row.names,optional Ignored; the rows are the persons in the order of the response matrix.
 #'@param ... Further arguments, passed to \code{print()}.
 #'
-#'@return \code{coef()} returns the estimates as a named vector, \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
+#'@return \code{coef()} returns the estimates as a vector (persons in the order of the response matrix), \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
 #'
 #' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}
 #'@name ppeo-methods
@@ -40,7 +40,7 @@ summary.ppeo <- function(object, nrowmax = 15, digits = 4, ...) {
 #'@rdname ppeo-methods
 #'@export
 coef.ppeo <- function(object, ...) {
-  stats::setNames(object$estimates$estimate, rownames(object$model$X))
+  object$estimates$estimate
 }
 
 #'@rdname ppeo-methods

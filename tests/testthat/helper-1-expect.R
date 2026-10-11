@@ -65,9 +65,5 @@ pp_quiet <- function(expr) {
   out
 }
 
-# Estimates and SEs (n x 2 matrix with the row names of respm) of a PP result
-est <- function(obj) {
-  m <- as.matrix(obj$estimates[, c("estimate", "SE")])
-  if (is.null(rownames(obj$model$X))) rownames(m) <- NULL
-  m
-}
+# Estimates and SEs (n x 2 matrix) of a PP result
+est <- function(obj) as.matrix(obj$estimates[, c("estimate", "SE")])

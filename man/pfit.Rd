@@ -33,7 +33,7 @@ Pfit(respm, pp, fitindices, SE = FALSE)
 \item{alpha}{Significance level: persons with \eqn{|z| > z_{1-\alpha/2}} (lz, lz*, \code{in_t}, \code{ou_t}) are counted as flagged.}
 }
 \value{
-An object of class \code{PPfit}: a list with one matrix per statistic (persons in rows, row names of the response matrix):
+An object of class \code{PPfit}: a list with one matrix per statistic (persons in rows, in the order of the response matrix):
 
 \itemize{
 \item \code{lz}: \code{lz}, \code{lz_unst}

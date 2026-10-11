@@ -43,12 +43,12 @@ for (nm in names(erm_fits)) {
     o <- erm_fits[[nm]]
     res <- pp_quiet(PPass(o, type = "mle", fitindices = "lzstar"))
     utils::capture.output(pt <- suppressWarnings(eRm::person.parameter(o))$theta.table)
-    i <- match(rownames(res), rownames(pt))
+    i <- match(rownames(o$X), rownames(pt))
     sel <- res$status == "ok" & !pt[i, "Interpolated"]
     expect_gt(sum(sel), 200)
     expect_close(res$estimate[sel], pt[i, 1][sel], 1e-4)
     expect_close(res$SE[sel], pt[i, 2][sel], 1e-3)
-    expect_identical(rownames(res), rownames(o$X))
+    expect_identical(nrow(res), nrow(o$X))
     expect_true(all(res$status[!sel] %in% c("extreme", "ok")))
   })
 }

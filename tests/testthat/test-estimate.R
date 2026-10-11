@@ -175,8 +175,10 @@ test_that("G2: estimation with the default prior is silent", {
   expect_silent(PP_4pl(set_2pl$X, thres = p$b, slopes = p$slopes, type = "map"))
 })
 
-test_that("G5: row names of the response matrix are kept", {
+test_that("F7: the persons are numbered in the order of the response matrix", {
   X <- set_2pl$X
   rownames(X) <- paste0("person", seq_len(nrow(X)))
-  expect_identical(rownames(est(pp_fit(set_2pl, "wle", X = X))), rownames(X))
+  o <- pp_fit(set_2pl, "wle", X = X)
+  expect_identical(rownames(o$estimates), as.character(seq_len(nrow(X))))
+  expect_identical(est(o), est(pp_fit(set_2pl, "wle")))
 })

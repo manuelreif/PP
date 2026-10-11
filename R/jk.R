@@ -35,7 +35,7 @@ JKpp <- function(estobj, ...) UseMethod("JKpp")
 #' @param ctrl Not used any more.
 #'
 #' @return An object of class \code{jk}, a list with
-#' \item{\code{estimates}}{A data.frame with one row per person (row names from \code{respm}): \code{estimate} and \code{SE} of the jackknife, \code{L} the number of answered items, \code{excluded} the number of leave-one-out samples without a finite estimate and \code{status} (\code{"ok"}, \code{"too_few_items"} or the status of the full estimate).}
+#' \item{\code{estimates}}{A data.frame with one row per person (in the order of \code{respm}): \code{estimate} and \code{SE} of the jackknife, \code{L} the number of answered items, \code{excluded} the number of leave-one-out samples without a finite estimate and \code{status} (\code{"ok"}, \code{"too_few_items"} or the status of the full estimate).}
 #' \item{\code{resjk}}{The matrix of \code{estimate} and \code{SE}, as in earlier versions.}
 #' \item{\code{type}, \code{cmeth}, \code{call}}{The estimation type of \code{estobj}, the centering method and the call.}
 #' \item{\code{jk_mat}}{Only with \code{fullmat = TRUE}: the persons x items matrix of leave-one-out estimates, \code{NA} for items not answered and excluded samples.}
@@ -91,9 +91,8 @@ JKpp.ppeo <- function(estobj, cmeth = "mean", maxsteps = NULL, exac = NULL,
 
   estimates <- data.frame(estimate = unname(est), SE = unname(se), L = as.integer(L),
                           excluded = as.integer(excluded),
-                          status = factor(status, levels = jk_status), row.names = rownames(X))
+                          status = factor(status, levels = jk_status))
   resjk <- cbind(estimate = unname(est), SE = unname(se))
-  rownames(resjk) <- rownames(X)
   res <- list(estimates = estimates, resjk = resjk, type = type, cmeth = cmeth, call = call)
   if (fullmat) res$jk_mat <- loo
   structure(res, class = "jk")

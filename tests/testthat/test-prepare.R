@@ -105,13 +105,13 @@ test_that("skipcheck skips only the checks of the response values", {
   expect_identical(prep(X, p2$b, ctrl = ctrl, family = "4pl")$X[1, 1], 2L)
 })
 
-test_that("the response matrix becomes an integer matrix with its dimnames", {
+test_that("the response matrix becomes an integer matrix with its item names (F7: no row names)", {
   X <- X2
   storage.mode(X) <- "double"
   dimnames(X) <- list(paste0("p", seq_len(n)), paste0("i", 1:12))
   a <- prep(X, p2$b, family = "4pl")
   expect_identical(typeof(a$X), "integer")
-  expect_identical(dimnames(a$X), dimnames(X))
+  expect_identical(dimnames(a$X), list(NULL, colnames(X)))
   expect_identical(prep(as.data.frame(X), p2$b, family = "4pl")$X, a$X)
 })
 

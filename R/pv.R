@@ -13,7 +13,7 @@
 #' @param approx If \code{TRUE} (default), the plausible values are drawn from a normal approximation of the posterior. If \code{FALSE}, they are drawn from the posterior itself.
 #' @param ... Not used. \code{thinning}, \code{burnin} and \code{mult} of version 0.6.4 give a warning and are ignored.
 #'
-#' @return An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row per person (row names from \code{respm}) and \code{npv} columns, and \code{call}.
+#' @return An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row per person (in the order of \code{respm}) and \code{npv} columns, and \code{call}.
 #'
 #'@references Mislevy, R. J. (1991). Randomization-based inference about latent variables from complex samples. Psychometrika, 56(2), 177-196.
 #'
@@ -62,6 +62,6 @@ PV.ppeo <- function(estobj, npv = 10, approx = TRUE, ...) {
   } else {
     draws <- pp_posterior_cpp(m$bank, m$X, m$mu, m$sigma2, npv)$draws
   }
-  dimnames(draws) <- list(rownames(m$X), paste0("PV", seq_len(npv)))
+  colnames(draws) <- paste0("PV", seq_len(npv))
   structure(list(pvdraws = draws, call = call), class = "pv")
 }

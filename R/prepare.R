@@ -184,6 +184,9 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
     }
   }
   storage.mode(respm) <- "integer"
+  ## persons are identified by their position; row names of the user (which
+  ## may be duplicated) are not carried into the results
+  rownames(respm) <- NULL
 
   items <- prepare_items(nt, slopes, lowerA, upperA, model2est, family)
 

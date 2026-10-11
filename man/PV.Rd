@@ -34,7 +34,7 @@ PV(estobj, ...)
 \item{approx}{If \code{TRUE} (default), the plausible values are drawn from a normal approximation of the posterior. If \code{FALSE}, they are drawn from the posterior itself.}
 }
 \value{
-An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row per person (row names from \code{respm}) and \code{npv} columns, and \code{call}.
+An object of class \code{pv}, a list with \code{pvdraws}, a matrix with one row per person (in the order of \code{respm}) and \code{npv} columns, and \code{call}.
 }
 \description{
 This function draws \code{npv} plausible values for each person from their posterior density.

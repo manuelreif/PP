@@ -153,7 +153,6 @@ erm_items <- function(obj) {
   }
   cn <- if (is.null(colnames(X))) paste0("I", seq_len(ncol(X))) else colnames(X)
   colnames(Xv) <- paste0(cn[col], if (ng > 1) paste0(" g", gi))
-  rownames(Xv) <- rownames(X)
 
   label <- sprintf("%s (eRm::%s)", models[[obj$model]], obj$model)
   if (mp > 1) label <- paste0(label, ", ", mp, " time points")
@@ -180,7 +179,7 @@ ppass_build <- function(est, rest, fitindices, SE, model, call,
     fitindices <- character(0)
   }
   if (!is.null(rest) && ncol(rest)) out <- cbind(rest, out)
-  rownames(out) <- if (is.null(rownames(e))) NULL else rownames(e)
+  rownames(out) <- NULL
   structure(out, class = c("ppass", "data.frame"), ppeo = est,
             info = list(model = model, type = est$type, items = items,
                         fitindices = fitindices))
@@ -262,11 +261,14 @@ summary.ppass <- function(object, alpha = 0.05, digits = 3, ...) {
     cat("\nPerson fit:\n")
     print(res$fit, digits = digits, row.names = FALSE, ...)
     fl <- ppass_flag(object, alpha)
-    res$flagged <- data.frame(person = rownames(object)[fl$flagged],
+    pv <- utils::head(seq_len(match("estimate", names(object)) - 1L), 2)
+    res$flagged <- data.frame(person = fl$flagged,
+                              as.data.frame(object)[fl$flagged, pv, drop = FALSE],
                               estimate = object$estimate[fl$flagged],
                               value = object[[fl$column]][fl$flagged])
-    names(res$flagged)[3] <- fl$column
-    res$flagged <- res$flagged[order(res$flagged[[3]]), , drop = FALSE]
+    names(res$flagged)[ncol(res$flagged)] <- fl$column
+    res$flagged <- res$flagged[order(res$flagged[[fl$column]]), , drop = FALSE]
+    rownames(res$flagged) <- NULL
     if (nrow(res$flagged)) {
       cat("\nFlagged persons (", fl$column, "):\n", sep = "")
       print(utils::head(res$flagged, 20), digits = digits, row.names = FALSE, ...)

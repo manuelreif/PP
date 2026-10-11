@@ -23,7 +23,7 @@
 #'@param fitindices		Character vector of the desired person fit statistics, any of \code{c("lz", "lzstar", "infit", "outfit")}.
 #'@param SE		        Logical: if \code{TRUE}, jackknife standard errors are computed.
 #'
-#' @return An object of class \code{PPfit}: a list with one matrix per statistic (persons in rows, row names of the response matrix):
+#' @return An object of class \code{PPfit}: a list with one matrix per statistic (persons in rows, in the order of the response matrix):
 #'
 #' \itemize{
 #' \item \code{lz}: \code{lz}, \code{lz_unst}
@@ -124,7 +124,6 @@ fit_stats <- function(bank, X, theta, type, mu, sigma2, which) {
   mat <- function(...) {
     r <- cbind(...)
     r[none, ] <- NA
-    rownames(r) <- rownames(X)
     r
   }
   out <- list()
@@ -197,7 +196,7 @@ fit_se <- function(m, X, theta, ok, type, which) {
     k <- rowSums(!is.na(f))
     se <- (L - 1) * sqrt(rowSums((f - rowMeans(f, na.rm = TRUE))^2, na.rm = TRUE) / (k * (k - 1)))
     se[!run | k < 2] <- NA
-    matrix(se, ncol = 1, dimnames = list(rownames(X), nm[[ix]]))
+    matrix(se, ncol = 1, dimnames = list(NULL, nm[[ix]]))
   })
 }
 

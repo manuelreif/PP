@@ -25,10 +25,10 @@
 
 \item{nrowmax}{When printing the estimates - how many rows should be shown? Default = 15.}
 
-\item{row.names, optional}{Ignored; the row names are those of the response matrix.}
+\item{row.names, optional}{Ignored; the rows are the persons in the order of the response matrix.}
 }
 \value{
-\code{coef()} returns the estimates as a named vector, \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
+\code{coef()} returns the estimates as a vector (persons in the order of the response matrix), \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
 }
 \description{
 Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}).

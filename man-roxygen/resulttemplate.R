@@ -1,6 +1,6 @@
 #'@return An object of class \code{ppeo} (and \code{fourpl}, \code{gpcm} or \code{gpcm4pl}), a list with
 #'\describe{
-#'\item{\code{estimates}}{A data.frame with one row per person (row names from \code{respm}): \code{estimate}, \code{SE}, \code{nsteps} (Newton steps of the person; 0 for eap) and \code{status}, a factor with the levels
+#'\item{\code{estimates}}{A data.frame with one row per person, in the order of \code{respm}: \code{estimate}, \code{SE}, \code{nsteps} (Newton steps of the person; 0 for eap) and \code{status}, a factor with the levels
 #'\itemize{
 #'\item \code{"ok"}: converged inside \code{range},
 #'\item \code{"extreme"}: mle or robust estimate of a person with all answers in the lowest or highest category, the estimate is \code{-Inf} or \code{Inf} and the SE \code{NA},

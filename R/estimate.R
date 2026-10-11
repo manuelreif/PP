@@ -340,17 +340,16 @@ pp_estimate <- function(prep, call, cls, label) {
 }
 
 # The result object (class c(cls, "ppeo")):
-#   estimates  data.frame estimate, SE, nsteps, status; row names of respm
+#   estimates  data.frame estimate, SE, nsteps, status; one row per person in
+#              the order of respm
 #   type, call
 #   model      the prepared inputs (pp_prepare())
 #   resPP      list(resPP = n x 2 matrix estimate/SE, nsteps = max(nsteps)),
 #              the result layout of 0.6.4, kept as an alias
 new_ppeo <- function(prep, theta, se, nsteps, status, call, cls) {
-  rn <- rownames(prep$X)
   estimates <- data.frame(estimate = theta, SE = se, nsteps = as.integer(nsteps),
-                          status = status, row.names = rn)
+                          status = status)
   respp <- cbind(estimate = theta, SE = se)
-  rownames(respp) <- rn
 
   structure(list(estimates = estimates, type = prep$type, model = prep, call = call,
                  resPP = list(resPP = respp, nsteps = max(0L, nsteps))),

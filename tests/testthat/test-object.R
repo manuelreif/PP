@@ -80,13 +80,28 @@ test_that("the transition field $ipar of 0.6.4 is gone", {
   expect_named(pp_fit(set_2pl, "mle"), c("estimates", "type", "model", "call", "resPP"))
 })
 
-test_that("row names of the responses are kept everywhere", {
-  X <- set_gpcm$X
-  rownames(X) <- paste0("p", seq_len(nrow(X)))
-  o <- pp_fit(set_gpcm, "wle", X = X)
-  expect_identical(rownames(o$estimates), rownames(X))
-  expect_identical(rownames(o$resPP$resPP), rownames(X))
-  expect_identical(names(coef(o)), rownames(X))
+test_that("F7: row names of the responses are not carried over, duplicates work", {
+  for (s in list(set_2pl, set_gpcm, set_mixed)) {
+    X <- s$X
+    rownames(X) <- rep(c("a", "b"), length.out = nrow(X))
+    ref <- pp_fit(s, "map")
+    o <- pp_fit(s, "map", X = X)
+    expect_identical(o$estimates, ref$estimates)
+    expect_identical(rownames(o$estimates), as.character(seq_len(nrow(X))))
+    expect_null(rownames(o$resPP$resPP))
+    expect_null(names(coef(o)))
+    expect_identical(pp_quiet(JKpp(o))$estimates, pp_quiet(JKpp(ref))$estimates)
+    expect_identical(Pfit(pp = o)[1:4], Pfit(pp = ref)[1:4])
+    set.seed(1); a <- PV(o, npv = 2)$pvdraws
+    set.seed(1); b <- PV(ref, npv = 2)$pvdraws
+    expect_identical(a, b)
+  }
+  p2 <- items_to_pp(set_2pl$items)
+  d <- data.frame(id = rep(1:2, length.out = nrow(set_2pl$X)), set_2pl$X)
+  rownames(d) <- paste0("r", seq_len(nrow(d)))
+  res <- pp_quiet(PPass(d, items = 2:13, mod = "2PL", thres = p2$b, slopes = p2$slopes))
+  expect_identical(rownames(res), as.character(seq_len(nrow(d))))
+  expect_identical(res$id, d$id)
 })
 
 test_that("print, summary, coef and as.data.frame work", {

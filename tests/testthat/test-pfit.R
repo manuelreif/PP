@@ -199,7 +199,7 @@ test_that("the result keeps the layout of earlier versions", {
   expect_named(pf, c("lz", "outfit"))
   expect_identical(colnames(pf$lz), c("lz", "lz_unst", "lz_se"))
   expect_identical(colnames(pf$outfit), c("outfit", "ou_t", "ou_chisq", "ou_df", "ou_pv", "ou_se"))
-  expect_identical(rownames(pf$lz), rownames(X))
+  expect_null(rownames(pf$lz))
   # PPass binds the statistics with do.call(cbind, .)
   expect_identical(dim(do.call(cbind, pf)), c(nrow(X), 9L))
   pf <- Pfit(pp = pp_fit(set_2pl, "wle"))

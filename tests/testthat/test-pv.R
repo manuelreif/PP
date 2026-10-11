@@ -44,12 +44,12 @@ test_that("PV of a long test (narrow posterior) follows the posterior", {
   expect_draws_match(PV(e, npv = 20, approx = FALSE)$pvdraws, ref_posterior(s$X[3, ], s$items))
 })
 
-test_that("PV keeps the row names and names the columns", {
+test_that("PV names the columns, rows are the persons in order", {
   X <- set_2pl$X[1:3, ]
   rownames(X) <- c("a", "b", "c")
   pv <- PV(pp_fit(set_2pl, "eap", X = X), npv = 2)
   expect_s3_class(pv, "pv")
-  expect_identical(dimnames(pv$pvdraws), list(c("a", "b", "c"), c("PV1", "PV2")))
+  expect_identical(dimnames(pv$pvdraws), list(NULL, c("PV1", "PV2")))
   # one person, one value
   one <- PV(pp_fit(set_2pl, "eap", X = X[1, , drop = FALSE]), npv = 1, approx = FALSE)$pvdraws
   expect_identical(dim(one), c(1L, 1L))
