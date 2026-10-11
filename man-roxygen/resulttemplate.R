@@ -12,6 +12,5 @@
 #'\item{\code{type}, \code{call}}{The estimation type and the call.}
 #'\item{\code{model}}{The checked and prepared inputs.}
 #'\item{\code{resPP}}{The result in the layout of earlier versions: \code{resPP$resPP} is the persons x 2 matrix of estimates and SEs, \code{resPP$nsteps} the largest number of steps.}
-#'\item{\code{ipar}}{The inputs in the layout of earlier versions; used internally by \code{Pfit}.}
 #'}
 #'Use \code{coef()} for the estimates and \code{as.data.frame()} for the table.

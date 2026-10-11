@@ -272,10 +272,45 @@ ref_lz <- function(theta, x, items) {
   (l0 - E) / sqrt(V)
 }
 
-# lz* (Snijders, 2001) for dichotomous items. The estimating equation is
+# Term r0(theta) of the estimating equation sum_i score_i + r0 = 0
+ref_r0 <- function(theta, x, items, type, mu, s2) {
+  switch(type,
+    mle = 0,
+    wle = ref_J(theta, x, items) / (2 * ref_info(theta, x, items)),
+    map = (mu - theta) / s2)
+}
+
+# lz* for all item types: Snijders' correction with the category weights
+# w_k = log P_k and the score r_k = d log P_k / dtheta (numerical). W = sum
+# (w(x) - E w), c_n = sum Cov(w, r) / sum Var(r), the corrected weights
+# w - c_n r have variance tau2 = sum Var(w - c_n r); lz* = (W + c_n r0) /
+# sqrt(tau2). For dichotomous items this is ref_lzstar_snijders(), for
+# polytomous items Sinharay (2016).
+ref_lzstar <- function(theta, x, items, type, mu = 0, s2 = 1) {
+  W <- cov_wr <- var_r <- 0
+  wt <- list()
+  for (j in which(!is.na(x))) {
+    it <- items[[j]]
+    p <- ref_catprob(it, theta)[1, ]
+    w <- log(p)
+    r <- num_d1(function(t) log(ref_catprob(it, t)), theta)[1, ]
+    W <- W + w[x[j] + 1] - sum(p * w)
+    cov_wr <- cov_wr + sum(p * (w - sum(p * w)) * r)
+    var_r <- var_r + sum(p * r^2)
+    wt[[length(wt) + 1]] <- list(p = p, w = w, r = r)
+  }
+  cn <- cov_wr / var_r
+  tau2 <- sum(vapply(wt, function(e) {
+    u <- e$w - cn * e$r
+    sum(e$p * (u - sum(e$p * u))^2)
+  }, 0))
+  (W + cn * ref_r0(theta, x, items, type, mu, s2)) / sqrt(tau2)
+}
+
+# lz* (Snijders, 2001) in its dichotomous form. The estimating equation is
 # sum r_i (x_i - P_i) + r0(theta) = 0 with r_i = P'_i / (P_i Q_i) and
 # r0 = 0 (mle), J / (2 I) (wle), (mu - theta) / s2 (map).
-ref_lzstar <- function(theta, x, items, type, mu = 0, s2 = 1) {
+ref_lzstar_snijders <- function(theta, x, items, type, mu = 0, s2 = 1) {
   obs <- which(!is.na(x))
   its <- items[obs]
   P  <- vapply(its, function(it) ref_catprob(it, theta)[1, 2], 0)
@@ -287,22 +322,32 @@ ref_lzstar <- function(theta, x, items, type, mu = 0, s2 = 1) {
   W <- sum((x[obs] - P) * w)
   cn <- sum(dP * w) / sum(dP * r)
   tau2 <- sum((w - cn * r)^2 * P * Q) / n
-  r0 <- switch(type,
-    mle = 0,
-    wle = ref_J(theta, x, items) / (2 * ref_info(theta, x, items)),
-    map = (mu - theta) / s2)
-  (W + cn * r0) / sqrt(n * tau2)
+  (W + cn * ref_r0(theta, x, items, type, mu, s2)) / sqrt(n * tau2)
 }
 
-# Jackknife SE of lz over the answered items: theta and lz are recomputed
-# without item j, SE = sqrt((L - 1) / L * sum (lz_(-j) - mean)^2)
-ref_lz_se <- function(x, items, type, mu = 0, s2 = 1) {
+# Jackknife SE of fit statistics f(theta, x) (a vector) over the L answered
+# items: theta and f are recomputed without item j; leave-one-out samples
+# without a solution inside range are left out (as in ref_jackknife). With m
+# remaining samples SE = (L - 1) sqrt(sum (f_(-j) - mean)^2 / (m (m - 1))),
+# which is sqrt((L - 1) / L * sum (f_(-j) - mean)^2) for m = L.
+ref_fit_se <- function(x, items, type, f, mu = 0, s2 = 1, range = c(-6, 6)) {
   obs <- which(!is.na(x))
   L <- length(obs)
-  lzj <- vapply(obs, function(j) {
+  na <- NA * f(0, x)
+  fj <- vapply(obs, function(j) {
     xx <- x
     xx[j] <- NA
-    ref_lz(ref_estimate(xx, items, type, mu, s2), xx, items)
-  }, 0)
-  sqrt((L - 1) / L * sum((lzj - mean(lzj))^2))
+    th <- ref_estimate(xx, items, type, mu, s2)
+    if (is.finite(th) && th > range[1] && th < range[2]) f(th, xx) else na
+  }, na)
+  fj <- matrix(fj, nrow = length(na))
+  fj <- fj[, !is.na(fj[1, ]), drop = FALSE]
+  m <- ncol(fj)
+  if (m < 2) return(na)
+  (L - 1) * sqrt(rowSums((fj - rowMeans(fj))^2) / (m * (m - 1)))
+}
+
+# Jackknife SE of lz
+ref_lz_se <- function(x, items, type, mu = 0, s2 = 1) {
+  ref_fit_se(x, items, type, function(t, xx) ref_lz(t, xx, items), mu, s2)
 }

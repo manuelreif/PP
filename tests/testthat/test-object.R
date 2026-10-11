@@ -1,6 +1,6 @@
 # The result object of PP_4pl, PP_gpcm and PPall: $estimates with status, the
-# alias $resPP, the transition field $ipar, the methods, the warning for
-# persons at the bound, and PV, JKpp and the old Pfit on the new object.
+# alias $resPP (the transition field $ipar is gone since block 7), the methods,
+# the warning for persons at the bound, and PV, JKpp and Pfit on the object.
 
 test_that("the object has estimates with status, model, type, call and the alias", {
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
@@ -75,21 +75,9 @@ test_that("range is checked and used", {
   expect_true(any(o$estimates$status == "boundary"))
 })
 
-test_that("$ipar keeps the layout of 0.6.4 for the old downstream functions", {
-  o <- pp_fit(set_2pl, "mle")
-  keep <- !is.na(o$estimates$SE)
-  expect_identical(o$ipar$respm, o$model$X[keep, , drop = FALSE])
-  expect_named(o$ipar, c("respm", "thres", "slopes", "lowerA", "upperA", "theta_start",
-                         "mu", "sigma2", "cont", "H"))
-  g <- pp_fit(set_gpcm, "wle")
-  expect_named(g$ipar, c("respm", "thres", "slopes", "theta_start", "mu", "sigma2", "cont", "H"))
-  m <- pp_fit(set_mixed, "wle")
-  expect_named(m$ipar, c("respm", "thres", "slopes", "lowerA", "upperA", "theta_start",
-                         "mu", "sigma2", "cont", "model2est", "H"))
-  # no deduplication in ipar
-  d <- pp_fit(set_2pl, "wle", X = rbind(set_2pl$X, set_2pl$X[1:3, ]), ctrl = list(killdupli = TRUE))
-  expect_identical(nrow(d$ipar$respm), nrow(set_2pl$X) + 3L)
-  expect_null(d$ipar$dupvec)
+test_that("the transition field $ipar of 0.6.4 is gone", {
+  for (s in list(set_2pl, set_gpcm, set_mixed)) expect_null(pp_fit(s, "wle")$ipar)
+  expect_named(pp_fit(set_2pl, "mle"), c("estimates", "type", "model", "call", "resPP"))
 })
 
 test_that("row names of the responses are kept everywhere", {
@@ -116,7 +104,7 @@ test_that("print, summary, coef and as.data.frame work", {
   expect_identical(as.data.frame(o), o$estimates)
 })
 
-test_that("PV, JKpp and the old Pfit run on the new object", {
+test_that("PV, JKpp and Pfit run on the object", {
   jk <- function(o) pp_quiet(suppressWarnings(JKpp(o)))
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
     for (ty in c("mle", "wle", "map", "eap")) {
@@ -130,7 +118,7 @@ test_that("PV, JKpp and the old Pfit run on the new object", {
       expect_false(anyNA(j$resjk[!na, ]))
       # PV needs a prior (B6): mle and wle objects have none
       if (ty %in% c("mle", "wle")) {
-        expect_true(all(is.na(o$model$mu)) && all(is.na(o$ipar$sigma2)))
+        expect_true(all(is.na(o$model$mu)) && all(is.na(o$model$sigma2)))
         expect_error(PV(o), "prior")
         next
       }

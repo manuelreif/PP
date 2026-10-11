@@ -156,6 +156,32 @@ test_that("fit statistics match a hand calculation for two 2PL items", {
   expect_close(ref_lz(th, x, items), lz, 1e-10)
 })
 
+test_that("the general lz* equals Snijders' dichotomous form for 4PL items", {
+  X <- make_na(set_4pl$X, 5)
+  for (s in sets_dich) {
+    for (i in c(1, 2, 7)) {
+      for (xx in list(s$X[i, ], X[i, ])) {
+        for (ty in c("mle", "wle", "map")) {
+          for (th in c(-1.3, 0.4)) {
+            expect_close(ref_lzstar(th, xx, s$items, ty, mu = 0.5, s2 = 2),
+                         ref_lzstar_snijders(th, xx, s$items, ty, mu = 0.5, s2 = 2), 1e-6)
+          }
+        }
+      }
+    }
+  }
+})
+
+test_that("lz* of a 2-category GPCM item equals the 2PL lz*", {
+  x <- c(1L, 0L, 1L, 1L, 0L)
+  a <- c(0.8, 1.2, 1, 1.5, 0.7)
+  b <- c(-1, -0.3, 0, 0.6, 1.2)
+  for (ty in c("mle", "wle", "map")) {
+    expect_close(ref_lzstar(0.2, x, Map(item_gpcm, a, b), ty),
+                 ref_lzstar(0.2, x, items_4pl(a, b), ty), 1e-6)
+  }
+})
+
 test_that("lz* matches the 2PL closed form at the mle, wle and map estimate", {
   # At the estimate of each method, W + c_n r0 = sum (x - P) w~ with
   # w~ = w - c_n r. For the 2PL r = a and w = log(P / Q) = a (theta - b).

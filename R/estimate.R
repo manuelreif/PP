@@ -345,9 +345,6 @@ pp_estimate <- function(prep, call, cls, label) {
 #   model      the prepared inputs (pp_prepare())
 #   resPP      list(resPP = n x 2 matrix estimate/SE, nsteps = max(nsteps)),
 #              the result layout of 0.6.4, kept as an alias
-#   ipar       the inputs in the layout of 0.6.4 for the old Pfit (and
-#              lzstar_mixed) until block 7 rebuilds them; respm holds the
-#              persons with an SE
 new_ppeo <- function(prep, theta, se, nsteps, status, call, cls) {
   rn <- rownames(prep$X)
   estimates <- data.frame(estimate = theta, SE = se, nsteps = as.integer(nsteps),
@@ -355,14 +352,7 @@ new_ppeo <- function(prep, theta, se, nsteps, status, call, cls) {
   respp <- cbind(estimate = theta, SE = se)
   rownames(respp) <- rn
 
-  ipar <- list(respm = prep$X[!is.na(se), , drop = FALSE], thres = prep$thres,
-               slopes = prep$slopes, lowerA = prep$lowerA, upperA = prep$upperA,
-               theta_start = prep$start, mu = prep$mu, sigma2 = prep$sigma2,
-               cont = prep$ctrl, model2est = prep$model2est, H = prep$H)
-  if (cls == "gpcm") ipar$lowerA <- ipar$upperA <- NULL
-  if (cls != "gpcm4pl") ipar$model2est <- NULL
-
   structure(list(estimates = estimates, type = prep$type, model = prep, call = call,
-                 resPP = list(resPP = respp, nsteps = max(0L, nsteps)), ipar = ipar),
+                 resPP = list(resPP = respp, nsteps = max(0L, nsteps))),
             class = c(cls, "ppeo"))
 }

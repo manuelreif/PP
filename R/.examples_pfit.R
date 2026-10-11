@@ -1,92 +1,46 @@
 ################# Pfit ###################################################
 
-
-### data creation ##########
+### dichotomous items ##########
 
 set.seed(1337)
+diffpar <- seq(-3, 3, length = 15)
+sl      <- round(runif(15, 0.5, 1.5), 2)
+la      <- round(runif(15, 0, 0.25), 2)
+awm     <- sim_4pl(beta = diffpar, alpha = sl, lowerA = la, upperA = rep(1, 15),
+                   theta = rnorm(100))
 
+# 3PL, WLE
+res3plwle <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
 
-# intercepts
-diffpar <- seq(-3,3,length=15)
-# slope parameters
-sl     <- round(runif(15,0.5,1.5),2)
-la     <- round(runif(15,0,0.25),2)
-ua     <- round(runif(15,0.8,1),2)
+# the responses are taken from the estimation object
+fit3pl <- Pfit(pp = res3plwle, fitindices = c("lz", "lzstar", "infit", "outfit"))
+head(fit3pl$lzstar)
+summary(fit3pl)
 
-# response matrix
-awm <- matrix(sample(0:1,100*15,replace=TRUE),ncol=15)
+# with missing responses and jackknife standard errors
+awm_na <- awm
+awm_na[sample(length(awm), 300)] <- NA
+res3plna <- PP_4pl(respm = awm_na, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
+head(Pfit(pp = res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
 
-# ------------------------------------------------------------------------
-## 1PL model ##### 
-# ------------------------------------------------------------------------
-# MLE
-res1plmle <- PP_4pl(respm = awm,thres = diffpar,type = "mle")
-# WLE
-res1plwle <- PP_4pl(respm = awm,thres = diffpar,type = "wle")
-# MAP estimation
-res1plmap <- PP_4pl(respm = awm,thres = diffpar,type = "map")
-# ------------------------------------------------------------------------
-## LZ*-Index ##### 
-Pfit(respm=awm,pp=res1plwle,fitindices="lzstar")
-Pfit(respm=awm,pp=res1plmle,fitindices="lzstar")
-Pfit(respm=awm,pp=res1plmap,fitindices="lzstar")
-## LZ*-Index combined with Infit-Outfit ##### 
-Pfit(respm=awm,pp=res1plwle,fitindices=c("lzstar","infit","outfit"))
-# ------------------------------------------------------------------------
+### GPCM ##########
 
-##########################################################################
+thres <- rbind(0, c(-1, -0.5, 0), c(0.5, 0.8, 1), c(1.5, 2, 2.5))
+slg   <- c(0.8, 1.2, 1)
+respg <- sim_gpcm(thres = thres, alpha = slg, theta = rnorm(50))
+resgwle <- PP_gpcm(respm = respg, thres = thres, slopes = slg, type = "wle")
+summary(Pfit(pp = resgwle))
 
-# ------------------------------------------------------------------------
-## 2PL model ##### 
-# ------------------------------------------------------------------------
-# MLE
-res2plmle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "mle")
-# WLE
-res2plwle <- PP_4pl(respm = awm,thres = diffpar, slopes = sl,type = "wle")
-# ------------------------------------------------------------------------
-## LZ*-Index ##### 
-Pfit(respm=awm,pp=res2plwle,fitindices="lzstar")
-Pfit(respm=awm,pp=res2plmle,fitindices="lzstar")
-## LZ*-Index combined with Infit-Outfit ##### 
-Pfit(respm=awm,pp=res2plwle,fitindices=c("lzstar","infit","outfit"))
-# ------------------------------------------------------------------------
+### GPCM and 4PL mixed ##########
 
-##########################################################################
-
-# ------------------------------------------------------------------------
-## 3PL model ##### 
-# ------------------------------------------------------------------------
-# MLE
-res3plmle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,type = "mle")
-# WLE
-res3plwle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,type = "wle")
-# ------------------------------------------------------------------------
-## LZ*-Index ##### 
-Pfit(respm=awm,pp=res3plwle,fitindices="lzstar")
-Pfit(respm=awm,pp=res3plmle,fitindices="lzstar")
-## LZ*-Index combined with Infit-Outfit ##### 
-Pfit(respm=awm,pp=res3plwle,fitindices=c("lzstar","infit","outfit"))
-# ------------------------------------------------------------------------
-
-##########################################################################
-
-# ------------------------------------------------------------------------
-## 4PL model ##### 
-# ------------------------------------------------------------------------
-# MLE
-res4plmle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "mle")
-# WLE
-res4plwle <- PP_4pl(respm = awm,thres = diffpar,
-                    slopes = sl,lowerA = la,upperA=ua,type = "wle")
-# ------------------------------------------------------------------------
-## LZ*-Index ##### 
-Pfit(respm=awm,pp=res4plwle,fitindices="lzstar")
-Pfit(respm=awm,pp=res4plmle,fitindices="lzstar")
-## LZ*-Index combined with Infit-Outfit ##### 
-Pfit(respm=awm,pp=res4plwle,fitindices=c("lzstar","infit","outfit"))
-# ------------------------------------------------------------------------
-
-##########################################################################
+THRESx <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
+THRESx[2, 1:3] <- NA
+slm <- c(0.5, 1, 1.5, 1.1, 1, 0.98)
+lam <- c(0.02, 0.1, 0, 0, 0, 0)
+uam <- c(0.97, 0.91, 1, 1, 1, 1)
+awmatrix <- matrix(c(1, 0, 1, 0, 1, 1, 1, 0, 0, 1,
+                     2, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                     1, 2, 2, 1, 1, 1, 1, 0, 0, 1), byrow = TRUE, nrow = 5)
+resmixed <- PPall(respm = awmatrix, thres = THRESx, slopes = slm, lowerA = lam,
+                  upperA = uam, type = "wle", model2est = findmodel(THRESx))
+Pfit(pp = resmixed, fitindices = c("lz", "lzstar"))
