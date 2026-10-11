@@ -1,21 +1,47 @@
-title: PP
+url: https://manuelreif.github.io/PP/
+
 template:
-  params:
-    bootswatch: slate
-pandoc: 1.12.3
-pkgdown: 1.3.0
+  bootstrap: 5
+  bootswatch: flatly
+
 navbar:
-    - icon: fa-home
-      href: index.html
-left:
-  - text: "Articles"
-    icon: fas fa-book
-    menu:
-    -  text: Introduction
-    -  text: PP-Package
-       href: articles/intro_pp.html
-    -  text: Pfit functions
-       href: articles/intro_pfit.html
-    -  text: -------
-    -  text: Example analyzing a dataset
-       href: articles/ppass_par_and_fit.html
+  structure:
+    left: [reference, articles, news]
+    right: [search, github]
+
+articles:
+  - title: Articles
+    contents:
+      - intro_pp
+      - intro_pfit
+      - ppass_erm
+
+reference:
+  - title: Estimation
+    desc: Person parameters for known item parameters.
+    contents:
+      - PP_4pl
+      - PP_gpcm
+      - PPall
+      - findmodel
+      - ppeo-methods
+  - title: Person assessment and person fit
+    contents:
+      - PPass
+      - Pfit
+  - title: Jackknife and plausible values
+    contents:
+      - JKpp
+      - PV
+  - title: Simulation
+    contents:
+      - sim_4pl
+      - sim_gpcm
+      - sim_mixed
+  - title: Data
+    contents:
+      - fourpl_df
+      - pp_amt
+  - title: Package
+    contents:
+      - PP-package

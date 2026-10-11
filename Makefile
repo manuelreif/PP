@@ -1,8 +1,5 @@
-# Makefile for generating R packages.
-# 2011 Andrew Redd
-#
-# Assumes Makefile is in a folder where package contents are in a subfolder PP.
-# Roxygen uses the roxygen2 package, and will run automatically on check and all.
+# Makefile for building and checking the package (run from the package root).
+# Tarball and check directory go to the parent directory.
 
 
 PKG_VERSION=$(shell grep -i ^version DESCRIPTION | cut -d : -d \  -f 2)
@@ -16,7 +13,7 @@ PKG_FILES := DESCRIPTION NAMESPACE $(R_FILES) $(SRC_FILES)
 
 tarball: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 $(PKG_NAME)_$(PKG_VERSION).tar.gz: $(PKG_FILES)
-	R CMD build ../PP
+	R CMD build .
 	mv $(PKG_NAME)_$(PKG_VERSION).tar.gz ..
 
 
@@ -31,13 +28,7 @@ install: $(PKG_NAME)_$(PKG_VERSION).tar.gz
 	R CMD INSTALL ../$(PKG_NAME)_$(PKG_VERSION).tar.gz
 
 NAMESPACE: $(R_FILES)
-	Rscript -e "library(roxygen2);roxygenize('../PP')"
-
-rhub: $(R_FILES)
-	Rscript -e "library(roxygen2);roxygenize('../PP')"
-	Rscript -e "library(rhub); check(platform = 'debian-gcc-devel')" > ../ruhub_deb.log
-	Rscript -e "library(rhub); check_with_sanitizers()" > ../ruhub_san.log
-	Rscript -e "library(rhub); check_on_windows()" > ../ruhub_win.log
+	Rscript -e "roxygen2::roxygenize('.')"
 
 
 clean:

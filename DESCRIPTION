@@ -1,50 +1,50 @@
 Package: PP
 Type: Package
 Title: Person Parameter Estimation
-Version: 0.6.4-1.9000
-Date: 2026-04-21
+Version: 0.7.0
+Date: 2026-10-11
 Authors@R: c(
-        person(given = "Jan", 
-         family = "Steinfeld", 
-         email = "jan.d.steinfeld@gmail.com", 
-         role = c("cre","aut"),
-         comment = c(ORCID = "0000-0001-9853-8260")
-         ),
-         person(given = "Manuel", 
-         family = "Reif", 
-         email = "manuel.reif@gmail.com", 
-         role = c("aut")
-         )
+    person(given = "Manuel",
+           family = "Reif",
+           email = "manuel.reif@gmail.com",
+           role = c("cre", "aut")),
+    person(given = "Jan",
+           family = "Steinfeld",
+           email = "jan.d.steinfeld@gmail.com",
+           role = "aut",
+           comment = c(ORCID = "0000-0001-9853-8260"))
     )
-Author: Jan Steinfeld [cre, aut] (<https://orcid.org/0000-0001-9853-8260>),
-        Manuel Reif [aut]
-Maintainer: Jan Steinfeld <jan.d.steinfeld@gmail.com>
-Description: The PP package includes estimation of (MLE, WLE, MAP, EAP, ROBUST)
-    person parameters for the 1,2,3,4-PL model and the GPCM (generalized
-    partial credit model). The parameters are estimated under the assumption
-    that the item parameters are known and fixed. The package is useful e.g. in
-    the case that items from an item pool / item bank with known item parameters
-    are administered to a new population of test-takers and an ability
-    estimation for every test-taker is needed.
-URL: https://github.com/jansteinfeld/PP
-BugReports: https://github.com/jansteinfeld/PP/issues
+Description: Estimation of person parameters (abilities) for the 1, 2, 3
+    and 4 parameter logistic model, the (generalized) partial credit model
+    and tests that mix dichotomous and polytomous items, under the
+    assumption that the item parameters are known and fixed: maximum
+    likelihood, weighted likelihood (Warm, 1989 <doi:10.1007/BF02294627>),
+    maximum and expected a posteriori and robust estimation (Schuster and
+    Yuan, 2011 <doi:10.3102/1076998610396890>). Further jackknife estimates
+    (Wainer and Wright, 1980 <doi:10.1007/BF02293910>), plausible values,
+    the person fit statistics lz, lz* (Snijders, 2001
+    <doi:10.1007/BF02294437>), infit and outfit, and simulation of
+    response data. Models fitted with the 'eRm' package can be passed on
+    directly. Useful e.g. when items of an item bank are given to a new
+    sample of persons.
+URL: https://github.com/manuelreif/PP, https://manuelreif.github.io/PP/
+BugReports: https://github.com/manuelreif/PP/issues
 License: GPL-3
-LazyLoad: yes
 LazyData: true
 VignetteBuilder: knitr
-Depends: R (>= 3.0)
+Depends: R (>= 4.0)
 Encoding: UTF-8
-Suggests: 
-    testthat (>= 3.0.0), 
-    roxygen2, 
-    knitr, 
-    eRm, 
-    data.table, 
-    prettydoc,
-    rmarkdown
-Imports: 
-    Rcpp (>= 0.11.2)
+Imports:
+    Rcpp (>= 0.11.2),
+    stats,
+    utils
 LinkingTo: Rcpp
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    prettydoc,
+    eRm
 NeedsCompilation: yes
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.1.0

@@ -1,22 +1,17 @@
 citHeader("To cite the 'PP' package in publications use:")
 
-year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+year <- sub("-.*", "", meta$Date)
 vers <- paste("R package version", meta$Version)
 
 bibentry(
   bibtype = "Manual",
-  title = "PP: Estimation of person parameters for the 1,2,3,4-PL model and the GPCM.",
-  author = c(
-    person("Jan", "Steinfeld"),
-    person("Manuel", "Reif")
-  ),
+  title = "{PP}: Person Parameter Estimation",
+  author = c(person("Manuel", "Reif"), person("Jan", "Steinfeld")),
   year = year,
   note = vers,
-  url = "https://github.com/jansteinfeld/PP",
+  url = "https://github.com/manuelreif/PP",
   textVersion = paste0(
-    "Steinfeld, J. and Reif, M. (",
-    year,
-    "). PP: Estimation of person parameters for the 1,2,3,4-PL model and the GPCM. ",
-    vers, ". https://github.com/jansteinfeld/PP"
+    "Reif, M. and Steinfeld, J. (", year, "). PP: Person Parameter Estimation. ",
+    vers, ". https://github.com/manuelreif/PP"
   )
 )

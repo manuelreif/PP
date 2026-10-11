@@ -82,18 +82,19 @@ response theory. \emph{Psychometrika}, \bold{54}, 427--450.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/jansteinfeld/PP}
-  \item Report bugs at \url{https://github.com/jansteinfeld/PP/issues}
+  \item \url{https://github.com/manuelreif/PP}
+  \item \url{https://manuelreif.github.io/PP/}
+  \item Report bugs at \url{https://github.com/manuelreif/PP/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Jan Steinfeld \email{jan.d.steinfeld@gmail.com} (\href{https://orcid.org/0000-0001-9853-8260}{ORCID})
+\strong{Maintainer}: Manuel Reif \email{manuel.reif@gmail.com}
 
 Authors:
 \itemize{
-  \item Jan Steinfeld \email{jan.d.steinfeld@gmail.com} (\href{https://orcid.org/0000-0001-9853-8260}{ORCID})
   \item Manuel Reif \email{manuel.reif@gmail.com}
+  \item Jan Steinfeld \email{jan.d.steinfeld@gmail.com} (\href{https://orcid.org/0000-0001-9853-8260}{ORCID})
 }
 
 }
