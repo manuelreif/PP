@@ -175,9 +175,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pp_jackknife_cpp
+List pp_jackknife_cpp(List bank, IntegerMatrix X, std::string method, NumericVector mu, NumericVector sigma2, double H, NumericVector theta, NumericVector range, double exac, int maxsteps);
+RcppExport SEXP _PP_pp_jackknife_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP methodSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP HSEXP, SEXP thetaSEXP, SEXP rangeSEXP, SEXP exacSEXP, SEXP maxstepsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type bank(bankSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type X(XSEXP);
+    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
+    Rcpp::traits::input_parameter< double >::type H(HSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type range(rangeSEXP);
+    Rcpp::traits::input_parameter< double >::type exac(exacSEXP);
+    Rcpp::traits::input_parameter< int >::type maxsteps(maxstepsSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_jackknife_cpp(bank, X, method, mu, sigma2, H, theta, range, exac, maxsteps));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pp_posterior_cpp
-List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVector sigma2, int npv, double max_table);
-RcppExport SEXP _PP_pp_posterior_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP npvSEXP, SEXP max_tableSEXP) {
+List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVector sigma2, int npv, double max_table, bool jk);
+RcppExport SEXP _PP_pp_posterior_cpp(SEXP bankSEXP, SEXP XSEXP, SEXP muSEXP, SEXP sigma2SEXP, SEXP npvSEXP, SEXP max_tableSEXP, SEXP jkSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -187,7 +207,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type sigma2(sigma2SEXP);
     Rcpp::traits::input_parameter< int >::type npv(npvSEXP);
     Rcpp::traits::input_parameter< double >::type max_table(max_tableSEXP);
-    rcpp_result_gen = Rcpp::wrap(pp_posterior_cpp(bank, X, mu, sigma2, npv, max_table));
+    Rcpp::traits::input_parameter< bool >::type jk(jkSEXP);
+    rcpp_result_gen = Rcpp::wrap(pp_posterior_cpp(bank, X, mu, sigma2, npv, max_table, jk));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -215,7 +236,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PP_pp_huber_cpp", (DL_FUNC) &_PP_pp_huber_cpp, 3},
     {"_PP_pp_kernel_time_cpp", (DL_FUNC) &_PP_pp_kernel_time_cpp, 5},
     {"_PP_pp_estimate_cpp", (DL_FUNC) &_PP_pp_estimate_cpp, 11},
-    {"_PP_pp_posterior_cpp", (DL_FUNC) &_PP_pp_posterior_cpp, 6},
+    {"_PP_pp_jackknife_cpp", (DL_FUNC) &_PP_pp_jackknife_cpp, 10},
+    {"_PP_pp_posterior_cpp", (DL_FUNC) &_PP_pp_posterior_cpp, 7},
     {"_PP_pp_sim_cpp", (DL_FUNC) &_PP_pp_sim_cpp, 2},
     {NULL, NULL, 0}
 };

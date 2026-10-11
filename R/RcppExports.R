@@ -41,8 +41,12 @@ pp_estimate_cpp <- function(bank, X, method, mu, sigma2, H, start, range, exac, 
     .Call(`_PP_pp_estimate_cpp`, bank, X, method, mu, sigma2, H, start, range, exac, maxsteps, skip_item)
 }
 
-pp_posterior_cpp <- function(bank, X, mu, sigma2, npv = 0L, max_table = 16777216.0) {
-    .Call(`_PP_pp_posterior_cpp`, bank, X, mu, sigma2, npv, max_table)
+pp_jackknife_cpp <- function(bank, X, method, mu, sigma2, H, theta, range, exac, maxsteps) {
+    .Call(`_PP_pp_jackknife_cpp`, bank, X, method, mu, sigma2, H, theta, range, exac, maxsteps)
+}
+
+pp_posterior_cpp <- function(bank, X, mu, sigma2, npv = 0L, max_table = 16777216.0, jk = FALSE) {
+    .Call(`_PP_pp_posterior_cpp`, bank, X, mu, sigma2, npv, max_table, jk)
 }
 
 pp_sim_cpp <- function(bank, theta) {

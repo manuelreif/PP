@@ -143,6 +143,27 @@ test_that("skip_item gives the estimate without that item", {
   }
 })
 
+test_that("a jackknife subsample is the estimate with skip_item, started at the estimate", {
+  for (s in list(set_3pl, set_gpcm, set_mixed)) {
+    X <- make_na(s$X, 3)
+    n <- nrow(X)
+    for (ty in types) {
+      full <- core_fit(s, ty, X = X)
+      th <- ifelse(full$status == "ok", full$theta, NA)
+      jk <- PP:::pp_jackknife_cpp(kernel_bank(s$items), X, ty, rep(0, n), rep(1, n), 1, th,
+                                  c(-6, 6), 1e-6, 100L)
+      for (j in seq_len(ncol(X))) {
+        a <- core_fit(s, ty, X = X, skip = j, start = th)
+        ans <- !is.na(X[, j]) & !is.na(th)
+        expect_identical(jk$loo[ans, j], a$theta[ans])
+        expect_identical(status_levels[jk$status[ans, j]], a$status[ans])
+        expect_true(all(is.na(jk$loo[!ans, j]) & is.na(jk$status[!ans, j])))
+      }
+      expect_true(jk$nsteps >= 1L)
+    }
+  }
+})
+
 test_that("the start value changes the result only within exac", {
   for (s in list(set_3pl, set_gpcm)) {
     for (ty in types) {

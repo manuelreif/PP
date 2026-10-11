@@ -91,6 +91,63 @@ test_that("the draws are reproducible and follow the posterior", {
   }
 })
 
+# --- jackknife (jk = TRUE): posterior mean without item j ------------------
+
+# Reference: the posterior mean of X[i, ] with item j set to NA
+ref_loo_eap <- function(X, items, mu = 0, s2 = 1, cols = seq_len(ncol(X))) {
+  n <- nrow(X)
+  mu <- rep_len(mu, n)
+  s2 <- rep_len(s2, n)
+  out <- matrix(NA_real_, n, length(cols))
+  for (i in seq_len(n)) for (k in seq_along(cols)) {
+    if (is.na(X[i, cols[k]])) next
+    x <- X[i, ]
+    x[cols[k]] <- NA
+    out[i, k] <- ref_posterior(x, items, mu[i], s2[i])$mean
+  }
+  out
+}
+
+test_that("the EAP jackknife matches the posterior without the item", {
+  for (nm in c("2PL", "3PL", "GPCM", "mixed")) {
+    s <- sets_all[[nm]]
+    X <- make_na(s$X[1:12, ], 7)
+    n <- nrow(X)
+    r <- core_post(s, X, prior_mu(n), prior_s2(n), jk = TRUE)
+    expect_close(r$loo, ref_loo_eap(X, s$items, prior_mu(n), prior_s2(n)), 1e-6)
+    # EAP and PSD do not change with jk
+    expect_identical(r[c("eap", "psd", "stage")],
+                     core_post(s, X, prior_mu(n), prior_s2(n))[c("eap", "psd", "stage")])
+  }
+  expect_null(core_post(set_2pl)$loo)
+})
+
+test_that("the EAP jackknife works in stage 2, also without the table", {
+  cols <- c(1, 550, 1100)
+  ref <- ref_loo_eap(set_long$X, set_long$items, cols = cols)
+  expect_close(core_post(set_long, jk = TRUE)$loo[, cols], ref, 1e-6)
+  expect_close(core_post(set_long, jk = TRUE, max_table = 1)$loo[, cols], ref, 1e-6)
+  s <- set_2pl
+  s2 <- c(1e-4, rep(1, 4))
+  r <- core_post(s, s$X[1:5, ], s2 = s2, jk = TRUE)
+  expect_identical(r$stage[1], 2L)
+  expect_close(r$loo, ref_loo_eap(s$X[1:5, ], s$items, 0, s2), 1e-6)
+})
+
+test_that("a leave-one-out posterior beyond the nodes of the full posterior is found", {
+  # the steep item 41 (answered 0) holds the posterior below 4; without it the
+  # 40 easy answers move it to about 8.5, beyond the stage-2 window. Prior mean
+  # 2: the grid of ref_posterior (mu +- 10 sigma) must cover the posterior.
+  items <- c(items_4pl(1, rep(7, 40)), list(item_4pl(20, 4)))
+  s <- list(items = items)
+  X <- matrix(c(rep(1L, 40), 0L), 1)
+  r <- core_post(s, X, mu = 2, jk = TRUE)
+  expect_identical(r$stage, 2L)
+  ref <- ref_loo_eap(X, items, mu = 2)
+  expect_gt(ref[41], 6)
+  expect_close(r$loo, ref, 1e-6)
+})
+
 test_that("invalid input is rejected", {
   s <- set_2pl
   expect_error(core_post(s, s2 = 0), "sigma2")

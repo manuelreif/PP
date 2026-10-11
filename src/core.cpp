@@ -230,6 +230,66 @@ static int safe_newton(const Person& p, double& theta, double lo, double hi,
   return it;
 }
 
+// The solution of one person (or one jackknife subsample) and its status
+struct Fit { double theta, se; int nsteps, status; };
+
+// Solves the estimating equation of person p on [lo, hi]: no answered item
+// gives no_response, an extreme score with mle/robust gives +-Inf, no sign
+// change on [lo, hi] gives the bound it points to; otherwise safeguarded
+// Newton from start (NA = logit of the relative score).
+static Fit solve_person(const Person& p, double start, double lo, double hi, double exac,
+                        int maxsteps) {
+  Fit r = {NA_REAL, NA_REAL, 0, ST_NO_RESPONSE};
+  if (p.nobs == 0) return r;
+  int score = 0, top = 0;
+  bool all_low = true, all_high = true;
+  for (int k = 0; k < p.nobs; ++k) {
+    const int j = p.items[k], x = p.x[j], xmax = p.b.ncat[j] - 1;
+    score += x;
+    top += xmax;
+    if (x != 0) all_low = false;
+    if (x != xmax) all_high = false;
+  }
+  if ((p.method == M_MLE || p.method == M_ROBUST) && (all_low || all_high)) {
+    r.theta = all_low ? R_NegInf : R_PosInf;
+    r.status = ST_EXTREME;
+    return r;
+  }
+  double flo, fhi, D;
+  p.eval(lo, flo, D);
+  p.eval(hi, fhi, D);
+  double t;
+  if (!(flo > 0.0)) {
+    t = lo; r.status = ST_BOUNDARY;
+  } else if (!(fhi < 0.0)) {
+    t = hi; r.status = ST_BOUNDARY;
+  } else {
+    t = start;
+    if (ISNAN(t)) {
+      const double q = (score + 0.5) / (top + 1.0);
+      t = std::log(q / (1.0 - q));
+    }
+    bool conv;
+    r.nsteps = safe_newton(p, t, lo, hi, exac, maxsteps, conv);
+    r.status = conv ? ST_OK : ST_NOT_CONVERGED;
+  }
+  r.theta = t;
+  r.se = p.se(t);
+  return r;
+}
+
+static int method_code(const std::string& method) {
+  if (method == "mle") return M_MLE;
+  if (method == "wle") return M_WLE;
+  if (method == "map") return M_MAP;
+  if (method == "robust") return M_ROBUST;
+  stop("unknown method '%s'", method);
+}
+
+static void check_range(const NumericVector& range) {
+  if (range.size() != 2 || !(range[0] < range[1])) stop("range must be c(lo, hi) with lo < hi");
+}
+
 // Person parameters for method "mle", "wle", "map" or "robust". X holds the
 // responses (NA = not answered), mu/sigma2/start have one entry per person
 // (start NA = logit of the relative score), range = c(lo, hi). skip_item > 0
@@ -245,73 +305,71 @@ List pp_estimate_cpp(List bank, IntegerMatrix X, std::string method, NumericVect
   if (mu.size() != N || sigma2.size() != N || start.size() != N) {
     stop("mu, sigma2 and start must have one entry per person");
   }
-  if (range.size() != 2 || !(range[0] < range[1])) stop("range must be c(lo, hi) with lo < hi");
-  int m;
-  if (method == "mle") m = M_MLE;
-  else if (method == "wle") m = M_WLE;
-  else if (method == "map") m = M_MAP;
-  else if (method == "robust") m = M_ROBUST;
-  else stop("unknown method '%s'", method);
+  check_range(range);
+  const int m = method_code(method);
   const std::vector<int> xr = response_rows(b, X, skip_item - 1);
-  const double* pmu = REAL(mu);
-  const double* ps2 = REAL(sigma2);
-  const double* pst = REAL(start);
-  const double lo0 = range[0], hi0 = range[1];
 
   NumericVector theta_out(N), se_out(N);
   IntegerVector nsteps_out(N), status_out(N);
-  double* th = REAL(theta_out);
-  double* se = REAL(se_out);
-  int* ns = INTEGER(nsteps_out);
-  int* st = INTEGER(status_out);
-
   std::vector<double> buf(b.kmax);
   std::vector<int> items(J);
   for (int i = 0; i < N; ++i) {
     const int* x = &xr[static_cast<size_t>(i) * J];
-    int nobs = 0, score = 0, top = 0;
-    bool all_low = true, all_high = true;
-    for (int j = 0; j < J; ++j) {
-      if (x[j] == NA_INTEGER) continue;
-      items[nobs++] = j;
-      score += x[j];
-      top += b.ncat[j] - 1;
-      if (x[j] != 0) all_low = false;
-      if (x[j] != b.ncat[j] - 1) all_high = false;
-    }
-    ns[i] = 0;
-    if (nobs == 0) {
-      th[i] = NA_REAL; se[i] = NA_REAL; st[i] = ST_NO_RESPONSE;
-      continue;
-    }
-    if ((m == M_MLE || m == M_ROBUST) && (all_low || all_high)) {
-      th[i] = all_low ? R_NegInf : R_PosInf; se[i] = NA_REAL; st[i] = ST_EXTREME;
-      continue;
-    }
-    const Person p = {b, x, items.data(), nobs, m, pmu[i], ps2[i], H, buf.data()};
-    double flo, fhi, D;
-    p.eval(lo0, flo, D);
-    p.eval(hi0, fhi, D);
-    double t;
-    if (!(flo > 0.0)) {
-      t = lo0; st[i] = ST_BOUNDARY;
-    } else if (!(fhi < 0.0)) {
-      t = hi0; st[i] = ST_BOUNDARY;
-    } else {
-      t = pst[i];
-      if (ISNAN(t)) {
-        const double r = (score + 0.5) / (top + 1.0);
-        t = std::log(r / (1.0 - r));
-      }
-      bool conv;
-      ns[i] = safe_newton(p, t, lo0, hi0, exac, maxsteps, conv);
-      st[i] = conv ? ST_OK : ST_NOT_CONVERGED;
-    }
-    th[i] = t;
-    se[i] = p.se(t);
+    int nobs = 0;
+    for (int j = 0; j < J; ++j) if (x[j] != NA_INTEGER) items[nobs++] = j;
+    const Person p = {b, x, items.data(), nobs, m, mu[i], sigma2[i], H, buf.data()};
+    const Fit f = solve_person(p, start[i], range[0], range[1], exac, maxsteps);
+    theta_out[i] = f.theta; se_out[i] = f.se; nsteps_out[i] = f.nsteps; status_out[i] = f.status;
   }
   return List::create(_["theta"] = theta_out, _["se"] = se_out,
                       _["nsteps"] = nsteps_out, _["status"] = status_out);
+}
+
+// Jackknife for method "mle", "wle", "map" or "robust": for each person with
+// a finite theta (the full estimate) and each answered item j, the estimate
+// without item j, started at theta. The subsample is the same as
+// pp_estimate_cpp(skip_item = j, start = theta). Returns loo and status (N x J,
+// NA for items not answered and persons with theta NA/Inf) and nsteps (the
+// largest number of steps of a subsample).
+// [[Rcpp::export]]
+List pp_jackknife_cpp(List bank, IntegerMatrix X, std::string method, NumericVector mu,
+                      NumericVector sigma2, double H, NumericVector theta, NumericVector range,
+                      double exac, int maxsteps) {
+  const ItemBank b = make_bank(bank);
+  const int N = X.nrow(), J = X.ncol();
+  if (J != b.n) stop("X must have one column per item");
+  if (mu.size() != N || sigma2.size() != N || theta.size() != N) {
+    stop("mu, sigma2 and theta must have one entry per person");
+  }
+  check_range(range);
+  const int m = method_code(method);
+  const std::vector<int> xr = response_rows(b, X, -1);
+
+  NumericMatrix loo(N, J);
+  IntegerMatrix status(N, J);
+  std::fill(loo.begin(), loo.end(), NA_REAL);
+  std::fill(status.begin(), status.end(), NA_INTEGER);
+  int nmax = 0;
+  std::vector<double> buf(b.kmax);
+  std::vector<int> items(J), sub(J);
+  for (int i = 0; i < N; ++i) {
+    if (!R_finite(theta[i])) continue;
+    const int* x = &xr[static_cast<size_t>(i) * J];
+    int nobs = 0;
+    for (int j = 0; j < J; ++j) if (x[j] != NA_INTEGER) items[nobs++] = j;
+    const double start = std::min(range[1], std::max(range[0], theta[i]));
+    for (int k = 0; k < nobs; ++k) {
+      // the answered items without items[k], in their original order
+      std::copy(items.begin(), items.begin() + k, sub.begin());
+      std::copy(items.begin() + k + 1, items.begin() + nobs, sub.begin() + k);
+      const Person p = {b, x, sub.data(), nobs - 1, m, mu[i], sigma2[i], H, buf.data()};
+      const Fit f = solve_person(p, start, range[0], range[1], exac, maxsteps);
+      loo(i, items[k]) = f.theta;
+      status(i, items[k]) = f.status;
+      nmax = std::max(nmax, f.nsteps);
+    }
+  }
+  return List::create(_["loo"] = loo, _["status"] = status, _["nsteps"] = nmax);
 }
 
 // --- posterior on a grid: EAP, posterior SD and plausible values ----------
@@ -377,19 +435,18 @@ static Post normalise(double* w, int n, double g0, double h, double mu, double s
   return r;
 }
 
-// Posterior on the nodes q0 .. q0 + n - 1 of a table
-static Post post_table(const LogTable& t, const Person& p, int q0, int n, double* w) {
+// Log-likelihood on the nodes q0 .. q0 + n - 1 of a table
+static void ll_table(const LogTable& t, const Person& p, int q0, int n, double* w) {
   std::fill(w, w + n, 0.0);
   for (int k = 0; k < p.nobs; ++k) {
     const int j = p.items[k];
     const double* row = &t.tab[static_cast<size_t>(t.cum[j] + p.x[j]) * t.Q + q0];
     for (int q = 0; q < n; ++q) w[q] += row[q];
   }
-  return normalise(w, n, t.lo + q0 * t.h, t.h, p.mu, p.s2);
 }
 
-// Posterior on n nodes from g0, with the item kernel instead of a table
-static Post post_direct(const Person& p, double g0, double h, int n, double* w) {
+// Log-likelihood on n nodes from g0, with the item kernel instead of a table
+static void ll_direct(const Person& p, double g0, double h, int n, double* w) {
   for (int q = 0; q < n; ++q) {
     const double g = g0 + q * h;
     double ll = 0.0;
@@ -399,7 +456,92 @@ static Post post_direct(const Person& p, double g0, double h, int n, double* w) 
     }
     w[q] = ll;
   }
+}
+
+// Posterior on the nodes q0 .. q0 + n - 1 of a table
+static Post post_table(const LogTable& t, const Person& p, int q0, int n, double* w) {
+  ll_table(t, p, q0, n, w);
+  return normalise(w, n, t.lo + q0 * t.h, t.h, p.mu, p.s2);
+}
+
+// Posterior on n nodes from g0, with the item kernel instead of a table
+static Post post_direct(const Person& p, double g0, double h, int n, double* w) {
+  ll_direct(p, g0, h, n, w);
   return normalise(w, n, g0, h, p.mu, p.s2);
+}
+
+// Posterior mode cen (root of the MAP equation; the bracket [a, c] is widened
+// until it changes sign) and Laplace SD sc = 1/sqrt(I + 1/sigma2) of a person
+// with method M_MAP
+static void laplace(const Person& p, double a, double c, double guess, double& cen, double& sc) {
+  double fa, fc, D;
+  p.eval(a, fa, D);
+  for (int r = 0; !(fa > 0.0) && r < 60; ++r) { a -= c - a; p.eval(a, fa, D); }
+  p.eval(c, fc, D);
+  for (int r = 0; !(fc < 0.0) && r < 60; ++r) { c += c - a; p.eval(c, fc, D); }
+  double t = std::min(c, std::max(a, guess));
+  bool conv;
+  safe_newton(p, t, a, c, 1e-10, 500, conv);
+  cen = t;
+  sc = p.se(t);
+}
+
+// A window (half width half, node distance h) that cuts off posterior mass is
+// widened and recomputed with the kernel, at most 5 times; g0 and n follow
+// the window, w holds the weights
+static Post widen(const Person& p, Post r, double half, double h, std::vector<double>& w,
+                  double& g0, int& n) {
+  double wide = half;
+  for (int k = 0; r.edge > EDGE_W && k < 5; ++k) {
+    wide *= 2.0;
+    n = static_cast<int>(std::ceil(2.0 * wide / h)) + 1;
+    if (static_cast<int>(w.size()) < n) w.resize(n);
+    g0 = r.mean - wide;
+    r = post_direct(p, g0, h, n, w.data());
+  }
+  return r;
+}
+
+// The nodes of a person's final posterior: n nodes from g0 with distance h,
+// either the nodes q0 .. of table t or (t null) evaluated with the kernel
+struct Nodes { const LogTable* t; int q0, n; double g0, h; };
+
+// EAP jackknife of person i: for each answered item j the posterior mean
+// without j on the person's final nodes, from the log-likelihood minus
+// log P_j(x_ij). A leave-one-out posterior with mass at the edge of the nodes
+// is computed anew as in stage 2: window around its mode, with the kernel.
+static void jk_person(const Person& p, const Nodes& nd, int i, NumericMatrix& loo,
+                      std::vector<double>& ll, std::vector<double>& w, std::vector<int>& sub) {
+  if (static_cast<int>(ll.size()) < nd.n) ll.resize(nd.n);
+  if (static_cast<int>(w.size()) < nd.n) w.resize(nd.n);
+  if (nd.t) ll_table(*nd.t, p, nd.q0, nd.n, ll.data());
+  else ll_direct(p, nd.g0, nd.h, nd.n, ll.data());
+  for (int k = 0; k < p.nobs; ++k) {
+    const int j = p.items[k], x = p.x[j];
+    if (nd.t) {
+      const double* row = &nd.t->tab[static_cast<size_t>(nd.t->cum[j] + x) * nd.t->Q + nd.q0];
+      for (int q = 0; q < nd.n; ++q) w[q] = ll[q] - row[q];
+    } else {
+      for (int q = 0; q < nd.n; ++q) {
+        w[q] = ll[q] - eval_item<true>(p.b, j, x, nd.g0 + q * nd.h, p.buf).ll;
+      }
+    }
+    Post r = normalise(w.data(), nd.n, nd.g0, nd.h, p.mu, p.s2);
+    if (r.edge > EDGE_W) {
+      std::copy(p.items, p.items + k, sub.begin());
+      std::copy(p.items + k + 1, p.items + p.nobs, sub.begin() + k);
+      const Person ps = {p.b, p.x, sub.data(), p.nobs - 1, p.method, p.mu, p.s2, p.H, p.buf};
+      double cen, sc;
+      laplace(ps, nd.g0, nd.g0 + (nd.n - 1) * nd.h, r.mean, cen, sc);
+      const double half = WIN * sc, hw = 2.0 * half / (WIN_NODES - 1);
+      double g0 = cen - half;
+      int n = WIN_NODES;
+      if (static_cast<int>(w.size()) < n) w.resize(n);
+      r = post_direct(ps, g0, hw, n, w.data());
+      r = widen(ps, r, half, hw, w, g0, n);
+    }
+    loo(i, j) = r.mean;
+  }
 }
 
 // npv draws from the discretised posterior: a node by its weight (inverse
@@ -425,10 +567,12 @@ static void draw_pv(const double* w, int n, double g0, double h, int npv, double
 // made for the stage-1 persons first, then for the stage-2 persons, so they
 // are reproducible with set.seed(). max_table (number of doubles) limits the
 // stage-2 table; above it the windows are evaluated with the kernel directly
-// (a parameter only so the tests can reach this path).
+// (a parameter only so the tests can reach this path). jk = true also returns
+// loo (N x J): the posterior mean without item j (jk_person), NA for items
+// not answered.
 // [[Rcpp::export]]
 List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVector sigma2,
-                      int npv = 0, double max_table = 16777216.0) {
+                      int npv = 0, double max_table = 16777216.0, bool jk = false) {
   const ItemBank b = make_bank(bank);
   const int N = X.nrow(), J = X.ncol();
   if (J != b.n) stop("X must have one column per item");
@@ -444,8 +588,13 @@ List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVecto
   NumericVector eap(N), psd(N);
   IntegerVector stage(N);
   NumericMatrix draws(N, npv);
+  NumericMatrix loo(jk ? N : 0, jk ? J : 0);
+  std::fill(loo.begin(), loo.end(), NA_REAL);
   List out = List::create(_["eap"] = eap, _["psd"] = psd, _["stage"] = stage, _["draws"] = draws);
+  if (jk) out["loo"] = loo;
   if (N == 0) return out;
+  std::vector<double> jk_ll, jk_w;
+  std::vector<int> jk_sub(J);
   double* pd = REAL(draws);
   int ncat_all = 0;
   for (int j = 0; j < J; ++j) ncat_all += b.ncat[j];
@@ -484,6 +633,10 @@ List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVecto
     if (r.sd >= STAGE2_SD * h && !(r.edge > EDGE_W)) {
       eap[i] = r.mean; psd[i] = r.sd; stage[i] = 1;
       if (npv > 0) draw_pv(w.data(), Q, lo, h, npv, pd + i, N);
+      if (jk) {
+        const Nodes nd = {&t1, 0, Q, lo, h};
+        jk_person(p, nd, i, loo, jk_ll, jk_w, jk_sub);
+      }
     } else {
       flagged.push_back(i);
       guess.push_back(r.mean);
@@ -495,19 +648,7 @@ List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVecto
   // stage 2: centre = posterior mode (root of the MAP equation, bracket
   // widened until it changes sign), scale = Laplace SD 1/sqrt(I + 1/sigma2)
   std::vector<double> cen(nf), sc(nf);
-  for (int f = 0; f < nf; ++f) {
-    const Person p = person(flagged[f]);
-    double a = lo, c = hi, fa, fc, D;
-    p.eval(a, fa, D);
-    for (int r = 0; !(fa > 0.0) && r < 60; ++r) { a -= c - a; p.eval(a, fa, D); }
-    p.eval(c, fc, D);
-    for (int r = 0; !(fc < 0.0) && r < 60; ++r) { c += c - a; p.eval(c, fc, D); }
-    double t = std::min(c, std::max(a, guess[f]));
-    bool conv;
-    safe_newton(p, t, a, c, 1e-10, 500, conv);
-    cen[f] = t;
-    sc[f] = p.se(t);
-  }
+  for (int f = 0; f < nf; ++f) laplace(person(flagged[f]), lo, hi, guess[f], cen[f], sc[f]);
   // one fine table over all windows with a tenth of the smallest scale
   // between the nodes, if it fits into max_table
   double lo2 = R_PosInf, hi2 = R_NegInf, smin2 = R_PosInf;
@@ -528,28 +669,29 @@ List pp_posterior_cpp(List bank, IntegerMatrix X, NumericVector mu, NumericVecto
     const double half = WIN * sc[f];
     const double nodes = std::ceil(2.0 * half / h2) + 1.0;
     double g0, hw;
-    int n;
+    int n, q0 = 0;
+    const LogTable* src = nullptr;
     Post r;
     if (use_table && nodes <= GRID_QMAX) {
-      const int q0 = std::max(0, static_cast<int>(std::floor((cen[f] - half - lo2) / h2)));
+      q0 = std::max(0, static_cast<int>(std::floor((cen[f] - half - lo2) / h2)));
       n = std::min(static_cast<int>(nodes) + 1, t2.Q - q0);
       g0 = lo2 + q0 * h2; hw = h2;
+      src = &t2;
       r = post_table(t2, p, q0, n, w.data());
     } else {
       n = WIN_NODES; hw = 2.0 * half / (n - 1); g0 = cen[f] - half;
       r = post_direct(p, g0, hw, n, w.data());
     }
-    // a window that cuts off posterior mass is widened, same node distance
-    double wide = half;
-    for (int k = 0; r.edge > EDGE_W && k < 5; ++k) {
-      wide *= 2.0;
-      n = static_cast<int>(std::ceil(2.0 * wide / hw)) + 1;
-      if (static_cast<int>(w.size()) < n) w.resize(n);
-      g0 = r.mean - wide;
-      r = post_direct(p, g0, hw, n, w.data());
+    if (r.edge > EDGE_W) {
+      src = nullptr;
+      r = widen(p, r, half, hw, w, g0, n);
     }
     eap[i] = r.mean; psd[i] = r.sd; stage[i] = 2;
     if (npv > 0) draw_pv(w.data(), n, g0, hw, npv, pd + i, N);
+    if (jk) {
+      const Nodes nd = {src, q0, n, g0, hw};
+      jk_person(p, nd, i, loo, jk_ll, jk_w, jk_sub);
+    }
   }
   return out;
 }
