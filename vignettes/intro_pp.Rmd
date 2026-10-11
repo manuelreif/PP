@@ -5,183 +5,138 @@ output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Getting started with PP}
+  %\VignetteEncoding{UTF-8}
 ---
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{Getting started with PP}
-%\VignetteEncoding{UTF-8}
--->
-# Getting started with PP
 
-Is the `PP` package the right package for you?
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
 
+PP estimates person parameters (abilities) when the item parameters are already known, for example from an earlier calibration or an item bank. It is the right package if
 
-1. You have a data set with item responses from several persons
-2. You have item parameter estimates (e.g. difficulty parameters) from these items (perhaps from a former application of these items)
-3. and these items follow the 1/2/3/4-PL model or the generalized partial credit model
-4. You are interested in estimating each persons **ability** with traditional approaches (mle, wle, map, eap) or
-5. drawing **plausible values** for each person e.g. to apply secondary analysis or
-6. getting **robust** ability estimates with Jackknife Methods or with weighted likelihood approaches
+1. you have item responses of a group of persons,
+2. you have item parameters for these items, which are treated as fixed,
+3. the items follow the 1PL to 4PL model, the (generalized) partial credit model, or a mix of both,
 
+and you want ability estimates (MLE, WLE, MAP, EAP or a robust estimate), jackknife estimates, plausible values or person fit statistics.
 
-If you agree to question 1-3 and at least to one of question 4-6, load the package an start estimating person parameters.
+This vignette shows the estimation functions. Person fit is the topic of `vignette("intro_pfit")`, estimation and person fit in one step and models fitted with the eRm package are shown in `vignette("ppass_erm")`.
 
+## A 2PL test
 
-Now a simple example.
-
-
-## 2-PL Model
-
-
-In this example, we want to gain ability estimates for each person in our sample. Each person answered questions in a test which has been scaled by the 2-PL model. Item parameters (difficulty and slope) are known and are supposed as fixed. What are the next steps?
-
-1. Get the item responses and the item parameters inside the R workspace
-2. Check your data and reshape them, so they can be processed by the PP functions
-3. Decide which type of estimation you prefer (`?PP_4pl`)
-4. Run the estimation
-
-
-### Get
-
-Getting the data inside the R workspace is quite easy in this case, because we merely load the data set which already comes with the PP package. It contains 60 response sets (60 persons answered to a test of 12 items) - and we have additional information, which we do not take into account for now. We first inspect the data, and in a second step informations about item difficulty and the slope parameters are extracted from the dataset attributes.
+The data set `fourpl_df` contains the responses of 60 persons to 12 items, together with an id and the sex of each person. The item parameters are attributes of the data set.
 
 ```{r get}
-
 library(PP)
-
 data(fourpl_df)
+head(fourpl_df[, 1:7])
 
-dim(fourpl_df)
-
-head(fourpl_df)
-
-# extracting the information
-diff_par <- attr(fourpl_df,"diffpar")
-slope_par <- attr(fourpl_df,"slopes")
-
+diff_par  <- attr(fourpl_df, "diffpar")
+slope_par <- attr(fourpl_df, "slopes")
+items <- as.matrix(fourpl_df[, -(1:2)])
 ```
 
+`PP_4pl()` covers all dichotomous models. The model follows from the parameters you give: only difficulties (`thres`) give the 1PL model, `slopes` add the 2PL model, `lowerA` the 3PL and `upperA` the 4PL model. Here difficulties and slopes are known, so a 2PL model is estimated.
 
-
-### Check and Reshape
-
-
-Now we explore the item response data regarding full or zero score, missing values etc. . Considering this information, we are able to decide which estimation method we will apply.
-
-
-```{r check}
-
-# extract items and transform the data.frame to matrix
-itmat <- as.matrix(fourpl_df[,-(1:2)])
-
-
-# are there any full scores?
-fullsc <- apply(itmat,1,function(x) (sum(x,na.rm=TRUE)+sum(is.na(x))) == length(x))
-any(fullsc)
-
-# are there 0 scores?
-nullsc <- apply(itmat,1,function(x) sum(x,na.rm=TRUE) == 0)
-any(nullsc)
-
-# are there missing values? how many and where?
-nasc <- apply(itmat,1,function(x) sum(is.na(x)))
-any(nasc > 0)
-#which(nasc)
-
-# is our data dichotomous as expected?
-apply(itmat,2,function(x) table(x))
-
-# are there any duplicates?
-rdup <- duplicated(itmat)
-sum(rdup)
-
-
+```{r mle}
+res_mle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, type = "mle")
+head(res_mle$estimates, 8)
 ```
 
+The result is a list. Its main part is the data.frame `$estimates` with one row per person, in the order of the response matrix:
 
+- `estimate` and `SE`: the ability estimate and its standard error,
+- `nsteps`: the number of Newton steps the person needed,
+- `status`: `"ok"` if the estimate converged inside `range` (default `c(-6, 6)`); `"extreme"` for persons with all answers right or wrong, who have no finite maximum likelihood estimate; `"boundary"`, `"no_response"` and `"not_converged"` for the remaining cases.
 
-### Decide and Run
-
-
-We use the `PP_4pl()` function for our estimation. So perhaps you are thinking:"Why are we using a function to fit the 4-PL model, when we acutally have a dataset which stems from a 2-PL model scaled test?!" This is because with the `PP_4pl()` function you can fit the:
-
-1. **1-PL model** (Rasch model) by submitting: the data matrix, item difficulties and **nothing else**, since the 1-PL model is merely a 4-PL model with: any slope = 1, any lower asymptote = 0 and any upper asymptote = 1!
-2. **2-PL model** by submitting: the data matrix, item difficulties and slope parameters. Lower and upper asymptotes are automatically set to 0 und 1 respectively.
-3. **3-PL model** by submitting anything except the upper asymptote parameters
-4. **4-PL model** $\rightarrow$ submit all parameters ...
-
-In this case, difficulty parameters and slopes are available, so we will submit them, and a 2-PL model is fitted **automatically**.
-
-We decide to apply a common maximum likelihood estimation (`type = "mle"`), and do not remove duplicated response patterns (see argument: `ctrl=list()`) from estimation because there are only `r sum(rdup)` duplicated patterns. If the data set would have been much larger, duplicated patterns are more likely and therefore choosing to remove these patterns would speed up the estimation process significantly. (Choosing this option or not, does not change the numerical results!)
-
-
-```{r decide}
-library(PP)
-
-res1plmle <- PP_4pl(respm = itmat, thres = diff_par, slopes = slope_par, type = "mle")
-
-summary(res1plmle)
-
+```{r status}
+summary(res_mle, nrowmax = 5)
 ```
 
-Some facts:
+`coef()` returns the estimates as a vector and `as.data.frame()` the table, so the estimates are easily added to the person data:
 
-1. The function returns the **point estimators** and **standard errors** for each person. Whatever the (valid) input was, the main result is always a matrix with two columns and a number of rows which equals the number of persons (`res1plmle$resPP$resPP`).
-2. The function deals with **missing values**. These are treated as if the person has never seen this item.
-3. The order of the output estimates = order of the input. So the first estimate belongs to the first response pattern of the input data matrix.
-
-
-
-### Edit
-
-In the last step, we add the estimates to the data.frame we extracted the item responses from in the first place.
-
-
-```{r edit}
-
-dafest <- data.frame(fourpl_df, res1plmle$resPP$resPP)
-
-head(dafest,10)
+```{r bind}
+dat <- data.frame(fourpl_df[, 1:2], as.data.frame(res_mle)[, c("estimate", "SE")])
+head(dat)
 ```
 
+Missing responses (`NA`) are allowed; a person is estimated from the items they answered.
 
-One shortcoming of the plain maximum likelihood estimate is the fact, that the **extreme scores** do not lead to valid parameter estimates (`-Inf` and `Inf` are hardly useful for practitioners). One possibility to overcome this issue, is to change the estimation method - for instance `type = wle` performs weighted likelihood estimation, which is on the one hand less biased than the mle estimate, and on the other hand provides reasonable estimates for the extreme scores.
+## Choosing the estimation type
 
+`type` selects the estimator:
 
-### Rerun
+- `"mle"`: maximum likelihood. Persons with all answers in the lowest or highest category get `-Inf`/`Inf`.
+- `"wle"` (default): weighted likelihood (Warm, 1989). Less biased than the MLE and finite for extreme scores.
+- `"map"` and `"eap"`: maximum and mean of the posterior with a normal prior `N(mu, sigma2)` (default `N(0, 1)`), which may differ between persons. The EAP is computed on a grid of ability values, its SE is the posterior standard deviation.
+- `"robust"`: a Huber-type estimator (Schuster & Yuan, 2011), which downweights unexpected answers to items far from the person's ability.
 
-
-```{r rerun}
-library(PP)
-
-res1plwle <- PP_4pl(respm = itmat,thres = diff_par, slopes = slope_par, type = "wle")
-
-summary(res1plwle)
+```{r types}
+res_wle <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par)
+res_eap <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, type = "eap",
+                  mu = ifelse(fourpl_df$sex == "w", 0.2, -0.2), sigma2 = 0.8)
+head(cbind(mle = coef(res_mle), wle = coef(res_wle), eap = coef(res_eap)))
 ```
 
+## Polytomous and mixed tests
 
-So, this was what we were finally looking for.
+`PP_gpcm()` estimates abilities for the generalized partial credit model, with all slopes equal to 1 (the default) for the partial credit model. `thres` has one column per item with its thresholds; items with fewer categories have `NA` below their last threshold. A first row of zeros is optional.
 
-
-## Parameters and Person Fit 
-
-For estimating person parameters and examining person fit in one step, use `PPass()` (for ass stands for *assessment*). Using this function has several advantages over the using the other methods consecutively.
-
-1. you ony need 1 Function
-2. the data input format now is a `data.frame`
-3. the data output format is a new `data.frame` with person fit statistics added
-
-
-```{r ppass}
-
-pres <- PPass(fourpl_df, items = 3:14, mod="2PL", thres = diff_par, slopes = slope_par, type = "wle")
-
-
+```{r gpcm}
+thres <- rbind(c(-1.5, -1, -0.5, 0, 0.5),
+               c(0, 0.5, 1, 1.2, NA),
+               c(1, 1.5, NA, 2, NA))
+slopes <- c(1, 1.2, 0.8, 1.1, 0.9)
+set.seed(1234)
+x_gpcm <- sim_gpcm(thres = thres, alpha = slopes, theta = rnorm(200))
+res_gpcm <- PP_gpcm(respm = x_gpcm, thres = thres, slopes = slopes, type = "wle")
+head(res_gpcm$estimates)
 ```
 
+For a test with dichotomous and polytomous items, use `PPall()`. Each column of `thres` holds one item: a 4PL item has a single threshold (its difficulty), a GPCM item several. `findmodel()` tells the two apart and is the default for `model2est`. Lower and upper asymptotes apply to the 4PL items only.
 
+```{r mixed}
+thres_mix <- rbind(c(-1, 0, 1, -0.5, 0.3),
+                   c(NA, NA, NA, 0.6, 1.1))
+findmodel(thres_mix)
+x_mix <- sim_mixed(thres = thres_mix, alpha = c(1, 1.3, 0.9, 1, 1),
+                   lowerA = c(0.2, 0.1, 0.15, 0, 0), theta = rnorm(200))
+res_mix <- PPall(respm = x_mix, thres = thres_mix, slopes = c(1, 1.3, 0.9, 1, 1),
+                 lowerA = c(0.2, 0.1, 0.15, 0, 0), type = "map")
+summary(res_mix$estimates$estimate)
+```
 
+`sim_4pl()`, `sim_gpcm()` and `sim_mixed()` simulate responses for given item and person parameters, as used above.
 
+## Jackknife
 
+`JKpp()` leaves out each answered item once, estimates the ability again and combines the pseudovalues to a jackknife estimate and standard error (Wainer & Wright, 1980). `cmeth = "median"` or `"AMT"` (Andrews' sine estimator) give robust versions.
 
+```{r jk}
+jk <- JKpp(res_wle)
+head(jk$estimates)
+head(JKpp(res_wle, cmeth = "AMT")$estimates)
+```
 
+## Plausible values
+
+Plausible values are draws from the posterior distribution of each person. They need a prior, so `PV()` takes an estimate of type `"eap"` or `"map"`; the prior of that estimate (here different for women and men) is used.
+
+```{r pv}
+set.seed(1)
+pv <- PV(res_eap, npv = 5)
+head(pv$pvdraws)
+```
+
+By default (`approx = TRUE`) the values are drawn from a normal distribution with the posterior mean and standard deviation. With `approx = FALSE` they are drawn from the posterior itself.
+
+## References
+
+Schuster, C., & Yuan, K. H. (2011). Robust estimation of latent ability in item response models. *Journal of Educational and Behavioral Statistics, 36*(6), 720–735.
+
+Wainer, H., & Wright, B. D. (1980). Robust estimation of ability in the Rasch model. *Psychometrika, 45*(3), 373–391.
+
+Warm, T. A. (1989). Weighted likelihood estimation of ability in item response theory. *Psychometrika, 54*, 427–450.

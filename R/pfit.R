@@ -267,7 +267,7 @@ summary.PPfit <- function(object, alpha = 0.05, digits = 4, ...) {
   }), recursive = FALSE)
   res <- fit_table(vals, z)
   cat("Person fit at the", attr(object, "type"), "estimates,", nrow(object[[1]]), "persons\n")
-  cat("flagged: |z| >", format(z, digits = 3), "(alpha =", alpha, ")\n\n")
+  cat("flagged: |z| > ", format(z, digits = 3), " (alpha = ", alpha, ")\n\n", sep = "")
   print(res, digits = digits, row.names = FALSE, ...)
   invisible(res)
 }

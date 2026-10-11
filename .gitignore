@@ -67,3 +67,9 @@ blog/posterior/output/
 blog/JK/output/
 blog/PV/output/
 blog/eRm/output/
+
+# generated vignette outputs
+vignettes/*.html
+vignettes/*.R
+vignettes/*.md
+vignettes/figure/

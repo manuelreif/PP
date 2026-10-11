@@ -1,60 +1,65 @@
-PP
-==
+# PP <img src="https://www.r-pkg.org/badges/version/PP" align="right" alt="CRAN version"/>
 
-[![](http://www.r-pkg.org/badges/version/PP)](http://www.r-pkg.org/pkg/PP)
-[![CRAN RStudio mirror downloads](http://cranlogs.r-pkg.org/badges/PP)](http://www.r-pkg.org/pkg/PP)
-[![Build Status](https://travis-ci.org/jansteinfeld/PP.svg?branch=master)](https://travis-ci.org/github/manuelreif/PP)
+**PP** estimates person parameters (abilities) in item response theory when the item parameters are known, e.g. for items from an item bank given to a new sample.
 
-### Version 0.6.4 is on cran!
+- **Models:** 1PL (Rasch), 2PL, 3PL and 4PL model, partial credit and generalized partial credit model, and tests that mix dichotomous and polytomous items.
+- **Estimates:** maximum likelihood, weighted likelihood (Warm), maximum a posteriori, expected a posteriori and a robust Huber-type estimate, each with standard error and a status per person.
+- **More:** jackknife estimates, plausible values, the person fit statistics lz, lz\*, infit and outfit, and simulation of response data.
+- **eRm:** `PPass()` takes models fitted with the [eRm](https://CRAN.R-project.org/package=eRm) package (RM, LLTM, RSM, PCM, LRSM, LPCM, also with time points and groups) and adds WLE/MAP/EAP estimates, person fit, jackknife and plausible values.
 
+The numerical core is written in C++ and estimates thousands of persons in milliseconds.
 
-This R package provides Person Parameter estimation for the 1,2,3,4PL model and the generalized partial credit model. This package will soon be uploaded to cran!
+## Installation
 
+```r
+# from CRAN
+install.packages("PP")
 
-To install this package from github, install [devtools](https://github.com/hadley/devtools) first.
-
-```R
-devtools::install_github("jansteinfeld/PP", build_vignettes = TRUE)
+# development version from GitHub
+# install.packages("remotes")
+remotes::install_github("manuelreif/PP", build_vignettes = TRUE)
 ```
 
-### What's NEW?
-* New person-fit statistics for mixed-format tests (Sinharay, 2026)
-* fixed [knitr issue 1864](https://github.com/yihui/knitr/issues/1864) by declared 'rmarkdown' package as a dependency
-* [Jan Steinfeld](https://github.com/jansteinfeld) is now the maintainer of the package, the main feautres and whole idea of the package is from [Manuel Reif](https://github.com/manuelreif)
-* [Jan Steinfeld](https://github.com/jansteinfeld) is now on board! 
-* Jan programmed the great `Pfit()` function, to estimate a bunch of **fit indices**!
-*  Use the brandnew `PPass()` function, to estimate Person Parameters and fit indices in one step!
-* We added a real-world dataset, which contains responses to a adaptive intelligence test. Load the data and start trying the functions of PP.
-* You can now fit your model with the great `eRm` package, and put the object into the `PPass()` function to estimate person parameters and person fit indices.
+## Example
 
+`fourpl_df` contains an id, the sex and the responses of 60 persons to 12 items of a 2PL test, with the item parameters as attributes. `PPass()` estimates the abilities (WLE by default) and the person fit in one step and keeps the other variables:
 
+```r
+library(PP)
+data(fourpl_df)
 
-
-### Example
-
-Here is a small example of the new `PPass()` function.
-
-```R
-> data(pp_amt)
-> 
-> d <- pp_amt$daten_amt
-> 
-> rd_res <- PPass(respdf = d, 
-+                 items = 8:ncol(d),
-+                 mod="1PL",
-+                 thres = pp_amt$betas[,2], 
-+                 fitindices = "lz")
-Estimating:  1pl model ... 
-type = wle 
-Estimation finished!
-> 
-> head(rd_res)
-   estimate        SE        lz   lz_unst
-1 1.4098582 0.4177663 -0.631025 -0.613445
-2 0.3515598 0.3728682  1.229631 -0.627897
-3 1.0745005 0.3741312  1.097723 -0.627596
-4 0.3204690 0.6900113  0.981567 -0.494311
-5 1.3879169 0.4643963 -0.203400 -0.600039
-6 0.9457360 0.4184997  0.573956 -0.615722
+res <- PPass(fourpl_df, items = 3:14, mod = "2PL",
+             thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"))
+print(res, n = 6)
+#> Person assessment: 60 persons, 12 items
+#> Model: 2PL model | WLE estimates
+#> Status: 60 ok
+#> Person fit: lz, lzstar, infit, outfit
+#> Flagged (|lzstar| > 1.96): 7 persons
+#>
+#>        id sex estimate    SE status     lz  lzstar infit   in_t outfit   ou_t
+#> 1 LVL0694   w   -0.879 0.726     ok  0.852  0.8512 0.732 -0.922  0.498 -0.221
+#> 2 BBU1225   w    1.907 0.942     ok  1.081  1.1033 0.361 -1.494  0.194 -0.497
+#> 3 MJN2028   w    1.082 0.917     ok  1.189  1.2115 0.279 -1.640  0.182 -1.139
+#> 4 TSU0771   m    1.781 0.941     ok -1.515 -1.5476 1.631  1.173  3.157  1.534
+#> 5 XDS0698   w    0.327 0.868     ok  1.122  1.1337 0.413 -1.359  0.275 -1.064
+#> 6 BOS1292   w   -4.655 1.726     ok  0.622 -0.0483 0.109 -0.731  0.039  2.343
+#> ... 54 more persons
+#> Not shown: lz_unst, in_chisq, in_df, in_pv, ou_chisq, ou_df, ou_pv
 ```
 
+The result is a data.frame; `summary(res)` lists the flagged persons, `JKpp(res)` and `PV()` work on it directly. The estimation functions themselves are `PP_4pl()`, `PP_gpcm()` and `PPall()`:
+
+```r
+res_eap <- PP_4pl(respm = as.matrix(fourpl_df[, 3:14]),
+                  thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
+                  type = "eap")
+head(res_eap$estimates)
+```
+
+## Learn more
+
+- Vignettes: `vignette("intro_pp", package = "PP")`, `vignette("intro_pfit", package = "PP")` and `vignette("ppass_erm", package = "PP")`
+- Website: <https://manuelreif.github.io/PP/>
+- Changes: [NEWS.md](NEWS.md). Version 0.7.0 corrects several results of earlier versions (jackknife standard errors, MAP standard errors, plausible values, person fit with missing responses).
+- Bugs and questions: <https://github.com/manuelreif/PP/issues>
