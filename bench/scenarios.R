@@ -107,5 +107,16 @@ bench_scenarios <- list(
                         setup = function(d) fit_pl(d, "3PL", "eap", rows = 1:300),
                         run = function(d, s) { set.seed(42); PV(s, npv = 10, approx = FALSE) }),
   "sim_gpcm" = scenario("sim_gpcm", NA_character_, "GPCM", 2000, 20, 0.01,
-                        function(d, s) { set.seed(42); sim_gpcm(d$thres_g, d$ag, d$thg) })
+                        function(d, s) { set.seed(42); sim_gpcm(d$thres_g, d$ag, d$thg) }),
+  # Pfit with respm passed, as the 0.6.4 signature requires (since block 7
+  # optional, the matrix must be the one of the estimate)
+  "pfit_3pl" = scenario("Pfit", "WLE", "3PL", 5000, 40, 0.05,
+                        setup = function(d) fit_pl(d, "3PL", "wle"),
+                        run = function(d, s) Pfit(d$X3, s, fitindices = c("lz", "lzstar", "infit", "outfit"))),
+  "pfit_se"  = scenario("Pfit", "WLE", "3PL", 500, 40, 0.1,
+                        setup = function(d) fit_pl(d, "3PL", "wle", rows = 1:500),
+                        run = function(d, s) Pfit(d$X3[1:500, ], s, fitindices = c("lz", "lzstar"), SE = TRUE)),
+  "pfit_gpcm" = scenario("Pfit", "WLE", "GPCM", 2000, 20, 0.02,
+                         setup = function(d) fit_gpcm(d, "wle"),
+                         run = function(d, s) Pfit(d$Xg, s, fitindices = c("infit", "outfit")))
 )
