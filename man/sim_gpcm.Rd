@@ -24,39 +24,18 @@ This function returns an integer matrix of simulated responses under given item 
 A person with \code{NA} as person parameter gets a row of \code{NA}.
 }
 \examples{
-################# simulate GPCM ###############################################
-
 set.seed(1750)
+# thresholds of six items with three categories (the row of zeroes is optional)
+thres <- rbind(0, matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5),
+                         nrow = 2))
+x <- sim_gpcm(thres = thres, alpha = c(0.5, 1, 1.5, 1.1, 1, 0.98), theta = rnorm(100))
+head(x)
 
-THRES  <- matrix(c(-2,-1.23,1.11,3.48,1
-                   ,2,-1,-0.2,0.5,1.3,-0.8,1.5),nrow=2)
-# slopes
-sl     <- c(0.5,1,1.5,1.1,1,0.98)
-
-THRESx <- rbind(0,THRES)
-
-THETA  <- rnorm(100)
-
-simdat_gpcm <- sim_gpcm(thres = THRESx,alpha = sl,theta = THETA)
-
-head(simdat_gpcm)
-
-
-### simulate with a different number of categories
-
-
-THRES1 <- rbind(THRESx,c(NA,NA,NA,NA,1.7,1))
-THRES1 # last 2 items have +1 category
-
-simdat_gpcm2 <- sim_gpcm(thres = THRES1,alpha = sl,theta = THETA)
-
-head(simdat_gpcm2)
-
-# check the maximum category
-apply(simdat_gpcm2,2,max)
-
+# the last two items get a fourth category
+thres4 <- rbind(thres, c(NA, NA, NA, NA, 1.7, 1))
+apply(sim_gpcm(thres = thres4, alpha = 1, theta = rnorm(100)), 2, max)
 
 }
 \seealso{
-\link{sim_4pl}, \link{PP_gpcm}
+\link{sim_4pl}, \link{sim_mixed}, \link{PP_gpcm}
 }

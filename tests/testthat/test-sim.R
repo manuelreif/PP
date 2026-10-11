@@ -142,6 +142,45 @@ test_that("invalid simulator arguments are rejected", {
   expect_error(sim_gpcm(matrix(c(0, -1, 0, 1), ncol = 1), 1, "a"), "'theta' must be numeric")
 })
 
+test_that("sim_mixed reproduces the probabilities of 4PL and GPCM items", {
+  items <- c(set_4pl$items[c(2, 9)], set_3pl$items[5], set_mixed$items[9:12])
+  p <- items_to_pp(items)
+  theta <- rep(c(-2, 0, 1.5), each = 4000)
+  set.seed(40)
+  X <- sim_mixed(p$thres, p$slopes, p$lowerA, p$upperA, p$model2est, theta)
+  expect_identical(dim(X), c(length(theta), length(items)))
+  for (j in seq_along(items)) {
+    expect_true(all(X[, j] %in% (seq_len(ref_ncat(items[[j]])) - 1)))
+    expect_gt(sim_chisq(X[, j], items[[j]], theta), 1e-4)
+  }
+})
+
+test_that("sim_mixed equals sim_4pl and sim_gpcm on pure tests", {
+  p <- items_to_pp(set_4pl$items)
+  th <- c(-1, 0, NA, 2)
+  set.seed(41); a <- sim_mixed(rbind(0, p$b), p$slopes, p$lowerA, p$upperA, theta = th)
+  set.seed(41); b <- sim_4pl(p$b, p$slopes, p$lowerA, p$upperA, th)
+  expect_identical(a, b)
+  g <- items_to_pp(set_gpcm$items)
+  set.seed(42); a <- sim_mixed(g$thres, g$slopes, model2est = rep("GPCM", ncol(g$thres)), theta = th)
+  set.seed(42); b <- sim_gpcm(g$thres, g$slopes, th)
+  expect_identical(a, b)
+  # defaults: slopes 1, asymptotes 0/1, model2est from findmodel()
+  pm <- items_to_pp(set_mixed$items)
+  set.seed(43); a <- sim_mixed(pm$thres, theta = th)
+  set.seed(43); b <- sim_mixed(pm$thres, 1, 0, 1, findmodel(pm$thres), th)
+  expect_identical(a, b)
+})
+
+test_that("invalid sim_mixed arguments are rejected", {
+  pm <- items_to_pp(set_mixed$items)
+  expect_error(sim_mixed(pm$thres, alpha = -1, theta = 0), "'alpha' must be positive")
+  expect_error(sim_mixed(pm$thres, model2est = rep("4PL", 12), theta = 0), "more than two categories")
+  expect_error(sim_mixed(pm$thres, model2est = "GPCM", theta = 0), "one entry per item")
+  expect_error(sim_mixed(pm$thres, theta = Inf), "'theta' must be finite")
+  expect_warning(sim_mixed(pm$thres, lowerA = 0.1, theta = 0), "'lowerA' != 0 for GPCM item\\(s\\) 9, 10, 11, 12")
+})
+
 test_that("findmodel tells 4PL from GPCM items by the number of thresholds", {
   expect_identical(findmodel(items_to_pp(set_mixed$items)$thres),
                    items_to_pp(set_mixed$items)$model2est)

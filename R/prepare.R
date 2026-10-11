@@ -289,8 +289,13 @@ prepare_items <- function(nt, slopes, lowerA, upperA, model2est, family,
            paste(which(bad), collapse = ", "), ".", call. = FALSE)
     }
     if (family == "mixed") {
-      if (any(lowerA[!is4pl] != 0)) warning("At least for one item with #categories > 1, there is an lower asymptote != 0 submitted. This will be ignored.\n")
-      if (any(upperA[!is4pl] != 1)) warning("At least for one item with #categories > 1, there is an upper asymptote != 1 submitted. This will be ignored.\n")
+      for (a in list(list("lowerA", lowerA, 0), list("upperA", upperA, 1))) {
+        bad <- which(!is4pl & a[[2]] != a[[3]])
+        if (length(bad)) {
+          warning("'", a[[1]], "' != ", a[[3]], " for GPCM item(s) ", paste(bad, collapse = ", "),
+                  " ignored.", call. = FALSE)
+        }
+      }
     }
   }
 

@@ -29,53 +29,23 @@ which are then used for every item. A person with \code{NA} as person
 parameter gets a row of \code{NA}.
 }
 \examples{
-################# simulate 4PL ###############################################
-
 set.seed(1700)
- 
-# simulate 1-PL model ----------
+theta <- rnorm(200)
+b <- seq(-2, 2, length.out = 7)
 
-thetas <- c(0.231,-1.313,1.772,1.601,1.733,-2.001,0.443,3.111,-4.156)
-sl <- c(1,1.1,0.9,0.89,1.5,1.1,1)
-la <- c(0,0,0.2,0.15,0.04,0,0.21)
-ua <- c(0.9,0.98,0.97,1,1,1,0.97)
+# 1PL (Rasch) model: slopes 1, no asymptotes
+x1 <- sim_4pl(beta = b, alpha = 1, lowerA = 0, upperA = 1, theta = theta)
+colMeans(x1)
 
-simdat1pl <- sim_4pl(beta=seq(-4,4,length.out=7), alpha=rep(1,7),
-                  lowerA=rep(0,7), upperA=rep(1,7), theta=thetas)
-
-
-head(simdat1pl)
-
-
-# simulate 2-PL model ----------
-
-simdat2pl <- sim_4pl(beta=seq(-4,4,length.out=7), alpha=sl,
-                  lowerA=rep(0,7), upperA=rep(1,7), theta=thetas)
-
-
-head(simdat2pl)
-
-
-# simulate 3-PL model ----------
-
-simdat3pl <- sim_4pl(beta=seq(-4,4,length.out=7), alpha=sl,
-                     lowerA=la, upperA=rep(1,7), theta=thetas)
-
-
-head(simdat3pl)
-
-
-# simulate 4-PL model ----------
-
-simdat4pl <- sim_4pl(beta=seq(-4,4,length.out=7), alpha=sl,
-                     lowerA=la, upperA=ua, theta=thetas)
-
-
-head(simdat4pl)
+# 4PL model
+x4 <- sim_4pl(beta = b, alpha = c(1, 1.1, 0.9, 0.9, 1.5, 1.1, 1),
+              lowerA = c(0, 0, 0.2, 0.15, 0.04, 0, 0.21),
+              upperA = c(0.9, 0.98, 0.97, 1, 1, 1, 0.97), theta = theta)
+head(x4)
 
 }
 \seealso{
-\link{sim_gpcm}, \link{PP_4pl}
+\link{sim_gpcm}, \link{sim_mixed}, \link{PP_4pl}
 }
 \author{
 Manuel Reif
