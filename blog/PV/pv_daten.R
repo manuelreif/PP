@@ -13,7 +13,7 @@
 #               new: grid posterior)
 #
 # The old code is R/PV.R of the CRAN version (commit 6bdbde5, read with git
-# show); it reads $ipar and $resPP, which the new object still provides.
+# show); it reads $ipar (added by alt_objekt() from blog/gemeinsam.R) and $resPP.
 # Run from the package root against the installed PP.
 
 source("blog/gemeinsam.R")
@@ -29,7 +29,7 @@ eval(parse(text = system("git show 6bdbde5:R/PV.R", intern = TRUE)), envir = alt
 # npv = 1, so both draw two and keep the first.
 ein_pv <- function(obj_alt, obj_neu, approx, seed) {
   set.seed(seed)
-  a <- alt$PV.fourpl(obj_alt, npv = 2, approx = approx)$pvdraws[, 1]
+  a <- alt$PV.fourpl(alt_objekt(obj_alt), npv = 2, approx = approx)$pvdraws[, 1]
   set.seed(seed)
   n <- PP::PV(obj_neu, npv = 2, approx = approx)$pvdraws[, 1]
   list(alt = a, neu = n)

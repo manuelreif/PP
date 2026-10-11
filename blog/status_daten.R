@@ -145,12 +145,10 @@ for (sp in names(spalten2)) {
   ref_fit <- function(f) vapply(seq_len(nrow(s$X)), function(i) f(th[i], s$X[i, ]), 0)
   dich <- s$kind == "4pl"
   zelle("folge", "Pfit: lz", sp, "fit", function() {
-    if (s$kind == "gpcm") return(NULL)   # PP offers only infit/outfit for the GPCM
     vergleich(Pfit(s$X, obj, fitindices = "lz")$lz[, "lz"],
               ref_fit(function(t, x) ref_lz(t, x, s$items)), tol_fit)
   })
   zelle("folge", "Pfit: lz*", sp, "fit", function() {
-    if (s$kind == "gpcm") return(NULL)
     vergleich(Pfit(s$X, obj, fitindices = "lzstar")$lzstar[, "lzstar"],
               ref_fit(function(t, x) ref_lzstar(t, x, s$items, "wle")), tol_fit)
   })
@@ -308,19 +306,12 @@ zelle("sonder", fall, "Schätzer", "theta", function() {
 # Known causes of deviating cells. `ids` (problem IDs) stay internal; the
 # tables show `grund` as a footnote at the column label ("spalte"), the row
 # label ("zeile") or the cell itself ("zelle").
-ids_bekannt <- rbindlist(list(
-  data.table(tabelle = "folge", zeile = "Pfit: Infit/Outfit", spalte = "GPCM", mass = "*", ids = "A10",
-             ort = "zelle", grund = "Rechnet mit Slope 1 statt mit den Slopes der Items."),
-  data.table(tabelle = "folge", zeile = c("Pfit: lz", "Pfit: lz*", "Pfit: Infit/Outfit"),
-             spalte = "gemischt", mass = "*", ids = "G6", ort = "zelle",
-             grund = "Für gemischte Tests gibt es keine Fit-Funktion."),
-  data.table(tabelle = "sonder", zeile = "Fehlende Antworten (adaptiv)", spalte = "Pfit",
-             mass = "*", ids = "A9", ort = "zeile",
-             grund = "lz* ist bei fehlenden Antworten falsch."),
-  data.table(tabelle = "sonder", zeile = "Personenspezifische Priors", spalte = "Pfit", mass = "*",
-             ids = "A6", ort = "zeile",
-             grund = "Die Jackknife-SE von lz rechnet mit der Standardabweichung des Priors statt mit seiner Varianz.")
-))
+# Since block 7 no cell deviates; a new entry looks like
+#   data.table(tabelle = "folge", zeile = "Pfit: lz", spalte = "GPCM", mass = "*",
+#              ids = "A10", ort = "zelle", grund = "...")
+ids_bekannt <- data.table(tabelle = character(), zeile = character(), spalte = character(),
+                          mass = character(), ids = character(), ort = character(),
+                          grund = character())
 
 st <- rbindlist(zellen)
 st[, c("ids", "ort", "grund") := NA_character_]

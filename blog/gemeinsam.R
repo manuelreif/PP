@@ -23,6 +23,21 @@ lade_test_helfer <- function() {
   }
 }
 
+# Adds the field $ipar in the layout of 0.6.4 to a new estimation object, so
+# old code read with git show (e.g. R/PV.R of 6bdbde5) runs on it. The
+# package object had this transition field up to block 6.
+alt_objekt <- function(obj) {
+  m <- obj$model
+  ipar <- list(respm = m$X[!is.na(obj$estimates$SE), , drop = FALSE], thres = m$thres,
+               slopes = m$slopes, lowerA = m$lowerA, upperA = m$upperA,
+               theta_start = m$start, mu = m$mu, sigma2 = m$sigma2,
+               cont = m$ctrl, model2est = m$model2est, H = m$H)
+  if (inherits(obj, "gpcm")) ipar$lowerA <- ipar$upperA <- NULL
+  if (!inherits(obj, "gpcm4pl")) ipar$model2est <- NULL
+  obj$ipar <- ipar
+  obj
+}
+
 # Short description of the installed code version for the source notes
 code_stand <- function() {
   sha <- tryCatch(system("git rev-parse --short HEAD", intern = TRUE), error = function(e) "?")

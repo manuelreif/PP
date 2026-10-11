@@ -7,8 +7,8 @@
 #            cases, from PP 0.6.4-1 and from the installed PP, plus the exact
 #            posterior. The normal approximation runs on the WLE object in the
 #            old code and on the EAP object in the new one (PV() needs a prior). The old draws come from R/PV.R of the CRAN version
-#            (commit 6bdbde5, read with git show); it reads $ipar and $resPP,
-#            which the new object still provides.
+#            (commit 6bdbde5, read with git show); it reads $ipar (added by
+#            alt_objekt() from blog/gemeinsam.R) and $resPP.
 #   gitter   three persons: their posterior on the nodes of stage 1 (one grid
 #            for all persons) and, where PP uses it, of stage 2 (a fine window
 #            around the mode), and the exact posterior curve
@@ -41,7 +41,7 @@ w0 <- pp_fit(s, "wle", X = Xr)
 # obj_neu: the new PV() needs an object with a prior (EAP or MAP)
 ziehe <- function(obj, approx, seed, obj_neu = obj) {
   set.seed(seed)
-  a <- as.vector(alt$PV.fourpl(obj, npv = 20, approx = approx)$pvdraws)
+  a <- as.vector(alt$PV.fourpl(alt_objekt(obj), npv = 20, approx = approx)$pvdraws)
   set.seed(seed)
   n <- as.vector(PV(obj_neu, npv = 20, approx = approx)$pvdraws)
   rbind(data.table(version = "PP 0.6.4-1", theta = a), data.table(version = "neu", theta = n))
