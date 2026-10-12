@@ -62,11 +62,6 @@ PP.Rcheck
 Debugging_CPP.R
 bench/output/
 *.duckdb.wal
-blog/output/
-blog/posterior/output/
-blog/JK/output/
-blog/PV/output/
-blog/eRm/output/
 
 # generated vignette outputs
 vignettes/*.html
