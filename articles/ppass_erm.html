@@ -269,7 +269,7 @@ jackknife and plausible values.</p>
 <span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/eRm/man/person.parameter.html" class="external-link">person.parameter</a></span><span class="op">(</span><span class="va">rm1</span><span class="op">)</span></span>
 <span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="va">res_mle</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="st">"ok"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">res_mle</span><span class="op">$</span><span class="va">estimate</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span> <span class="op">-</span> <span class="va">pp</span><span class="op">$</span><span class="va">theta.table</span><span class="op">[</span><span class="va">ok</span>, <span class="st">"Person Parameter"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2.452897e-05</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 2.456019e-05</span></span></code></pre></div>
 <p>eRm stores the parameters of the item categories as easiness
 parameters. <code><a href="../reference/PPass.html">PPass()</a></code> converts them into PP thresholds, so
 the eRm package is not even needed to run <code><a href="../reference/PPass.html">PPass()</a></code> on a

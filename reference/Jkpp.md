@@ -186,7 +186,7 @@ summary(jk)
 #> PP Version: 0.7.0 
 #> 
 #> Call: JKpp.ppeo(estobj = res) 
-#> - job started @ Sun Oct 11 16:33:55 2026 
+#> - job started @ Mon Oct 12 12:14:33 2026 
 #> 
 #> Jackknife of the wle estimates, centering method: mean 
 #> 
