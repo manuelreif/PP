@@ -10,7 +10,7 @@
 #'
 #'@return \code{coef()} returns the estimates as a vector (persons in the order of the response matrix), \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
 #'
-#' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}
+#' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{pp-plots}
 #'@name ppeo-methods
 NULL
 

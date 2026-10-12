@@ -133,7 +133,7 @@ if (requireNamespace("eRm", quietly = TRUE)) {
 }
 }
 \seealso{
-\link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{Pfit}, \link{JKpp}, \link{PV}
+\link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{Pfit}, \link{JKpp}, \link{PV}, \link{pp-plots}
 }
 \author{
 Manuel Reif, Jan Steinfeld

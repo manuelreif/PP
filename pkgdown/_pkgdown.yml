@@ -29,6 +29,7 @@ reference:
     contents:
       - PPass
       - Pfit
+      - pp-plots
   - title: Jackknife and plausible values
     contents:
       - JKpp

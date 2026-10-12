@@ -13,7 +13,7 @@
 #' @return A data.frame of class \code{ppass} with one row per person: the person variables (the columns of \code{respdf} that are not items; for eRm models with groups the column \code{group}), \code{estimate}, \code{SE} and \code{status} of the estimate (see \code{PP_4pl()}) and the columns of the chosen person fit indices (see \code{Pfit()}). It can be used like any data.frame. The estimation object is kept as attribute, so \code{JKpp()} and \code{PV()} can be applied to the result directly; \code{print()} and \code{summary()} show an overview with the persons flagged by the person fit, and \code{as.data.frame()} returns a plain data.frame.
 #'
 #' @author Manuel Reif, Jan Steinfeld
-#' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{Pfit}, \link{JKpp}, \link{PV}
+#' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{Pfit}, \link{JKpp}, \link{PV}, \link{pp-plots}
 #' @rdname PPass
 #'@examples
 #' ## data with item parameters

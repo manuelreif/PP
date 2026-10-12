@@ -34,5 +34,5 @@
 Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}).
 }
 \seealso{
-\link{PP_4pl}, \link{PP_gpcm}, \link{PPall}
+\link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{pp-plots}
 }

@@ -35,8 +35,10 @@ VignetteBuilder: knitr, rmarkdown
 Depends: R (>= 4.0)
 Encoding: UTF-8
 Imports:
+    graphics,
     Rcpp (>= 1.0.0),
     stats,
+    tinyplot (>= 0.8.0),
     utils
 LinkingTo: Rcpp
 Suggests:
