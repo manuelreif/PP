@@ -37,6 +37,12 @@ By default, `PPass()` computes WLE estimates and all four person fit statistics 
 s <- summary(res)
 ```
 
+`plot()` shows the person fit map: lz\* against the estimate, with the critical values of `summary()` and the flagged persons labelled, here by their id. `which = "precision"` shows the measurement precision of the test and `which = "profile"` the answers of single persons (see `?"pp-plots"`).
+
+```{r plot, fig.width = 6, fig.height = 4.5, fig.alt = "lz* of every person against the WLE estimate, flagged persons highlighted and labelled with their id"}
+plot(res, label = "id")
+```
+
 The result is a data.frame. It can be filtered, merged or written to a file like any other data.frame; `as.data.frame()` drops the extra information.
 
 ```{r df}

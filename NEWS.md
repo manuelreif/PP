@@ -93,6 +93,16 @@ noted below. Function and argument names are unchanged unless stated.
     `eRm::person.parameter()`. eRm is not needed at run time.
   * `print()` and `summary()` give an overview with the persons flagged by
     the person fit; `JKpp()` and `PV()` work directly on the result.
+* `plot()` for the results of `PPass()`, `PP_4pl()`, `PP_gpcm()` and
+  `PPall()` (help page `?"pp-plots"`), drawn with the new dependency
+  tinyplot:
+  * `which = "fit"`: person fit map, the fit statistic against the estimate
+    with the flagged persons labelled;
+  * `which = "precision"`: the standard error of each person and of the
+    whole test, 1/sqrt(I(theta)) from the known item parameters, below the
+    distribution of the estimates and with the location of every item;
+  * `which = "profile"`: observed against expected scores of the answered
+    items of single persons, with the unexpected answers labelled.
 * `sim_mixed()` simulates tests of 4PL and GPCM items.
 * `PPall()`: `slopes`, `lowerA`, `upperA` and `model2est` are optional
   (`model2est` defaults to `findmodel(thres)`); `PP_4pl()` with `lowerA` but

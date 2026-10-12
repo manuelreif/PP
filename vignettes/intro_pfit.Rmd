@@ -69,6 +69,12 @@ plot(res$estimates$estimate, fit$lzstar[, "lzstar"],
 abline(h = qnorm(0.05), lty = 2)
 ```
 
+Which answers make these persons conspicuous? `plot(res, which = "profile")` shows one panel per person: each answered item is a point, with the expected score at the estimate on the x axis (easy items on the left) and the observed score on the y axis. Answers in line with the model lie close to the diagonal; unexpected answers (|z| > 1.96) are marked and labelled, here right answers to hard items and wrong answers to easy ones. `plot(res, which = "fit")` draws the person fit map with the two-sided flags of `summary()`.
+
+```{r profile, fig.width = 7, fig.height = 4, fig.alt = "Observed against expected score of every item for two random responders, with unexpected answers marked"}
+plot(res, which = "profile", person = flag[1:2])
+```
+
 ## Standard errors of the fit statistics
 
 With `SE = TRUE`, `Pfit()` adds jackknife standard errors of the statistics (columns `lz_se`, `lzs_se`, `in_se`, `ou_se`): every answered item is left out once, the ability is estimated again and the statistic is recomputed.

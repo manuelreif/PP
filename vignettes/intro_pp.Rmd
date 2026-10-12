@@ -82,6 +82,14 @@ res_eap <- PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = 
 head(cbind(mle = coef(res_mle), wle = coef(res_wle), eap = coef(res_eap)))
 ```
 
+## Measurement precision
+
+`plot()` shows where the test measures accurately and whether the persons are located there. The upper panel is the distribution of the estimates, the lower panel the standard error of each person. Because the item parameters are known, the standard error of the whole test follows from the test information: $1/\sqrt{I(\theta)}$. The ticks at the bottom mark the items, at the ability where each item gives the most information. One response in `fourpl_df` is missing, so the curve of all 12 items is drawn on request (`curve = TRUE`); it holds for every person who answered all items.
+
+```{r precision, fig.width = 6, fig.height = 4.5, fig.alt = "Histogram of the WLE estimates above, and below the standard error of each person against the estimate with the standard error curve of the test"}
+plot(res_wle, which = "precision", curve = TRUE)
+```
+
 ## Polytomous and mixed tests
 
 `PP_gpcm()` estimates abilities for the generalized partial credit model. With all slopes equal to 1 (the default) this is the partial credit model. `thres` has one column per item with its thresholds; items with fewer categories have `NA` below their last threshold. A first row of zeros is optional.
