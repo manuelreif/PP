@@ -50,14 +50,7 @@ PPall(
 
 \item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
-\item{ctrl}{More controls:
-
-\itemize{
-\item \code{killdupli}: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different \code{mu} and \code{sigma2} will have different ability estimates despite they responded identically. Default value is \code{FALSE}.
-
-\item \code{skipcheck}: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.
-
-}}
+\item{ctrl}{No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 0.7.0 every person is estimated separately, and options given are ignored with a warning.}
 
 \item{range}{The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.}
 

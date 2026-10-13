@@ -146,14 +146,6 @@ test_that("A1: the JK standard error matches the textbook formula", {
   }
 })
 
-test_that("A2: killdupli with a duplicate in front gives the same jackknife", {
-  s <- set_2pl
-  X <- rbind(s$X[1, ], s$X[1:8, ])
-  a <- jk_quiet(pp_fit(s, "wle", X = X, ctrl = list(killdupli = TRUE)))
-  b <- jk_quiet(pp_fit(s, "wle", X = X))
-  expect_close(a$resjk, b$resjk, 1e-10)
-})
-
 test_that("A3: the jackknife of a mixed EAP object works", {
   s <- set_mixed
   X <- s$X[1:6, ]

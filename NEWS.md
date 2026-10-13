@@ -39,7 +39,7 @@ noted below. Function and argument names are unchanged unless stated.
 * Scalar `mu`, `sigma2` or item parameters led to out-of-bounds memory reads
   in C++; they are now recycled.
 * Duplicated response patterns with `killdupli = TRUE` could be merged
-  wrongly (ambiguous key).
+  wrongly (ambiguous key); the option is gone (see Deprecated).
 * Numerically stable item probabilities (no overflow in the 4PL, log-sum-exp
   in the GPCM), also in `sim_4pl()` and `sim_gpcm()`.
 
@@ -105,6 +105,11 @@ noted below. Function and argument names are unchanged unless stated.
 
 ## Deprecated
 
+* The options of `ctrl` in `PP_4pl()`, `PP_gpcm()` and `PPall()` are ignored
+  with a warning: `killdupli` (estimate duplicated response patterns once)
+  and `skipcheck` (skip the checks of the responses) saved time with the old
+  estimation routine, which iterated all persons together. Every person is
+  now estimated separately, and the checks always run.
 * `$resPP` (estimation objects) and `$resjk` (jackknife) are kept as aliases
   of the 0.6.4 layout; use `$estimates`.
 

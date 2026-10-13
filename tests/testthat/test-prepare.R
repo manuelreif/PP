@@ -96,13 +96,19 @@ test_that("responses: categories above thres are an error, NA columns are fine",
   expect_silent(PP:::pp_prepare(X, p2$b, family = "4pl"))
 })
 
-test_that("skipcheck skips only the checks of the response values", {
-  ctrl <- list(skipcheck = TRUE)
-  expect_error(prep(X2, p2$b, type = "wlee", ctrl = ctrl, family = "4pl"), "type")
-  expect_error(prep(X2, p2$b, mu = rep(0, 2), ctrl = ctrl, family = "4pl"), "mu")
+test_that("the responses are always checked; the ctrl options of 0.6.4 give a warning", {
   X <- X2
   X[1, 1] <- 2L
-  expect_identical(prep(X, p2$b, ctrl = ctrl, family = "4pl")$X[1, 1], 2L)
+  expect_error(expect_warning(prep(X, p2$b, ctrl = list(skipcheck = TRUE), family = "4pl"),
+                              "'skipcheck' no longer needed"), "categories")
+  X[1, 1] <- 0.5
+  expect_error(prep(X, p2$b, family = "4pl"), "whole numbers")
+  X[1, 1] <- -1
+  expect_error(prep(X, p2$b, family = "4pl"), "negative")
+  expect_warning(prep(X2, p2$b, ctrl = list(killdupli = TRUE), family = "4pl"),
+                 "ctrl option\\(s\\) 'killdupli' no longer needed")
+  expect_warning(prep(X2, p2$b, ctrl = list(foo = 1), family = "4pl"), "do not exist: foo")
+  expect_null(prep(X2, p2$b, family = "4pl")$ctrl)
 })
 
 test_that("the response matrix becomes an integer matrix with its item names (F7: no row names)", {

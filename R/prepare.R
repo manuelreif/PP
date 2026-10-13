@@ -125,9 +125,9 @@ make_bank_r <- function(thres, maxsc, slopes, lowerA, upperA, is4pl) {
 pp_types <- c("mle", "wle", "map", "eap", "robust")
 
 # Check and normalise the inputs of PP_4pl (family "4pl"), PP_gpcm ("gpcm")
-# and PPall ("mixed"). Argument checks, recycling and length checks always
-# run; ctrl$skipcheck only skips the checks of the response values, which need
-# a pass over the whole data matrix.
+# and PPall ("mixed"): argument checks, recycling and length checks. ctrl has
+# no options any more (killdupli and skipcheck of 0.6.4 are ignored with a
+# warning).
 pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL,
                        model2est = NULL, mu = NULL, sigma2 = NULL, theta_start = NULL,
                        type = "wle", maxsteps = 100, exac = 0.001, H = 1, ctrl = list(),
@@ -135,19 +135,20 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
                        family = c("4pl", "gpcm", "mixed")) {
   family <- match.arg(family)
 
-  ## controls
-  cont <- list(killdupli = FALSE, skipcheck = FALSE)
-  user_ctrlI <- match(names(ctrl), names(cont))
-  if (any(is.na(user_ctrlI))) {
-    notex <- names(ctrl)[is.na(user_ctrlI)]
+  ## controls: killdupli (estimate duplicated patterns once) and skipcheck
+  ## (skip the checks of the responses) saved time in 0.6.4; they are ignored
+  old <- intersect(names(ctrl), c("killdupli", "skipcheck"))
+  if (length(old)) {
+    warning("ctrl option(s) ", paste0("'", old, "'", collapse = ", "),
+            " no longer needed and ignored.", call. = FALSE)
+  }
+  notex <- setdiff(names(ctrl), c("killdupli", "skipcheck"))
+  if (length(notex)) {
     warning("The following options in ctrl do not exist: ", paste(notex, collapse = ", "),
             call. = FALSE)
-    ctrl <- ctrl[!is.na(user_ctrlI)]
-    user_ctrlI <- user_ctrlI[!is.na(user_ctrlI)]
   }
-  cont[user_ctrlI] <- ctrl
 
-  ## type (always checked, also with skipcheck)
+  ## type
   if (!is.character(type) || length(type) != 1 || !type %in% pp_types) {
     stop("'type' must be one of ", paste0("\"", pp_types, "\"", collapse = ", "), ".",
          call. = FALSE)
@@ -178,15 +179,13 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
     stop("'thres' has ", ncol(thres), " items, 'respm' has ", nitem, ".", call. = FALSE)
   }
 
-  if (!cont$skipcheck) {
-    obs <- respm[!is.na(respm)]
-    if (any(obs != round(obs))) stop("'respm' must contain whole numbers (or NA).", call. = FALSE)
-    if (any(obs < 0)) stop("'respm' must not contain negative responses.", call. = FALSE)
-    toohigh <- colSums(respm > rep(maxsc, each = N), na.rm = TRUE) > 0
-    if (any(toohigh)) {
-      stop("Responses in categories which do not exist according to 'thres' (item(s) ",
-           paste(which(toohigh), collapse = ", "), ").", call. = FALSE)
-    }
+  obs <- respm[!is.na(respm)]
+  if (any(obs != round(obs))) stop("'respm' must contain whole numbers (or NA).", call. = FALSE)
+  if (any(obs < 0)) stop("'respm' must not contain negative responses.", call. = FALSE)
+  toohigh <- colSums(respm > rep(maxsc, each = N), na.rm = TRUE) > 0
+  if (any(toohigh)) {
+    stop("Responses in categories which do not exist according to 'thres' (item(s) ",
+         paste(which(toohigh), collapse = ", "), ").", call. = FALSE)
   }
   storage.mode(respm) <- "integer"
   ## persons are identified by their position; row names of the user (which
@@ -235,7 +234,7 @@ pp_prepare <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL
        model2est = items$model2est,
        mu = mu, sigma2 = sigma2, start = theta_start,
        type = type, maxsteps = maxsteps, exac = exac, H = H, range = as.numeric(range),
-       verbose = verbose, ctrl = cont, family = family, bank = items$bank)
+       verbose = verbose, family = family, bank = items$bank)
 }
 
 

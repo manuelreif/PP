@@ -42,9 +42,8 @@ test_that("F2: a data.frame of responses is accepted", {
                    est(pp_quiet(PP_4pl(X2, p2$b, slopes = p2$slopes))))
 })
 
-test_that("F3: a misspelled type is reported even with skipcheck", {
-  expect_error(pp_quiet(PP_4pl(X2, p2$b, slopes = p2$slopes, type = "wlee",
-                               ctrl = list(skipcheck = TRUE))), "type")
+test_that("F3: a misspelled type is reported", {
+  expect_error(pp_quiet(PP_4pl(X2, p2$b, slopes = p2$slopes, type = "wlee")), "type")
 })
 
 test_that("F4: a one-row thres matrix of zeros holds difficulties", {
