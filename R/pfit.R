@@ -109,7 +109,7 @@
 #'                      2, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 #'                      1, 2, 2, 1, 1, 1, 1, 0, 0, 1), byrow = TRUE, nrow = 5)
 #' resmixed <- PPall(respm = awmatrix, thres = THRESx, slopes = slm, lowerA = lam,
-#'                   upperA = uam, type = "wle", model2est = findmodel(THRESx))
+#'                   upperA = uam, type = "wle")
 #' Pfit(pp = resmixed, fitindices = c("lz", "lzstar"))
 #' @keywords Person fit LZ-Index Infit-Outfit
 #' @export

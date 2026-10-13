@@ -62,25 +62,29 @@ test_that("F4: PP_gpcm accepts a vector of thresholds", {
 
 test_that("F1: PPall works when only one person is left after removing extremes", {
   X <- rbind(rep(0L, 12), set_mixed$X[1, ], c(rep(1L, 8), 2L, 3L, 3L, 4L))
-  res <- est(pp_quiet(PPall(X, pm$thres, pm$slopes, pm$lowerA, pm$upperA,
-                            model2est = pm$model2est, type = "mle")))
+  res <- est(pp_quiet(PPall(X, pm$thres, pm$slopes, pm$lowerA, pm$upperA, type = "mle")))
   expect_close(res[2, 1], ref_estimate(X[2, ], set_mixed$items, "mle"), 1e-3)
 })
 
 test_that("F1: PPall accepts thres as a vector", {
-  m2e <- rep("4PL", 12)
   expect_identical(
-    est(pp_quiet(PPall(X2, p2$b, p2$slopes, rep(0, 12), rep(1, 12), model2est = m2e))),
-    est(pp_quiet(PPall(X2, rbind(0, p2$b), p2$slopes, rep(0, 12), rep(1, 12), model2est = m2e))))
+    est(pp_quiet(PPall(X2, p2$b, p2$slopes, rep(0, 12), rep(1, 12)))),
+    est(pp_quiet(PPall(X2, rbind(0, p2$b), p2$slopes, rep(0, 12), rep(1, 12)))))
 })
 
-test_that("F1: model2est is checked against thres", {
-  # a "4PL" item with 5 categories
-  expect_error(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, pm$lowerA, pm$upperA,
-                              model2est = rep("4PL", 12))))
-  # one entry too many, and invalid
-  expect_error(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, pm$lowerA, pm$upperA,
-                              model2est = c(pm$model2est, "gpcm"))))
+test_that("model2est is ignored with a warning: the model of each item follows from thres", {
+  full <- est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, pm$lowerA, pm$upperA)))
+  for (m2e in list(pm$model2est, rep("4PL", 12), "gpcm")) {
+    expect_warning(a <- est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, pm$lowerA,
+                                           pm$upperA, model2est = m2e))),
+                   "'model2est' is no longer needed")
+    expect_identical(a, full)
+  }
+  # a dichotomous item is the same as a 4PL item with asymptotes 0 and 1
+  expect_equal(est(pp_quiet(PPall(X2, p2$b, p2$slopes))),
+               est(pp_quiet(PP_4pl(X2, p2$b, p2$slopes))))
+  expect_identical(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes))$model$model2est,
+                   findmodel(pm$thres))
 })
 
 test_that("G3: PP_gpcm without slopes is the PCM", {
@@ -89,13 +93,9 @@ test_that("G3: PP_gpcm without slopes is the PCM", {
                    est(pp_quiet(PP_gpcm(set_pcm$X, thr, slopes = rep(1, 6)))))
 })
 
-test_that("G3: PPall has defaults for lowerA, upperA and model2est", {
-  full <- est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, rep(0, 12), rep(1, 12),
-                             model2est = pm$model2est)))
-  expect_identical(est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes,
-                                      model2est = pm$model2est))), full)
-  expect_identical(est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes,
-                                      rep(0, 12), rep(1, 12)))), full)
+test_that("G3: PPall has defaults for lowerA and upperA", {
+  full <- est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes, rep(0, 12), rep(1, 12))))
+  expect_identical(est(pp_quiet(PPall(set_mixed$X, pm$thres, pm$slopes))), full)
 })
 
 test_that("G3: PP_4pl with lowerA but without slopes uses slopes = 1", {

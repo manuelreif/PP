@@ -32,7 +32,7 @@ test_that("G1: PPass works for mixed tests", {
   pm <- items_to_pp(set_mixed$items)
   dfm <- data.frame(id = seq_len(nrow(set_mixed$X)), set_mixed$X)
   res <- pp_quiet(PPass(dfm, items = 2:13, thres = pm$thres, slopes = pm$slopes,
-                        lowerA = pm$lowerA, upperA = pm$upperA, model2est = pm$model2est,
+                        lowerA = pm$lowerA, upperA = pm$upperA,
                         type = "wle", fitindices = "infit"))
   obj <- pp_fit(set_mixed, "wle")
   expect_equal(unname(as.matrix(res[, c("estimate", "SE")])), unname(est(obj)))
@@ -85,20 +85,18 @@ test_that("the model follows from the item parameters", {
   }
 })
 
-test_that("model2est gives a mixed test, also for dichotomous items", {
-  res <- pp_quiet(PPass(set_2pl$X, thres = p2$b, slopes = p2$slopes, model2est = rep("4PL", 12),
-                        fitindices = "lz"))
-  expect_s3_class(attr(res, "ppeo"), "gpcm4pl")
-  expect_identical(attr(res, "info")$model, "mixed 4PL/GPCM model")
-  expect_equal(res$estimate, ppass_2pl(fitindices = "lz")$estimate)
-})
-
-test_that("mod is ignored with a warning", {
+test_that("mod and model2est are ignored with a warning", {
   expect_warning(res <- pp_quiet(PPass(df2, items = 2:13, mod = "1PL", thres = p2$b,
                                        slopes = p2$slopes, fitindices = "lz")),
                  "'mod' is no longer needed")
   expect_equal(as.data.frame(res), as.data.frame(ppass_2pl(fitindices = "lz")))
   expect_identical(attr(res, "info")$model, "2PL model")
+  expect_warning(res <- pp_quiet(PPass(df2, items = 2:13, model2est = rep("4PL", 12),
+                                       mod = "MIXED", thres = p2$b, slopes = p2$slopes,
+                                       fitindices = "lz")),
+                 "'model2est' and 'mod' are no longer needed")
+  expect_s3_class(attr(res, "ppeo"), "fourpl")
+  expect_equal(as.data.frame(res), as.data.frame(ppass_2pl(fitindices = "lz")))
 })
 
 test_that("eap and robust give the estimates only, with a message", {

@@ -236,7 +236,7 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #' Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.
 #'
 #' 
-#' For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. You have to define the appropriate model for each item. 
+#' For a test with both: dichotomous and polytomous items which have been scaled under 1/2/3/4-PL model or the GPCM, use this function to estimate the person ability parameters. The model of each item follows from \code{thres}: an item with one threshold is a 4PL item (with \code{slopes}, \code{lowerA} and \code{upperA}), an item with several thresholds a GPCM item (see \code{\link{findmodel}}).
 #' 
 #'Please note, that  \code{robust} estimation with (Huber ability estimate) polytomous items is still experimental!
 #' 
@@ -250,7 +250,7 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #'@param sigma2 A numeric vector of variance parameters for each person, the normal prior for MAP and EAP estimation and for \code{\link{PV}}. A single value is used for all persons. If nothing is submitted this is set to 1 for each person. MLE, WLE and robust estimation have no prior: a value given there is ignored with a warning, and the result stores \code{NA}.
 #'@param type Which maximization should be applied? There are five valid entries possible: "mle", "wle", "map", "eap" and "robust". To choose between the methods, or just to get a deeper understanding the papers mentioned below are quite helpful. The default is \code{"wle"} which is a good choice in many cases. With \code{"eap"} the estimate is the mean and the SE the standard deviation of the posterior, computed on a grid of ability values (see \link{PV}). Plausible values (\code{\link{PV}}) need the prior of \code{"eap"} or \code{"map"}.
 #'
-#'@param model2est A character vector with length equal to the number of submitted items. It defines itemwise the response model under which the item parameter was estimated. There are 2 valid inputs up to now: \code{"GPCM"} and \code{"4PL"}. A \code{"4PL"} item must have exactly two categories in \code{thres}. If \code{NULL} (default), \code{\link{findmodel}(thres)} is used.
+#'@param model2est No longer needed: the model of each item follows from \code{thres}. A value given is ignored with a warning. (A dichotomous item declared as \code{"GPCM"} is the same as a 4PL item with lower asymptote 0 and upper asymptote 1.)
 #'
 #'@param maxsteps The maximum number of Newton steps per person. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.
@@ -293,14 +293,12 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #' # items 1 to 3 are 4PL items (one threshold), items 4 to 6 GPCM items
 #' thres <- matrix(c(-2, -1.23, 1.11, 3.48, 1, 2, -1, -0.2, 0.5, 1.3, -0.8, 1.5), nrow = 2)
 #' thres[2, 1:3] <- NA
-#' findmodel(thres)
 #' sl <- c(0.5, 1, 1.5, 1.1, 1, 0.98)
 #' la <- c(0.02, 0.1, 0, 0, 0, 0)
 #' ua <- c(0.97, 0.91, 1, 1, 1, 1)
 #' set.seed(1811)
 #' x <- sim_mixed(thres = thres, alpha = sl, lowerA = la, upperA = ua, theta = rnorm(30))
 #'
-#' # model2est defaults to findmodel(thres)
 #' res <- PPall(respm = x, thres = thres, slopes = sl, lowerA = la, upperA = ua, type = "wle")
 #' summary(res)
 #'
@@ -316,8 +314,12 @@ PPall <- function(respm, thres, slopes = NULL, lowerA = NULL, upperA = NULL, the
   attr(call, "date") <- date()
   attr(call, "version") <- packageVersion("PP")
 
+  if (!is.null(model2est)) {
+    warning("'model2est' is no longer needed and is ignored; the model of each item follows ",
+            "from 'thres'.", call. = FALSE)
+  }
   prep <- pp_prepare(respm, thres, slopes = slopes, lowerA = lowerA, upperA = upperA,
-                     model2est = model2est, mu = mu, sigma2 = sigma2,
+                     mu = mu, sigma2 = sigma2,
                      theta_start = theta_start, type = type, maxsteps = maxsteps,
                      exac = exac, H = H, ctrl = ctrl, range = range, verbose = verbose,
                      family = "mixed")

@@ -57,7 +57,7 @@ test_that("the simulator fits the category probabilities of every model", {
              set_mixed$items[9:12], set_gpcm12$items)
   p <- items_to_pp(items)
   bank <- PP:::prepare_items(PP:::normalize_thres(p$thres), p$slopes, p$lowerA, p$upperA,
-                             p$model2est, "mixed")$bank
+                             "mixed")$bank
   theta <- rep(c(-2.5, -1, 0, 0.8, 2), each = 4000)
   set.seed(24)
   X <- PP:::pp_sim_cpp(bank, theta)
@@ -73,7 +73,7 @@ test_that("responses are independent given theta", {
   set.seed(25)
   X <- PP:::pp_sim_cpp(
     PP:::prepare_items(PP:::normalize_thres(p$thres), p$slopes, p$lowerA, p$upperA,
-                       p$model2est, "mixed")$bank,
+                       "mixed")$bank,
     rep(0.3, 20000))
   r <- cor(X)
   expect_lt(max(abs(r[upper.tri(r)])), 4.5 / sqrt(nrow(X)))
@@ -147,7 +147,7 @@ test_that("sim_mixed reproduces the probabilities of 4PL and GPCM items", {
   p <- items_to_pp(items)
   theta <- rep(c(-2, 0, 1.5), each = 4000)
   set.seed(40)
-  X <- sim_mixed(p$thres, p$slopes, p$lowerA, p$upperA, p$model2est, theta)
+  X <- sim_mixed(p$thres, p$slopes, p$lowerA, p$upperA, theta)
   expect_identical(dim(X), c(length(theta), length(items)))
   for (j in seq_along(items)) {
     expect_true(all(X[, j] %in% (seq_len(ref_ncat(items[[j]])) - 1)))
@@ -162,21 +162,20 @@ test_that("sim_mixed equals sim_4pl and sim_gpcm on pure tests", {
   set.seed(41); b <- sim_4pl(p$b, p$slopes, p$lowerA, p$upperA, th)
   expect_identical(a, b)
   g <- items_to_pp(set_gpcm$items)
-  set.seed(42); a <- sim_mixed(g$thres, g$slopes, model2est = rep("GPCM", ncol(g$thres)), theta = th)
+  set.seed(42); a <- sim_mixed(g$thres, g$slopes, theta = th)
   set.seed(42); b <- sim_gpcm(g$thres, g$slopes, th)
   expect_identical(a, b)
-  # defaults: slopes 1, asymptotes 0/1, model2est from findmodel()
+  # defaults: slopes 1, asymptotes 0/1
   pm <- items_to_pp(set_mixed$items)
   set.seed(43); a <- sim_mixed(pm$thres, theta = th)
-  set.seed(43); b <- sim_mixed(pm$thres, 1, 0, 1, findmodel(pm$thres), th)
+  set.seed(43); b <- sim_mixed(pm$thres, 1, 0, 1, th)
   expect_identical(a, b)
 })
 
 test_that("invalid sim_mixed arguments are rejected", {
   pm <- items_to_pp(set_mixed$items)
   expect_error(sim_mixed(pm$thres, alpha = -1, theta = 0), "'alpha' must be positive")
-  expect_error(sim_mixed(pm$thres, model2est = rep("4PL", 12), theta = 0), "more than two categories")
-  expect_error(sim_mixed(pm$thres, model2est = "GPCM", theta = 0), "one entry per item")
+  expect_error(sim_mixed(pm$thres, model2est = rep("4PL", 12), theta = 0), "unused argument")
   expect_error(sim_mixed(pm$thres, theta = Inf), "'theta' must be finite")
   expect_warning(sim_mixed(pm$thres, lowerA = 0.1, theta = 0), "'lowerA' != 0 for GPCM item\\(s\\) 9, 10, 11, 12")
 })

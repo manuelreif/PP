@@ -95,7 +95,7 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
 respcm <- PPall(respm = awmatrix, thres = THRESx, slopes = sl, lowerA = la, upperA = ua,
-                type = "eap", model2est = findmodel(THRESx))
+                type = "eap")
 res_mixedpv <- PV(respcm, npv = 200, approx = FALSE)
 
 # quantiles of the draws per person

@@ -53,7 +53,7 @@ test_that("scalars are recycled to items and persons", {
   expect_identical(a, b)
 })
 
-test_that("defaults: slopes 1, asymptotes 0/1, prior N(0, 1), model2est from thres", {
+test_that("defaults: slopes 1, asymptotes 0/1, prior N(0, 1), the item models from thres", {
   a <- prep(X2, p2$b, type = "map", family = "4pl")
   expect_identical(a$slopes, rep(1, 12))
   expect_identical(a$lowerA, rep(0, 12))
@@ -126,7 +126,7 @@ test_that("the response matrix becomes an integer matrix with its item names (F7
 test_that("item bank of a mixed test", {
   pm <- items_to_pp(set_mixed$items)
   bank <- prep(set_mixed$X, pm$thres, slopes = pm$slopes, lowerA = pm$lowerA,
-               upperA = pm$upperA, model2est = pm$model2est, family = "mixed")$bank
+               upperA = pm$upperA, family = "mixed")$bank
   it <- set_mixed$items
   is4 <- pm$model2est == "4PL"
   thr <- lapply(it, function(i) if (i$model == "4PL") i$b else i$delta)

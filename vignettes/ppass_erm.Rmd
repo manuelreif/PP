@@ -51,7 +51,7 @@ knitr::kable(head(as.data.frame(res)[, c("id", "sex", "estimate", "SE", "lzstar"
 head(JKpp(res)$estimates)
 ```
 
-The model follows from the item parameters: here `slopes` and `lowerA` make it a 3PL model. A threshold matrix with several thresholds per item gives the PCM (all slopes 1) or the GPCM; for a test with both dichotomous and polytomous items, `model2est` names the model of each item (see `PPall()`).
+The model follows from the item parameters: here `slopes` and `lowerA` make it a 3PL model. A threshold matrix with several thresholds per item gives the PCM (all slopes 1) or the GPCM; together with `lowerA` or `upperA` it gives a test with both dichotomous (4PL) and polytomous (GPCM) items, estimated with `PPall()`.
 
 ## Models fitted with eRm
 

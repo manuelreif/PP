@@ -11,7 +11,8 @@ items_4pl <- function(a, b, c = 0, d = 1) {
 }
 
 # PP's arguments: thres (first row 0, NA below the last threshold), slopes,
-# lowerA, upperA, model2est; b = difficulties of the 4PL items
+# lowerA, upperA; b = difficulties of the 4PL items; model2est = the model of
+# each reference item (PP derives it from thres)
 items_to_pp <- function(items) {
   K <- max(vapply(items, ref_ncat, 1L))
   thres <- matrix(NA_real_, K, length(items))
@@ -63,7 +64,7 @@ pp_fit <- function(set, type, X = set$X, ...) {
                    type = type, ...),
     gpcm  = PP_gpcm(X, thres = p$thres, slopes = p$slopes, type = type, ...),
     mixed = PPall(X, thres = p$thres, slopes = p$slopes, lowerA = p$lowerA,
-                  upperA = p$upperA, model2est = p$model2est, type = type, ...)))
+                  upperA = p$upperA, type = type, ...)))
 }
 
 # Item bank of a list of reference items, built by PP's input layer; for the
@@ -71,7 +72,7 @@ pp_fit <- function(set, type, X = set$X, ...) {
 kernel_bank <- function(items) {
   p <- items_to_pp(items)
   PP:::prepare_items(PP:::normalize_thres(p$thres), p$slopes, p$lowerA, p$upperA,
-                     p$model2est, "mixed")$bank
+                     "mixed")$bank
 }
 
 # Responses with an adaptive-test-like NA pattern: each person answers a random

@@ -59,9 +59,9 @@ test_that("verbose = TRUE gives a message, the default is silent", {
   p <- items_to_pp(set_2pl$items)
   expect_message(PP_4pl(set_2pl$X, p$b, p$slopes, verbose = TRUE), "2pl model, type = wle")
   pm <- items_to_pp(set_mixed$items)
-  expect_message(PPall(set_mixed$X, pm$thres, pm$slopes, model2est = pm$model2est, verbose = TRUE),
+  expect_message(PPall(set_mixed$X, pm$thres, pm$slopes, verbose = TRUE),
                  "mixed")
-  expect_silent(PPall(set_mixed$X, pm$thres, pm$slopes, model2est = pm$model2est))
+  expect_silent(PPall(set_mixed$X, pm$thres, pm$slopes))
   expect_error(PP_4pl(set_2pl$X, p$b, verbose = NA), "'verbose' must be TRUE or FALSE")
 })
 
