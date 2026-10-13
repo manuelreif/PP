@@ -161,7 +161,7 @@ test_that("G5: fit statistics are not rounded", {
   s <- set_2pl
   obj <- pp_fit(s, "wle")
   th <- est(obj)[, 1]
-  pf <- pp_quiet(Pfit(s$X, obj, fitindices = c("lz", "infit")))
+  pf <- pp_quiet(Pfit(obj, fitindices = c("lz", "infit")))
   expect_close(pf$lz[, "lz"], ref_fit(th, s$X, function(t, x, i) ref_lz(t, x, s$items)), 1e-10)
   expect_close(pf$infit[, "infit"],
                ref_fit(th, s$X, function(t, x, i) ref_infit(t, x, s$items)["infit"]), 1e-10)
@@ -171,18 +171,13 @@ test_that("G6: Pfit works for mixed tests", {
   check_fit(set_mixed, set_mixed$X, "wle")
 })
 
-test_that("G6: Pfit takes the responses from the estimation object", {
+test_that("G6: Pfit takes the responses from the estimation object, respm is gone", {
   obj <- pp_fit(set_2pl, "wle")
-  expect_identical(Pfit(pp = obj, fitindices = "infit")$infit,
-                   Pfit(set_2pl$X, obj, fitindices = "infit")$infit)
-  expect_identical(Pfit(pp = obj)$lz, Pfit(as.data.frame(set_2pl$X), obj)$lz)
-  X <- set_2pl$X
-  X[3, 2] <- 1L - X[3, 2]
-  expect_error(Pfit(X, obj), "not the response matrix")
-  expect_error(Pfit(set_2pl$X[-1, ], obj), "not the response matrix")
-  X <- set_2pl$X
-  X[1, 1] <- NA
-  expect_error(Pfit(X, obj), "not the response matrix")
+  expect_identical(Pfit(obj, "infit"), Pfit(pp = obj, fitindices = "infit"))
+  expect_error(Pfit(respm = set_2pl$X, pp = obj), "unused argument")
+  # the 0.6.4 call Pfit(respm, pp)
+  expect_error(Pfit(set_2pl$X, obj), "must be the result of PP_4pl")
+  expect_error(Pfit(as.data.frame(set_2pl$X), obj, fitindices = "lz"), "'respm' was removed")
 })
 
 test_that("Pfit needs an mle, wle or map estimate", {

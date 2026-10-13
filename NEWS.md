@@ -69,6 +69,11 @@ noted below. Function and argument names are unchanged unless stated.
   parameters.
 * `JKpp(maxsteps, exac)` default to the values of the estimation object
   (before 500 and 0.001).
+* `Pfit(pp, fitindices, SE)`: the argument `respm` is removed, the responses
+  come from the estimation object. Use `Pfit(res)` instead of
+  `Pfit(respm = X, pp = res)`. It was needed in 0.6.4-1, whose estimation
+  objects lacked the rows of persons with an extreme score (MLE) and of
+  duplicated patterns.
 
 ## New features
 
@@ -79,8 +84,7 @@ noted below. Function and argument names are unchanged unless stated.
 * New arguments `range` and `verbose` in `PP_4pl()`, `PP_gpcm()` and
   `PPall()`. Defaults are unified: `maxsteps = 100`, `exac = 0.001`.
 * `Pfit()` works for all models (1PL–4PL, PCM, GPCM and mixed tests), for
-  MLE, WLE and MAP, with missing responses; `respm` is optional (the
-  responses come from the estimation object). Jackknife SEs for all four
+  MLE, WLE and MAP, with missing responses. Jackknife SEs for all four
   statistics (new columns `in_se`, `ou_se`), `print()` and `summary()`.
 * `PPass()`:
   * no longer needs `mod` and `model2est`: the model (1PL to 4PL, PCM, GPCM or

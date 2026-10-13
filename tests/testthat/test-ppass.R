@@ -10,7 +10,7 @@ ppass_2pl <- function(...) {
 test_that("PPass with slopes equals PP_4pl plus Pfit", {
   res <- ppass_2pl(type = "wle", fitindices = c("lz", "infit"))
   obj <- pp_fit(set_2pl, "wle")
-  pf <- pp_quiet(Pfit(set_2pl$X, obj, fitindices = c("lz", "infit")))
+  pf <- pp_quiet(Pfit(obj, fitindices = c("lz", "infit")))
   expect_equal(unname(as.matrix(res[, c("estimate", "SE")])), unname(est(obj)))
   expect_identical(res$status, obj$estimates$status)
   expect_equal(res$lz, unname(pf$lz[, "lz"]))
@@ -23,7 +23,7 @@ test_that("PPass with a threshold matrix equals PP_gpcm plus Pfit", {
   res <- pp_quiet(PPass(dfp, items = 2:7, thres = pp$thres, slopes = pp$slopes,
                         type = "wle", fitindices = "infit"))
   obj <- pp_fit(set_pcm, "wle")
-  pf <- pp_quiet(Pfit(set_pcm$X, obj, fitindices = "infit"))
+  pf <- pp_quiet(Pfit(obj, fitindices = "infit"))
   expect_equal(unname(as.matrix(res[, c("estimate", "SE")])), unname(est(obj)))
   expect_equal(res$infit, unname(pf$infit[, "infit"]))
 })

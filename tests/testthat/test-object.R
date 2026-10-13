@@ -144,6 +144,6 @@ test_that("PV, JKpp and Pfit run on the object", {
     }
   }
   o <- pp_fit(set_2pl, "wle")
-  pf <- pp_quiet(Pfit(set_2pl$X, o, fitindices = c("lz", "infit")))
+  pf <- pp_quiet(Pfit(o, fitindices = c("lz", "infit")))
   expect_identical(nrow(pf$lz), nrow(set_2pl$X))
 })
