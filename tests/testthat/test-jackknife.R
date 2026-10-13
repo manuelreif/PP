@@ -100,6 +100,12 @@ test_that("maxsteps and exac come from the estimate unless given", {
   expect_error(JKpp(o, exac = -1), "exac")
 })
 
+test_that("ctrl gives a warning and changes nothing", {
+  o <- fit8(set_2pl, "wle", set_2pl$X[1:5, ])
+  expect_warning(a <- JKpp(o, ctrl = list(killdupli = TRUE)), "'ctrl' is no longer needed")
+  expect_identical(a$estimates, JKpp(o)$estimates)
+})
+
 test_that("B3: AMT combines right and wrong answers separately (Wainer & Wright, scheme 4)", {
   s <- set_2pl
   X <- s$X[1:8, ]

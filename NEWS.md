@@ -109,7 +109,8 @@ noted below. Function and argument names are unchanged unless stated.
   with a warning: `killdupli` (estimate duplicated response patterns once)
   and `skipcheck` (skip the checks of the responses) saved time with the old
   estimation routine, which iterated all persons together. Every person is
-  now estimated separately, and the checks always run.
+  now estimated separately, and the checks always run. `JKpp(ctrl)` had no
+  effect already in 0.6.4-1 and is ignored with a warning, too.
 * `$resPP` (estimation objects) and `$resjk` (jackknife) are kept as aliases
   of the 0.6.4 layout; use `$estimates`.
 

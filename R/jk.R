@@ -50,7 +50,6 @@ JKpp <- function(estobj, ...) UseMethod("JKpp")
 #' @param maxsteps The maximum number of Newton steps per leave-one-out sample. If \code{NULL} (default), the value of \code{estobj} is used.
 #' @param exac How accurate are the leave-one-out estimates supposed to be? If \code{NULL} (default), the value of \code{estobj} is used.
 #' @param fullmat Default = FALSE. If TRUE, the function returns the whole jackknife matrix of leave-one-out estimates, which is the basis for the jackknife estimator.
-#' @param ctrl Not used any more.
 #'
 #' @return An object of class \code{jk}, a list with
 #' \item{\code{estimates}}{A data.frame with one row per person (in the order of \code{respm}): \code{estimate} and \code{SE} of the jackknife, \code{L} the number of answered items, \code{excluded} the number of leave-one-out samples without a finite estimate and \code{status} (\code{"ok"}, \code{"too_few_items"} or the status of the full estimate).}
@@ -61,11 +60,15 @@ JKpp <- function(estobj, ...) UseMethod("JKpp")
 #' @method JKpp ppeo
 #' @export
 JKpp.ppeo <- function(estobj, cmeth = "mean", maxsteps = NULL, exac = NULL,
-                      fullmat = FALSE, ctrl = list(), ...)
+                      fullmat = FALSE, ...)
 {
   call <- match.call()
   attr(call, "date") <- date()
   attr(call, "version") <- packageVersion("PP")
+
+  if ("ctrl" %in% names(list(...))) {
+    warning("'ctrl' is no longer needed and is ignored.", call. = FALSE)
+  }
 
   cmeth <- match.arg(cmeth, c("mean", "median", "AMT"))
   m <- estobj$model

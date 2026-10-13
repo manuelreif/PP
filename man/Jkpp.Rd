@@ -16,7 +16,6 @@ JKpp(estobj, ...)
   maxsteps = NULL,
   exac = NULL,
   fullmat = FALSE,
-  ctrl = list(),
   ...
 )
 
@@ -38,8 +37,6 @@ JKpp(estobj, ...)
 \item{exac}{How accurate are the leave-one-out estimates supposed to be? If \code{NULL} (default), the value of \code{estobj} is used.}
 
 \item{fullmat}{Default = FALSE. If TRUE, the function returns the whole jackknife matrix of leave-one-out estimates, which is the basis for the jackknife estimator.}
-
-\item{ctrl}{Not used any more.}
 
 \item{x, object}{An object of class \code{jk}, the result of \code{JKpp()}.}
 
