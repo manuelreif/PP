@@ -13,7 +13,7 @@ X_mis <- set_2pl$X
 X_mis[c(2, 6, 11), ] <- 1L - X_mis[c(2, 6, 11), ]
 df_mis <- data.frame(id = sprintf("P%02d", seq_len(nrow(X_mis))), X_mis)
 ppass_mis <- function(...) {
-  pp_quiet(PPass(df_mis, items = 2:13, mod = "2PL", thres = p2$b, slopes = p2$slopes, ...))
+  pp_quiet(PPass(df_mis, items = 2:13, thres = p2$b, slopes = p2$slopes, ...))
 }
 
 ref_test_info <- function(items, theta) rowSums(sapply(items, ref_item_info, theta = theta))
@@ -183,6 +183,6 @@ test_that("plot() rejects wrong input", {
     expect_error(plot(res, alpha = 2), "'alpha'")
   })
   # no flagged person: profile needs 'person'
-  res_ok <- pp_quiet(PPass(data.frame(set_2pl$X), mod = "2PL", thres = p2$b, slopes = p2$slopes))
+  res_ok <- pp_quiet(PPass(data.frame(set_2pl$X), thres = p2$b, slopes = p2$slopes))
   expect_error(on_null_device(plot(res_ok, which = "profile", alpha = 1e-10)), "No person is flagged")
 })

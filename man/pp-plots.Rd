@@ -69,7 +69,7 @@ awm <- sim_4pl(beta = diffpar, alpha = sl, lowerA = rep(0, 20), upperA = rep(1, 
 awm[1:10, ] <- matrix(rbinom(200, 1, 0.5), 10)
 dat <- data.frame(id = sprintf("P\%03d", 1:300), awm)
 
-res <- PPass(dat, items = 2:21, mod = "2PL", thres = diffpar, slopes = sl)
+res <- PPass(dat, items = 2:21, thres = diffpar, slopes = sl)
 
 # who does not fit?
 plot(res, label = "id")
