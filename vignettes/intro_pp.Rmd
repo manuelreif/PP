@@ -105,7 +105,7 @@ res_gpcm <- PP_gpcm(respm = x_gpcm, thres = thres, slopes = slopes, type = "wle"
 head(res_gpcm$estimates)
 ```
 
-For a test with dichotomous and polytomous items, use `PPall()`. Each column of `thres` holds the thresholds of one item: a 4PL item has a single threshold (its difficulty), a GPCM item has several. `findmodel()` tells the two apart and is the default for `model2est`. Lower and upper asymptotes apply to the 4PL items only.
+For a test with dichotomous and polytomous items, use `PPall()`. Each column of `thres` holds the thresholds of one item: a 4PL item has a single threshold (its difficulty), a GPCM item has several, and this decides the model of each item (`findmodel()` shows it). Lower and upper asymptotes apply to the 4PL items only.
 
 ```{r mixed}
 thres_mix <- rbind(c(-1, 0, 1, -0.5, 0.3),

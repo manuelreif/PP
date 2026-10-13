@@ -38,7 +38,7 @@ Person fit needs the ability estimates first. `Pfit()` takes the responses from 
 
 ```{r pfit}
 res <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, type = "wle")
-fit <- Pfit(pp = res, fitindices = c("lz", "lzstar", "infit", "outfit"))
+fit <- Pfit(res, fitindices = c("lz", "lzstar", "infit", "outfit"))
 ```
 
 The result is a list with one matrix per statistic:
@@ -80,7 +80,7 @@ plot(res, which = "profile", person = flag[1:2])
 With `SE = TRUE`, `Pfit()` adds jackknife standard errors of the statistics (columns `lz_se`, `lzs_se`, `in_se`, `ou_se`): every answered item is left out once, the ability is estimated again and the statistic is recomputed.
 
 ```{r se}
-fit_se <- Pfit(pp = res, fitindices = c("lzstar", "outfit"), SE = TRUE)
+fit_se <- Pfit(res, fitindices = c("lzstar", "outfit"), SE = TRUE)
 head(fit_se$lzstar)
 ```
 
@@ -94,7 +94,7 @@ thres <- rbind(c(-1.5, -1, -0.5, 0, 0.5, 1),
 xg <- sim_gpcm(thres = thres, alpha = c(1, 1.2, 0.8, 1.1, 0.9, 1), theta = rnorm(200))
 xg[sample(length(xg), 100)] <- NA
 resg <- PP_gpcm(respm = xg, thres = thres, slopes = c(1, 1.2, 0.8, 1.1, 0.9, 1), type = "mle")
-fitg <- Pfit(pp = resg)
+fitg <- Pfit(resg)
 summary(fitg)
 ```
 

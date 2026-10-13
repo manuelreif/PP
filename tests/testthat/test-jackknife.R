@@ -100,6 +100,12 @@ test_that("maxsteps and exac come from the estimate unless given", {
   expect_error(JKpp(o, exac = -1), "exac")
 })
 
+test_that("ctrl gives a warning and changes nothing", {
+  o <- fit8(set_2pl, "wle", set_2pl$X[1:5, ])
+  expect_warning(a <- JKpp(o, ctrl = list(killdupli = TRUE)), "'ctrl' is no longer needed")
+  expect_identical(a$estimates, JKpp(o)$estimates)
+})
+
 test_that("B3: AMT combines right and wrong answers separately (Wainer & Wright, scheme 4)", {
   s <- set_2pl
   X <- s$X[1:8, ]
@@ -144,14 +150,6 @@ test_that("A1: the JK standard error matches the textbook formula", {
     jk <- jk_quiet(pp_fit(s, "wle", X = X))
     expect_close(jk$resjk[, 2], ref_jk(s$items, X, "wle")$est[, 2], 2e-2)
   }
-})
-
-test_that("A2: killdupli with a duplicate in front gives the same jackknife", {
-  s <- set_2pl
-  X <- rbind(s$X[1, ], s$X[1:8, ])
-  a <- jk_quiet(pp_fit(s, "wle", X = X, ctrl = list(killdupli = TRUE)))
-  b <- jk_quiet(pp_fit(s, "wle", X = X))
-  expect_close(a$resjk, b$resjk, 1e-10)
 })
 
 test_that("A3: the jackknife of a mixed EAP object works", {

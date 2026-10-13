@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare.R
 \name{findmodel}
 \alias{findmodel}
-\title{Create a model-type vector template}
+\title{The model of each item in a mixed test}
 \usage{
 findmodel(thres)
 }
@@ -13,10 +13,10 @@ findmodel(thres)
 A character vector with one entry per item (column of \code{thres}): \code{"4PL"} for items with one threshold, \code{"GPCM"} for items with more.
 }
 \description{
-This is a small helper function which creates a vector template  quick and easily for the \code{PPall()} function. Modify this template as you like.
+This function shows which model \code{PPall()} uses for each item: an item with one threshold is a 4PL item, an item with several thresholds a GPCM item.
 }
 \details{
-This function tries to guess the model which was applied to each item by using the matrix of threshold parameters. It only discriminates between GPCM and 4-PL model, and returns a character vector of length equal to the number of items, that contains \code{"GPCM"} or \code{"4PL"} entries depending on the structure of the thres matrix.
+Up to version 0.6.4-1 its result was passed to \code{PPall()} as \code{model2est}. This is no longer needed: \code{PPall()} derives the model of each item from \code{thres} in the same way.
 }
 \examples{
 thres <- rbind(0, c(-1, 0.5, -0.2), c(NA, 1.2, 0.4))

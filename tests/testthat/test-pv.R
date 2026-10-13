@@ -62,9 +62,9 @@ test_that("PV names the columns, rows are the persons in order", {
   expect_identical(dim(one), c(1L, 1L))
 })
 
-test_that("duplicated persons get independent draws, also with killdupli", {
+test_that("duplicated persons get independent draws", {
   X <- replicate_person(set_gpcm, 2, 3)
-  e <- pp_fit(set_gpcm, "eap", X = X, ctrl = list(killdupli = TRUE))
+  e <- pp_fit(set_gpcm, "eap", X = X)
   for (approx in c(TRUE, FALSE)) {
     d <- PV(e, npv = 5, approx = approx)$pvdraws
     expect_false(any(d[1, ] == d[2, ]))

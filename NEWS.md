@@ -39,7 +39,7 @@ noted below. Function and argument names are unchanged unless stated.
 * Scalar `mu`, `sigma2` or item parameters led to out-of-bounds memory reads
   in C++; they are now recycled.
 * Duplicated response patterns with `killdupli = TRUE` could be merged
-  wrongly (ambiguous key).
+  wrongly (ambiguous key); the option is gone (see Deprecated).
 * Numerically stable item probabilities (no overflow in the 4PL, log-sum-exp
   in the GPCM), also in `sim_4pl()` and `sim_gpcm()`.
 
@@ -69,6 +69,11 @@ noted below. Function and argument names are unchanged unless stated.
   parameters.
 * `JKpp(maxsteps, exac)` default to the values of the estimation object
   (before 500 and 0.001).
+* `Pfit(pp, fitindices, SE)`: the argument `respm` is removed, the responses
+  come from the estimation object. Use `Pfit(res)` instead of
+  `Pfit(respm = X, pp = res)`. It was needed in 0.6.4-1, whose estimation
+  objects lacked the rows of persons with an extreme score (MLE) and of
+  duplicated patterns.
 
 ## New features
 
@@ -79,13 +84,12 @@ noted below. Function and argument names are unchanged unless stated.
 * New arguments `range` and `verbose` in `PP_4pl()`, `PP_gpcm()` and
   `PPall()`. Defaults are unified: `maxsteps = 100`, `exac = 0.001`.
 * `Pfit()` works for all models (1PL–4PL, PCM, GPCM and mixed tests), for
-  MLE, WLE and MAP, with missing responses; `respm` is optional (the
-  responses come from the estimation object). Jackknife SEs for all four
+  MLE, WLE and MAP, with missing responses. Jackknife SEs for all four
   statistics (new columns `in_se`, `ou_se`), `print()` and `summary()`.
 * `PPass()`:
-  * no longer needs `mod`: the model (1PL to 4PL, PCM, GPCM or a mixed test)
-    follows from the item parameters, as in `PP_4pl()`; a call with `mod` gives
-    a warning and `mod` is ignored. Before, `mod` only switched between
+  * no longer needs `mod` and `model2est`: the model (1PL to 4PL, PCM, GPCM or
+    a mixed test) follows from the item parameters, as in `PP_4pl()`; both are
+    ignored with a warning. Before, `mod` only switched between
     `PP_4pl()`, `PP_gpcm()` and `PPall()`, and `mod = "MIXED"` did not work.
   * works with a matrix; `items` can be given by name; the other columns
     (e.g. an id) are kept as person variables.
@@ -106,15 +110,24 @@ noted below. Function and argument names are unchanged unless stated.
   * `which = "profile"`: observed against expected scores of the answered
     items of single persons, with the unexpected answers labelled.
 * `sim_mixed()` simulates tests of 4PL and GPCM items.
-* `PPall()`: `slopes`, `lowerA`, `upperA` and `model2est` are optional
-  (`model2est` defaults to `findmodel(thres)`); `PP_4pl()` with `lowerA` but
-  without `slopes` fits the 3PL with slopes 1.
+* `PPall()`: `slopes`, `lowerA` and `upperA` are optional; `PP_4pl()` with
+  `lowerA` but without `slopes` fits the 3PL with slopes 1.
 * Input checks with clear messages for all arguments.
 * No startup message, no `cat()` output and no warning for the default
   prior.
 
 ## Deprecated
 
+* The options of `ctrl` in `PP_4pl()`, `PP_gpcm()` and `PPall()` are ignored
+  with a warning: `killdupli` (estimate duplicated response patterns once)
+  and `skipcheck` (skip the checks of the responses) saved time with the old
+  estimation routine, which iterated all persons together. Every person is
+  now estimated separately, and the checks always run. `JKpp(ctrl)` had no
+  effect already in 0.6.4-1 and is ignored with a warning, too.
+* `PPall(model2est)` is ignored with a warning: the model of each item follows
+  from `thres` (one threshold: 4PL item, several: GPCM item). A dichotomous
+  item declared as `"GPCM"` was the same as a 4PL item with asymptotes 0 and 1.
+  `findmodel()` shows the model of each item.
 * `$resPP` (estimation objects) and `$resjk` (jackknife) are kept as aliases
   of the 0.6.4 layout; use `$estimates`.
 

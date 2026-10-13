@@ -42,7 +42,7 @@ sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
   if (!is.numeric(beta) || !is.null(dim(beta)) || length(beta) == 0 || any(!is.finite(beta))) {
     stop("'beta' must be a numeric vector of finite difficulties.", call. = FALSE)
   }
-  items <- prepare_items(normalize_thres(beta), alpha, lowerA, upperA, NULL, "4pl",
+  items <- prepare_items(normalize_thres(beta), alpha, lowerA, upperA, "4pl",
                          slope_name = "alpha")
   pp_sim_cpp(items$bank, check_theta(theta))
 }
@@ -77,7 +77,7 @@ sim_4pl <- function(beta, alpha, lowerA, upperA, theta) {
 #'
 #'@export
 sim_gpcm <- function(thres, alpha, theta) {
-  items <- prepare_items(normalize_thres(thres), alpha, NULL, NULL, NULL, "gpcm",
+  items <- prepare_items(normalize_thres(thres), alpha, NULL, NULL, "gpcm",
                          slope_name = "alpha")
   pp_sim_cpp(items$bank, check_theta(theta))
 }
@@ -89,11 +89,10 @@ sim_gpcm <- function(thres, alpha, theta) {
 #'
 #' \code{alpha}, \code{lowerA} and \code{upperA} may also be single numbers, which are then used for every item. \code{lowerA} and \code{upperA} only apply to the 4PL items. A person with \code{NA} as person parameter gets a row of \code{NA}. The data of a pure 4PL or GPCM test are the same as those of \code{\link{sim_4pl}} or \code{\link{sim_gpcm}} with the same seed.
 #'
-#'@param thres A numeric matrix with the thresholds of each item in its columns, as in \code{\link{PPall}}: for a 4PL item the difficulty, for a GPCM item its thresholds, \code{NA} below the last one. The first row may contain zeroes only; otherwise a row of zeroes is added.
+#'@param thres A numeric matrix with the thresholds of each item in its columns, as in \code{\link{PPall}}: for a 4PL item the difficulty, for a GPCM item its thresholds, \code{NA} below the last one. Items with one threshold are 4PL items, the others GPCM items. The first row may contain zeroes only; otherwise a row of zeroes is added.
 #'@param alpha A numeric vector of slope parameters. If \code{NULL} (default), all slopes are 1.
 #'@param lowerA A numeric vector of lower asymptotes (4PL items). If \code{NULL} (default), 0.
 #'@param upperA A numeric vector of upper asymptotes (4PL items). If \code{NULL} (default), 1.
-#'@param model2est A character vector with \code{"4PL"} or \code{"GPCM"} for each item. If \code{NULL} (default), \code{\link{findmodel}(thres)}: items with one threshold are 4PL items.
 #'@param theta A numeric vector which contains person parameters.
 #'
 #'@return An integer matrix with one row per person and one column per item.
@@ -114,9 +113,8 @@ sim_gpcm <- function(thres, alpha, theta) {
 #'@seealso \link{sim_4pl}, \link{sim_gpcm}, \link{PPall}
 #'
 #'@export
-sim_mixed <- function(thres, alpha = NULL, lowerA = NULL, upperA = NULL, model2est = NULL,
-                      theta) {
-  items <- prepare_items(normalize_thres(thres), alpha, lowerA, upperA, model2est, "mixed",
+sim_mixed <- function(thres, alpha = NULL, lowerA = NULL, upperA = NULL, theta) {
+  items <- prepare_items(normalize_thres(thres), alpha, lowerA, upperA, "mixed",
                          slope_name = "alpha")
   pp_sim_cpp(items$bank, check_theta(theta))
 }

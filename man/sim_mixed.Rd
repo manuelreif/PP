@@ -4,25 +4,16 @@
 \alias{sim_mixed}
 \title{Simulate data for mixed tests (4PL and GPCM items)}
 \usage{
-sim_mixed(
-  thres,
-  alpha = NULL,
-  lowerA = NULL,
-  upperA = NULL,
-  model2est = NULL,
-  theta
-)
+sim_mixed(thres, alpha = NULL, lowerA = NULL, upperA = NULL, theta)
 }
 \arguments{
-\item{thres}{A numeric matrix with the thresholds of each item in its columns, as in \code{\link{PPall}}: for a 4PL item the difficulty, for a GPCM item its thresholds, \code{NA} below the last one. The first row may contain zeroes only; otherwise a row of zeroes is added.}
+\item{thres}{A numeric matrix with the thresholds of each item in its columns, as in \code{\link{PPall}}: for a 4PL item the difficulty, for a GPCM item its thresholds, \code{NA} below the last one. Items with one threshold are 4PL items, the others GPCM items. The first row may contain zeroes only; otherwise a row of zeroes is added.}
 
 \item{alpha}{A numeric vector of slope parameters. If \code{NULL} (default), all slopes are 1.}
 
 \item{lowerA}{A numeric vector of lower asymptotes (4PL items). If \code{NULL} (default), 0.}
 
 \item{upperA}{A numeric vector of upper asymptotes (4PL items). If \code{NULL} (default), 1.}
-
-\item{model2est}{A character vector with \code{"4PL"} or \code{"GPCM"} for each item. If \code{NULL} (default), \code{\link{findmodel}(thres)}: items with one threshold are 4PL items.}
 
 \item{theta}{A numeric vector which contains person parameters.}
 }

@@ -3,22 +3,23 @@
 \name{Pfit}
 \alias{Pfit}
 \alias{Pfit.ppeo}
+\alias{Pfit.default}
 \alias{print.PPfit}
 \alias{summary.PPfit}
 \title{Person-Fit statistics}
 \usage{
-Pfit(respm, pp, fitindices, SE = FALSE)
+Pfit(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE)
 
-\method{Pfit}{ppeo}(respm, pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE)
+\method{Pfit}{ppeo}(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE)
+
+\method{Pfit}{default}(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE)
 
 \method{print}{PPfit}(x, digits = 4, ...)
 
 \method{summary}{PPfit}(object, alpha = 0.05, digits = 4, ...)
 }
 \arguments{
-\item{respm}{Not needed: the responses are taken from \code{pp}. If given, it must be the response matrix of \code{pp}.}
-
-\item{pp}{An object of class \code{ppeo} from \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with type \code{"mle"}, \code{"wle"} or \code{"map"}.}
+\item{pp}{An estimation object, the result of \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with type \code{"mle"}, \code{"wle"} or \code{"map"}. The responses are taken from it.}
 
 \item{fitindices}{Character vector of the desired person fit statistics, any of \code{c("lz", "lzstar", "infit", "outfit")}.}
 
@@ -62,7 +63,7 @@ Person fit needs an estimate of type \code{"mle"}, \code{"wle"} or \code{"map"}.
 
 With \code{SE = TRUE} every statistic gets a jackknife standard error: for each answered item \eqn{j}, \eqn{\theta} is estimated without item \eqn{j} (the leave-one-out estimates of \code{JKpp()}) and the statistic \eqn{f_{(-j)}} is computed on the remaining items. With \eqn{L} answered items and \eqn{m} leave-one-out samples with a finite estimate, \eqn{SE = (L - 1) \sqrt{\sum_j (f_{(-j)} - \bar f)^2 / (m (m - 1))}}, which is \eqn{\sqrt{(L-1)/L \sum_j (f_{(-j)} - \bar f)^2}} when no sample is left out (Efron & Stein, 1981).
 
-Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded.
+Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded. The responses were passed again as first argument \code{respm}; since 0.7.0 they are taken from \code{pp}, and \code{respm} is gone: call \code{Pfit(res)} instead of \code{Pfit(respm = X, pp = res)}.
 }
 \examples{
 ## dichotomous items
@@ -78,7 +79,7 @@ awm     <- sim_4pl(beta = diffpar, alpha = sl, lowerA = la, upperA = rep(1, 15),
 res3plwle <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
 
 # the responses are taken from the estimation object
-fit3pl <- Pfit(pp = res3plwle, fitindices = c("lz", "lzstar", "infit", "outfit"))
+fit3pl <- Pfit(res3plwle, fitindices = c("lz", "lzstar", "infit", "outfit"))
 head(fit3pl$lzstar)
 summary(fit3pl)
 
@@ -86,7 +87,7 @@ summary(fit3pl)
 awm_na <- awm
 awm_na[sample(length(awm), 300)] <- NA
 res3plna <- PP_4pl(respm = awm_na, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
-head(Pfit(pp = res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
+head(Pfit(res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
 
 ## GPCM
 
@@ -94,7 +95,7 @@ thres <- rbind(0, c(-1, -0.5, 0), c(0.5, 0.8, 1), c(1.5, 2, 2.5))
 slg   <- c(0.8, 1.2, 1)
 respg <- sim_gpcm(thres = thres, alpha = slg, theta = rnorm(50))
 resgwle <- PP_gpcm(respm = respg, thres = thres, slopes = slg, type = "wle")
-summary(Pfit(pp = resgwle))
+summary(Pfit(resgwle))
 
 ## GPCM and 4PL mixed
 
@@ -107,8 +108,8 @@ awmatrix <- matrix(c(1, 0, 1, 0, 1, 1, 1, 0, 0, 1,
                      2, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                      1, 2, 2, 1, 1, 1, 1, 0, 0, 1), byrow = TRUE, nrow = 5)
 resmixed <- PPall(respm = awmatrix, thres = THRESx, slopes = slm, lowerA = lam,
-                  upperA = uam, type = "wle", model2est = findmodel(THRESx))
-Pfit(pp = resmixed, fitindices = c("lz", "lzstar"))
+                  upperA = uam, type = "wle")
+Pfit(resmixed, fitindices = c("lz", "lzstar"))
 }
 \references{
 Armstrong, R. D., Stoumbos, Z. G., Kung, M. T. & Shi, M. (2007). On the performance of the lz person-fit statistic.  \emph{Practical Assessment, Research & Evaluation}, \bold{12(16)}.

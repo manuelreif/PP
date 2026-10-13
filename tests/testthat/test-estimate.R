@@ -55,12 +55,15 @@ test_that("mle of an extreme score is +-Inf with SE NA", {
   }
 })
 
-test_that("killdupli gives the same results when duplicates come last", {
+test_that("the ctrl options of 0.6.4 give a warning and change nothing", {
   for (s in list(set_2pl, set_gpcm, set_mixed)) {
-    X <- rbind(s$X, s$X[c(1, 3, 3), ])
-    for (ty in c("mle", "wle", "map")) {
-      expect_identical(est(pp_fit(s, ty, X = X, ctrl = list(killdupli = TRUE))),
-                       est(pp_fit(s, ty, X = X)))
+    X <- rbind(s$X[1, ], s$X, s$X[c(1, 3, 3), ])
+    for (ty in c("mle", "wle", "map", "eap")) {
+      for (opt in c("killdupli", "skipcheck")) {
+        expect_warning(a <- est(pp_fit(s, ty, X = X, ctrl = setNames(list(TRUE), opt))),
+                       paste0("'", opt, "' no longer needed and ignored"))
+        expect_identical(a, est(pp_fit(s, ty, X = X)))
+      }
     }
   }
 })
@@ -128,26 +131,6 @@ test_that("A5: a person without answers gets NA and does not affect the others",
     res <- est(pp_fit(set_2pl, ty, X = X))
     expect_true(is.na(res[2, 1]))
     expect_close(res[-2, ], est(pp_fit(set_2pl, ty, X = X[-2, ])), 1e-10)
-  }
-})
-
-test_that("A5: killdupli keeps person-specific priors with a duplicate in front", {
-  for (s in list(set_2pl, set_gpcm)) {
-    X <- rbind(s$X[1, ], s$X)
-    n <- nrow(X)
-    for (ty in c("map", "eap")) {
-      a <- est(pp_fit(s, ty, X = X, mu = prior_mu(n), sigma2 = prior_s2(n),
-                      ctrl = list(killdupli = TRUE)))
-      b <- est(pp_fit(s, ty, X = X, mu = prior_mu(n), sigma2 = prior_s2(n)))
-      expect_close(a, b, 1e-10)
-    }
-  }
-})
-
-test_that("A12: killdupli does not merge (1, 11) and (11, 1)", {
-  for (ty in c("mle", "wle")) {
-    expect_close(est(pp_fit(set_gpcm12, ty, ctrl = list(killdupli = TRUE))),
-                 est(pp_fit(set_gpcm12, ty)), 1e-10)
   }
 })
 

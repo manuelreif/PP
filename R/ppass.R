@@ -2,13 +2,13 @@
 #'
 #' \code{PPass} (\bold{P}erson \bold{P}arameter \bold{ass}essment) estimates the person parameters and computes the person fit in one call, and returns both in one table, next to the other person variables. It takes a data.frame or matrix with item responses and known item parameters, or a model fitted with the \code{eRm} package.
 #'
-#' \bold{Data with item parameters} (\code{PPass.default}): the columns \code{items} of \code{respdf} are the responses, the other columns are kept as person variables. The item parameters are passed in \code{...} (\code{thres}, \code{slopes}, \code{lowerA}, \code{upperA}, \code{model2est}), and the model follows from them: \code{thres} alone gives the 1PL model, with \code{slopes} the 2PL, with \code{lowerA} the 3PL and with \code{upperA} the 4PL model, estimated with \code{PP_4pl()}. A threshold matrix with more than one threshold for some item gives the partial credit model (all slopes 1) or the generalized partial credit model, estimated with \code{PP_gpcm()}. With \code{model2est}, or with such polytomous items and \code{lowerA} or \code{upperA}, the test is a mixed test, estimated with \code{PPall()}. The argument \code{mod} of earlier versions is no longer needed; it is ignored with a warning.
+#' \bold{Data with item parameters} (\code{PPass.default}): the columns \code{items} of \code{respdf} are the responses, the other columns are kept as person variables. The item parameters are passed in \code{...} (\code{thres}, \code{slopes}, \code{lowerA}, \code{upperA}), and the model follows from them: \code{thres} alone gives the 1PL model, with \code{slopes} the 2PL, with \code{lowerA} the 3PL and with \code{upperA} the 4PL model, estimated with \code{PP_4pl()}. A threshold matrix with more than one threshold for some item gives the partial credit model (all slopes 1) or the generalized partial credit model, estimated with \code{PP_gpcm()}. With such polytomous items and \code{lowerA} or \code{upperA}, the test is a mixed test (items with one threshold are 4PL items), estimated with \code{PPall()}. The arguments \code{mod} and \code{model2est} of earlier versions are no longer needed; they are ignored with a warning.
 #'
 #' \bold{eRm models} (\code{PPass.eRm}): all models of the \code{eRm} package are supported, the Rasch model (\code{RM}), the linear logistic test model (\code{LLTM}), the rating scale model (\code{RSM}), the partial credit model (\code{PCM}) and the linear models \code{LRSM} and \code{LPCM}, also with several time points (\code{mpoints}) and groups (\code{groupvec}). The responses and item parameters come from the fitted object. eRm stores easiness parameters per category, \eqn{\beta_{ih} = -\sum_{k \le h} \delta_{ik}}; they are turned into the thresholds \eqn{\delta_{ih} = \beta_{i,h-1} - \beta_{ih}}, so for the dichotomous models the difficulty is \eqn{-\beta_i}. With time points or groups every combination of item, time point and group is a virtual item with its own parameters; a person answers the virtual items of their group, and gets one ability over all time points. The person parameters are estimated with \code{PP_4pl()} (RM, LLTM) or \code{PP_gpcm()} with all slopes 1. The maximum likelihood estimates (\code{type = "mle"}) equal those of \code{eRm::person.parameter()}; unlike \code{eRm}, \code{PPass} also gives estimates for models with group contrasts, and WLE, MAP, EAP and robust estimates, person fit, jackknife and plausible values. The \code{eRm} package is not needed to run \code{PPass} on such an object.
 #'
 #' Person fit is computed by \code{Pfit()} and needs an estimate of type \code{"mle"}, \code{"wle"} or \code{"map"}. For \code{type = "eap"} and \code{"robust"} \code{PPass} returns the estimates only, with a message.
 #'
-#' @param \ldots Arguments for the estimation: the item parameters (\code{PPass.default} only) and \code{type}, \code{mu}, \code{sigma2}, \code{theta_start}, \code{range}, \code{maxsteps}, \code{exac}, \code{H}, \code{ctrl} and \code{verbose}, see \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()}. The default estimate is WLE.
+#' @param \ldots Arguments for the estimation: the item parameters (\code{PPass.default} only) and \code{type}, \code{mu}, \code{sigma2}, \code{theta_start}, \code{range}, \code{maxsteps}, \code{exac}, \code{H} and \code{verbose}, see \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()}. The default estimate is WLE.
 #'
 #' @return A data.frame of class \code{ppass} with one row per person: the person variables (the columns of \code{respdf} that are not items; for eRm models with groups the column \code{group}), \code{estimate}, \code{SE} and \code{status} of the estimate (see \code{PP_4pl()}) and the columns of the chosen person fit indices (see \code{Pfit()}). It can be used like any data.frame. The estimation object is kept as attribute, so \code{JKpp()} and \code{PV()} can be applied to the result directly; \code{print()} and \code{summary()} show an overview with the persons flagged by the person fit, \code{plot()} draws the person fit map, the measurement precision or person profiles (see \link{pp-plots}), and \code{as.data.frame()} returns a plain data.frame.
 #'
@@ -100,10 +100,12 @@ PPass.default <- function(respdf, items = "all", fitindices = c("lz", "lzstar", 
   X <- as.matrix(respdf[, cols, drop = FALSE])
   rest <- as.data.frame(respdf[, -cols, drop = FALSE])
   args <- list(...)
-  if ("mod" %in% names(args)) {
-    warning("'mod' is no longer needed and is ignored; the model follows from the item parameters.",
+  old <- intersect(names(args), c("mod", "model2est"))
+  if (length(old)) {
+    warning(paste0("'", old, "'", collapse = " and "), if (length(old) == 1) " is" else " are",
+            " no longer needed and ignored; the model follows from the item parameters.",
             call. = FALSE)
-    args$mod <- NULL
+    args[old] <- NULL
   }
   est <- do.call(ppass_fun(args), c(list(respm = X), args))
   ppass_build(est, rest, fitindices, SE, model = ppass_label(est$model), call = call)
@@ -136,10 +138,10 @@ PPass.eRm <- function(RMobj, fitindices = c("lz", "lzstar", "infit", "outfit"), 
 
 
 # The estimation function for the item parameters in args: polytomous items go
-# to PP_gpcm, with lowerA/upperA or model2est to PPall, dichotomous ones to PP_4pl.
+# to PP_gpcm, with lowerA/upperA to PPall, dichotomous ones to PP_4pl.
 ppass_fun <- function(args) {
   poly <- !is.null(args$thres) && any(normalize_thres(args$thres)$maxsc > 1)
-  if (!is.null(args$model2est) || (poly && (!is.null(args$lowerA) || !is.null(args$upperA)))) {
+  if (poly && (!is.null(args$lowerA) || !is.null(args$upperA))) {
     PPall
   } else if (poly) {
     PP_gpcm

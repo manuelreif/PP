@@ -53,7 +53,7 @@ test_that("scalars are recycled to items and persons", {
   expect_identical(a, b)
 })
 
-test_that("defaults: slopes 1, asymptotes 0/1, prior N(0, 1), model2est from thres", {
+test_that("defaults: slopes 1, asymptotes 0/1, prior N(0, 1), the item models from thres", {
   a <- prep(X2, p2$b, type = "map", family = "4pl")
   expect_identical(a$slopes, rep(1, 12))
   expect_identical(a$lowerA, rep(0, 12))
@@ -96,13 +96,19 @@ test_that("responses: categories above thres are an error, NA columns are fine",
   expect_silent(PP:::pp_prepare(X, p2$b, family = "4pl"))
 })
 
-test_that("skipcheck skips only the checks of the response values", {
-  ctrl <- list(skipcheck = TRUE)
-  expect_error(prep(X2, p2$b, type = "wlee", ctrl = ctrl, family = "4pl"), "type")
-  expect_error(prep(X2, p2$b, mu = rep(0, 2), ctrl = ctrl, family = "4pl"), "mu")
+test_that("the responses are always checked; the ctrl options of 0.6.4 give a warning", {
   X <- X2
   X[1, 1] <- 2L
-  expect_identical(prep(X, p2$b, ctrl = ctrl, family = "4pl")$X[1, 1], 2L)
+  expect_error(expect_warning(prep(X, p2$b, ctrl = list(skipcheck = TRUE), family = "4pl"),
+                              "'skipcheck' no longer needed"), "categories")
+  X[1, 1] <- 0.5
+  expect_error(prep(X, p2$b, family = "4pl"), "whole numbers")
+  X[1, 1] <- -1
+  expect_error(prep(X, p2$b, family = "4pl"), "negative")
+  expect_warning(prep(X2, p2$b, ctrl = list(killdupli = TRUE), family = "4pl"),
+                 "ctrl option\\(s\\) 'killdupli' no longer needed")
+  expect_warning(prep(X2, p2$b, ctrl = list(foo = 1), family = "4pl"), "do not exist: foo")
+  expect_null(prep(X2, p2$b, family = "4pl")$ctrl)
 })
 
 test_that("the response matrix becomes an integer matrix with its item names (F7: no row names)", {
@@ -120,7 +126,7 @@ test_that("the response matrix becomes an integer matrix with its item names (F7
 test_that("item bank of a mixed test", {
   pm <- items_to_pp(set_mixed$items)
   bank <- prep(set_mixed$X, pm$thres, slopes = pm$slopes, lowerA = pm$lowerA,
-               upperA = pm$upperA, model2est = pm$model2est, family = "mixed")$bank
+               upperA = pm$upperA, family = "mixed")$bank
   it <- set_mixed$items
   is4 <- pm$model2est == "4PL"
   thr <- lapply(it, function(i) if (i$model == "4PL") i$b else i$delta)

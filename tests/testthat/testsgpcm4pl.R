@@ -20,11 +20,6 @@ awm <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,2,0,0,0,0,0,0,0,0,1
                      ,0,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
-# create model2est
-# this function tries to help finding the appropriate 
-# model by inspecting the THRESx.
-model2est <- findmodel(THRESx)
-
 awm3 <- awm2 <- awm 
 awm2[3,1] <- 3
 
@@ -34,21 +29,21 @@ awm2[3,1] <- 3
 
 #t
 test_that("errors - warnings misspelling and length #1",{
-  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,type = "aaa",model2est=model2est))
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,type = "aaa"))
   
-  expect_error(PPall(respm = awm,thres = THRESx[,-1], slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm,thres = THRESx[,-1], slopes = sl,lowerA=la,upperA=ua))
   
-  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl[-1],lowerA=la,upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl[-1],lowerA=la,upperA=ua))
   
-  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la[-1],upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la[-1],upperA=ua))
   
-  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua[-1],model2est=model2est))
+  expect_error(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua[-1]))
   
-  expect_error(PPall(respm = awm[,-1],thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm[,-1],thres = THRESx, slopes = sl,lowerA=la,upperA=ua))
   
-  expect_error(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm2,thres = THRESx, slopes = sl,lowerA=la,upperA=ua))
   
-  expect_error(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua,model2est=model2est))
+  expect_error(PPall(respm = awm2,thres = THRESx2, slopes = sl,lowerA=la,upperA=ua))
   
-  expect_warning(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua,model2est=model2est, type="robust"))
+  expect_warning(PPall(respm = awm,thres = THRESx, slopes = sl,lowerA=la,upperA=ua, type="robust"))
 })

@@ -16,10 +16,9 @@
 #'
 #' With \code{SE = TRUE} every statistic gets a jackknife standard error: for each answered item \eqn{j}, \eqn{\theta} is estimated without item \eqn{j} (the leave-one-out estimates of \code{JKpp()}) and the statistic \eqn{f_{(-j)}} is computed on the remaining items. With \eqn{L} answered items and \eqn{m} leave-one-out samples with a finite estimate, \eqn{SE = (L - 1) \sqrt{\sum_j (f_{(-j)} - \bar f)^2 / (m (m - 1))}}, which is \eqn{\sqrt{(L-1)/L \sum_j (f_{(-j)} - \bar f)^2}} when no sample is left out (Efron & Stein, 1981).
 #'
-#' Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded.
+#' Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded. The responses were passed again as first argument \code{respm}; since 0.7.0 they are taken from \code{pp}, and \code{respm} is gone: call \code{Pfit(res)} instead of \code{Pfit(respm = X, pp = res)}.
 #'
-#'@param respm	      Not needed: the responses are taken from \code{pp}. If given, it must be the response matrix of \code{pp}.
-#'@param pp 		      An object of class \code{ppeo} from \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with type \code{"mle"}, \code{"wle"} or \code{"map"}.
+#'@param pp 		      An estimation object, the result of \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with type \code{"mle"}, \code{"wle"} or \code{"map"}. The responses are taken from it.
 #'@param fitindices		Character vector of the desired person fit statistics, any of \code{c("lz", "lzstar", "infit", "outfit")}.
 #'@param SE		        Logical: if \code{TRUE}, jackknife standard errors are computed.
 #'
@@ -80,7 +79,7 @@
 #' res3plwle <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
 #'
 #' # the responses are taken from the estimation object
-#' fit3pl <- Pfit(pp = res3plwle, fitindices = c("lz", "lzstar", "infit", "outfit"))
+#' fit3pl <- Pfit(res3plwle, fitindices = c("lz", "lzstar", "infit", "outfit"))
 #' head(fit3pl$lzstar)
 #' summary(fit3pl)
 #'
@@ -88,7 +87,7 @@
 #' awm_na <- awm
 #' awm_na[sample(length(awm), 300)] <- NA
 #' res3plna <- PP_4pl(respm = awm_na, thres = diffpar, slopes = sl, lowerA = la, type = "wle")
-#' head(Pfit(pp = res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
+#' head(Pfit(res3plna, fitindices = c("lz", "infit"), SE = TRUE)$lz)
 #'
 #' ## GPCM
 #'
@@ -96,7 +95,7 @@
 #' slg   <- c(0.8, 1.2, 1)
 #' respg <- sim_gpcm(thres = thres, alpha = slg, theta = rnorm(50))
 #' resgwle <- PP_gpcm(respm = respg, thres = thres, slopes = slg, type = "wle")
-#' summary(Pfit(pp = resgwle))
+#' summary(Pfit(resgwle))
 #'
 #' ## GPCM and 4PL mixed
 #'
@@ -109,17 +108,17 @@
 #'                      2, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 #'                      1, 2, 2, 1, 1, 1, 1, 0, 0, 1), byrow = TRUE, nrow = 5)
 #' resmixed <- PPall(respm = awmatrix, thres = THRESx, slopes = slm, lowerA = lam,
-#'                   upperA = uam, type = "wle", model2est = findmodel(THRESx))
-#' Pfit(pp = resmixed, fitindices = c("lz", "lzstar"))
+#'                   upperA = uam, type = "wle")
+#' Pfit(resmixed, fitindices = c("lz", "lzstar"))
 #' @keywords Person fit LZ-Index Infit-Outfit
 #' @export
-Pfit <- function(respm, pp, fitindices, SE = FALSE) UseMethod("Pfit", pp)
+Pfit <- function(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE) UseMethod("Pfit")
 
 
 #' @rdname pfit
 #' @method Pfit ppeo
 #' @export
-Pfit.ppeo <- function(respm, pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE) {
+Pfit.ppeo <- function(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE) {
   call <- match.call()
   if (!pp$type %in% c("mle", "wle", "map")) {
     stop("Person fit needs an estimate of type 'mle', 'wle' or 'map' (here: '", pp$type, "').",
@@ -129,7 +128,6 @@ Pfit.ppeo <- function(respm, pp, fitindices = c("lz", "lzstar", "infit", "outfit
   if (!is.logical(SE) || length(SE) != 1 || is.na(SE)) stop("'SE' must be TRUE or FALSE.", call. = FALSE)
   m <- pp$model
   X <- m$X
-  if (!missing(respm)) check_same_resp(respm, X)
   which <- intersect(c("lz", "lzstar", "infit", "outfit"), fitindices)
 
   ok <- pp$estimates$status == "ok"
@@ -142,16 +140,13 @@ Pfit.ppeo <- function(respm, pp, fitindices = c("lz", "lzstar", "infit", "outfit
   structure(out, class = "PPfit", type = pp$type, call = call)
 }
 
-# respm given to Pfit must be the response matrix of the estimate
-check_same_resp <- function(respm, X) {
-  if (is.data.frame(respm)) respm <- as.matrix(respm)
-  obs <- !is.na(X)
-  same <- is.matrix(respm) && identical(dim(respm), dim(X)) &&
-    identical(unname(is.na(respm)), unname(!obs)) && all(respm[obs] == X[obs])
-  if (!same) {
-    stop("'respm' is not the response matrix of 'pp'. Pfit takes the responses from 'pp', ",
-         "'respm' can be left out.", call. = FALSE)
-  }
+# Anything else, e.g. the response matrix of the 0.6.4 call Pfit(respm, pp)
+#' @rdname pfit
+#' @method Pfit default
+#' @export
+Pfit.default <- function(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE) {
+  stop("'pp' must be the result of PP_4pl(), PP_gpcm() or PPall(); the responses are taken ",
+       "from it ('respm' was removed in version 0.7.0: use Pfit(pp)).", call. = FALSE)
 }
 
 # Wilson-Hilferty transformation of a mean square with variance q2
