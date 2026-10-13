@@ -79,7 +79,7 @@ A warning reports persons with status \code{"boundary"} or \code{"not_converged"
 \item{\code{model}}{The checked and prepared inputs.}
 \item{\code{resPP}}{The result in the layout of earlier versions: \code{resPP$resPP} is the persons x 2 matrix of estimates and SEs, \code{resPP$nsteps} the largest number of steps.}
 }
-Use \code{coef()} for the estimates and \code{as.data.frame()} for the table.
+Use \code{coef()} for the estimates, \code{as.data.frame()} for the table and \code{plot()} for the measurement precision, the person fit map or person profiles (see \link{pp-plots}).
 }
 \description{
 Compute person parameters for the 1,2,3,4-PL model and for the GPCM. Choose between ML, WL, MAP, EAP and robust estimation. Use this function if 4-PL items and GPCM items are mixed for each person.

@@ -10,7 +10,7 @@
 #'
 #' @param \ldots Arguments for the estimation: the item parameters (\code{PPass.default} only) and \code{type}, \code{mu}, \code{sigma2}, \code{theta_start}, \code{range}, \code{maxsteps}, \code{exac}, \code{H}, \code{ctrl} and \code{verbose}, see \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()}. The default estimate is WLE.
 #'
-#' @return A data.frame of class \code{ppass} with one row per person: the person variables (the columns of \code{respdf} that are not items; for eRm models with groups the column \code{group}), \code{estimate}, \code{SE} and \code{status} of the estimate (see \code{PP_4pl()}) and the columns of the chosen person fit indices (see \code{Pfit()}). It can be used like any data.frame. The estimation object is kept as attribute, so \code{JKpp()} and \code{PV()} can be applied to the result directly; \code{print()} and \code{summary()} show an overview with the persons flagged by the person fit, and \code{as.data.frame()} returns a plain data.frame.
+#' @return A data.frame of class \code{ppass} with one row per person: the person variables (the columns of \code{respdf} that are not items; for eRm models with groups the column \code{group}), \code{estimate}, \code{SE} and \code{status} of the estimate (see \code{PP_4pl()}) and the columns of the chosen person fit indices (see \code{Pfit()}). It can be used like any data.frame. The estimation object is kept as attribute, so \code{JKpp()} and \code{PV()} can be applied to the result directly; \code{print()} and \code{summary()} show an overview with the persons flagged by the person fit, \code{plot()} draws the person fit map, the measurement precision or person profiles (see \link{pp-plots}), and \code{as.data.frame()} returns a plain data.frame.
 #'
 #' @author Manuel Reif, Jan Steinfeld
 #' @seealso \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{Pfit}, \link{JKpp}, \link{PV}, \link{pp-plots}
@@ -31,6 +31,9 @@
 #' res <- PPass(dat, items = 3:17, mod = "2PL", thres = diffpar, slopes = sl)
 #' res
 #' summary(res)
+#'
+#' # person fit map, flagged persons labelled with their id
+#' plot(res, label = "id")
 #'
 #' # a plain data.frame for further use
 #' head(as.data.frame(res))

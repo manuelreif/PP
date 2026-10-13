@@ -31,7 +31,7 @@
 \code{coef()} returns the estimates as a vector (persons in the order of the response matrix), \code{as.data.frame()} the data.frame \code{$estimates} (estimate, SE, nsteps, status). \code{print()} and \code{summary()} return the object invisibly.
 }
 \description{
-Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}).
+Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}). The plots are described in \link{pp-plots}.
 }
 \seealso{
 \link{PP_4pl}, \link{PP_gpcm}, \link{PPall}, \link{pp-plots}

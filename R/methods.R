@@ -1,6 +1,6 @@
 #' Methods for estimation results
 #'
-#' Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}).
+#' Print, summarise and extract the person estimates of \code{PP_4pl()}, \code{PP_gpcm()} and \code{PPall()} (objects of class \code{ppeo}). The plots are described in \link{pp-plots}.
 #'
 #'@param x,object An object of class \code{ppeo}.
 #'@param digits Number of significant digits to print.
