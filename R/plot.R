@@ -301,7 +301,7 @@ plot_profile <- function(est, person, f, z, labels, ...) {
   pp_tinyplot(list(x = ex, y = ob, by = grp, facet = panel, palette = pal, pch = 19,
                    xlim = c(1, 0), ylim = c(0, 1), xlab = "Expected score at the estimate (relative)",
                    ylab = "Observed score (relative)", legend = list("bottom!", title = NULL),
-                   facet.args = list(axes = "outer")),
+                   facet.args = list(axes = "outer", fmar = rep(0.75, 4))),
               list(...))
   # residuals and the expected score (the diagonal)
   tp(x = ex, y = ob, xmin = ex, xmax = ex, ymin = ex, ymax = ob, by = grp, facet = panel,
