@@ -38,8 +38,33 @@ erm_fits <- suppressWarnings(with(erm_data, list(
   LPCM_2t = eRm::LPCM(p2, mpoints = 2)
 )))
 
+# reference: PP_gpcm with the thresholds of each (virtual) item selected by the
+# names in betapar (eRm stores category easiness: delta_ih = beta_i,h-1 - beta_ih)
+erm_ref <- function(o, b = o$betapar, rows = seq_len(nrow(o$X))) {
+  item <- sub("\\.c[0-9]+", "", sub("^beta ", "", names(b)))
+  items <- unique(item)
+  thres <- matrix(NA, max(table(item)) + 1, length(items))
+  for (v in seq_along(items)) {
+    d <- c(0, -diff(c(0, b[item == items[v]])))
+    thres[seq_along(d), v] <- d
+  }
+  pp_quiet(PP_gpcm(o$X[rows, , drop = FALSE], thres, slopes = rep(1, length(items)), type = "mle"))
+}
+
 for (nm in names(erm_fits)) {
+  test_that(paste("PPass takes the item parameters from eRm for", nm), {
+    o <- erm_fits[[nm]]
+    res <- pp_quiet(PPass(o, type = "mle"))
+    ref <- erm_ref(o)
+    expect_identical(nrow(res), nrow(o$X))
+    expect_equal(res$estimate, ref$estimates$estimate, ignore_attr = TRUE)
+    expect_equal(res$SE, ref$estimates$SE, ignore_attr = TRUE)
+  })
+
   test_that(paste("MLE of PPass equals eRm::person.parameter for", nm), {
+    # eRm estimates all raw scores of the polytomous models jointly with nlm()
+    # and a numerical gradient; on some machines it stops 0.03 off the maximum
+    skip_on_cran()
     o <- erm_fits[[nm]]
     res <- pp_quiet(PPass(o, type = "mle", fitindices = "lzstar"))
     utils::capture.output(pt <- suppressWarnings(eRm::person.parameter(o))$theta.table)
@@ -66,17 +91,10 @@ test_that("group contrasts: each group gets the parameters of its virtual items"
   expect_identical(res$group, rep(1:2, 125))
   expect_match(attr(res, "info")$model, "2 time points, 2 groups")
   # reference: the parameters of group g by the names in betapar
-  nm <- names(o$betapar)
   for (g in 1:2) {
-    b <- o$betapar[grepl(paste0(" g", g, "$"), nm)]
-    item <- sub("\\.c[0-9]+ t", " t", sub("^beta ", "", names(b)))
-    thres <- matrix(NA, 4, 12)
-    for (v in seq_along(unique(item))) {
-      d <- c(0, -diff(c(0, b[item == unique(item)[v]])))
-      thres[seq_along(d), v] <- d
-    }
+    b <- o$betapar[grepl(paste0(" g", g, "$"), names(o$betapar))]
     rows <- o$groupvec == g
-    ref <- pp_quiet(PP_gpcm(o$X[rows, ], thres, slopes = rep(1, 12), type = "mle"))
+    ref <- erm_ref(o, b, rows)
     expect_equal(res$estimate[rows], ref$estimates$estimate, ignore_attr = TRUE)
     expect_equal(res$SE[rows], ref$estimates$SE, ignore_attr = TRUE)
   }
