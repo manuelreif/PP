@@ -2,7 +2,7 @@
 #'
 #' \code{PPass} (\bold{P}erson \bold{P}arameter \bold{ass}essment) estimates the person parameters and computes the person fit in one call, and returns both in one table, next to the other person variables. It takes a data.frame or matrix with item responses and known item parameters, or a model fitted with the \code{eRm} package.
 #'
-#' \bold{Data with item parameters} (\code{PPass.default}): the columns \code{items} of \code{respdf} are the responses, the other columns are kept as person variables. \code{mod} selects the estimation function: \code{PP_4pl()} for 1PL to 4PL, \code{PP_gpcm()} for PCM and GPCM, \code{PPall()} for mixed tests. The item parameters are passed in \code{...} (\code{thres}, \code{slopes}, \code{lowerA}, \code{upperA}, \code{model2est}) and must fit \code{mod}: 1PL takes only \code{thres}, 2PL adds \code{slopes}, 3PL needs \code{lowerA}, 4PL needs \code{upperA}, and the PCM has all slopes equal to 1.
+#' \bold{Data with item parameters} (\code{PPass.default}): the columns \code{items} of \code{respdf} are the responses, the other columns are kept as person variables. The item parameters are passed in \code{...} (\code{thres}, \code{slopes}, \code{lowerA}, \code{upperA}, \code{model2est}), and the model follows from them: \code{thres} alone gives the 1PL model, with \code{slopes} the 2PL, with \code{lowerA} the 3PL and with \code{upperA} the 4PL model, estimated with \code{PP_4pl()}. A threshold matrix with more than one threshold for some item gives the partial credit model (all slopes 1) or the generalized partial credit model, estimated with \code{PP_gpcm()}. With \code{model2est}, or with such polytomous items and \code{lowerA} or \code{upperA}, the test is a mixed test, estimated with \code{PPall()}. The argument \code{mod} of earlier versions is no longer needed; it is ignored with a warning.
 #'
 #' \bold{eRm models} (\code{PPass.eRm}): all models of the \code{eRm} package are supported, the Rasch model (\code{RM}), the linear logistic test model (\code{LLTM}), the rating scale model (\code{RSM}), the partial credit model (\code{PCM}) and the linear models \code{LRSM} and \code{LPCM}, also with several time points (\code{mpoints}) and groups (\code{groupvec}). The responses and item parameters come from the fitted object. eRm stores easiness parameters per category, \eqn{\beta_{ih} = -\sum_{k \le h} \delta_{ik}}; they are turned into the thresholds \eqn{\delta_{ih} = \beta_{i,h-1} - \beta_{ih}}, so for the dichotomous models the difficulty is \eqn{-\beta_i}. With time points or groups every combination of item, time point and group is a virtual item with its own parameters; a person answers the virtual items of their group, and gets one ability over all time points. The person parameters are estimated with \code{PP_4pl()} (RM, LLTM) or \code{PP_gpcm()} with all slopes 1. The maximum likelihood estimates (\code{type = "mle"}) equal those of \code{eRm::person.parameter()}; unlike \code{eRm}, \code{PPass} also gives estimates for models with group contrasts, and WLE, MAP, EAP and robust estimates, person fit, jackknife and plausible values. The \code{eRm} package is not needed to run \code{PPass} on such an object.
 #'
@@ -28,7 +28,7 @@
 #' dat <- data.frame(id = 1:200, group = rep(c("a", "b"), 100), awm)
 #'
 #' # 2PL, WLE estimates and all person fit indices; id and group are kept
-#' res <- PPass(dat, items = 3:17, mod = "2PL", thres = diffpar, slopes = sl)
+#' res <- PPass(dat, items = 3:17, thres = diffpar, slopes = sl)
 #' res
 #' summary(res)
 #'
@@ -43,8 +43,7 @@
 #'
 #' data(pp_amt)
 #' d <- pp_amt$daten_amt
-#' rd_res <- PPass(d, items = 8:ncol(d), mod = "1PL", thres = pp_amt$betas[, 2],
-#'                 fitindices = "lz")
+#' rd_res <- PPass(d, items = 8:ncol(d), thres = pp_amt$betas[, 2], fitindices = "lz")
 #' head(rd_res)
 #'
 #'
@@ -81,17 +80,15 @@ PPass <- function(...) UseMethod("PPass")
 
 #' @param respdf A data.frame or matrix with one row per person, which contains the item responses and possibly other person variables.
 #' @param items The item columns of \code{respdf}: \code{"all"} (default), their positions or their names.
-#' @param mod The model: \code{"1PL"} (default), \code{"2PL"}, \code{"3PL"}, \code{"4PL"}, \code{"PCM"}, \code{"GPCM"} or \code{"MIXED"}.
 #' @param fitindices The person fit indices to compute, any of \code{"lz"}, \code{"lzstar"}, \code{"infit"} and \code{"outfit"} (default all).
 #' @param SE If \code{TRUE}, jackknife standard errors of the fit indices are added (see \code{Pfit()}).
 #'
 #' @rdname PPass
 #' @method PPass default
 #' @export
-PPass.default <- function(respdf, items = "all", mod = c("1PL", "2PL", "3PL", "4PL", "PCM", "GPCM", "MIXED"),
-                          fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE, ...) {
+PPass.default <- function(respdf, items = "all", fitindices = c("lz", "lzstar", "infit", "outfit"),
+                          SE = FALSE, ...) {
   call <- match.call()
-  mod <- match.arg(mod)
   fitindices <- match.arg(fitindices, several.ok = TRUE)
   if (!is.data.frame(respdf) && !is.matrix(respdf)) {
     stop("'respdf' must be a data.frame or a matrix.", call. = FALSE)
@@ -100,11 +97,13 @@ PPass.default <- function(respdf, items = "all", mod = c("1PL", "2PL", "3PL", "4
   X <- as.matrix(respdf[, cols, drop = FALSE])
   rest <- as.data.frame(respdf[, -cols, drop = FALSE])
   args <- list(...)
-  check_mod(mod, args)
-  fun <- switch(mod, "1PL" = , "2PL" = , "3PL" = , "4PL" = PP_4pl, "PCM" = , "GPCM" = PP_gpcm,
-                "MIXED" = PPall)
-  est <- do.call(fun, c(list(respm = X), args))
-  ppass_build(est, rest, fitindices, SE, model = mod_label[[mod]], call = call)
+  if ("mod" %in% names(args)) {
+    warning("'mod' is no longer needed and is ignored; the model follows from the item parameters.",
+            call. = FALSE)
+    args$mod <- NULL
+  }
+  est <- do.call(ppass_fun(args), c(list(respm = X), args))
+  ppass_build(est, rest, fitindices, SE, model = ppass_label(est$model), call = call)
 }
 
 
@@ -117,7 +116,7 @@ PPass.eRm <- function(RMobj, fitindices = c("lz", "lzstar", "infit", "outfit"), 
   call <- match.call()
   fitindices <- match.arg(fitindices, several.ok = TRUE)
   args <- list(...)
-  given <- intersect(names(args), c("respm", "thres", "slopes", "lowerA", "upperA", "model2est"))
+  given <- intersect(names(args), c("respm", "thres", "slopes", "lowerA", "upperA", "model2est", "mod"))
   if (length(given)) {
     stop("The responses and item parameters come from the eRm object, leave out ",
          paste0("'", given, "'", collapse = ", "), ".", call. = FALSE)
@@ -133,9 +132,31 @@ PPass.eRm <- function(RMobj, fitindices = c("lz", "lzstar", "infit", "outfit"), 
 }
 
 
-mod_label <- list("1PL" = "1PL model", "2PL" = "2PL model", "3PL" = "3PL model", "4PL" = "4PL model",
-                  "PCM" = "partial credit model", "GPCM" = "generalized partial credit model",
-                  "MIXED" = "mixed 4PL/GPCM model")
+# The estimation function for the item parameters in args: polytomous items go
+# to PP_gpcm, with lowerA/upperA or model2est to PPall, dichotomous ones to PP_4pl.
+ppass_fun <- function(args) {
+  poly <- !is.null(args$thres) && any(normalize_thres(args$thres)$maxsc > 1)
+  if (!is.null(args$model2est) || (poly && (!is.null(args$lowerA) || !is.null(args$upperA)))) {
+    PPall
+  } else if (poly) {
+    PP_gpcm
+  } else {
+    PP_4pl
+  }
+}
+
+# Model name for print/summary, from the prepared item parameters
+ppass_label <- function(prep) {
+  differs <- function(x, v) any(x != v, na.rm = TRUE)
+  switch(prep$family,
+    "4pl" = if (differs(prep$upperA, 1)) "4PL model"
+            else if (differs(prep$lowerA, 0)) "3PL model"
+            else if (differs(prep$slopes, 1)) "2PL model"
+            else "1PL model",
+    "gpcm" = if (differs(prep$slopes, 1)) "generalized partial credit model"
+             else "partial credit model",
+    "mixed 4PL/GPCM model")
+}
 
 # Column indices of the items in respdf
 item_columns <- function(respdf, items) {
@@ -153,26 +174,6 @@ item_columns <- function(respdf, items) {
          call. = FALSE)
   }
   as.integer(items)
-}
-
-# mod must fit the item parameters given in args
-check_mod <- function(mod, args) {
-  has <- function(p) !is.null(args[[p]])
-  wrong <- switch(mod,
-    "1PL" = c(slopes = has("slopes"), lowerA = has("lowerA"), upperA = has("upperA")),
-    "2PL" = c(slopes = !has("slopes"), lowerA = has("lowerA"), upperA = has("upperA")),
-    "3PL" = c(lowerA = !has("lowerA"), upperA = has("upperA")),
-    "4PL" = c(upperA = !has("upperA")),
-    "PCM" = c(slopes = has("slopes") && any(args$slopes != 1, na.rm = TRUE)),
-    logical(0))
-  if (any(wrong)) {
-    need <- c("1PL" = "only 'thres'", "2PL" = "'thres' and 'slopes'",
-              "3PL" = "'lowerA' and no 'upperA'", "4PL" = "'upperA'",
-              "PCM" = "slopes equal to 1")[[mod]]
-    stop("mod = '", mod, "' needs ", need, "; check ",
-         paste0("'", names(wrong)[wrong], "'", collapse = ", "), " or choose another 'mod'.",
-         call. = FALSE)
-  }
 }
 
 # Responses and thresholds of an eRm model. With time points or groups the

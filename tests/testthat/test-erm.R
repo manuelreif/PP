@@ -96,6 +96,7 @@ test_that("all estimation types and fit indices run on eRm objects", {
 
 test_that("item parameters cannot be given with an eRm object", {
   expect_error(PPass(erm_fits$RM, thres = 1:8), "leave out 'thres'")
+  expect_error(PPass(erm_fits$RM, mod = "1PL"), "leave out 'mod'")
   expect_error(PPass(erm_fits$PCM, slopes = 1, respm = 1), "'respm', 'slopes'|'slopes', 'respm'")
   expect_error(PPass(structure(list(model = "XYZ"), class = "eRm")), "knows the eRm models")
 })

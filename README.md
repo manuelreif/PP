@@ -28,7 +28,7 @@ remotes::install_github("manuelreif/PP", build_vignettes = TRUE)
 library(PP)
 data(fourpl_df)
 
-res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+res <- PPass(fourpl_df, items = 3:14,
              thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
              lowerA = attr(fourpl_df, "lowerA"))
 print(res, n = 6)

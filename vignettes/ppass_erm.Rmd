@@ -25,7 +25,7 @@ has_erm <- requireNamespace("eRm", quietly = TRUE)
 ```{r ppass}
 library(PP)
 data(fourpl_df)
-res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+res <- PPass(fourpl_df, items = 3:14,
              thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
              lowerA = attr(fourpl_df, "lowerA"))
 res
@@ -51,7 +51,7 @@ knitr::kable(head(as.data.frame(res)[, c("id", "sex", "estimate", "SE", "lzstar"
 head(JKpp(res)$estimates)
 ```
 
-For a polytomous test, choose `mod = "PCM"` or `mod = "GPCM"`; for a test with both dichotomous and polytomous items, choose `mod = "MIXED"`.
+The model follows from the item parameters: here `slopes` and `lowerA` make it a 3PL model. A threshold matrix with several thresholds per item gives the PCM (all slopes 1) or the GPCM; for a test with both dichotomous and polytomous items, `model2est` names the model of each item (see `PPall()`).
 
 ## Models fitted with eRm
 
