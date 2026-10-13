@@ -69,7 +69,7 @@ fit_gpcm <- function(d, type) {
 
 # The metadata fields are written to every row of the durchlaeufe table.
 # setup() runs once and is not timed; run(d, s) gets its result as s.
-# Pfit(respm, pp, ...) up to 0.6.4, Pfit(pp, ...) since 0.7.0
+# Pfit(respm, pp, ...) up to 0.6.4, Pfit(pp, ...) since 1.0.0
 pfit_call <- function(X, s, ...) {
   if (names(formals(Pfit))[1] == "respm") Pfit(X, s, ...) else Pfit(s, ...)
 }
@@ -114,7 +114,7 @@ bench_scenarios <- list(
   "sim_gpcm" = scenario("sim_gpcm", NA_character_, "GPCM", 2000, 20, 0.01,
                         function(d, s) { set.seed(42); sim_gpcm(d$thres_g, d$ag, d$thg) }),
   # Pfit with respm passed where the installed version has it (0.6.4 needs
-  # it; 0.7.0 takes the responses from the estimate and has no respm)
+  # it; 1.0.0 takes the responses from the estimate and has no respm)
   "pfit_3pl" = scenario("Pfit", "WLE", "3PL", 5000, 40, 0.05,
                         setup = function(d) fit_pl(d, "3PL", "wle"),
                         run = function(d, s) pfit_call(d$X3, s, fitindices = c("lz", "lzstar", "infit", "outfit"))),

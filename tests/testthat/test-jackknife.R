@@ -121,7 +121,7 @@ test_that("B3: AMT combines right and wrong answers separately (Wainer & Wright,
     expected <- (part(ps[right]) + part(ps[!right])) / L[i]
     expect_close(jk$estimates$estimate[i], expected, 1e-6)
   }
-  # the pooled AMT of 0.7.0-dev differs
+  # the pooled AMT of 1.0.0-dev differs
   pooled <- vapply(1:8, function(i) {
     PP:::jk_amt(stats::na.omit(L[i] * theta[i] - (L[i] - 1) * jk$jk_mat[i, ]))
   }, 0)

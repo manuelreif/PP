@@ -50,7 +50,7 @@ PPall(
 
 \item{H}{In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).}
 
-\item{ctrl}{No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 0.7.0 every person is estimated separately, and options given are ignored with a warning.}
+\item{ctrl}{No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 1.0.0 every person is estimated separately, and options given are ignored with a warning.}
 
 \item{range}{The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.}
 

@@ -50,7 +50,7 @@
 #'@param maxsteps The maximum number of Newton steps per person. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011). 
-#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 0.7.0 every person is estimated separately, and options given are ignored with a warning.
+#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 1.0.0 every person is estimated separately, and options given are ignored with a warning.
 #'@param range The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.
 #'@param verbose If \code{TRUE}, a message names the model and the estimation type. Default \code{FALSE}.
 #'
@@ -165,7 +165,7 @@ PP_4pl <- function(respm, thres, slopes=NULL, lowerA=NULL, upperA=NULL, theta_st
 #'@param maxsteps The maximum number of Newton steps per person. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
-#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 0.7.0 every person is estimated separately, and options given are ignored with a warning.
+#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 1.0.0 every person is estimated separately, and options given are ignored with a warning.
 #'@param range The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.
 #'@param verbose If \code{TRUE}, a message names the model and the estimation type. Default \code{FALSE}.
 #'
@@ -255,7 +255,7 @@ PP_gpcm <- function(respm, thres, slopes = NULL, theta_start=NULL,
 #'@param maxsteps The maximum number of Newton steps per person. Default = 100.
 #'@param exac How accurate are the estimates supposed to be? The iteration of a person stops when the step is smaller than \code{exac}. Default is 0.001.
 #'@param H In case \code{type = "robust"} a Huber ability estimate is performed, and \code{H} modulates how fast the downweighting takes place (for more Details read Schuster & Yuan 2011).
-#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 0.7.0 every person is estimated separately, and options given are ignored with a warning.
+#'@param ctrl No longer used. Its options \code{killdupli} and \code{skipcheck} of version 0.6.4 saved time with the old estimation routine; since 1.0.0 every person is estimated separately, and options given are ignored with a warning.
 #'@param range The interval \code{c(lower, upper)} in which mle, wle, map and robust estimates are searched. If the estimating equation has no root inside, the estimate is set to the bound it points to and its status is \code{"boundary"}. Default \code{c(-6, 6)}.
 #'@param verbose If \code{TRUE}, a message names the model and the estimation type. Default \code{FALSE}.
 #'

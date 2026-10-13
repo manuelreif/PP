@@ -1,6 +1,6 @@
-# PP 0.7.0
+# PP 1.0.0
 
-PP 0.7.0 is a rewrite of the numerical core. Every estimate is now checked
+PP 1.0.0 is a rewrite of the numerical core. Every estimate is now checked
 against independent reference implementations, and several results of
 earlier versions were wrong. Results therefore differ from 0.6.4-1 where
 noted below. Function and argument names are unchanged unless stated.

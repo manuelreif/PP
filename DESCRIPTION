@@ -1,8 +1,8 @@
 Package: PP
 Type: Package
 Title: Person Parameter Estimation
-Version: 0.7.0
-Date: 2026-10-11
+Version: 1.0.0
+Date: 2026-10-13
 Authors@R: c(
     person(given = "Manuel",
            family = "Reif",

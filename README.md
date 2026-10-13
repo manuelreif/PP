@@ -62,5 +62,5 @@ head(res_eap$estimates)
 
 - Vignettes: `vignette("intro_pp", package = "PP")`, `vignette("intro_pfit", package = "PP")` and `vignette("ppass_erm", package = "PP")`
 - Website: <https://manuelreif.github.io/PP/>
-- Changes: [NEWS.md](NEWS.md). Version 0.7.0 corrects several results of earlier versions (jackknife standard errors, MAP standard errors, plausible values, person fit with missing responses).
+- Changes: [NEWS.md](NEWS.md). Version 1.0.0 corrects several results of earlier versions (jackknife standard errors, MAP standard errors, plausible values, person fit with missing responses).
 - Bugs and questions: <https://github.com/manuelreif/PP/issues>

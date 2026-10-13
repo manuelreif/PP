@@ -1,6 +1,6 @@
 ## Submission
 
-PP 0.7.0 is a rewrite of the numerical core. Every estimate is now checked
+PP 1.0.0 is a rewrite of the numerical core. Every estimate is now checked
 against independent reference implementations; several results of 0.6.4-1
 were wrong and change in this version. NEWS.md lists all changed results and
 the few breaking changes.
@@ -27,6 +27,6 @@ Manuel Reif <manuel.reif@gmail.com>, the original author and maintainer up to
 ## Reverse dependencies
 
 There is one reverse dependency, mstDIF 0.1.8 (Imports). It passes
-`R CMD check --run-donttest` with PP 0.7.0 with status OK, as with 0.6.4-1.
-mstDIF calls `PP_4pl()` and reads `$resPP$resPP`, which 0.7.0 keeps; its WLE
+`R CMD check --run-donttest` with PP 1.0.0 with status OK, as with 0.6.4-1.
+mstDIF calls `PP_4pl()` and reads `$resPP$resPP`, which 1.0.0 keeps; its WLE
 estimates differ from those of 0.6.4-1 by at most 4.4e-5.

@@ -16,7 +16,7 @@
 #'
 #' With \code{SE = TRUE} every statistic gets a jackknife standard error: for each answered item \eqn{j}, \eqn{\theta} is estimated without item \eqn{j} (the leave-one-out estimates of \code{JKpp()}) and the statistic \eqn{f_{(-j)}} is computed on the remaining items. With \eqn{L} answered items and \eqn{m} leave-one-out samples with a finite estimate, \eqn{SE = (L - 1) \sqrt{\sum_j (f_{(-j)} - \bar f)^2 / (m (m - 1))}}, which is \eqn{\sqrt{(L-1)/L \sum_j (f_{(-j)} - \bar f)^2}} when no sample is left out (Efron & Stein, 1981).
 #'
-#' Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded. The responses were passed again as first argument \code{respm}; since 0.7.0 they are taken from \code{pp}, and \code{respm} is gone: call \code{Pfit(res)} instead of \code{Pfit(respm = X, pp = res)}.
+#' Up to version 0.6.4, lz* summed over all items also for persons with missing responses, the GPCM infit and outfit used the observed instead of the possible categories and ignored the slopes, mixed tests were not supported, the jackknife standard error of lz used the prior SD as variance, and all results were rounded. The responses were passed again as first argument \code{respm}; since 1.0.0 they are taken from \code{pp}, and \code{respm} is gone: call \code{Pfit(res)} instead of \code{Pfit(respm = X, pp = res)}.
 #'
 #'@param pp 		      An estimation object, the result of \code{PP_4pl()}, \code{PP_gpcm()} or \code{PPall()} with type \code{"mle"}, \code{"wle"} or \code{"map"}. The responses are taken from it.
 #'@param fitindices		Character vector of the desired person fit statistics, any of \code{c("lz", "lzstar", "infit", "outfit")}.
@@ -146,7 +146,7 @@ Pfit.ppeo <- function(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE 
 #' @export
 Pfit.default <- function(pp, fitindices = c("lz", "lzstar", "infit", "outfit"), SE = FALSE) {
   stop("'pp' must be the result of PP_4pl(), PP_gpcm() or PPall(); the responses are taken ",
-       "from it ('respm' was removed in version 0.7.0: use Pfit(pp)).", call. = FALSE)
+       "from it ('respm' was removed in version 1.0.0: use Pfit(pp)).", call. = FALSE)
 }
 
 # Wilson-Hilferty transformation of a mean square with variance q2
