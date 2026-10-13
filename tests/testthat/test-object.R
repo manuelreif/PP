@@ -99,7 +99,7 @@ test_that("F7: row names of the responses are not carried over, duplicates work"
   p2 <- items_to_pp(set_2pl$items)
   d <- data.frame(id = rep(1:2, length.out = nrow(set_2pl$X)), set_2pl$X)
   rownames(d) <- paste0("r", seq_len(nrow(d)))
-  res <- pp_quiet(PPass(d, items = 2:13, mod = "2PL", thres = p2$b, slopes = p2$slopes))
+  res <- pp_quiet(PPass(d, items = 2:13, thres = p2$b, slopes = p2$slopes))
   expect_identical(rownames(res), as.character(seq_len(nrow(d))))
   expect_identical(res$id, d$id)
 })

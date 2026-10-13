@@ -46,7 +46,7 @@ res <- PP_4pl(respm = x, thres = b, slopes = sl, type = "wle")
 head(res$estimates)
 
 # estimates and person fit in one table
-PPass(data.frame(id = 1:100, x), items = 2:13, mod = "2PL", thres = b, slopes = sl)
+PPass(data.frame(id = 1:100, x), items = 2:13, thres = b, slopes = sl)
 
 }
 \references{

@@ -83,10 +83,12 @@ noted below. Function and argument names are unchanged unless stated.
   responses come from the estimation object). Jackknife SEs for all four
   statistics (new columns `in_se`, `ou_se`), `print()` and `summary()`.
 * `PPass()`:
-  * works without `mod` (default 1PL), with `mod = "MIXED"` and with a matrix;
-    `items` can be given by name; the other columns (e.g. an id) are kept as
-    person variables. `mod` is checked against the item parameters (before,
-    `mod = "1PL"` with slopes silently fitted a 2PL model).
+  * no longer needs `mod`: the model (1PL to 4PL, PCM, GPCM or a mixed test)
+    follows from the item parameters, as in `PP_4pl()`; a call with `mod` gives
+    a warning and `mod` is ignored. Before, `mod` only switched between
+    `PP_4pl()`, `PP_gpcm()` and `PPall()`, and `mod = "MIXED"` did not work.
+  * works with a matrix; `items` can be given by name; the other columns
+    (e.g. an id) are kept as person variables.
   * takes every eRm model: RM, LLTM, RSM, PCM, LRSM and LPCM, also with
     several time points and groups, including group contrasts, for which
     eRm gives no person parameters. Its maximum likelihood estimates equal

@@ -1,13 +1,13 @@
 # PPass: estimation and person fit in one call, routed to PP_4pl / PP_gpcm /
-# PPall. The eRm method is tested in test-erm.R.
+# PPall by the item parameters. The eRm method is tested in test-erm.R.
 
 p2 <- items_to_pp(set_2pl$items)
 df2 <- data.frame(id = seq_len(nrow(set_2pl$X)), set_2pl$X)
 ppass_2pl <- function(...) {
-  pp_quiet(PPass(df2, items = 2:13, mod = "2PL", thres = p2$b, slopes = p2$slopes, ...))
+  pp_quiet(PPass(df2, items = 2:13, thres = p2$b, slopes = p2$slopes, ...))
 }
 
-test_that("PPass with mod = '2PL' equals PP_4pl plus Pfit", {
+test_that("PPass with slopes equals PP_4pl plus Pfit", {
   res <- ppass_2pl(type = "wle", fitindices = c("lz", "infit"))
   obj <- pp_fit(set_2pl, "wle")
   pf <- pp_quiet(Pfit(set_2pl$X, obj, fitindices = c("lz", "infit")))
@@ -17,10 +17,10 @@ test_that("PPass with mod = '2PL' equals PP_4pl plus Pfit", {
   expect_equal(res$infit, unname(pf$infit[, "infit"]))
 })
 
-test_that("PPass with mod = 'PCM' equals PP_gpcm plus Pfit", {
+test_that("PPass with a threshold matrix equals PP_gpcm plus Pfit", {
   pp <- items_to_pp(set_pcm$items)
   dfp <- data.frame(id = seq_len(nrow(set_pcm$X)), set_pcm$X)
-  res <- pp_quiet(PPass(dfp, items = 2:7, mod = "PCM", thres = pp$thres, slopes = pp$slopes,
+  res <- pp_quiet(PPass(dfp, items = 2:7, thres = pp$thres, slopes = pp$slopes,
                         type = "wle", fitindices = "infit"))
   obj <- pp_fit(set_pcm, "wle")
   pf <- pp_quiet(Pfit(set_pcm$X, obj, fitindices = "infit"))
@@ -28,16 +28,10 @@ test_that("PPass with mod = 'PCM' equals PP_gpcm plus Pfit", {
   expect_equal(res$infit, unname(pf$infit[, "infit"]))
 })
 
-test_that("G1: PPass works without mod (default 1PL)", {
-  expect_equal(as.data.frame(pp_quiet(PPass(df2, items = 2:13, thres = p2$b, fitindices = "lz"))),
-               as.data.frame(pp_quiet(PPass(df2, items = 2:13, mod = "1PL", thres = p2$b,
-                                            fitindices = "lz"))))
-})
-
 test_that("G1: PPass works for mixed tests", {
   pm <- items_to_pp(set_mixed$items)
   dfm <- data.frame(id = seq_len(nrow(set_mixed$X)), set_mixed$X)
-  res <- pp_quiet(PPass(dfm, items = 2:13, mod = "MIXED", thres = pm$thres, slopes = pm$slopes,
+  res <- pp_quiet(PPass(dfm, items = 2:13, thres = pm$thres, slopes = pm$slopes,
                         lowerA = pm$lowerA, upperA = pm$upperA, model2est = pm$model2est,
                         type = "wle", fitindices = "infit"))
   obj <- pp_fit(set_mixed, "wle")
@@ -52,7 +46,7 @@ test_that("G1: PPass returns the non-item columns", {
 })
 
 test_that("G1: PPass accepts a matrix", {
-  a <- pp_quiet(PPass(as.matrix(df2), items = 2:13, mod = "2PL", thres = p2$b,
+  a <- pp_quiet(PPass(as.matrix(df2), items = 2:13, thres = p2$b,
                       slopes = p2$slopes, fitindices = "lz"))
   b <- ppass_2pl(fitindices = "lz")
   expect_identical(names(a), names(b))
@@ -60,7 +54,7 @@ test_that("G1: PPass accepts a matrix", {
 })
 
 test_that("items can be given by name", {
-  res <- pp_quiet(PPass(df2, items = names(df2)[-1], mod = "2PL", thres = p2$b,
+  res <- pp_quiet(PPass(df2, items = names(df2)[-1], thres = p2$b,
                         slopes = p2$slopes, fitindices = "lz"))
   expect_equal(as.data.frame(res), as.data.frame(ppass_2pl(fitindices = "lz")))
   expect_error(PPass(df2, items = c("V1", "nope"), thres = p2$b), "nope")
@@ -69,18 +63,42 @@ test_that("items can be given by name", {
   expect_error(PPass(list(1), thres = 1), "data.frame or a matrix")
 })
 
-test_that("mod must fit the item parameters", {
-  expect_error(PPass(df2, items = 2:13, mod = "1PL", thres = p2$b, slopes = p2$slopes),
-               "mod = '1PL'.*'slopes'")
-  expect_error(PPass(df2, items = 2:13, mod = "2PL", thres = p2$b), "mod = '2PL'.*'slopes'")
-  expect_error(PPass(df2, items = 2:13, mod = "3PL", thres = p2$b, slopes = p2$slopes),
-               "mod = '3PL'.*'lowerA'")
-  expect_error(PPass(df2, items = 2:13, mod = "4PL", thres = p2$b, lowerA = 0.1),
-               "mod = '4PL'.*'upperA'")
-  pp <- items_to_pp(set_pcm$items)
-  expect_error(PPass(set_pcm$X, mod = "PCM", thres = pp$thres, slopes = rep(1.2, 6)),
-               "mod = 'PCM'")
-  expect_error(PPass(df2, items = 2:13, mod = "Rasch", thres = p2$b), "'arg'")
+test_that("the model follows from the item parameters", {
+  labels <- c("1PL" = "1PL model", "2PL" = "2PL model", "3PL" = "3PL model", "4PL" = "4PL model",
+              PCM = "partial credit model", GPCM = "generalized partial credit model",
+              mixed = "mixed 4PL/GPCM model")
+  cls <- c("4pl" = "fourpl", gpcm = "gpcm", mixed = "gpcm4pl")
+  for (nm in names(sets_all)) {
+    set <- sets_all[[nm]]
+    p <- items_to_pp(set$items)
+    args <- switch(set$kind,
+      "4pl" = list(thres = p$b, slopes = if (any(p$slopes != 1)) p$slopes,
+                   lowerA = if (any(p$lowerA != 0)) p$lowerA,
+                   upperA = if (any(p$upperA != 1)) p$upperA),
+      gpcm  = list(thres = p$thres, slopes = p$slopes),
+      mixed = list(thres = p$thres, slopes = p$slopes, lowerA = p$lowerA, upperA = p$upperA))
+    res <- pp_quiet(do.call(PPass, c(list(set$X, fitindices = "lz"), args)))
+    expect_s3_class(attr(res, "ppeo"), cls[[set$kind]])
+    expect_identical(attr(res, "info")$model, labels[[nm]], label = nm)
+    expect_equal(unname(as.matrix(res[, c("estimate", "SE")])), unname(est(pp_fit(set, "wle"))),
+                 label = nm)
+  }
+})
+
+test_that("model2est gives a mixed test, also for dichotomous items", {
+  res <- pp_quiet(PPass(set_2pl$X, thres = p2$b, slopes = p2$slopes, model2est = rep("4PL", 12),
+                        fitindices = "lz"))
+  expect_s3_class(attr(res, "ppeo"), "gpcm4pl")
+  expect_identical(attr(res, "info")$model, "mixed 4PL/GPCM model")
+  expect_equal(res$estimate, ppass_2pl(fitindices = "lz")$estimate)
+})
+
+test_that("mod is ignored with a warning", {
+  expect_warning(res <- pp_quiet(PPass(df2, items = 2:13, mod = "1PL", thres = p2$b,
+                                       slopes = p2$slopes, fitindices = "lz")),
+                 "'mod' is no longer needed")
+  expect_equal(as.data.frame(res), as.data.frame(ppass_2pl(fitindices = "lz")))
+  expect_identical(attr(res, "info")$model, "2PL model")
 })
 
 test_that("eap and robust give the estimates only, with a message", {
