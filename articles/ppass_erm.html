@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@ must match it.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/manuelreif/PP" class="external-link">PP</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fourpl_df</span><span class="op">)</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">fourpl_df</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">14</span>, mod <span class="op">=</span> <span class="st">"3PL"</span>,</span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">fourpl_df</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">14</span>,</span>
 <span>             thres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"diffpar"</span><span class="op">)</span>, slopes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"slopes"</span><span class="op">)</span>,</span>
 <span>             lowerA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"lowerA"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res</span></span>
@@ -143,10 +143,19 @@ of the estimates, the person fit and the persons flagged by lz*
 <span><span class="co">#&gt;      60 RWQ0486   w    -2.16  -3.07</span></span>
 <span><span class="co">#&gt;      43 WUS0752   w     0.78  -3.04</span></span>
 <span><span class="co">#&gt;      39 UHY1090   m     2.88  -2.07</span></span></code></pre></div>
+<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> shows the person fit map: lz* against the
+estimate, with the critical values of <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and the
+flagged persons labelled, here by their id.
+<code>which = "precision"</code> shows the measurement precision of the
+test and <code>which = "profile"</code> the answers of single persons
+(see <code><a href="../reference/pp-plots.html">?"pp-plots"</a></code>).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, label <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="ppass_erm_files/figure-html/plot-1.png" class="r-plt" alt="lz* of every person against the WLE estimate, flagged persons highlighted and labelled with their id" width="576"></p>
 <p>The result is a data.frame. It can be filtered, merged or written to
 a file like any other data.frame; <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> drops the
 extra information.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span><span class="op">[</span><span class="va">res</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"w"</span> <span class="op">&amp;</span> <span class="va">res</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="st">"ok"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"estimate"</span>, <span class="st">"SE"</span>, <span class="st">"lzstar"</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;        id estimate    SE lzstar</span></span>
 <span><span class="co">#&gt; 1 LVL0694   -0.936 0.767  1.026</span></span>
@@ -218,7 +227,7 @@ extra information.</p>
 </table>
 <p><code><a href="../reference/Jkpp.html">JKpp()</a></code> and <code><a href="../reference/PV.html">PV()</a></code> work directly on the
 result, without estimating again:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/Jkpp.html">JKpp</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">estimates</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     estimate        SE  L excluded status</span></span>
 <span><span class="co">#&gt; 1 -0.9723726 0.6735435 12        0     ok</span></span>
@@ -227,9 +236,12 @@ result, without estimating again:</p>
 <span><span class="co">#&gt; 4  1.5539111 1.6822352 12        0     ok</span></span>
 <span><span class="co">#&gt; 5  0.3442215 0.5400380 11        0     ok</span></span>
 <span><span class="co">#&gt; 6 -5.8298151 0.5859734 12        0     ok</span></span></code></pre></div>
-<p>For a polytomous test, choose <code>mod = "PCM"</code> or
-<code>mod = "GPCM"</code>; for a test with both dichotomous and
-polytomous items, choose <code>mod = "MIXED"</code>.</p>
+<p>The model follows from the item parameters: here <code>slopes</code>
+and <code>lowerA</code> make it a 3PL model. A threshold matrix with
+several thresholds per item gives the PCM (all slopes 1) or the GPCM;
+together with <code>lowerA</code> or <code>upperA</code> it gives a test
+with both dichotomous (4PL) and polytomous (GPCM) items, estimated with
+<code><a href="../reference/PPall.html">PPall()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="models-fitted-with-erm">Models fitted with eRm<a class="anchor" aria-label="anchor" href="#models-fitted-with-erm"></a>
@@ -239,7 +251,7 @@ polytomous items, choose <code>mod = "MIXED"</code>.</p>
 estimates of the abilities. <code><a href="../reference/PPass.html">PPass()</a></code> takes the fitted object
 and adds WLE, MAP, EAP and robust estimates, the person fit, the
 jackknife and plausible values.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">eRm</span><span class="op">)</span></span>
 <span><span class="va">rm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/eRm/man/RM.html" class="external-link">RM</a></span><span class="op">(</span><span class="va">raschdat1</span><span class="op">)</span></span>
 <span><span class="va">res_rm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">rm1</span><span class="op">)</span></span>
@@ -264,18 +276,18 @@ jackknife and plausible values.</p>
 <span><span class="co">#&gt; ... 90 more persons</span></span>
 <span><span class="co">#&gt; Not shown: lz_unst, in_chisq, in_df, in_pv, ou_chisq, ou_df, ou_pv</span></span></code></pre></div>
 <p>The maximum likelihood estimates are the same as those of eRm:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_mle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">rm1</span>, type <span class="op">=</span> <span class="st">"mle"</span>, fitindices <span class="op">=</span> <span class="st">"lzstar"</span><span class="op">)</span></span>
 <span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/eRm/man/person.parameter.html" class="external-link">person.parameter</a></span><span class="op">(</span><span class="va">rm1</span><span class="op">)</span></span>
 <span><span class="va">ok</span> <span class="op">&lt;-</span> <span class="va">res_mle</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="st">"ok"</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">res_mle</span><span class="op">$</span><span class="va">estimate</span><span class="op">[</span><span class="va">ok</span><span class="op">]</span> <span class="op">-</span> <span class="va">pp</span><span class="op">$</span><span class="va">theta.table</span><span class="op">[</span><span class="va">ok</span>, <span class="st">"Person Parameter"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2.456019e-05</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 2.452897e-05</span></span></code></pre></div>
 <p>eRm stores the parameters of the item categories as easiness
 parameters. <code><a href="../reference/PPass.html">PPass()</a></code> converts them into PP thresholds, so
 the eRm package is not even needed to run <code><a href="../reference/PPass.html">PPass()</a></code> on a
 saved object. Partial credit and rating scale models are estimated with
 <code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code>, with all slopes equal to 1:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2751</span><span class="op">)</span></span>
 <span><span class="va">thres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1.2</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0.3</span>, <span class="fl">1</span>, <span class="fl">1.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_gpcm.html">sim_gpcm</a></span><span class="op">(</span>thres <span class="op">=</span> <span class="va">thres</span>, alpha <span class="op">=</span> <span class="fl">1</span>, theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">300</span><span class="op">)</span><span class="op">)</span></span>
@@ -289,7 +301,7 @@ is a virtual item with its own parameters. A person answers the virtual
 items of their group and gets one ability estimate across all time
 points. eRm gives no person parameters for models with group contrasts;
 <code><a href="../reference/PPass.html">PPass()</a></code> does:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_gpcm.html">sim_gpcm</a></span><span class="op">(</span>thres <span class="op">=</span> <span class="va">thres</span>, alpha <span class="op">=</span> <span class="fl">1</span>, theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">lpcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/eRm/man/LPCM.html" class="external-link">LPCM</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x2</span><span class="op">)</span>, mpoints <span class="op">=</span> <span class="fl">2</span>, groupvec <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res_lpcm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">lpcm</span><span class="op">)</span></span>
@@ -315,7 +327,7 @@ points. eRm gives no person parameters for models with group contrasts;
 <span><span class="co">#&gt; Not shown: lz_unst, in_chisq, in_df, in_pv, ou_chisq, ou_df, ou_pv</span></span></code></pre></div>
 <p>Plausible values need a prior, so they require an EAP or MAP
 estimate, such as <code>res_pcm</code> above:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">pv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PV.html">PV</a></span><span class="op">(</span><span class="va">res_pcm</span>, npv <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pv</span><span class="op">$</span><span class="va">pvdraws</span>, <span class="fl">3</span><span class="op">)</span></span>

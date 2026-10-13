@@ -1,8 +1,8 @@
 # Changelog
 
-## PP 0.7.0
+## PP 1.0.0
 
-PP 0.7.0 is a rewrite of the numerical core. Every estimate is now
+PP 1.0.0 is a rewrite of the numerical core. Every estimate is now
 checked against independent reference implementations, and several
 results of earlier versions were wrong. Results therefore differ from
 0.6.4-1 where noted below. Function and argument names are unchanged
@@ -52,7 +52,7 @@ unless stated.
 - Scalar `mu`, `sigma2` or item parameters led to out-of-bounds memory
   reads in C++; they are now recycled.
 - Duplicated response patterns with `killdupli = TRUE` could be merged
-  wrongly (ambiguous key).
+  wrongly (ambiguous key); the option is gone (see Deprecated).
 - Numerically stable item probabilities (no overflow in the 4PL,
   log-sum-exp in the GPCM), also in
   [`sim_4pl()`](https://manuelreif.github.io/PP/reference/sim_4pl.md)
@@ -94,6 +94,11 @@ unless stated.
   thresholds when it could not find the item parameters.
 - `JKpp(maxsteps, exac)` default to the values of the estimation object
   (before 500 and 0.001).
+- `Pfit(pp, fitindices, SE)`: the argument `respm` is removed, the
+  responses come from the estimation object. Use `Pfit(res)` instead of
+  `Pfit(respm = X, pp = res)`. It was needed in 0.6.4-1, whose
+  estimation objects lacked the rows of persons with an extreme score
+  (MLE) and of duplicated patterns.
 
 ### New features
 
@@ -111,17 +116,21 @@ unless stated.
   Defaults are unified: `maxsteps = 100`, `exac = 0.001`.
 - [`Pfit()`](https://manuelreif.github.io/PP/reference/pfit.md) works
   for all models (1PL–4PL, PCM, GPCM and mixed tests), for MLE, WLE and
-  MAP, with missing responses; `respm` is optional (the responses come
-  from the estimation object). Jackknife SEs for all four statistics
+  MAP, with missing responses. Jackknife SEs for all four statistics
   (new columns `in_se`, `ou_se`),
   [`print()`](https://rdrr.io/r/base/print.html) and
   [`summary()`](https://rdrr.io/r/base/summary.html).
 - [`PPass()`](https://manuelreif.github.io/PP/reference/PPass.md):
-  - works without `mod` (default 1PL), with `mod = "MIXED"` and with a
-    matrix; `items` can be given by name; the other columns (e.g. an id)
-    are kept as person variables. `mod` is checked against the item
-    parameters (before, `mod = "1PL"` with slopes silently fitted a 2PL
-    model).
+  - no longer needs `mod` and `model2est`: the model (1PL to 4PL, PCM,
+    GPCM or a mixed test) follows from the item parameters, as in
+    [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md);
+    both are ignored with a warning. Before, `mod` only switched between
+    [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md),
+    [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md)
+    and [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md),
+    and `mod = "MIXED"` did not work.
+  - works with a matrix; `items` can be given by name; the other columns
+    (e.g. an id) are kept as person variables.
   - takes every eRm model: RM, LLTM, RSM, PCM, LRSM and LPCM, also with
     several time points and groups, including group contrasts, for which
     eRm gives no person parameters. Its maximum likelihood estimates
@@ -134,11 +143,28 @@ unless stated.
     [`JKpp()`](https://manuelreif.github.io/PP/reference/Jkpp.md) and
     [`PV()`](https://manuelreif.github.io/PP/reference/PV.md) work
     directly on the result.
+- [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for the
+  results of
+  [`PPass()`](https://manuelreif.github.io/PP/reference/PPass.md),
+  [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md),
+  [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md)
+  and [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md)
+  (help page
+  [`?"pp-plots"`](https://manuelreif.github.io/PP/reference/pp-plots.md)),
+  drawn with the new dependency tinyplot:
+  - `which = "fit"`: person fit map, the fit statistic against the
+    estimate with the flagged persons labelled;
+  - `which = "precision"`: the standard error of each person and of the
+    whole test, 1/sqrt(I(theta)) from the known item parameters, below
+    the distribution of the estimates and with the location of every
+    item;
+  - `which = "profile"`: observed against expected scores of the
+    answered items of single persons, with the unexpected answers
+    labelled.
 - [`sim_mixed()`](https://manuelreif.github.io/PP/reference/sim_mixed.md)
   simulates tests of 4PL and GPCM items.
 - [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md):
-  `slopes`, `lowerA`, `upperA` and `model2est` are optional (`model2est`
-  defaults to `findmodel(thres)`);
+  `slopes`, `lowerA` and `upperA` are optional;
   [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md) with
   `lowerA` but without `slopes` fits the 3PL with slopes 1.
 - Input checks with clear messages for all arguments.
@@ -147,6 +173,22 @@ unless stated.
 
 ### Deprecated
 
+- The options of `ctrl` in
+  [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md),
+  [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md)
+  and [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md)
+  are ignored with a warning: `killdupli` (estimate duplicated response
+  patterns once) and `skipcheck` (skip the checks of the responses)
+  saved time with the old estimation routine, which iterated all persons
+  together. Every person is now estimated separately, and the checks
+  always run. `JKpp(ctrl)` had no effect already in 0.6.4-1 and is
+  ignored with a warning, too.
+- `PPall(model2est)` is ignored with a warning: the model of each item
+  follows from `thres` (one threshold: 4PL item, several: GPCM item). A
+  dichotomous item declared as `"GPCM"` was the same as a 4PL item with
+  asymptotes 0 and 1.
+  [`findmodel()`](https://manuelreif.github.io/PP/reference/findmodel.md)
+  shows the model of each item.
 - `$resPP` (estimation objects) and `$resjk` (jackknife) are kept as
   aliases of the 0.6.4 layout; use `$estimates`.
 

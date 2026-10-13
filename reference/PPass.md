@@ -15,7 +15,6 @@ PPass(...)
 PPass(
   respdf,
   items = "all",
-  mod = c("1PL", "2PL", "3PL", "4PL", "PCM", "GPCM", "MIXED"),
   fitindices = c("lz", "lzstar", "infit", "outfit"),
   SE = FALSE,
   ...
@@ -50,11 +49,6 @@ as.data.frame(x, row.names = NULL, optional = FALSE, ...)
 
   The item columns of `respdf`: `"all"` (default), their positions or
   their names.
-
-- mod:
-
-  The model: `"1PL"` (default), `"2PL"`, `"3PL"`, `"4PL"`, `"PCM"`,
-  `"GPCM"` or `"MIXED"`.
 
 - fitindices:
 
@@ -96,7 +90,7 @@ as.data.frame(x, row.names = NULL, optional = FALSE, ...)
 
   Arguments for the estimation: the item parameters (`PPass.default`
   only) and `type`, `mu`, `sigma2`, `theta_start`, `range`, `maxsteps`,
-  `exac`, `H`, `ctrl` and `verbose`, see
+  `exac`, `H` and `verbose`, see
   [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md),
   [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md)
   and [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md).
@@ -116,7 +110,10 @@ so [`JKpp()`](https://manuelreif.github.io/PP/reference/Jkpp.md) and
 [`PV()`](https://manuelreif.github.io/PP/reference/PV.md) can be applied
 to the result directly; [`print()`](https://rdrr.io/r/base/print.html)
 and [`summary()`](https://rdrr.io/r/base/summary.html) show an overview
-with the persons flagged by the person fit, and
+with the persons flagged by the person fit,
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) draws the
+person fit map, the measurement precision or person profiles (see
+[pp-plots](https://manuelreif.github.io/PP/reference/pp-plots.md)), and
 [`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html) returns a
 plain data.frame.
 
@@ -124,16 +121,20 @@ plain data.frame.
 
 **Data with item parameters** (`PPass.default`): the columns `items` of
 `respdf` are the responses, the other columns are kept as person
-variables. `mod` selects the estimation function:
-[`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md) for
-1PL to 4PL,
-[`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md) for
-PCM and GPCM,
-[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) for
-mixed tests. The item parameters are passed in `...` (`thres`, `slopes`,
-`lowerA`, `upperA`, `model2est`) and must fit `mod`: 1PL takes only
-`thres`, 2PL adds `slopes`, 3PL needs `lowerA`, 4PL needs `upperA`, and
-the PCM has all slopes equal to 1.
+variables. The item parameters are passed in `...` (`thres`, `slopes`,
+`lowerA`, `upperA`), and the model follows from them: `thres` alone
+gives the 1PL model, with `slopes` the 2PL, with `lowerA` the 3PL and
+with `upperA` the 4PL model, estimated with
+[`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md). A
+threshold matrix with more than one threshold for some item gives the
+partial credit model (all slopes 1) or the generalized partial credit
+model, estimated with
+[`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md).
+With such polytomous items and `lowerA` or `upperA`, the test is a mixed
+test (items with one threshold are 4PL items), estimated with
+[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md). The
+arguments `mod` and `model2est` of earlier versions are no longer
+needed; they are ignored with a warning.
 
 **eRm models** (`PPass.eRm`): all models of the `eRm` package are
 supported, the Rasch model (`RM`), the linear logistic test model
@@ -171,7 +172,8 @@ an estimate of type `"mle"`, `"wle"` or `"map"`. For `type = "eap"` and
 [PPall](https://manuelreif.github.io/PP/reference/PPall.md),
 [Pfit](https://manuelreif.github.io/PP/reference/pfit.md),
 [JKpp](https://manuelreif.github.io/PP/reference/Jkpp.md),
-[PV](https://manuelreif.github.io/PP/reference/PV.md)
+[PV](https://manuelreif.github.io/PP/reference/PV.md),
+[pp-plots](https://manuelreif.github.io/PP/reference/pp-plots.md)
 
 ## Author
 
@@ -192,7 +194,7 @@ awm <- sim_4pl(beta = diffpar, alpha = sl, lowerA = rep(0, 15), upperA = rep(1, 
 dat <- data.frame(id = 1:200, group = rep(c("a", "b"), 100), awm)
 
 # 2PL, WLE estimates and all person fit indices; id and group are kept
-res <- PPass(dat, items = 3:17, mod = "2PL", thres = diffpar, slopes = sl)
+res <- PPass(dat, items = 3:17, thres = diffpar, slopes = sl)
 res
 #> Person assessment: 200 persons, 15 items 
 #> Model: 2PL model | WLE estimates
@@ -246,6 +248,10 @@ summary(res)
 #>      45  45     a    1.578  -2.10
 #>     132 132     b   -0.615  -2.04
 
+# person fit map, flagged persons labelled with their id
+plot(res, label = "id")
+
+
 # a plain data.frame for further use
 head(as.data.frame(res))
 #>   id group   estimate        SE status         lz    lz_unst     lzstar
@@ -278,8 +284,7 @@ jk <- JKpp(res)
 
 data(pp_amt)
 d <- pp_amt$daten_amt
-rd_res <- PPass(d, items = 8:ncol(d), mod = "1PL", thres = pp_amt$betas[, 2],
-                fitindices = "lz")
+rd_res <- PPass(d, items = 8:ncol(d), thres = pp_amt$betas[, 2], fitindices = "lz")
 head(rd_res)
 #>      ID   AGE TE_GA FORM       TIME1       TIME2   REL estimate    SE status
 #> 1 P0001    20    GA  S02 13:51:00.00 14:27:00.00 0.828    1.410 0.418     ok

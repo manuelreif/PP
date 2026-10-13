@@ -22,7 +22,7 @@ the model, and the item parameters must match it.
 
 library(PP)
 data(fourpl_df)
-res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+res <- PPass(fourpl_df, items = 3:14,
              thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
              lowerA = attr(fourpl_df, "lowerA"))
 res
@@ -90,6 +90,23 @@ s <- summary(res)
 #>      39 UHY1090   m     2.88  -2.07
 ```
 
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) shows the
+person fit map: lz\* against the estimate, with the critical values of
+[`summary()`](https://rdrr.io/r/base/summary.html) and the flagged
+persons labelled, here by their id. `which = "precision"` shows the
+measurement precision of the test and `which = "profile"` the answers of
+single persons (see
+[`?"pp-plots"`](https://manuelreif.github.io/PP/reference/pp-plots.md)).
+
+``` r
+
+plot(res, label = "id")
+```
+
+![lz\* of every person against the WLE estimate, flagged persons
+highlighted and labelled with their
+id](ppass_erm_files/figure-html/plot-1.png)
+
 The result is a data.frame. It can be filtered, merged or written to a
 file like any other data.frame;
 [`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html) drops the
@@ -133,8 +150,12 @@ head(JKpp(res)$estimates)
 #> 6 -5.8298151 0.5859734 12        0     ok
 ```
 
-For a polytomous test, choose `mod = "PCM"` or `mod = "GPCM"`; for a
-test with both dichotomous and polytomous items, choose `mod = "MIXED"`.
+The model follows from the item parameters: here `slopes` and `lowerA`
+make it a 3PL model. A threshold matrix with several thresholds per item
+gives the PCM (all slopes 1) or the GPCM; together with `lowerA` or
+`upperA` it gives a test with both dichotomous (4PL) and polytomous
+(GPCM) items, estimated with
+[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md).
 
 ## Models fitted with eRm
 
@@ -180,7 +201,7 @@ res_mle <- PPass(rm1, type = "mle", fitindices = "lzstar")
 pp <- person.parameter(rm1)
 ok <- res_mle$status == "ok"
 max(abs(res_mle$estimate[ok] - pp$theta.table[ok, "Person Parameter"]))
-#> [1] 2.456019e-05
+#> [1] 2.452897e-05
 ```
 
 eRm stores the parameters of the item categories as easiness parameters.

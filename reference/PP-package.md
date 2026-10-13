@@ -126,7 +126,7 @@ head(res$estimates)
 #> 6  1.2207987 0.7839490      4     ok
 
 # estimates and person fit in one table
-PPass(data.frame(id = 1:100, x), items = 2:13, mod = "2PL", thres = b, slopes = sl)
+PPass(data.frame(id = 1:100, x), items = 2:13, thres = b, slopes = sl)
 #> Person assessment: 100 persons, 12 items 
 #> Model: 2PL model | WLE estimates
 #> Status: 100 ok 

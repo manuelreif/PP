@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +34,10 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.7.0" id="pp-070">PP 0.7.0<a class="anchor" aria-label="anchor" href="#pp-070"></a></h2>
-<p>PP 0.7.0 is a rewrite of the numerical core. Every estimate is now checked against independent reference implementations, and several results of earlier versions were wrong. Results therefore differ from 0.6.4-1 where noted below. Function and argument names are unchanged unless stated.</p>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="pp-100">PP 1.0.0<a class="anchor" aria-label="anchor" href="#pp-100"></a></h2>
+<p>PP 1.0.0 is a rewrite of the numerical core. Every estimate is now checked against independent reference implementations, and several results of earlier versions were wrong. Results therefore differ from 0.6.4-1 where noted below. Function and argument names are unchanged unless stated.</p>
 <div class="section level3">
-<h3 id="corrected-results-0-7-0">Corrected results<a class="anchor" aria-label="anchor" href="#corrected-results-0-7-0"></a></h3>
+<h3 id="corrected-results-1-0-0">Corrected results<a class="anchor" aria-label="anchor" href="#corrected-results-1-0-0"></a></h3>
 <ul><li>
 <strong>Jackknife (<code><a href="../reference/Jkpp.html">JKpp()</a></code>)</strong>: the standard error was too small by a factor of about L − 1 (L = number of items). The jackknife now runs over the answered items only (before: all items), leave-one-out samples without a finite estimate are counted in the new column <code>excluded</code> with a warning instead of being dropped silently, and with <code>killdupli = TRUE</code> the results were assigned to the wrong persons. The EAP jackknife of mixed tests failed.</li>
 <li>
@@ -55,11 +55,11 @@
 <li>
 <strong>Person fit (<code><a href="../reference/pfit.html">Pfit()</a></code>)</strong>: lz* was wrong with missing responses; infit and outfit of the PCM took the number of categories from the data instead of the item parameters and ignored the slopes of the GPCM; the jackknife SE of lz ignored person-specific priors. Results are no longer rounded (p values of 0.0004 were 0).</li>
 <li>Scalar <code>mu</code>, <code>sigma2</code> or item parameters led to out-of-bounds memory reads in C++; they are now recycled.</li>
-<li>Duplicated response patterns with <code>killdupli = TRUE</code> could be merged wrongly (ambiguous key).</li>
+<li>Duplicated response patterns with <code>killdupli = TRUE</code> could be merged wrongly (ambiguous key); the option is gone (see Deprecated).</li>
 <li>Numerically stable item probabilities (no overflow in the 4PL, log-sum-exp in the GPCM), also in <code><a href="../reference/sim_4pl.html">sim_4pl()</a></code> and <code><a href="../reference/sim_gpcm.html">sim_gpcm()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="breaking-changes-0-7-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-7-0"></a></h3>
+<h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
 <ul><li>
 <code><a href="../reference/PV.html">PV()</a></code> needs an estimate with a prior, i.e. <code>type = "eap"</code> or <code>"map"</code>; it stops for MLE, WLE and robust estimates. These have no prior any more: <code>mu</code> and <code>sigma2</code> given there are ignored with a warning and stored as <code>NA</code>.</li>
 <li>Persons whose estimating equation has no root inside <code>range</code> (new argument, default <code>c(-6, 6)</code>) get the bound with status <code>"boundary"</code> and a warning (before: NaN or drifting values). Persons without any response get <code>NA</code> (before: <code>+Inf</code>); for EAP the prior mean and SD.</li>
@@ -71,43 +71,58 @@
 <li>Removed: <code>lzstar_mixed()</code>, <code>Pfit_lzstarmix()</code> and <code>print_personfit_summary()</code> (new in 0.6.4-1). <code><a href="../reference/pfit.html">Pfit()</a></code> now gives lz and lz* for all models (lz* after Sinharay, 2016, with the correction of the estimation type), <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> of its result replaces the printed summary. <code>Pfit_lzstarmix()</code> used random thresholds when it could not find the item parameters.</li>
 <li>
 <code>JKpp(maxsteps, exac)</code> default to the values of the estimation object (before 500 and 0.001).</li>
+<li>
+<code>Pfit(pp, fitindices, SE)</code>: the argument <code>respm</code> is removed, the responses come from the estimation object. Use <code>Pfit(res)</code> instead of <code>Pfit(respm = X, pp = res)</code>. It was needed in 0.6.4-1, whose estimation objects lacked the rows of persons with an extreme score (MLE) and of duplicated patterns.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-0-7-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-0"></a></h3>
+<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
 <ul><li>Every result has <code>$estimates</code>, a data.frame with <code>estimate</code>, <code>SE</code>, <code>nsteps</code> and <code>status</code> (<code>"ok"</code>, <code>"extreme"</code>, <code>"boundary"</code>, <code>"no_response"</code>, <code>"not_converged"</code>) per person; <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> methods. <code><a href="../reference/Jkpp.html">JKpp()</a></code> returns <code>$estimates</code> with <code>L</code>, <code>excluded</code> and <code>status</code>.</li>
 <li>New arguments <code>range</code> and <code>verbose</code> in <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code>, <code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="../reference/PPall.html">PPall()</a></code>. Defaults are unified: <code>maxsteps = 100</code>, <code>exac = 0.001</code>.</li>
 <li>
-<code><a href="../reference/pfit.html">Pfit()</a></code> works for all models (1PL–4PL, PCM, GPCM and mixed tests), for MLE, WLE and MAP, with missing responses; <code>respm</code> is optional (the responses come from the estimation object). Jackknife SEs for all four statistics (new columns <code>in_se</code>, <code>ou_se</code>), <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.</li>
+<code><a href="../reference/pfit.html">Pfit()</a></code> works for all models (1PL–4PL, PCM, GPCM and mixed tests), for MLE, WLE and MAP, with missing responses. Jackknife SEs for all four statistics (new columns <code>in_se</code>, <code>ou_se</code>), <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>.</li>
 <li>
 <code><a href="../reference/PPass.html">PPass()</a></code>:
-<ul><li>works without <code>mod</code> (default 1PL), with <code>mod = "MIXED"</code> and with a matrix; <code>items</code> can be given by name; the other columns (e.g. an id) are kept as person variables. <code>mod</code> is checked against the item parameters (before, <code>mod = "1PL"</code> with slopes silently fitted a 2PL model).</li>
+<ul><li>no longer needs <code>mod</code> and <code>model2est</code>: the model (1PL to 4PL, PCM, GPCM or a mixed test) follows from the item parameters, as in <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code>; both are ignored with a warning. Before, <code>mod</code> only switched between <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code>, <code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="../reference/PPall.html">PPall()</a></code>, and <code>mod = "MIXED"</code> did not work.</li>
+<li>works with a matrix; <code>items</code> can be given by name; the other columns (e.g. an id) are kept as person variables.</li>
 <li>takes every eRm model: RM, LLTM, RSM, PCM, LRSM and LPCM, also with several time points and groups, including group contrasts, for which eRm gives no person parameters. Its maximum likelihood estimates equal <code><a href="https://rdrr.io/pkg/eRm/man/person.parameter.html" class="external-link">eRm::person.parameter()</a></code>. eRm is not needed at run time.</li>
 <li>
 <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> give an overview with the persons flagged by the person fit; <code><a href="../reference/Jkpp.html">JKpp()</a></code> and <code><a href="../reference/PV.html">PV()</a></code> work directly on the result.</li>
 </ul></li>
 <li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> for the results of <code><a href="../reference/PPass.html">PPass()</a></code>, <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code>, <code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="../reference/PPall.html">PPall()</a></code> (help page <code><a href="../reference/pp-plots.html">?"pp-plots"</a></code>), drawn with the new dependency tinyplot:
+<ul><li>
+<code>which = "fit"</code>: person fit map, the fit statistic against the estimate with the flagged persons labelled;</li>
+<li>
+<code>which = "precision"</code>: the standard error of each person and of the whole test, 1/sqrt(I(theta)) from the known item parameters, below the distribution of the estimates and with the location of every item;</li>
+<li>
+<code>which = "profile"</code>: observed against expected scores of the answered items of single persons, with the unexpected answers labelled.</li>
+</ul></li>
+<li>
 <code><a href="../reference/sim_mixed.html">sim_mixed()</a></code> simulates tests of 4PL and GPCM items.</li>
 <li>
-<code><a href="../reference/PPall.html">PPall()</a></code>: <code>slopes</code>, <code>lowerA</code>, <code>upperA</code> and <code>model2est</code> are optional (<code>model2est</code> defaults to <code>findmodel(thres)</code>); <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code> with <code>lowerA</code> but without <code>slopes</code> fits the 3PL with slopes 1.</li>
+<code><a href="../reference/PPall.html">PPall()</a></code>: <code>slopes</code>, <code>lowerA</code> and <code>upperA</code> are optional; <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code> with <code>lowerA</code> but without <code>slopes</code> fits the 3PL with slopes 1.</li>
 <li>Input checks with clear messages for all arguments.</li>
 <li>No startup message, no <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> output and no warning for the default prior.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="deprecated-0-7-0">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-0-7-0"></a></h3>
-<ul><li>
+<h3 id="deprecated-1-0-0">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated-1-0-0"></a></h3>
+<ul><li>The options of <code>ctrl</code> in <code><a href="../reference/PP_4pl.html">PP_4pl()</a></code>, <code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="../reference/PPall.html">PPall()</a></code> are ignored with a warning: <code>killdupli</code> (estimate duplicated response patterns once) and <code>skipcheck</code> (skip the checks of the responses) saved time with the old estimation routine, which iterated all persons together. Every person is now estimated separately, and the checks always run. <code>JKpp(ctrl)</code> had no effect already in 0.6.4-1 and is ignored with a warning, too.</li>
+<li>
+<code>PPall(model2est)</code> is ignored with a warning: the model of each item follows from <code>thres</code> (one threshold: 4PL item, several: GPCM item). A dichotomous item declared as <code>"GPCM"</code> was the same as a 4PL item with asymptotes 0 and 1. <code><a href="../reference/findmodel.html">findmodel()</a></code> shows the model of each item.</li>
+<li>
 <code>$resPP</code> (estimation objects) and <code>$resjk</code> (jackknife) are kept as aliases of the 0.6.4 layout; use <code>$estimates</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="performance-0-7-0">Performance<a class="anchor" aria-label="anchor" href="#performance-0-7-0"></a></h3>
+<h3 id="performance-1-0-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-0-0"></a></h3>
 <p>The C++ core estimates every person separately with its own convergence check (before: all persons iterated until the slowest converged). Median times on 5000 persons × 40 items: 1PL–3PL estimates 0.02 s (before 0.3–2.9 s), EAP 0.03 s (0.8 s); GPCM with 2000 × 20: 0.01 s (0.2–1.3 s); <code><a href="../reference/Jkpp.html">JKpp()</a></code> on 500 × 40: 0.05 s (142 s); <code><a href="../reference/PV.html">PV()</a></code> 150 times and <code><a href="../reference/sim_gpcm.html">sim_gpcm()</a></code> 400 times faster.</p>
 </div>
 <div class="section level3">
-<h3 id="documentation-0-7-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-7-0"></a></h3>
+<h3 id="documentation-1-0-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-0"></a></h3>
 <ul><li>New vignettes: “Getting started with PP”, “Person fit with PP” and “Person assessment with PPass, also for eRm models”.</li>
 <li>Examples are part of the help pages.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="maintenance-0-7-0">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-0-7-0"></a></h3>
+<h3 id="maintenance-1-0-0">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-1-0-0"></a></h3>
 <ul><li>Manuel Reif is the maintainer again. The repository moved to <a href="https://github.com/manuelreif/PP" class="external-link uri">https://github.com/manuelreif/PP</a>.</li>
 </ul></div>
 </div>

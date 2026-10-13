@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,10 +146,10 @@ to its limit; <code>"no_response"</code> for persons without any answer;
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res_mle</span>, nrowmax <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; PP Version: 0.7.0 </span></span>
+<span><span class="co">#&gt; PP Version: 1.0.0 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call: PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par,      type = "mle") </span></span>
-<span><span class="co">#&gt; - job started @ Mon Oct 12 12:26:50 2026 </span></span>
+<span><span class="co">#&gt; - job started @ Tue Oct 13 09:27:01 2026 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Estimation type: mle </span></span>
 <span><span class="co">#&gt; </span></span>
@@ -226,6 +226,24 @@ person’s ability.</li>
 <span><span class="co">#&gt; [6,]       -Inf -4.7299643 -2.0455811</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="measurement-precision">Measurement precision<a class="anchor" aria-label="anchor" href="#measurement-precision"></a>
+</h2>
+<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> shows where the test measures accurately and
+whether the persons are located there. The upper panel is the
+distribution of the estimates, the lower panel the standard error of
+each person. Because the item parameters are known, the standard error
+of the whole test follows from the test information:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><msqrt><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">1/\sqrt{I(\theta)}</annotation></semantics></math>.
+The ticks at the bottom mark the items, at the ability where each item
+gives the most information. One response in <code>fourpl_df</code> is
+missing, so the curve of all 12 items is drawn on request
+(<code>curve = TRUE</code>); it holds for every person who answered all
+items.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res_wle</span>, which <span class="op">=</span> <span class="st">"precision"</span>, curve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><img src="intro_pp_files/figure-html/precision-1.png" class="r-plt" alt="Histogram of the WLE estimates above, and below the standard error of each person against the estimate with the standard error curve of the test" width="576"></p>
+</div>
+<div class="section level2">
 <h2 id="polytomous-and-mixed-tests">Polytomous and mixed tests<a class="anchor" aria-label="anchor" href="#polytomous-and-mixed-tests"></a>
 </h2>
 <p><code><a href="../reference/PP_gpcm.html">PP_gpcm()</a></code> estimates abilities for the generalized
@@ -233,7 +251,7 @@ partial credit model. With all slopes equal to 1 (the default) this is
 the partial credit model. <code>thres</code> has one column per item
 with its thresholds; items with fewer categories have <code>NA</code>
 below their last threshold. A first row of zeros is optional.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">thres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1.5</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>               <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">1.2</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>               <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.5</span>, <span class="cn">NA</span>, <span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
@@ -252,10 +270,10 @@ below their last threshold. A first row of zeros is optional.</p>
 <p>For a test with dichotomous and polytomous items, use
 <code><a href="../reference/PPall.html">PPall()</a></code>. Each column of <code>thres</code> holds the
 thresholds of one item: a 4PL item has a single threshold (its
-difficulty), a GPCM item has several. <code><a href="../reference/findmodel.html">findmodel()</a></code> tells the
-two apart and is the default for <code>model2est</code>. Lower and upper
-asymptotes apply to the 4PL items only.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+difficulty), a GPCM item has several, and this decides the model of each
+item (<code><a href="../reference/findmodel.html">findmodel()</a></code> shows it). Lower and upper asymptotes
+apply to the 4PL items only.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">thres_mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.3</span><span class="op">)</span>,</span>
 <span>                   <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">0.6</span>, <span class="fl">1.1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/findmodel.html">findmodel</a></span><span class="op">(</span><span class="va">thres_mix</span><span class="op">)</span></span>
@@ -280,7 +298,7 @@ and standard error (Wainer &amp; Wright, 1980).
 <code>cmeth = "median"</code> and <code>cmeth = "AMT"</code> (Andrews’
 sine estimator) give robust estimates; the standard error is the same
 for all three.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">jk</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Jkpp.html">JKpp</a></span><span class="op">(</span><span class="va">res_wle</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">jk</span><span class="op">$</span><span class="va">estimates</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     estimate        SE  L excluded status</span></span>
@@ -306,7 +324,7 @@ for all three.</p>
 person. They need a prior, so <code><a href="../reference/PV.html">PV()</a></code> takes an estimate of
 type <code>"eap"</code> or <code>"map"</code> and uses its prior (here
 different for women and men).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">pv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PV.html">PV</a></span><span class="op">(</span><span class="va">res_eap</span>, npv <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pv</span><span class="op">$</span><span class="va">pvdraws</span><span class="op">)</span></span>

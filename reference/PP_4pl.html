@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,9 +112,7 @@
 
 
 <dt id="arg-ctrl">ctrl<a class="anchor" aria-label="anchor" href="#arg-ctrl"></a></dt>
-<dd><p>more controls:</p><ul><li><p><code>killdupli</code>: Should duplicated response pattern be removed for estimation (estimation is faster)? This is especially reasonable in case of a large number of examinees and a small number of items.  Use this option with caution (for map and eap), because persons with different <code>mu</code> and <code>sigma2</code> will have different ability estimates despite they responded identically. Default value is <code>FALSE</code>.</p></li>
-<li><p><code>skipcheck</code>: Default = FALSE. If TRUE data matrix and arguments are not checked - this saves time e.g. when you use this function for simulations.</p></li>
-</ul></dd>
+<dd><p>No longer used. Its options <code>killdupli</code> and <code>skipcheck</code> of version 0.6.4 saved time with the old estimation routine; since 1.0.0 every person is estimated separately, and options given are ignored with a warning.</p></dd>
 
 
 <dt id="arg-range">range<a class="anchor" aria-label="anchor" href="#arg-range"></a></dt>
@@ -145,7 +143,7 @@
 <dd><p>The result in the layout of earlier versions: <code>resPP$resPP</code> is the persons x 2 matrix of estimates and SEs, <code>resPP$nsteps</code> the largest number of steps.</p></dd>
 
 
-</dl><p>Use <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> for the estimates and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> for the table.</p>
+</dl><p>Use <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> for the estimates, <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> for the table and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> for the measurement precision, the person fit map or person profiles (see <a href="pp-plots.html">pp-plots</a>).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -194,10 +192,10 @@ $$w(r_i) = H/|r| \rightarrow if\, |r_i| &gt; H$$</p>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">pp_amt</span><span class="op">$</span><span class="va">daten_amt</span><span class="op">[</span>, <span class="op">-</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">PP_4pl</span><span class="op">(</span>respm <span class="op">=</span> <span class="va">d</span>, thres <span class="op">=</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">betas</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PP Version: 0.7.0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PP Version: 1.0.0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: PP_4pl(respm = d, thres = pp_amt$betas[, 2], type = "wle") </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - job started @ Mon Oct 12 12:26:44 2026 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - job started @ Tue Oct 13 09:26:51 2026 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Estimation type: wle </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

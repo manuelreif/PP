@@ -4,7 +4,8 @@ Print, summarise and extract the person estimates of
 [`PP_4pl()`](https://manuelreif.github.io/PP/reference/PP_4pl.md),
 [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md) and
 [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) (objects
-of class `ppeo`).
+of class `ppeo`). The plots are described in
+[pp-plots](https://manuelreif.github.io/PP/reference/pp-plots.md).
 
 ## Usage
 
@@ -60,4 +61,5 @@ invisibly.
 
 [PP_4pl](https://manuelreif.github.io/PP/reference/PP_4pl.md),
 [PP_gpcm](https://manuelreif.github.io/PP/reference/PP_gpcm.md),
-[PPall](https://manuelreif.github.io/PP/reference/PPall.md)
+[PPall](https://manuelreif.github.io/PP/reference/PPall.md),
+[pp-plots](https://manuelreif.github.io/PP/reference/pp-plots.md)

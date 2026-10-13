@@ -48,7 +48,7 @@ same step and keeps the other variables:
 library(PP)
 data(fourpl_df)
 
-res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+res <- PPass(fourpl_df, items = 3:14,
              thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
              lowerA = attr(fourpl_df, "lowerA"))
 print(res, n = 6)
@@ -94,7 +94,7 @@ head(res_eap$estimates)
   [`vignette("ppass_erm", package = "PP")`](https://manuelreif.github.io/PP/articles/ppass_erm.md)
 - Website: <https://manuelreif.github.io/PP/>
 - Changes: [NEWS.md](https://manuelreif.github.io/PP/NEWS.md). Version
-  0.7.0 corrects several results of earlier versions (jackknife standard
+  1.0.0 corrects several results of earlier versions (jackknife standard
   errors, MAP standard errors, plausible values, person fit with missing
   responses).
 - Bugs and questions: <https://github.com/manuelreif/PP/issues>
@@ -112,7 +112,7 @@ Person parameters for known item parameters.
 - [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) :
   Estimate Person Parameters
 - [`findmodel()`](https://manuelreif.github.io/PP/reference/findmodel.md)
-  : Create a model-type vector template
+  : The model of each item in a mixed test
 - [`print(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
   [`summary(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
   [`coef(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
@@ -130,6 +130,9 @@ Person parameters for known item parameters.
   [`print(`*`<PPfit>`*`)`](https://manuelreif.github.io/PP/reference/pfit.md)
   [`summary(`*`<PPfit>`*`)`](https://manuelreif.github.io/PP/reference/pfit.md)
   : Person-Fit statistics
+- [`plot(`*`<ppass>`*`)`](https://manuelreif.github.io/PP/reference/pp-plots.md)
+  [`plot(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/pp-plots.md)
+  : Plots of person estimates and person fit
 
 ## Jackknife and plausible values
 

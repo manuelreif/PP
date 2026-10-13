@@ -48,7 +48,7 @@ same step and keeps the other variables:
 library(PP)
 data(fourpl_df)
 
-res <- PPass(fourpl_df, items = 3:14, mod = "3PL",
+res <- PPass(fourpl_df, items = 3:14,
              thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
              lowerA = attr(fourpl_df, "lowerA"))
 print(res, n = 6)
@@ -94,7 +94,7 @@ head(res_eap$estimates)
   [`vignette("ppass_erm", package = "PP")`](https://manuelreif.github.io/PP/articles/ppass_erm.md)
 - Website: <https://manuelreif.github.io/PP/>
 - Changes: [NEWS.md](https://manuelreif.github.io/PP/NEWS.md). Version
-  0.7.0 corrects several results of earlier versions (jackknife standard
+  1.0.0 corrects several results of earlier versions (jackknife standard
   errors, MAP standard errors, plausible values, person fit with missing
   responses).
 - Bugs and questions: <https://github.com/manuelreif/PP/issues>

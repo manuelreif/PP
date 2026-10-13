@@ -20,7 +20,6 @@ JKpp(
   maxsteps = NULL,
   exac = NULL,
   fullmat = FALSE,
-  ctrl = list(),
   ...
 )
 
@@ -68,10 +67,6 @@ JKpp(estobj, ...)
   Default = FALSE. If TRUE, the function returns the whole jackknife
   matrix of leave-one-out estimates, which is the basis for the
   jackknife estimator.
-
-- ctrl:
-
-  Not used any more.
 
 - x, object:
 
@@ -183,10 +178,10 @@ x  <- sim_4pl(beta = b, alpha = sl, lowerA = 0, upperA = 1, theta = rnorm(20, sd
 res <- PP_4pl(respm = x, thres = b, slopes = sl, type = "wle")
 jk <- JKpp(res)
 summary(jk)
-#> PP Version: 0.7.0 
+#> PP Version: 1.0.0 
 #> 
 #> Call: JKpp.ppeo(estobj = res) 
-#> - job started @ Mon Oct 12 12:26:43 2026 
+#> - job started @ Tue Oct 13 09:26:51 2026 
 #> 
 #> Jackknife of the wle estimates, centering method: mean 
 #> 

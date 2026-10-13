@@ -11,7 +11,7 @@ Person parameters for known item parameters.
 - [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) :
   Estimate Person Parameters
 - [`findmodel()`](https://manuelreif.github.io/PP/reference/findmodel.md)
-  : Create a model-type vector template
+  : The model of each item in a mixed test
 - [`print(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
   [`summary(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
   [`coef(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/ppeo-methods.md)
@@ -29,6 +29,9 @@ Person parameters for known item parameters.
   [`print(`*`<PPfit>`*`)`](https://manuelreif.github.io/PP/reference/pfit.md)
   [`summary(`*`<PPfit>`*`)`](https://manuelreif.github.io/PP/reference/pfit.md)
   : Person-Fit statistics
+- [`plot(`*`<ppass>`*`)`](https://manuelreif.github.io/PP/reference/pp-plots.md)
+  [`plot(`*`<ppeo>`*`)`](https://manuelreif.github.io/PP/reference/pp-plots.md)
+  : Plots of person estimates and person fit
 
 ## Jackknife and plausible values
 

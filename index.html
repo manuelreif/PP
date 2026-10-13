@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/manuelreif/PP" class="external-link">PP</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fourpl_df</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">fourpl_df</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">14</span>, mod <span class="op">=</span> <span class="st">"3PL"</span>,</span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PPass.html">PPass</a></span><span class="op">(</span><span class="va">fourpl_df</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">14</span>,</span>
 <span>             thres <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"diffpar"</span><span class="op">)</span>, slopes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"slopes"</span><span class="op">)</span>,</span>
 <span>             lowerA <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">fourpl_df</span>, <span class="st">"lowerA"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
@@ -116,7 +116,7 @@
 </li>
 <li>Website: <a href="https://manuelreif.github.io/PP/" class="uri">https://manuelreif.github.io/PP/</a>
 </li>
-<li>Changes: <a href="NEWS.html">NEWS.md</a>. Version 0.7.0 corrects several results of earlier versions (jackknife standard errors, MAP standard errors, plausible values, person fit with missing responses).</li>
+<li>Changes: <a href="NEWS.html">NEWS.md</a>. Version 1.0.0 corrects several results of earlier versions (jackknife standard errors, MAP standard errors, plausible values, person fit with missing responses).</li>
 <li>Bugs and questions: <a href="https://github.com/manuelreif/PP/issues" class="external-link uri">https://github.com/manuelreif/PP/issues</a>
 </li>
 </ul>

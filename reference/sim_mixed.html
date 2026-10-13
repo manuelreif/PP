@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,14 +40,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_mixed</span><span class="op">(</span></span>
-<span>  <span class="va">thres</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  lowerA <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  upperA <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  model2est <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">theta</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_mixed</span><span class="op">(</span><span class="va">thres</span>, alpha <span class="op">=</span> <span class="cn">NULL</span>, lowerA <span class="op">=</span> <span class="cn">NULL</span>, upperA <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">theta</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,7 +48,7 @@
 
 
 <dl><dt id="arg-thres">thres<a class="anchor" aria-label="anchor" href="#arg-thres"></a></dt>
-<dd><p>A numeric matrix with the thresholds of each item in its columns, as in <code><a href="PPall.html">PPall</a></code>: for a 4PL item the difficulty, for a GPCM item its thresholds, <code>NA</code> below the last one. The first row may contain zeroes only; otherwise a row of zeroes is added.</p></dd>
+<dd><p>A numeric matrix with the thresholds of each item in its columns, as in <code><a href="PPall.html">PPall</a></code>: for a 4PL item the difficulty, for a GPCM item its thresholds, <code>NA</code> below the last one. Items with one threshold are 4PL items, the others GPCM items. The first row may contain zeroes only; otherwise a row of zeroes is added.</p></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
@@ -68,10 +61,6 @@
 
 <dt id="arg-uppera">upperA<a class="anchor" aria-label="anchor" href="#arg-uppera"></a></dt>
 <dd><p>A numeric vector of upper asymptotes (4PL items). If <code>NULL</code> (default), 1.</p></dd>
-
-
-<dt id="arg-model-est">model2est<a class="anchor" aria-label="anchor" href="#arg-model-est"></a></dt>
-<dd><p>A character vector with <code>"4PL"</code> or <code>"GPCM"</code> for each item. If <code>NULL</code> (default), <code><a href="findmodel.html">findmodel</a>(thres)</code>: items with one threshold are 4PL items.</p></dd>
 
 
 <dt id="arg-theta">theta<a class="anchor" aria-label="anchor" href="#arg-theta"></a></dt>

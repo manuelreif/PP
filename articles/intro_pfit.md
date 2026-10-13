@@ -49,7 +49,7 @@ responses from the estimation object.
 ``` r
 
 res <- PP_4pl(respm = x, thres = b, slopes = sl, lowerA = la, type = "wle")
-fit <- Pfit(pp = res, fitindices = c("lz", "lzstar", "infit", "outfit"))
+fit <- Pfit(res, fitindices = c("lz", "lzstar", "infit", "outfit"))
 ```
 
 The result is a list with one matrix per statistic:
@@ -117,6 +117,25 @@ abline(h = qnorm(0.05), lty = 2)
 ![lz\* of all persons against their ability estimate, random responders
 in red](intro_pfit_files/figure-html/plot-1.png)
 
+Which answers make these persons conspicuous?
+`plot(res, which = "profile")` shows one panel per person: each answered
+item is a point, with the expected score at the estimate on the x axis
+(easy items on the left) and the observed score on the y axis. Answers
+in line with the model lie close to the diagonal; unexpected answers
+(\|z\| \> 1.96) are marked and labelled, here right answers to hard
+items and wrong answers to easy ones. `plot(res, which = "fit")` draws
+the person fit map with the two-sided flags of
+[`summary()`](https://rdrr.io/r/base/summary.html).
+
+``` r
+
+plot(res, which = "profile", person = flag[1:2])
+```
+
+![Observed against expected score of every item for two random
+responders, with unexpected answers
+marked](intro_pfit_files/figure-html/profile-1.png)
+
 ## Standard errors of the fit statistics
 
 With `SE = TRUE`,
@@ -127,7 +146,7 @@ estimated again and the statistic is recomputed.
 
 ``` r
 
-fit_se <- Pfit(pp = res, fitindices = c("lzstar", "outfit"), SE = TRUE)
+fit_se <- Pfit(res, fitindices = c("lzstar", "outfit"), SE = TRUE)
 head(fit_se$lzstar)
 #>         lzstar   lzs_se
 #> [1,] -2.605186 1.403868
@@ -150,7 +169,7 @@ thres <- rbind(c(-1.5, -1, -0.5, 0, 0.5, 1),
 xg <- sim_gpcm(thres = thres, alpha = c(1, 1.2, 0.8, 1.1, 0.9, 1), theta = rnorm(200))
 xg[sample(length(xg), 100)] <- NA
 resg <- PP_gpcm(respm = xg, thres = thres, slopes = c(1, 1.2, 0.8, 1.1, 0.9, 1), type = "mle")
-fitg <- Pfit(pp = resg)
+fitg <- Pfit(resg)
 summary(fitg)
 #> Person fit at the mle estimates, 200 persons
 #> flagged: |z| > 1.96 (alpha = 0.05)

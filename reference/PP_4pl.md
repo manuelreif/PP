@@ -117,18 +117,10 @@ PP_4pl(
 
 - ctrl:
 
-  more controls:
-
-  - `killdupli`: Should duplicated response pattern be removed for
-    estimation (estimation is faster)? This is especially reasonable in
-    case of a large number of examinees and a small number of items. Use
-    this option with caution (for map and eap), because persons with
-    different `mu` and `sigma2` will have different ability estimates
-    despite they responded identically. Default value is `FALSE`.
-
-  - `skipcheck`: Default = FALSE. If TRUE data matrix and arguments are
-    not checked - this saves time e.g. when you use this function for
-    simulations.
+  No longer used. Its options `killdupli` and `skipcheck` of version
+  0.6.4 saved time with the old estimation routine; since 1.0.0 every
+  person is estimated separately, and options given are ignored with a
+  warning.
 
 - range:
 
@@ -184,9 +176,11 @@ with
   persons x 2 matrix of estimates and SEs, `resPP$nsteps` the largest
   number of steps.
 
-Use [`coef()`](https://rdrr.io/r/stats/coef.html) for the estimates and
+Use [`coef()`](https://rdrr.io/r/stats/coef.html) for the estimates,
 [`as.data.frame()`](https://rdrr.io/r/base/as.data.frame.html) for the
-table.
+table and [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for
+the measurement precision, the person fit map or person profiles (see
+[pp-plots](https://manuelreif.github.io/PP/reference/pp-plots.md)).
 
 ## Details
 
@@ -292,10 +286,10 @@ data(pp_amt)
 d <- as.matrix(pp_amt$daten_amt[, -(1:7)])
 res <- PP_4pl(respm = d, thres = pp_amt$betas[, 2], type = "wle")
 summary(res)
-#> PP Version: 0.7.0 
+#> PP Version: 1.0.0 
 #> 
 #> Call: PP_4pl(respm = d, thres = pp_amt$betas[, 2], type = "wle") 
-#> - job started @ Mon Oct 12 12:26:44 2026 
+#> - job started @ Tue Oct 13 09:26:51 2026 
 #> 
 #> Estimation type: wle 
 #> 

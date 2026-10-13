@@ -8,14 +8,7 @@ item parameters in the layout of
 ## Usage
 
 ``` r
-sim_mixed(
-  thres,
-  alpha = NULL,
-  lowerA = NULL,
-  upperA = NULL,
-  model2est = NULL,
-  theta
-)
+sim_mixed(thres, alpha = NULL, lowerA = NULL, upperA = NULL, theta)
 ```
 
 ## Arguments
@@ -25,8 +18,9 @@ sim_mixed(
   A numeric matrix with the thresholds of each item in its columns, as
   in [`PPall`](https://manuelreif.github.io/PP/reference/PPall.md): for
   a 4PL item the difficulty, for a GPCM item its thresholds, `NA` below
-  the last one. The first row may contain zeroes only; otherwise a row
-  of zeroes is added.
+  the last one. Items with one threshold are 4PL items, the others GPCM
+  items. The first row may contain zeroes only; otherwise a row of
+  zeroes is added.
 
 - alpha:
 
@@ -42,13 +36,6 @@ sim_mixed(
 
   A numeric vector of upper asymptotes (4PL items). If `NULL` (default),
   1.
-
-- model2est:
-
-  A character vector with `"4PL"` or `"GPCM"` for each item. If `NULL`
-  (default),
-  [`findmodel`](https://manuelreif.github.io/PP/reference/findmodel.md)`(thres)`:
-  items with one threshold are 4PL items.
 
 - theta:
 

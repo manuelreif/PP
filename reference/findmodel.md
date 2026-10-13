@@ -1,9 +1,9 @@
-# Create a model-type vector template
+# The model of each item in a mixed test
 
-This is a small helper function which creates a vector template quick
-and easily for the
-[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md)
-function. Modify this template as you like.
+This function shows which model
+[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) uses for
+each item: an item with one threshold is a 4PL item, an item with
+several thresholds a GPCM item.
 
 ## Usage
 
@@ -25,11 +25,11 @@ for items with one threshold, `"GPCM"` for items with more.
 
 ## Details
 
-This function tries to guess the model which was applied to each item by
-using the matrix of threshold parameters. It only discriminates between
-GPCM and 4-PL model, and returns a character vector of length equal to
-the number of items, that contains `"GPCM"` or `"4PL"` entries depending
-on the structure of the thres matrix.
+Up to version 0.6.4-1 its result was passed to
+[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) as
+`model2est`. This is no longer needed:
+[`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md) derives
+the model of each item from `thres` in the same way.
 
 ## See also
 

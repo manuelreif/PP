@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,6 @@
 <span>  maxsteps <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  exac <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fullmat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  ctrl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -89,10 +88,6 @@
 
 <dt id="arg-fullmat">fullmat<a class="anchor" aria-label="anchor" href="#arg-fullmat"></a></dt>
 <dd><p>Default = FALSE. If TRUE, the function returns the whole jackknife matrix of leave-one-out estimates, which is the basis for the jackknife estimator.</p></dd>
-
-
-<dt id="arg-ctrl">ctrl<a class="anchor" aria-label="anchor" href="#arg-ctrl"></a></dt>
-<dd><p>Not used any more.</p></dd>
 
 
 <dt id="arg-x-object">x, object<a class="anchor" aria-label="anchor" href="#arg-x-object"></a></dt>
@@ -154,10 +149,10 @@
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="PP_4pl.html">PP_4pl</a></span><span class="op">(</span>respm <span class="op">=</span> <span class="va">x</span>, thres <span class="op">=</span> <span class="va">b</span>, slopes <span class="op">=</span> <span class="va">sl</span>, type <span class="op">=</span> <span class="st">"wle"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">jk</span> <span class="op">&lt;-</span> <span class="fu">JKpp</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">jk</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PP Version: 0.7.0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PP Version: 1.0.0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: JKpp.ppeo(estobj = res) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> - job started @ Mon Oct 12 12:26:43 2026 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> - job started @ Tue Oct 13 09:26:51 2026 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Jackknife of the wle estimates, centering method: mean </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

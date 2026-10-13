@@ -135,10 +135,10 @@ res2pl <- PP_4pl(respm = awm, thres = diffpar, slopes = sl, type = "eap")
 # 10 plausible values per person, normal approximation of the posterior
 res_pv <- PV(res2pl)
 summary(res_pv)
-#> PP Version: 0.7.0 
+#> PP Version: 1.0.0 
 #> 
 #> Call: PV.ppeo(estobj = res2pl) 
-#> - job started @ Mon Oct 12 12:26:46 2026 
+#> - job started @ Tue Oct 13 09:26:55 2026 
 #> 
 #> Plausible values: 10 per person, 10 persons
 #> Mean 0.07516 | SD 0.9201 (all draws)
@@ -213,7 +213,7 @@ awmatrix <- matrix(c(1,0,1,0,1,1,1,0,0,1
                      ,1,2,2,1,1,1,1,0,0,1),byrow=TRUE,nrow=5)
 
 respcm <- PPall(respm = awmatrix, thres = THRESx, slopes = sl, lowerA = la, upperA = ua,
-                type = "eap", model2est = findmodel(THRESx))
+                type = "eap")
 res_mixedpv <- PV(respcm, npv = 200, approx = FALSE)
 
 # quantiles of the draws per person

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">PP</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,6 @@
 <span><span class="fu">PPass</span><span class="op">(</span></span>
 <span>  <span class="va">respdf</span>,</span>
 <span>  items <span class="op">=</span> <span class="st">"all"</span>,</span>
-<span>  mod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1PL"</span>, <span class="st">"2PL"</span>, <span class="st">"3PL"</span>, <span class="st">"4PL"</span>, <span class="st">"PCM"</span>, <span class="st">"GPCM"</span>, <span class="st">"MIXED"</span><span class="op">)</span>,</span>
 <span>  fitindices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lz"</span>, <span class="st">"lzstar"</span>, <span class="st">"infit"</span>, <span class="st">"outfit"</span><span class="op">)</span>,</span>
 <span>  SE <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -82,10 +81,6 @@
 <dd><p>The item columns of <code>respdf</code>: <code>"all"</code> (default), their positions or their names.</p></dd>
 
 
-<dt id="arg-mod">mod<a class="anchor" aria-label="anchor" href="#arg-mod"></a></dt>
-<dd><p>The model: <code>"1PL"</code> (default), <code>"2PL"</code>, <code>"3PL"</code>, <code>"4PL"</code>, <code>"PCM"</code>, <code>"GPCM"</code> or <code>"MIXED"</code>.</p></dd>
-
-
 <dt id="arg-fitindices">fitindices<a class="anchor" aria-label="anchor" href="#arg-fitindices"></a></dt>
 <dd><p>The person fit indices to compute, any of <code>"lz"</code>, <code>"lzstar"</code>, <code>"infit"</code> and <code>"outfit"</code> (default all).</p></dd>
 
@@ -119,22 +114,22 @@
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments for the estimation: the item parameters (<code>PPass.default</code> only) and <code>type</code>, <code>mu</code>, <code>sigma2</code>, <code>theta_start</code>, <code>range</code>, <code>maxsteps</code>, <code>exac</code>, <code>H</code>, <code>ctrl</code> and <code>verbose</code>, see <code><a href="PP_4pl.html">PP_4pl()</a></code>, <code><a href="PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="PPall.html">PPall()</a></code>. The default estimate is WLE.</p></dd>
+<dd><p>Arguments for the estimation: the item parameters (<code>PPass.default</code> only) and <code>type</code>, <code>mu</code>, <code>sigma2</code>, <code>theta_start</code>, <code>range</code>, <code>maxsteps</code>, <code>exac</code>, <code>H</code> and <code>verbose</code>, see <code><a href="PP_4pl.html">PP_4pl()</a></code>, <code><a href="PP_gpcm.html">PP_gpcm()</a></code> and <code><a href="PPall.html">PPall()</a></code>. The default estimate is WLE.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data.frame of class <code>ppass</code> with one row per person: the person variables (the columns of <code>respdf</code> that are not items; for eRm models with groups the column <code>group</code>), <code>estimate</code>, <code>SE</code> and <code>status</code> of the estimate (see <code><a href="PP_4pl.html">PP_4pl()</a></code>) and the columns of the chosen person fit indices (see <code><a href="pfit.html">Pfit()</a></code>). It can be used like any data.frame. The estimation object is kept as attribute, so <code><a href="Jkpp.html">JKpp()</a></code> and <code><a href="PV.html">PV()</a></code> can be applied to the result directly; <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> show an overview with the persons flagged by the person fit, and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> returns a plain data.frame.</p>
+    <p>A data.frame of class <code>ppass</code> with one row per person: the person variables (the columns of <code>respdf</code> that are not items; for eRm models with groups the column <code>group</code>), <code>estimate</code>, <code>SE</code> and <code>status</code> of the estimate (see <code><a href="PP_4pl.html">PP_4pl()</a></code>) and the columns of the chosen person fit indices (see <code><a href="pfit.html">Pfit()</a></code>). It can be used like any data.frame. The estimation object is kept as attribute, so <code><a href="Jkpp.html">JKpp()</a></code> and <code><a href="PV.html">PV()</a></code> can be applied to the result directly; <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> show an overview with the persons flagged by the person fit, <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> draws the person fit map, the measurement precision or person profiles (see <a href="pp-plots.html">pp-plots</a>), and <code><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame()</a></code> returns a plain data.frame.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><b>Data with item parameters</b> (<code>PPass.default</code>): the columns <code>items</code> of <code>respdf</code> are the responses, the other columns are kept as person variables. <code>mod</code> selects the estimation function: <code><a href="PP_4pl.html">PP_4pl()</a></code> for 1PL to 4PL, <code><a href="PP_gpcm.html">PP_gpcm()</a></code> for PCM and GPCM, <code><a href="PPall.html">PPall()</a></code> for mixed tests. The item parameters are passed in <code>...</code> (<code>thres</code>, <code>slopes</code>, <code>lowerA</code>, <code>upperA</code>, <code>model2est</code>) and must fit <code>mod</code>: 1PL takes only <code>thres</code>, 2PL adds <code>slopes</code>, 3PL needs <code>lowerA</code>, 4PL needs <code>upperA</code>, and the PCM has all slopes equal to 1.</p>
+    <p><b>Data with item parameters</b> (<code>PPass.default</code>): the columns <code>items</code> of <code>respdf</code> are the responses, the other columns are kept as person variables. The item parameters are passed in <code>...</code> (<code>thres</code>, <code>slopes</code>, <code>lowerA</code>, <code>upperA</code>), and the model follows from them: <code>thres</code> alone gives the 1PL model, with <code>slopes</code> the 2PL, with <code>lowerA</code> the 3PL and with <code>upperA</code> the 4PL model, estimated with <code><a href="PP_4pl.html">PP_4pl()</a></code>. A threshold matrix with more than one threshold for some item gives the partial credit model (all slopes 1) or the generalized partial credit model, estimated with <code><a href="PP_gpcm.html">PP_gpcm()</a></code>. With such polytomous items and <code>lowerA</code> or <code>upperA</code>, the test is a mixed test (items with one threshold are 4PL items), estimated with <code><a href="PPall.html">PPall()</a></code>. The arguments <code>mod</code> and <code>model2est</code> of earlier versions are no longer needed; they are ignored with a warning.</p>
 <p><b>eRm models</b> (<code>PPass.eRm</code>): all models of the <code>eRm</code> package are supported, the Rasch model (<code>RM</code>), the linear logistic test model (<code>LLTM</code>), the rating scale model (<code>RSM</code>), the partial credit model (<code>PCM</code>) and the linear models <code>LRSM</code> and <code>LPCM</code>, also with several time points (<code>mpoints</code>) and groups (<code>groupvec</code>). The responses and item parameters come from the fitted object. eRm stores easiness parameters per category, \(\beta_{ih} = -\sum_{k \le h} \delta_{ik}\); they are turned into the thresholds \(\delta_{ih} = \beta_{i,h-1} - \beta_{ih}\), so for the dichotomous models the difficulty is \(-\beta_i\). With time points or groups every combination of item, time point and group is a virtual item with its own parameters; a person answers the virtual items of their group, and gets one ability over all time points. The person parameters are estimated with <code><a href="PP_4pl.html">PP_4pl()</a></code> (RM, LLTM) or <code><a href="PP_gpcm.html">PP_gpcm()</a></code> with all slopes 1. The maximum likelihood estimates (<code>type = "mle"</code>) equal those of <code><a href="https://rdrr.io/pkg/eRm/man/person.parameter.html" class="external-link">eRm::person.parameter()</a></code>; unlike <code>eRm</code>, <code>PPass</code> also gives estimates for models with group contrasts, and WLE, MAP, EAP and robust estimates, person fit, jackknife and plausible values. The <code>eRm</code> package is not needed to run <code>PPass</code> on such an object.</p>
 <p>Person fit is computed by <code><a href="pfit.html">Pfit()</a></code> and needs an estimate of type <code>"mle"</code>, <code>"wle"</code> or <code>"map"</code>. For <code>type = "eap"</code> and <code>"robust"</code> <code>PPass</code> returns the estimates only, with a message.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><a href="PP_4pl.html">PP_4pl</a>, <a href="PP_gpcm.html">PP_gpcm</a>, <a href="PPall.html">PPall</a>, <a href="pfit.html">Pfit</a>, <a href="Jkpp.html">JKpp</a>, <a href="PV.html">PV</a></p></div>
+    <div class="dont-index"><p><a href="PP_4pl.html">PP_4pl</a>, <a href="PP_gpcm.html">PP_gpcm</a>, <a href="PPall.html">PPall</a>, <a href="pfit.html">Pfit</a>, <a href="Jkpp.html">JKpp</a>, <a href="PV.html">PV</a>, <a href="pp-plots.html">pp-plots</a></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -155,7 +150,7 @@
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span>, <span class="va">awm</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 2PL, WLE estimates and all person fit indices; id and group are kept</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">PPass</span><span class="op">(</span><span class="va">dat</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">17</span>, mod <span class="op">=</span> <span class="st">"2PL"</span>, thres <span class="op">=</span> <span class="va">diffpar</span>, slopes <span class="op">=</span> <span class="va">sl</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">PPass</span><span class="op">(</span><span class="va">dat</span>, items <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">17</span>, thres <span class="op">=</span> <span class="va">diffpar</span>, slopes <span class="op">=</span> <span class="va">sl</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Person assessment: 200 persons, 15 items </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: 2PL model | WLE estimates</span>
@@ -209,6 +204,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>      45  45     a    1.578  -2.10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     132 132     b   -0.615  -2.04</span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># person fit map, flagged persons labelled with their id</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span>, label <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="PPass-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># a plain data.frame for further use</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   id group   estimate        SE status         lz    lz_unst     lzstar</span>
@@ -241,8 +240,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pp_amt</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">daten_amt</span></span></span>
-<span class="r-in"><span><span class="va">rd_res</span> <span class="op">&lt;-</span> <span class="fu">PPass</span><span class="op">(</span><span class="va">d</span>, items <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, mod <span class="op">=</span> <span class="st">"1PL"</span>, thres <span class="op">=</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">betas</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                fitindices <span class="op">=</span> <span class="st">"lz"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rd_res</span> <span class="op">&lt;-</span> <span class="fu">PPass</span><span class="op">(</span><span class="va">d</span>, items <span class="op">=</span> <span class="fl">8</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>, thres <span class="op">=</span> <span class="va">pp_amt</span><span class="op">$</span><span class="va">betas</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, fitindices <span class="op">=</span> <span class="st">"lz"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rd_res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ID   AGE TE_GA FORM       TIME1       TIME2   REL estimate    SE status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 P0001    20    GA  S02 13:51:00.00 14:27:00.00 0.828    1.410 0.418     ok</span>

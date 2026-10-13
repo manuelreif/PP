@@ -86,10 +86,10 @@ one row per person, in the order of the response matrix:
 ``` r
 
 summary(res_mle, nrowmax = 5)
-#> PP Version: 0.7.0 
+#> PP Version: 1.0.0 
 #> 
 #> Call: PP_4pl(respm = items, thres = diff_par, slopes = slope_par, lowerA = low_par,      type = "mle") 
-#> - job started @ Mon Oct 12 12:26:50 2026 
+#> - job started @ Tue Oct 13 09:27:01 2026 
 #> 
 #> Estimation type: mle 
 #> 
@@ -168,6 +168,27 @@ head(cbind(mle = coef(res_mle), wle = coef(res_wle), eap = coef(res_eap)))
 #> [6,]       -Inf -4.7299643 -2.0455811
 ```
 
+## Measurement precision
+
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) shows where the
+test measures accurately and whether the persons are located there. The
+upper panel is the distribution of the estimates, the lower panel the
+standard error of each person. Because the item parameters are known,
+the standard error of the whole test follows from the test information:
+$`1/\sqrt{I(\theta)}`$. The ticks at the bottom mark the items, at the
+ability where each item gives the most information. One response in
+`fourpl_df` is missing, so the curve of all 12 items is drawn on request
+(`curve = TRUE`); it holds for every person who answered all items.
+
+``` r
+
+plot(res_wle, which = "precision", curve = TRUE)
+```
+
+![Histogram of the WLE estimates above, and below the standard error of
+each person against the estimate with the standard error curve of the
+test](intro_pp_files/figure-html/precision-1.png)
+
 ## Polytomous and mixed tests
 
 [`PP_gpcm()`](https://manuelreif.github.io/PP/reference/PP_gpcm.md)
@@ -199,10 +220,10 @@ head(res_gpcm$estimates)
 For a test with dichotomous and polytomous items, use
 [`PPall()`](https://manuelreif.github.io/PP/reference/PPall.md). Each
 column of `thres` holds the thresholds of one item: a 4PL item has a
-single threshold (its difficulty), a GPCM item has several.
-[`findmodel()`](https://manuelreif.github.io/PP/reference/findmodel.md)
-tells the two apart and is the default for `model2est`. Lower and upper
-asymptotes apply to the 4PL items only.
+single threshold (its difficulty), a GPCM item has several, and this
+decides the model of each item
+([`findmodel()`](https://manuelreif.github.io/PP/reference/findmodel.md)
+shows it). Lower and upper asymptotes apply to the 4PL items only.
 
 ``` r
 
