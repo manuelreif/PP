@@ -1,9 +1,8 @@
 ## Submission
 
-PP 1.0.0 is a rewrite of the numerical core. Every estimate is now checked
-against independent reference implementations; several results of 0.6.4-1
-were wrong and change in this version. NEWS.md lists all changed results and
-the few breaking changes.
+PP 1.0.0 is a rewrite of the numerical core, validated against independent
+reference implementations. Some results change compared to 0.6.4-1 (mainly in
+edge cases); NEWS.md lists them together with the few breaking changes.
 
 ## Maintainer change
 
