@@ -35,27 +35,27 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.0" id="pp-100">PP 1.0.0<a class="anchor" aria-label="anchor" href="#pp-100"></a></h2>
-<p>PP 1.0.0 is a rewrite of the numerical core. Every estimate is now checked against independent reference implementations, and several results of earlier versions were wrong. Results therefore differ from 0.6.4-1 where noted below. Function and argument names are unchanged unless stated.</p>
+<p>PP 1.0.0 rebuilds the numerical core. Every estimate is now checked against independent reference implementations. For ordinary data (complete responses, no extreme scores) the MLE, WLE, MAP and EAP estimates of 0.6.4-1 are reproduced (differences below 0.001, within the convergence criterion <code>exac</code>; robust estimates differ by about 0.005). Results change in the places listed below: standard errors of MAP and robust estimates, the jackknife, plausible values, person fit, and edge cases such as missing responses, extreme scores and the 3PL. Function and argument names are unchanged unless stated.</p>
 <div class="section level3">
-<h3 id="corrected-results-1-0-0">Corrected results<a class="anchor" aria-label="anchor" href="#corrected-results-1-0-0"></a></h3>
+<h3 id="changed-results-1-0-0">Changed results<a class="anchor" aria-label="anchor" href="#changed-results-1-0-0"></a></h3>
 <ul><li>
-<strong>Jackknife (<code><a href="../reference/Jkpp.html">JKpp()</a></code>)</strong>: the standard error was too small by a factor of about L − 1 (L = number of items). The jackknife now runs over the answered items only (before: all items), leave-one-out samples without a finite estimate are counted in the new column <code>excluded</code> with a warning instead of being dropped silently, and with <code>killdupli = TRUE</code> the results were assigned to the wrong persons. The EAP jackknife of mixed tests failed.</li>
+<strong>Jackknife (<code><a href="../reference/Jkpp.html">JKpp()</a></code>)</strong>: the standard error now follows the textbook formula for pseudovalues; it is larger than before (by a factor of about L − 1, L = number of items) and comparable to the MLE/WLE standard error. The jackknife runs over the answered items only (before: all items), leave-one-out samples without a finite estimate are counted in the new column <code>excluded</code> with a warning, and the EAP jackknife works for mixed tests.</li>
 <li>
-<strong>AMT jackknife</strong> (<code>cmeth = "AMT"</code>): now the AMT-robustified jackknife of Wainer &amp; Wright (1980): Andrews’ sine estimator (c = 2.1, MAD scale), applied to the pseudovalues of the right and of the wrong answers separately and averaged with the group sizes as weights. The old code had a sign error, no scale and maximised the sum of the sines.</li>
+<strong>AMT jackknife</strong> (<code>cmeth = "AMT"</code>): now the AMT-robustified jackknife of Wainer &amp; Wright (1980): Andrews’ sine estimator (c = 2.1, MAD scale), applied to the pseudovalues of the right and of the wrong answers separately and averaged with the group sizes as weights.</li>
 <li>
 <strong>MAP standard errors</strong> now include the prior.</li>
 <li>
-<strong>Robust estimates</strong>: the standard error is the sandwich form with the Huber weights (before: the weights were ignored), and the estimate solves its weighted estimating equation (before up to 3e-3 off).</li>
+<strong>Robust estimates</strong>: the standard error is the sandwich form with the Huber weights, and the estimate solves its weighted estimating equation to the accuracy <code>exac</code> (before up to 3e-3 off).</li>
 <li>
-<strong>WLE/MLE for the 3PL</strong> could oscillate without converging and without a warning; the estimator is now a safeguarded Newton method per person.</li>
+<strong>WLE/MLE for the 3PL</strong>: the estimator is now a safeguarded Newton method per person. Persons for whom the iteration oscillated without converging are now estimated or flagged by <code>status</code>.</li>
 <li>
-<strong>Plausible values (<code><a href="../reference/PV.html">PV()</a></code>)</strong> are drawn from the posterior on a grid (<code>approx = FALSE</code>) or from a normal distribution with its mean and SD (<code>approx = TRUE</code>, default). The old Metropolis-Hastings sampler was invalid, ignored the prior, failed with missing values and could mix up rows; the arguments <code>thinning</code>, <code>burnin</code> and <code>mult</code> are ignored with a warning.</li>
+<strong>Plausible values (<code><a href="../reference/PV.html">PV()</a></code>)</strong> are drawn from the posterior on a grid (<code>approx = FALSE</code>) or from a normal distribution with its mean and SD (<code>approx = TRUE</code>, default). Both use the prior of each person and work with missing responses. The Metropolis-Hastings sampler is gone, and its arguments <code>thinning</code>, <code>burnin</code> and <code>mult</code> are ignored with a warning.</li>
 <li>
-<strong>EAP estimates</strong> are computed on an adaptive grid with log-likelihoods (before: products, which underflowed for long tests and gave NaN).</li>
+<strong>EAP estimates</strong> are computed on an adaptive grid with log-likelihoods, which also works for long tests (products of probabilities underflowed there).</li>
 <li>
-<strong>Person fit (<code><a href="../reference/pfit.html">Pfit()</a></code>)</strong>: lz* was wrong with missing responses; infit and outfit of the PCM took the number of categories from the data instead of the item parameters and ignored the slopes of the GPCM; the jackknife SE of lz ignored person-specific priors. Results are no longer rounded (p values of 0.0004 were 0).</li>
-<li>Scalar <code>mu</code>, <code>sigma2</code> or item parameters led to out-of-bounds memory reads in C++; they are now recycled.</li>
-<li>Duplicated response patterns with <code>killdupli = TRUE</code> could be merged wrongly (ambiguous key); the option is gone (see Deprecated).</li>
+<strong>Person fit (<code><a href="../reference/pfit.html">Pfit()</a></code>)</strong>: lz* uses the answered items only, so it works with missing responses; infit and outfit of the PCM take the number of categories from the item parameters and respect the slopes of the GPCM; the jackknife SE of lz uses person-specific priors. Results are no longer rounded (p values of 0.0004 were shown as 0).</li>
+<li>Scalar <code>mu</code>, <code>sigma2</code> or item parameters are recycled to the persons or items.</li>
+<li>The key for detecting duplicated response patterns could, in rare cases, treat different patterns as equal. The option <code>killdupli</code> is gone (see Deprecated).</li>
 <li>Numerically stable item probabilities (no overflow in the 4PL, log-sum-exp in the GPCM), also in <code><a href="../reference/sim_4pl.html">sim_4pl()</a></code> and <code><a href="../reference/sim_gpcm.html">sim_gpcm()</a></code>.</li>
 </ul></div>
 <div class="section level3">
@@ -63,16 +63,17 @@
 <ul><li>
 <code><a href="../reference/PV.html">PV()</a></code> needs an estimate with a prior, i.e. <code>type = "eap"</code> or <code>"map"</code>; it stops for MLE, WLE and robust estimates. These have no prior any more: <code>mu</code> and <code>sigma2</code> given there are ignored with a warning and stored as <code>NA</code>.</li>
 <li>Persons whose estimating equation has no root inside <code>range</code> (new argument, default <code>c(-6, 6)</code>) get the bound with status <code>"boundary"</code> and a warning (before: NaN or drifting values). Persons without any response get <code>NA</code> (before: <code>+Inf</code>); for EAP the prior mean and SD.</li>
-<li>The results are numbered by person in the order of the response matrix; row names of <code>respm</code> are not carried over (duplicated names made the development version fail).</li>
+<li>The results are numbered by person in the order of the response matrix; row names of <code>respm</code> are not carried over (use a person variable in <code><a href="../reference/PPass.html">PPass()</a></code> for ids).</li>
 <li>
 <code><a href="../reference/PPass.html">PPass()</a></code> on eRm objects: the method <code>PPass.Rm</code> is replaced by <code>PPass.eRm</code>, and the result of <code><a href="../reference/PPass.html">PPass()</a></code> is a data.frame of class <code>ppass</code> with the new column <code>status</code>. For <code>type = "eap"</code> and <code>"robust"</code> it contains the estimates only (with a message).</li>
 <li>
 <code><a href="../reference/sim_4pl.html">sim_4pl()</a></code> and <code><a href="../reference/sim_gpcm.html">sim_gpcm()</a></code> draw differently, so simulated data are not identical to 0.6.4-1 for the same seed.</li>
-<li>Removed: <code>lzstar_mixed()</code>, <code>Pfit_lzstarmix()</code> and <code>print_personfit_summary()</code> (new in 0.6.4-1). <code><a href="../reference/pfit.html">Pfit()</a></code> now gives lz and lz* for all models (lz* after Sinharay, 2016, with the correction of the estimation type), <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> of its result replaces the printed summary. <code>Pfit_lzstarmix()</code> used random thresholds when it could not find the item parameters.</li>
+<li>Removed: <code>lzstar_mixed()</code>, <code>Pfit_lzstarmix()</code> and <code>print_personfit_summary()</code> (new in 0.6.4-1). <code><a href="../reference/pfit.html">Pfit()</a></code> now gives lz and lz* for all models (lz* after Sinharay, 2016, with the correction of the estimation type), <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> of its result replaces the printed summary. <code><a href="../reference/pfit.html">Pfit()</a></code> takes the item parameters from the estimation object.</li>
+<li>The element <code>$ipar</code> of estimation objects (the processed input in the 0.6.4 layout) is no longer part of the result; the estimates are in <code>$estimates</code>.</li>
 <li>
 <code>JKpp(maxsteps, exac)</code> default to the values of the estimation object (before 500 and 0.001).</li>
 <li>
-<code>Pfit(pp, fitindices, SE)</code>: the argument <code>respm</code> is removed, the responses come from the estimation object. Use <code>Pfit(res)</code> instead of <code>Pfit(respm = X, pp = res)</code>. It was needed in 0.6.4-1, whose estimation objects lacked the rows of persons with an extreme score (MLE) and of duplicated patterns.</li>
+<code>Pfit(pp, fitindices, SE)</code>: the argument <code>respm</code> is removed, the responses come from the estimation object. Use <code>Pfit(res)</code> instead of <code>Pfit(respm = X, pp = res)</code>. The estimation objects of 0.6.4-1 did not contain the rows of persons with an extreme score (MLE) and of duplicated patterns, so the responses had to be passed again; the new objects have one row per person.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
@@ -124,6 +125,7 @@
 <div class="section level3">
 <h3 id="maintenance-1-0-0">Maintenance<a class="anchor" aria-label="anchor" href="#maintenance-1-0-0"></a></h3>
 <ul><li>Manuel Reif is the maintainer again. The repository moved to <a href="https://github.com/manuelreif/PP" class="external-link uri">https://github.com/manuelreif/PP</a>.</li>
+<li>PP needs R &gt;= 4.0 (before 3.0) and imports tinyplot for the new plots.</li>
 </ul></div>
 </div>
     <div class="section level2">
