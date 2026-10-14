@@ -13,6 +13,14 @@ Manuel Reif <manuel.reif@gmail.com>, the original author and maintainer up to
 ## Test environments
 
 * local: Ubuntu 22.04, R 4.6.1, `R CMD check --as-cran`
+* R-hub v2 (GitHub Actions), all with status OK:
+  * R-devel: linux (Ubuntu 24.04), windows (Windows Server 2022),
+    macos (x86_64), macos-arm64, ubuntu-clang, gcc16, clang22, nold
+  * R 4.6.1: ubuntu-release, lto
+  * additional checks: clang-asan, clang-ubsan, gcc-asan, m1-san, valgrind
+    (no sanitizer or valgrind errors), nosuggests
+* win-builder: R-devel (2026-10-13 r90668 ucrt) and R 4.6.1 (ucrt), 1 NOTE
+  each (see below)
 
 ## R CMD check results
 
@@ -20,8 +28,8 @@ Manuel Reif <manuel.reif@gmail.com>, the original author and maintainer up to
 
 * New maintainer (see above).
 * Possibly misspelled words in DESCRIPTION: Schuster, Snijders and Wainer are
-  author names of the cited papers; lz, infit, polytomous and posteriori are
-  technical terms; 'eRm' is a package name. All are spelled correctly.
+  author names of the cited papers; lz and infit are names of person fit
+  statistics. All are spelled correctly.
 
 ## Reverse dependencies
 
