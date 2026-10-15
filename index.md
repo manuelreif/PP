@@ -1,4 +1,4 @@
-# PP ![CRAN version](https://www.r-pkg.org/badges/version/PP)
+# PP
 
 **PP** estimates person parameters (abilities) in item response theory
 when the item parameters are known, e.g. for items from an item bank
@@ -83,6 +83,25 @@ res_eap <- PP_4pl(respm = as.matrix(fourpl_df[, 3:14]),
                   thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
                   lowerA = attr(fourpl_df, "lowerA"), type = "eap")
 head(res_eap$estimates)
+```
+
+## Citation
+
+If you use PP in your work, please cite it. `citation("PP")` prints the
+reference:
+
+Reif, M. and Steinfeld, J. (2026). PP: Person Parameter Estimation. R
+package version 1.0.0. <https://doi.org/10.32614/CRAN.package.PP>
+
+``` bibtex
+@Manual{PP,
+  title  = {{PP}: Person Parameter Estimation},
+  author = {Manuel Reif and Jan Steinfeld},
+  year   = {2026},
+  note   = {R package version 1.0.0},
+  doi    = {10.32614/CRAN.package.PP},
+  url    = {https://github.com/manuelreif/PP},
+}
 ```
 
 ## Learn more
