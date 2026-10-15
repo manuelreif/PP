@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/manuelreif/PP/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/manuelreif/PP/blob/v1.0.0/inst/CITATION)
 
 Reif, M. and Steinfeld, J. (2026). PP: Person Parameter Estimation. R
 package version 1.0.0. https://github.com/manuelreif/PP
