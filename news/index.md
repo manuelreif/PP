@@ -2,6 +2,8 @@
 
 ## PP 1.0.0
 
+CRAN release: 2026-10-14
+
 PP 1.0.0 rebuilds the numerical core. Every estimate is now checked
 against independent reference implementations. For ordinary data
 (complete responses, no extreme scores) the MLE, WLE, MAP and EAP
