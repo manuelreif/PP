@@ -2,7 +2,6 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/manuelreif/PP/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/manuelreif/PP/actions/workflows/R-CMD-check.yaml)
-[![Codecov](https://codecov.io/gh/manuelreif/PP/graph/badge.svg)](https://app.codecov.io/gh/manuelreif/PP)
 [![CRAN status](https://www.r-pkg.org/badges/version/PP)](https://CRAN.R-project.org/package=PP)
 [![CRAN checks](https://badges.cranchecks.info/worst/PP.svg)](https://cran.r-project.org/web/checks/check_results_PP.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/PP)](https://CRAN.R-project.org/package=PP)
