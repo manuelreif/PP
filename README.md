@@ -1,4 +1,14 @@
-# PP <img src="https://www.r-pkg.org/badges/version/PP" align="right" alt="CRAN version"/>
+# PP
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/manuelreif/PP/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/manuelreif/PP/actions/workflows/R-CMD-check.yaml)
+[![Codecov](https://codecov.io/gh/manuelreif/PP/graph/badge.svg)](https://app.codecov.io/gh/manuelreif/PP)
+[![CRAN status](https://www.r-pkg.org/badges/version/PP)](https://CRAN.R-project.org/package=PP)
+[![CRAN checks](https://badges.cranchecks.info/worst/PP.svg)](https://cran.r-project.org/web/checks/check_results_PP.html)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/PP)](https://CRAN.R-project.org/package=PP)
+[![Docs](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://manuelreif.github.io/PP/)
+[![DOI](https://img.shields.io/badge/DOI-10.32614%2FCRAN.package.PP-blue.svg)](https://doi.org/10.32614/CRAN.package.PP)
+<!-- badges: end -->
 
 **PP** estimates person parameters (abilities) in item response theory when the item parameters are known, e.g. for items from an item bank given to a new sample.
 
@@ -56,6 +66,23 @@ res_eap <- PP_4pl(respm = as.matrix(fourpl_df[, 3:14]),
                   thres = attr(fourpl_df, "diffpar"), slopes = attr(fourpl_df, "slopes"),
                   lowerA = attr(fourpl_df, "lowerA"), type = "eap")
 head(res_eap$estimates)
+```
+
+## Citation
+
+If you use PP in your work, please cite it. `citation("PP")` prints the reference:
+
+Reif, M. and Steinfeld, J. (2026). PP: Person Parameter Estimation. R package version 1.0.0. <https://doi.org/10.32614/CRAN.package.PP>
+
+```bibtex
+@Manual{PP,
+  title  = {{PP}: Person Parameter Estimation},
+  author = {Manuel Reif and Jan Steinfeld},
+  year   = {2026},
+  note   = {R package version 1.0.0},
+  doi    = {10.32614/CRAN.package.PP},
+  url    = {https://github.com/manuelreif/PP},
+}
 ```
 
 ## Learn more

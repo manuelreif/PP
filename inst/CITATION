@@ -9,9 +9,10 @@ bibentry(
   author = c(person("Manuel", "Reif"), person("Jan", "Steinfeld")),
   year = year,
   note = vers,
+  doi = "10.32614/CRAN.package.PP",
   url = "https://github.com/manuelreif/PP",
   textVersion = paste0(
     "Reif, M. and Steinfeld, J. (", year, "). PP: Person Parameter Estimation. ",
-    vers, ". https://github.com/manuelreif/PP"
+    vers, ". https://doi.org/10.32614/CRAN.package.PP"
   )
 )

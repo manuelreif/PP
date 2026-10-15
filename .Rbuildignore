@@ -21,6 +21,7 @@
 ^ideen\.md$
 ^ideen_kalibrierung\.md$
 ^cran-comments\.md$
+^CITATION\.cff$
 ^PP\.Rcheck$
 \.tar\.gz$
 \.tgz$

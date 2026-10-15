@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use PP in your work, please cite it as below."
+type: software
+title: "PP: Person Parameter Estimation"
+abstract: >-
+  Estimation of person parameters (abilities) in item response theory for the
+  1, 2, 3 and 4 parameter logistic model, the (generalized) partial credit model
+  and mixed tests, with MLE, WLE, MAP, EAP and robust estimation, jackknife,
+  plausible values and person fit statistics.
+authors:
+  - family-names: Reif
+    given-names: Manuel
+    email: manuel.reif@gmail.com
+  - family-names: Steinfeld
+    given-names: Jan
+    orcid: "https://orcid.org/0000-0001-9853-8260"
+version: 1.0.0
+date-released: "2026-10-14"
+doi: 10.32614/CRAN.package.PP
+license: GPL-3.0-only
+repository-code: "https://github.com/manuelreif/PP"
+url: "https://manuelreif.github.io/PP/"
+keywords:
+  - R
+  - item response theory
+  - person parameter estimation
+  - person fit
